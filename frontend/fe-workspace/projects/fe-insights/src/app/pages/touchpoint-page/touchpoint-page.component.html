@@ -1,0 +1,91 @@
+<div class="list-container">
+    <div class="action-button-list">
+        <button mat-fab class="action-button" color="primary"
+            matTooltip="{{'ADMIN COMPONENTS.ToolTipRefreshList'|translate}}" (click)="loadTouchPointList()">
+            <img src="./assets/images/refresh-circle.svg">
+        </button>
+        <button mat-fab class="action-button" color="primary"
+            matTooltip="{{'ADMIN COMPONENTS.ToolTipAddNewSite'|translate}}" (click)="onAddTouchPoint()">
+            <img src="./assets/images/plus-circle-white.svg">
+        </button>
+        <button mat-fab class="action-button" color="primary"
+            matTooltip="{{'ADMIN COMPONENTS.ToolTipConfiguration'|translate}}" (click)="onSettings()">
+            <img src="./assets/images/settings.svg">
+        </button>
+    </div>
+    <div class="table-container">
+        <div *ngIf="showQR" class="qr-info">
+            <h1 class="splash-info-text">{{'INSIGHTS_PEOPLE_PAGE.NUNOW IRINA TOUCHPOINT' | translate}}</h1>
+            <div class="print-qr" id="print-qr">
+                <qr-code #qrcode [value]="loginQR" [level]="qrLevel" [size]="160"></qr-code>
+                <mat-label>{{ loginQR }}</mat-label>
+            </div>
+            <div class="action-buttons">
+                <button mat-flat-button class="qr-button" color="primary"
+                    (click)="onCloseLoginQR()">{{'GENERAL.CLOSE'|translate}}</button>
+                <!--
+                <button mat-flat-button class="qr-button" color="primary"
+                    (click)="onPrintLoginQR()">{{'GENERAL.PRINT'|translate}}</button>
+                -->
+                <button mat-flat-button class="qr-button" color="primary"
+                    (click)="onDownloadLoginQR(qrcode)">{{'GENERAL.DOWNLOAD'|translate}}</button>
+            </div>
+        </div>
+        <mat-table #table [dataSource]="touchPointSourceItems">
+            <ng-container matColumnDef="ID">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.ID' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.id }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="DeviceID">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.DEVICE ID' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.deviceId }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.SITE' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"><span *ngIf="showAlert(element)" class="dot red"></span><span *ngIf="!showAlert(element)" class="dot green"></span>{{ element.name
+                    }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Descr">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.Description' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.description }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="StartedAt">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.Started At' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.startedAt | date: 'dd/MM/yyyy HH:mm:ss' }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="LastKeepAlive">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.Last Keep Alive' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.lastKeepAlive | date: 'dd/MM/yyyy HH:mm:ss' }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="OfficeInCount">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.OfficeIn' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.officeInCount }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="OfficeOutCount">
+                <mat-header-cell *matHeaderCellDef>{{'INSIGHTS_PEOPLE_PAGE.OfficeOut' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.officeOutCount }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Action" stickyEnd>
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element; let id=index;">
+                    <div class="action-container">
+                        <button mat-icon-button (click)="onUnlockPairing(element)" matTooltip="Unlock pairing">
+                            <i class="material-icons">lock_open</i>
+                        </button>
+                        <button mat-icon-button (click)="onShowLoginQR(element)" matTooltip="{{'INSIGHTS_PEOPLE_PAGE.TOUCHPOINT QR' | translate}}">
+                            <i class="material-icons">qr_code_2</i>
+                        </button>
+                        <button mat-icon-button (click)="onDeleteTouchPoint(element)" matTooltip="{{'INSIGHTS_PEOPLE_PAGE.DELETE TOUCHPOINT' | translate}}">
+                            <i class="material-icons" style="color: red">delete</i>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

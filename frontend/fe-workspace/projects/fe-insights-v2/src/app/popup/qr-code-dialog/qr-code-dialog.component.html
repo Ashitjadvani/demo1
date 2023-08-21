@@ -1,0 +1,24 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'QR Code' | translate}}</h4>
+            <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+<!--          <h1 class="splash-info-text" style="font-weight: 600">NUNOW IRINA TOUCHPOINT</h1>-->
+          <!--  <img src="assets/images/qr-img.svg" class="qr-img"  alt="" >
+            <p>Http://122.169.113.151/Touchpoint/Ae7a8c7a-De2b-461E-963E-94B53cbf523d</p>-->
+          <qr-code #qrcode [value]="loginQR" [level]="qrLevel" [size]="200"></qr-code><br>
+          <mat-label>{{ loginQR }}</mat-label>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content" style="justify-content: end;">
+            <button (click)="onClick(false)" (click)="onCloseLoginQR()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true)"(click)="onDownloadLoginQR(qrcode)" class="btn-style theme-btn">{{'Download' | translate}}</button>
+        </div>
+    </div>
+</section>

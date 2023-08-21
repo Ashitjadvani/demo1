@@ -1,0 +1,217 @@
+<div class="recruiting-dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-xl-6 mb-30">
+                        <div class="statistics-vertical">
+                         <div class="chart-group-wrapper procurement">
+                             <div class="chart-box box-style ">
+                                 <div class="chart-header">
+                                     <h4>{{'EVENT_MANAGEMENT.Event_Statistics' | translate}}</h4>
+                                 </div>
+                                 <div class="statistics-box">
+                                     <div class="statistic-content row">
+                                         <div class="manage-content col-xl-6" [routerLink]="(scopeId === null) ? ['/event-management/event-list'] : ['/training/event-list/' + scopeId]" [queryParams]="{ list: 'ConcludedEvents'}">
+                                          <div class="navigate-img green">
+                                            <img src="assets/images/concluded_Events.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5>{{eventStatisticsList?.concludedEvents? eventStatisticsList?.concludedEvents: '0'}}</h5>
+                                                <p>{{'EVENT_MANAGEMENT.ConcludedEvents' | translate}} </p>
+                                            </div>
+                                         </div>
+                                         <div class="manage-content col-xl-6" [routerLink]="(scopeId === null) ? ['/event-management/event-list'] : ['/training/event-list/' + scopeId]" [queryParams]="{ list: 'today'}">
+                                          <div class="navigate-img purpol">
+                                            <img src="assets/images/current-event.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5>{{eventStatisticsList?.currentEvents? eventStatisticsList?.currentEvents: '0'}}</h5>
+                                                <p>{{'EVENT_MANAGEMENT.Current_Events_Today' | translate}}</p>
+                                            </div>
+                                         </div>
+                                     </div>
+                                     <div class="statistic-content row">
+                                        <div class="manage-content col-xl-6" [routerLink]="(scopeId === null) ? ['/event-management/event-list'] : ['/training/event-list/' + scopeId]" [queryParams]="{ list: 'ScheduledEvents'}">
+                                          <div class="navigate-img yellow">
+                                            <img src="assets/images/Schedules Events.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5>{{eventStatisticsList?.scheduledEvents? eventStatisticsList?.scheduledEvents: '0'}}</h5>
+                                                <p>{{'EVENT_MANAGEMENT.Scheduled_Events' | translate}}</p>
+                                            </div>
+                                        </div>
+                                         <div class="manage-content col-xl-6" [routerLink]="(scopeId === null) ? ['/event-management/event-list'] : ['/training/event-list/' + scopeId]" [queryParams]="{ list: 'CanceledEvents'}">
+                                          <div class="navigate-img red">
+                                            <img src="assets/images/event-cancled.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5>{{eventStatisticsList?.eventCanceled? eventStatisticsList?.eventCanceled: '0'}}</h5>
+                                                <p>{{'EVENT_MANAGEMENT.Events_Canceled' | translate}}</p>
+                                            </div>
+                                         </div>
+                                     </div>
+                                     <!-- <div class="statistic-content row">
+                                         <div class="manage-content col-xl-6">
+                                          <div class="navigate-img blue">
+                                            <img src="assets/images/active-suppliers.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5>{{eventStatisticsList?.numberOfGuests? eventStatisticsList?.numberOfGuests: '0'}}</h5>
+                                                <p>{{'EVENT_MANAGEMENT.Number_of_Guests' | translate}}</p>
+                                            </div>
+                                         </div>
+                                         <div class="manage-content col-xl-6">
+                                          <div class="navigate-img light-blue">
+                                            <img src="assets/images/Number of participants.svg" alt="">
+                                          </div>
+                                           <div class="statistic-info">
+                                             <h5>{{eventStatisticsList?.numberOfParticipants? eventStatisticsList?.numberOfParticipants: '0'}}</h5>
+                                             <p>{{'EVENT_MANAGEMENT.Number_of_participants' | translate}}</p>
+                                           </div>
+                                         </div>
+                                     </div> -->
+                                     <div class="statistic-content row">
+                                       <div class="manage-content col-xl-6" [routerLink]="(scopeId === null) ? ['/event-management/event-list'] : ['/training/event-list/' + scopeId]" [queryParams]="{ list: 'EventsToBeCompleted'}">
+                                        <div class="navigate-img orange">
+                                          <img src="assets/images/Events to be completed.svg" alt="">
+                                        </div>
+                                         <div class="statistic-info">
+                                           <h5>{{eventStatisticsList?.eventsToBeCompleted? eventStatisticsList?.eventsToBeCompleted: '0'}}</h5>
+                                           <p>{{'EVENT_MANAGEMENT.Events_to_be_completed' | translate}}</p>
+                                         </div>
+                                       </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 mb-30">
+                      <div class="statistics-vertical">
+                        <div class="chart-group-wrapper procurement">
+                          <div class="chart-box box-style ">
+                              <div class="chart-body">
+                                  <div class="charts-wrapper">
+                                      <div class="client-chart people-by-gender recruit-alert">
+                                          <div class="chart-box">
+                                              <div class="chart-header">
+                                                  <h4 class="mb-2">{{'EVENT_MANAGEMENT.Event_by_Types' | translate}}</h4>
+                                                  <div class="col-md-12">
+                                                    <ul class="chart-details">
+                                                      <li *ngFor="let eventType of eventByTypeLabels">{{eventType | translate}}</li>
+                                                    </ul>
+                                                  </div>
+                                              </div>
+                                              <div class="chart-body">
+                                                  <div class="client-type" *ngIf="eventByType">
+                                                      <canvas baseChart class="chart"
+                                                              [data]="eventByTypeData"
+                                                              [labels]="eventByTypeLabels"
+                                                              [legend]="eventByScopesLegend"
+                                                              [chartType]="eventByTypeType"
+                                                              [colors]="eventByTypeColors"
+                                                      ></canvas>
+                                                  </div>
+                                                  <div class="noDataAvail" *ngIf="!eventByType">
+                                                      <span>{{'No Data Available' | translate}}</span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-12" *ngIf="scopeId === null">
+                      <div class="col-xl-12 mb-30">
+                          <div class="client-chart recruit-alert">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="chart-group-wrapper">
+                                          <div class="chart-box box-style">
+                                              <div class="chart-header p-0">
+                                                  <h4>{{'EVENT_MANAGEMENT.Statistics' | translate}}</h4>
+                                              </div>
+                                              <div class="statistics-box row">
+                                                  <div class="statistic-content col-md-3 col-sm-4">
+                                                    <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/event-management/event-list">
+                                                      <div class="navigate-img">
+                                                        <img src="assets/images/total events.svg" alt="">
+                                                      </div>
+                                                      <div class="statistic-info">
+                                                          <h5>{{totalStatisticsData?.totalEvent? totalStatisticsData?.totalEvent : '0'}}</h5>
+                                                          <p>{{'EVENT_MANAGEMENT.Total_Events' | translate}}</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="statistic-content col-md-3 col-sm-4">
+                                                    <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/event-management/event-services">
+                                                      <div class="navigate-img">
+                                                        <img src="assets/images/Event Services.svg" alt="">
+                                                      </div>
+                                                      <div class="statistic-info">
+                                                          <h5>{{totalStatisticsData?.totalEventServices? totalStatisticsData?.totalEventServices : '0'}}</h5>
+                                                          <p>{{'EVENT_MANAGEMENT.Event_Services' | translate}}</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="statistic-content col-md-3 col-sm-4">
+                                                    <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/event-management/event-scopes">
+                                                      <div class="navigate-img">
+                                                        <img src="assets/images/Total Scopes.svg" alt="">
+                                                      </div>
+                                                      <div class="statistic-info">
+                                                          <h5>{{totalStatisticsData?.totalScopes? totalStatisticsData?.totalScopes : '0'}}</h5>
+                                                          <p>{{'EVENT_MANAGEMENT.Total_Scopes' | translate}}</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="statistic-content col-md-3 col-sm-4">
+                                                    <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/event-management/event-external-venues">
+                                                      <div class="navigate-img">
+                                                        <img src="assets/images/External venues.svg" alt="">
+                                                      </div>
+                                                      <div class="statistic-info">
+                                                          <h5>{{totalStatisticsData?.totalExternalVenues? totalStatisticsData?.totalExternalVenues : '0'}}</h5>
+                                                          <p>{{'EVENT_MANAGEMENT.External_Venues' | translate}}</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-12 mb-30">
+                        <div class="client-chart recruit-alert">
+                            <div class="chart-box box-style">
+                                <div class="chart-header p-0">
+                                    <h4>{{"EVENT_MANAGEMENT.Event_by_Scopes" | translate}}</h4>
+                                </div>
+                                <div class="chart-body mt-30">
+                                    <canvas baseChart height="100px"  *ngIf="eventByScopesChartData.length !== 0"
+                                        [data]="eventByScopesData"
+                                        [labels]="eventByScopesLabels"
+                                        [options]="eventByScopesOptions"
+                                        [legend]="eventByScopesLegend"
+                                        [colors]="eventByScopesColors"
+                                        [chartType]="eventByScopesType">
+                                    </canvas>
+                                    <div class="noDataAvail" *ngIf="eventByScopesChartData.length === 0">
+                                        <span>{{'No Data Available' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

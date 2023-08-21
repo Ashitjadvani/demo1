@@ -1,0 +1,22 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading}}</h4>
+            <img src="assets/images/cross-icon.svg" (click)="onNoClick(false)" alt="">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <img src="assets/images/delete-action.svg" class="delete-img"  alt="">
+            <p>{{data.message}}</p>
+
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button class="btn-style theme-btn"(click)="onNoClick(true)">Yes</button>
+            <button class="btn-style inactive" (click)="onNoClick(false)">No</button>
+        </div>
+    </div>
+</section>

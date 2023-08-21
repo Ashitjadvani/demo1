@@ -1,0 +1,14 @@
+<h2 mat-dialog-title><b>{{'ACCESS_CONTROL.ViewLastResponse'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="general-container">
+        {{response}}
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onClose()">{{'GENERAL.CLOSE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

@@ -1,0 +1,46 @@
+@import "../../../../../styles.scss";
+.general-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 40px;
+}
+
+.detail-card{
+  width: 90%;
+  min-height: 900px
+}
+
+.form-row{
+  margin-bottom: 20px;
+  .mat-form-field{
+    margin-right: 10px;
+  }
+}
+
+.person-row{
+  border: 1px solid #CCCCCC;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+
+.detail-text{
+  position: absolute;
+  left:10px;
+  padding-top: 20px;
+  font-size: 18px;
+}
+
+.field-caption{
+ font-weight: bold;
+}
+
+table.mat-table {
+  display: table;
+}
+
+.mat-table {
+  width: 100% !important;
+}

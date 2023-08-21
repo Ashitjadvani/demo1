@@ -1,0 +1,227 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FE App",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+      "name": "FE Touchpoint",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:7001/touchpoint",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+      "name": "FE Insights",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:8001",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+      "name": "FE Insights V2",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:8002",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+        "name": "FE Career",
+        "request": "launch",
+        "type": "pwa-chrome",
+        "url": "http://localhost:8003",
+        "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+        "cwd": "${workspaceFolder}/frontend/fe-workspace"
+      },
+      {
+      "name": "FE Insights Activities",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:8001/insights/office-activity/20210701/20210707",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+      "name": "FE Job Redirect",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:4200/#/job-details/3",
+      "webRoot": "${workspaceFolder}/frontend/fe-workspace",
+      "cwd": "${workspaceFolder}/frontend/fe-workspace"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Core BE",
+      "program": "${workspaceFolder}\\backend\\core\\server-core.js",
+      "cwd": "${workspaceFolder}\\backend\\core",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "AD AuthProvider",
+      "program": "${workspaceFolder}\\backend\\auth-providers\\active-directory\\server-auth-providers-active-directory.js",
+      "cwd": "${workspaceFolder}\\backend\\auth-providers\\active-directory",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Azure AuthProvider",
+      "program": "${workspaceFolder}\\backend\\auth-providers\\azure\\server-auth-providers-azure.js",
+      "cwd": "${workspaceFolder}\\backend\\auth-providers\\azure",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Resource Booking",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\resource-booking\\server-resource-booking.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\resource-booking\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Server TouchPoint",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\server-touchpoint\\server-touchpoint.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\server-touchpoint\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "User Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\user-manager\\server-user-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\user-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Site Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\site-manager\\server-site-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\site-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "AccessControl Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\access-control-manager\\server-access-control-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\access-control-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Scheduler",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\server-scheduler\\server-scheduler.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\server-scheduler\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Product Tracking",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\product-tracking-manager\\server-product-tracking-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\product-tracking-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Calendar Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\calendar-manager\\server-calendar-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\calendar-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Approval Request Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\approval-requests-manager\\server-approval-requests-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\approval-requests-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "MQS Recruiting Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\mqs-recruiting\\server-mqs-recruiting.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\mqs-recruiting\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Event Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\event-manager\\server-event-manager.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\event-manager\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "MQS Procurement Manager",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\mqs-procurement\\server-mqs-procurement.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\mqs-procurement\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Import comuni CSV",
+      "program": "${workspaceFolder}\\backend\\plug-ins\\mqs-procurement\\import-comuni-csv.js",
+      "cwd": "${workspaceFolder}\\backend\\plug-ins\\mqs-procurement\\",
+      "args": ["https"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Backend Services",
+      "configurations": [
+        "Core BE",
+        "Calendar Manager",
+        "Site Manager",
+        "User Manager",
+        "Resource Booking",
+        "MQS Recruiting Manager",
+        "MQS Procurement Manager",
+        "Server TouchPoint",
+        "Approval Request Manager",
+        "AccessControl Manager",
+        "Event Manager",
+        "Product Tracking"
+      ]
+    }
+  ]
+}

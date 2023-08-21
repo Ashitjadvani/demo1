@@ -1,0 +1,76 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+           <li routerLink="/procurement-dashboard" class="breadcrumb-item">Dashboard</li>
+            <li routerLink="/manage-supplier" class="breadcrumb-item">Manage Supplier</li>
+            <li class="breadcrumb-item active" aria-current="page"><span>View Details</span></li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [routePath2]="'/manage-service'" [title2]="'Manage Supplier'"
+            [title3]="'View Details'">
+            </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="table-content box-style">
+          <div class="table-heading">
+            <h3 style="font-weight: 600"><span>Add Survey</span><!-- <span>Edit Survey</span> --> </h3>
+            <div class="search-form-wrapper">
+              <div class="buttons-group">
+                <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-content-box">
+            <form class="w-100" name="addSurveyForm" [formGroup]= "addSurveyForm"  novalidate (ngSubmit)="changeSupplier()" #myform="ngForm">
+              <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>Title<span style="color:#EA5455">*</span></mat-label>
+                      <input  type="text" formControlName="titleName" matInput  name="titleName" >
+                      <mat-error *ngIf="addSurveyForm.controls.titleName.errors?.required" >
+                        Enter your title.
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-xl-12">
+                  <div class="form-field error-message-custom date-picker-style">
+                    <mat-form-field appearance="outline" class="element-full-width" formControlName="disclaimer">
+                      <mat-label>Disclaimer</mat-label>
+                      <textarea matInput type="text" placeholder="{{'GENERAL.TypeHere' | translate}}"></textarea>
+                      <mat-error *ngIf="addSurveyForm.controls.disclaimer.errors?.required">
+                        Enter your disclaimer.
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field error-message-custom">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>Question Flow</mat-label>
+                      <mat-select formControlName="QuestionFlow" >
+                          <mat-option>Select Question Flow</mat-option>
+                        <mat-option *ngFor="let flowlist of QuestionFlowList" [value]="status">{{flowlist}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="addSurveyForm.controls.QuestionFlow.errors?.required">
+                        Select Question Flow.
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer">
+                <button class="btn-style theme-btn" type="submit">Save</button>
+                <button class="btn-style red-line-btn" routerLink="/manage-service" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

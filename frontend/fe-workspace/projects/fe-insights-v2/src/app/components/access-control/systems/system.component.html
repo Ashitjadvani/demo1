@@ -1,0 +1,202 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+            <li  class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.Systems'| translate}}</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'ACCESS_CONTROL.Systems'| translate}}
+                <span class="refresh-btn" (click)="getSystemList()" matTooltip="Refresh">
+                  <mat-icon>autorenew</mat-icon>
+                </span>
+              </h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'ACCESS_CONTROL.SearchBadge'| translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                </div>
+                <button  class="btn-style" routerLink="add-edit-system/new">
+                  <span class="material-icons">add</span>{{'ACCESS_CONTROL.AddSystem'| translate}}
+                </button>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table [dataSource]="systemListTransformed | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+
+                  <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'ACCESS_CONTROL.Actions'| translate}} 
+                    </th>
+                    <td class="p-0" mat-cell *matCellDef="let element" style="width: 100px;">
+                      <span *ngIf="!checkingSystems && (element.state == 'Offline')" title="Offline" [style.borderLeftColor]="'#FF0000'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="editSystem(element.id)" matTooltip="{{'ACCESS_CONTROL.EditSystem' | translate}}">
+                              <span class="material-icons">edit</span>
+                            </button>
+                            <button mat-menu-item (click)="deleteSystem(element)" matTooltip="{{'ACCESS_CONTROL.DeleteSystem' | translate}}">
+                              <span class="material-icons">delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>
+                      <span *ngIf="!checkingSystems && (element.state == 'Online Invalid')" title="Token Error" [style.borderLeftColor]="'#FF0000'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="editSystem(element.id)" matTooltip="{{'ACCESS_CONTROL.EditSystem' | translate}}">
+                              <span class="material-icons">edit</span>
+                            </button>
+                            <button mat-menu-item (click)="deleteSystem(element)" matTooltip="{{'ACCESS_CONTROL.DeleteSystem' | translate}}">
+                              <span class="material-icons">delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>
+                      <span *ngIf="checkingSystems" title="Checking..." [style.borderLeftColor]="'#d5aa00'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="editSystem(element.id)" matTooltip="{{'ACCESS_CONTROL.EditSystem' | translate}}">
+                              <span class="material-icons">edit</span>
+                            </button>
+                            <button mat-menu-item (click)="deleteSystem(element)" matTooltip="{{'ACCESS_CONTROL.DeleteSystem' | translate}}">
+                              <span class="material-icons">delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>
+                      <span *ngIf="!checkingSystems && element.state == 'Online Valid'" title="Online" [style.borderLeftColor]="'#00A042'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="editSystem(element.id)" matTooltip="{{'ACCESS_CONTROL.EditSystem' | translate}}">
+                              <span class="material-icons">edit</span>
+                            </button>
+                            <button mat-menu-item (click)="deleteSystem(element)" matTooltip="{{'ACCESS_CONTROL.DeleteSystem' | translate}}">
+                              <span class="material-icons">delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>
+                        
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="name">
+                    <th  (click)="changeSorting('name',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                      {{'ACCESS_CONTROL.Name'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'name' && sortKey === '-1' , 'up': sortBy === 'name' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'name'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'name'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                      {{element.name ? element.name : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="url">
+                    <th  (click)="changeSorting('url',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                      Url <span
+                      [ngClass]="{'down': sortBy === 'url' && sortKey === '-1' , 'up': sortBy === 'url' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'url'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'url'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                      {{element.url ? element.url : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="type">
+                    <th  (click)="changeSorting('type',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                      {{'ACCESS_CONTROL.Type'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'type' && sortKey === '-1' , 'up': sortBy === 'type' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'type'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'type'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                      {{element.type ? element.type : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="timestamp">
+                    <th  (click)="changeSorting('timestamp',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                      Timestamp <span
+                      [ngClass]="{'down': sortBy === 'timestamp' && sortKey === '-1' , 'up': sortBy === 'timestamp' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'timestamp'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'timestamp'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                      {{element.timestamp ? (element.timestamp | date:'dd/MM/yyyy HH:mm:ss'):'-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th  (click)="changeSorting('state',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 80px">
+                      Online <span
+                      [ngClass]="{'down': sortBy === 'state' && sortKey === '-1' , 'up': sortBy === 'state' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'state'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'state'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 80px">
+                      <label *ngIf="!checkingSystems && (element.state == acState.OFFLINE)" class="btn-style table-btn sm-btn label-btn" style="color: #ea5455;border: 1px solid #ea5455;background-color: rgba(234,84,85,.1);min-width:80px;" disabled>
+                        Offline
+                      </label>
+                      <label *ngIf="!checkingSystems && (element.state == acState.ONLINE_INVALID)" class="btn-style table-btn sm-btn label-btn" style="color: #ea5455;border: 1px solid #ea5455;background-color: rgba(234,84,85,.1);min-width:80px;" disabled>
+                        Token Error
+                      </label>
+                      <label *ngIf="checkingSystems" class="btn-style table-btn sm-btn label-btn" style="color: #d5aa00;border: 1px solid #d5aa00;background: rgba(213,170,0,.1);min-width:80px;" disabled>
+                        Checking...
+                      </label>
+                      <label *ngIf="!checkingSystems && element.state == acState.ONLINE_VALID" class="btn-style table-btn sm-btn label-btn" style="color: #22c55e;border: 1px solid #22c55e;background-color: rgba(34,197,94,.10196078431372549);min-width:80px;" disabled>
+                        Online
+                      </label>
+                    </td>
+                  </ng-container>
+
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="systemDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: systemDisplayedColumns"></tr>
+              </table>
+            </div>
+            <div *ngIf="!noRecordFound" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

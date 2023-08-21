@@ -1,0 +1,22 @@
+<div class="timeframes">
+    <div *ngFor="let tf of getMyTimeframes()" class="timeframe-card" [ngStyle]="{ 'background-color': isInProgress(tf) ? '#00ff0022' : '#eeeeee' }">
+        <div class="timeframe-content">
+            <!-- 
+            <div class="timeframe-content-title">
+                {{ tf.extraData.title }}
+            </div>
+            -->
+            <div class="timeframe-content-time">
+                <i class="material-icons clock-icon">schedule</i>
+                <div class="time-text">{{ formatTimeframeTime(tf.startTime) }} - {{ formatTimeframeTime(tf.endTime) }}
+                </div>
+
+                <div class="title-text">{{ tf.extraData.title }}</div>
+            </div>
+        </div>
+
+        <button *ngIf="enableDelete" mat-icon-button class="timeframe-action" (click)="onDeleteBookTimeframe(tf)">
+            <i class="theme-icon medium delete"></i>
+        </button>
+    </div>
+</div>

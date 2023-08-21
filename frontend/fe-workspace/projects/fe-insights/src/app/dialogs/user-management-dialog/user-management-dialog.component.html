@@ -1,0 +1,104 @@
+<h2 mat-dialog-title><b>{{ currentData.isModify ? 'Add Person' : 'Modify Person' }}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-tab-group>
+            <mat-tab label="General">
+                <div class="user-param-box">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="name *" [(ngModel)]="currentData.user.name">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="surname *" [(ngModel)]="currentData.user.surname">
+                    </mat-form-field>
+                    <div class="input-row">
+                        <mat-form-field class="width-75">
+                            <input matInput placeholder="fiscal code" [(ngModel)]="currentData.user.cf">
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <mat-select placeholder="gender" [(ngModel)]="currentData.user.gender">
+                                <mat-option *ngFor="let gender of genderList" value="{{ gender }}">
+                                    {{ gender }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-row">
+                        <mat-form-field class="width-25">
+                            <input matInput [matDatepicker]="pickerDate" placeholder="birthday"
+                                [(ngModel)]="currentData.user.birthDay">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="width-50">
+                            <input matInput placeholder="birthplace" [(ngModel)]="currentData.user.birthPlace">
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <mat-select placeholder="prov" [(ngModel)]="currentData.user.birthProv">
+                                <mat-option *ngFor="let prov of provITA" value="{{ prov }}">
+                                    {{ prov }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Contact">
+                <div class="user-param-box">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="address" [(ngModel)]="currentData.user.address">
+                    </mat-form-field>
+                    <div class="input-row">
+                        <mat-form-field class="width-75">
+                            <input matInput placeholder="city" [(ngModel)]="currentData.user.city">
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <input matInput placeholder="cap" [(ngModel)]="currentData.user.cap">
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="phone" [(ngModel)]="currentData.user.phone">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="email *" [(ngModel)]="currentData.user.email">
+                    </mat-form-field>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{ 'ADMIN DIALOGS.SETTINGS' | translate }}">
+                <div class="user-param-box">
+                    <div class="input-row">
+                        <mat-form-field class="width-25">
+                            <input matInput placeholder="badge n." [(ngModel)]="currentData.user.badgeId">
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <input matInput placeholder="restaurant card n." [(ngModel)]="currentData.user.restaurantCardId">
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <input matInput [matDatepicker]="pickerDateStart" placeholder="hire date"
+                                [(ngModel)]="currentData.user.dateStart">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDateStart></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="width-25">
+                            <input matInput [matDatepicker]="pickerDateEnd" placeholder="resignation date"
+                                [(ngModel)]="currentData.user.dateEnd">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDateEnd></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-row">
+                        <app-property-input class="width-50" [context]="currentData.user" [placeholder]="'working hour'"
+                            [propertyName]="PERSON_PROPERTY.PP_WORKING_HOURS"></app-property-input>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button class="action-button" color="primary"
+        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()" cdkFocusInitial
+        (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+</mat-dialog-actions>

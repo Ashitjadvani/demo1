@@ -1,0 +1,10 @@
+<div class="people-page-container">
+    <mat-tab-group class="scope-group-tab">
+        <mat-tab *ngFor="let scope of scopesAvailable">
+            <ng-template mat-tab-label>
+                <span>{{scope.name}}</span>
+            </ng-template>
+            <app-people-single-scope-page [scope]="scope"></app-people-single-scope-page>
+        </mat-tab>
+    </mat-tab-group>
+</div>

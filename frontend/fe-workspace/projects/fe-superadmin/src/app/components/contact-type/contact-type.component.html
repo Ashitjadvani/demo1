@@ -1,0 +1,122 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+          <li routerLink="/contact-type" class="breadcrumb-item active" aria-current="page">Contact Type</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style features-table">
+        <div class="table-heading">
+          <h3 style="font-weight: 600">Contact Type</h3>
+          <div class="search-form-wrapper">
+            <div class="search-form">
+              <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+              <input mat-input (keyup)="onKeyUp($event)" #searchBox placeholder="Search Contact" />
+              <mat-icon *ngIf="searchBox.value !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+            </div>
+            <button  class="btn-style" (click)="openDialog1('')">
+              <span class="material-icons">add</span>Add Contact Type
+            </button>
+            <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                <mat-icon >more_vert</mat-icon>
+              </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="deleteMultiContactTypes()">
+                  <span>Delete</span>
+                </button>
+            </mat-menu>
+          </div>
+        </div>
+        <div class="table-wrapper resource-color-table">
+          <table mat-table matSort (matSortChange)="sortContact($event)"
+                 [dataSource]="contactType | paginate: { itemsPerPage: this.itemsPerPage, currentPage: this.page,  totalItems: this.totalItems  }" >
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                        <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                        (edit)="openDialog2(element.name, element.status_id, element.id)" (delete)="openDialog(element.id, i, $event)"></app-wheel-action>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="contactType">
+                    <th (click)="changeSorting('name', sortBy)" mat-header-cell *matHeaderCellDef style="min-width: 200px;" class="short-arrow">Contact Type
+                    <span [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" >
+                        <img alt="" src="assets/images/up-arrow.svg">
+                    </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" >
+                    {{element.name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th (click)="changeSorting('status_id', sortBy)" mat-header-cell *matHeaderCellDef style="width: 180px;" class="short-arrow">
+                    Status
+                    <span [ngClass]="{'down': sortKey === 'status_id' && sortBy === '-1' , 'up': sortKey === 'status_id' && sortBy === '1'}" >
+                        <img alt="" src="assets/images/up-arrow.svg">
+                    </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element;" >
+                    <button class="btn-style table-btn sm-btn {{ element.status_id == '1' ?  'active': 'inactive'}}" disabled>
+                        {{ element.status_id == '1' ?  'Active': 'Inactive'}}
+                    </button>
+                    </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;">
+                    Action
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 120px;">
+                    <div class="action-icons d-flex">
+                        <img src="assets/images/edit-action.svg"   (click)="openDialog2(element.name, element.status_id, element.id)" alt="" >
+                        <img src="assets/images/delete-action.svg" (click)="openDialog(element.id, i, $event)" alt="">
+                    </div>
+                    </td>
+                </ng-container> -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+          </table>
+        </div>
+        <div *ngIf="contactType.length == 0" class="no-record-found">No record found</div>
+        <div class="paginate-footer" *ngIf="contactType.length != 0">
+          <div class="page-item">
+            <h3>Items per page:</h3>
+            <mat-form-field appearance="fill">
+              <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                <mat-option value='5'>5</mat-option>
+                <mat-option value='10'>10</mat-option>
+                <mat-option value='15'>15</mat-option>
+                <mat-option value='20'>20</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="table-paginator">
+            <pagination-controls  responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

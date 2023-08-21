@@ -1,0 +1,196 @@
+<div class="table-content box-style">
+    <div class="table-heading m-30">
+        <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Details' | translate}}</h3>
+        <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+    </div>
+    <form class="form-wrapper" (ngSubmit)="saveDetailsInfo(eventStepper, false)" [formGroup]="detailsInfoForm">
+        <div class="row">
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'MASTER_MODULE.Event Name' | translate}}<span class="red-label">*</span>
+                        </mat-label>
+                        <input formControlName="name" matInput type="text" name="name" (keydown)="space($event)" (keydown)="slash($event)">
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.name.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterEventName' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'EVENT_MANAGEMENT.EventScope' | translate}}<span class="red-label">*</span>
+                        </mat-label>
+                        <mat-select formControlName="scope">
+                            <mat-option>{{'EVENT_MANAGEMENT.SelectEventScope' | translate}}</mat-option>
+                            <mat-option *ngFor="let scope of scopesList"
+                                        value="{{scope.id}}">{{scope.name | translate}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.scope.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectScope' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.Sender' | translate}}</mat-label>
+                        <input formControlName="emailFrom" matInput type="text" name="emailFrom" (keydown)="space($event)">
+                        <mat-error *ngIf="detailsInfoForm.controls.emailFrom.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterSenderValue' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div></div>
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'INSIGHTS_MENU.Cost_Centers' | translate}}</mat-label>
+                        <mat-select formControlName="costCenter" #select multiple>
+                            <div class="custom-select-all">
+                                <mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
+                                              (change)="toggleAllSelection()">{{'EVENT_MANAGEMENT.SelectAll' | translate}}</mat-checkbox>
+                            </div>
+                            <mat-option *ngFor="let costCenter of costCenterList" value="{{costCenter.id}}"
+                                        (click)="optionClick()">{{costCenter.name | translate}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.costCenter.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectCostCenter' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'EVENT_MANAGEMENT.Type' | translate}}<span class="red-label">*</span></mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option>{{'Select Type' | translate}}</mat-option>
+                            <mat-option value="live">{{'EVENT_MANAGEMENT.Live' | translate}}</mat-option>
+                            <mat-option value="online">{{'EVENT_MANAGEMENT.Online' | translate}}</mat-option>
+                            <mat-option value="hybrid">{{'EVENT_MANAGEMENT.Hybrid' | translate}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.type.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectType' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'RECRUITING.Area' | translate}}</mat-label>
+                        <mat-select formControlName="area">
+                            <mat-option [value]="null">{{'Select Area' | translate}}</mat-option>
+                            <mat-option *ngFor="let area of areaList"
+                                        value="{{area.name}}">{{area.name | translate}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.area.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectArea' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width date-select">
+                        <mat-label>{{'EVENT_MANAGEMENT.StartDate' | translate}}<span class="red-label">*</span>
+                        </mat-label>
+                        <input formControlName="startDate" [matDatepicker]="startDatePicker" matInput type="text"
+                               format='dd/MM/yyyy' [min]="today" name="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"
+                                               class="full-date-select"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker (opened)="streamOpened()"></mat-datepicker>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.startDate.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectStartDate' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width date-select">
+                        <mat-label>{{'EVENT_MANAGEMENT.EndDate' | translate}}<span class="red-label">*</span>
+                        </mat-label>
+                        <input formControlName="endDate" [matDatepicker]="endDatePicker" matInput type="text"
+                               [min]="this.detailsInfoForm.get('startDate').value" name="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"
+                                               class="full-date-select"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker (opened)="streamOpened()"></mat-datepicker>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.endDate.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectEndDate' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.From' | translate}}<span class="red-label">*</span></mat-label>
+                        <input formControlName="from" readonly matInput name="eventFromTime"
+                               [ngxTimepicker]="eventFromTimepicker" [format]="24">
+                        <mat-icon matSuffix (click)="eventFromTimepicker.open()">schedule</mat-icon>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.from.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectFromTime' | translate}}</mat-error>
+                        <ngx-material-timepicker #eventFromTimepicker [format]="24"
+                                                 (timeChanged)="onTimeChange($event)"></ngx-material-timepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.To' | translate}}<span class="red-label">*</span></mat-label>
+                        <input formControlName="to" readonly matInput name="eventToTime"
+                               [ngxTimepicker]="eventToTimepicker" [min]="fromTimeValue" [format]="24">
+                        <mat-icon matSuffix (click)="eventToTimepicker.open()">schedule</mat-icon>
+                        <mat-error
+                            *ngIf="detailsInfoForm.controls.to.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectToTime' | translate}}</mat-error>
+                    </mat-form-field>
+                    <ngx-material-timepicker #eventToTimepicker [format]="24"></ngx-material-timepicker>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                    <div class="custom-switch d-flex mt-0 switch">
+                        <mat-slide-toggle class="mr-15" formControlName="disableInvitationFlow"></mat-slide-toggle>
+                        {{'EVENT_MANAGEMENT.DisableInvitationFlow' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-xxl-12">
+                <div class="view-legenda">
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{'EVENT_MANAGEMENT.EventDescription'| translate}}
+                                </mat-panel-title>
+                                <mat-panel-description>
+
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="col-xl-12 col-xxl-12">
+                                <div class="custom-editor form-field error-message-custom mt-2">
+                                    <angular-editor [config]="config"
+                                                    placeholder="{{'GENERAL.TypeHere' | translate}}"
+                                                    formControlName="description"></angular-editor>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+            </div>
+        </div>
+        <div class="step-form-bottom">
+            <div>
+                <button (click)="back()" class="btn-style red-line-btn"
+                        type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+            <div class="">
+                <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn"
+                        (click)="saveDetailsInfo(eventStepper, true)"
+                        type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span
+                    class="material-icons">arrow_forward</span></button>
+                <button class="btn-style theme-btn" type="button"
+                        (click)="saveDetailsInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,371 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li class="breadcrumb-item">{{'INSIGHTS_MENU.MASTER_MODULES'| translate}}</li>
+            <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.EVENT_TYPE' | translate}}</li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb  [title2]="'INSIGHTS_MENU.MASTER_MODULES'" [title3]="'INSIGHTS_MENU.EVENT_TYPE'"></app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'INSIGHTS_MENU.EVENT_TYPE' | translate}}</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'MASTER_MODULE.SearchEvents' | translate}} " />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                </div>
+                <button  class="btn-style btn-grey" routerLink="events-settings">
+                  <span class="material-icons">brightness_high</span>{{'MASTER_MODULE.Event Settings'| translate }}
+                </button>
+                <button  class="btn-style" routerLink="add-edit-event/0">
+                  <span class="material-icons">add</span>{{'MASTER_MODULE.Add Event'| translate }}
+                </button>
+                <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                  <mat-icon >more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="deleteMultiEvent()">
+                    <span>{{'GENERAL.Delete' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table #table [dataSource]="eventTypeList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+                  <!-- <ng-container matColumnDef="select">
+                    <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                      <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                    </th>
+                    <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                      <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                    </td>
+                  </ng-container> -->
+
+                  <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'TABLE.Action' | translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <!-- <div class="hover-effect-menu two-icons">
+                        <div class="short-arrow">
+                          <span class="material-icons" >more_horiz</span>
+                        </div>
+                        <div class="hover-round-effect">
+                          <button mat-menu-item (click)="onModifyJustification(element)" matTooltip="{{'Edit' | translate}}">
+                            <span class="material-icons">edit</span>
+                          </button>
+                          <button mat-menu-item (click)="openAccountDeleteDialog(element.id, i, $event)" matTooltip="{{'Delete' | translate}}">
+                            <span class="material-icons">delete</span>
+                          </button>
+                        </div>
+                      </div> -->
+                      <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                        (edit)="onModifyJustification($event)" (delete)="openAccountDeleteDialog($event)"></app-wheel-action>
+
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="eventName">
+                    <th (click)="changeSorting('name',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 200px;width: 200px;">
+                      {{'MASTER_MODULE.Event Name'| translate }} <span
+                      [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;" style="min-width: 200px;width: 200px;text-transform:capitalize;">{{element.name ? element.name : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="eventEnable">
+                    <th (click)="changeSorting('enable',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 100px;width: 100px;">
+                      {{'Enable' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'enable' && sortBy === '-1' , 'up': sortKey === 'enable' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;" style="min-width: 200px;width: 200px;">
+                      <ng-container *ngIf="element.enable">{{'Y'}}</ng-container>
+                      <ng-container *ngIf="!element.enable">{{'N'}}</ng-container>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="eventApproval">
+                    <th (click)="changeSorting('approvationAbilitation',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 210px;width: 210px;">
+                      {{'Requires approval' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'approvationAbilitation' && sortBy === '-1' , 'up': sortKey === 'approvationAbilitation' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;" style="min-width: 210px;width: 210px;">
+                      <ng-container *ngIf="element.approvationAbilitation">{{'Y'}}</ng-container>
+                      <ng-container *ngIf="!element.approvationAbilitation">{{'N'}}</ng-container>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="eventType">
+                    <th (click)="changeSorting('eventType',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'MASTER_MODULE.Event Type'| translate }} <span
+                      [ngClass]="{'down': sortKey === 'eventType' && sortBy === '-1' , 'up': sortKey === 'eventType' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px;">{{element.eventType ? element.eventType : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noticeAdvance">
+                    <th (click)="changeSorting('daysToRequest',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;min-width: 275px;width: 275px;text-align: center;padding-right: 10px;">
+                      {{'MASTER_MODULE.Notice Advance Needed (Days)'| translate }} <span
+                      [ngClass]="{'down': sortKey === 'daysToRequest' && sortBy === '-1' , 'up': sortKey === 'daysToRequest' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 275px;width: 275px;text-align: center;"><span class="color-round"></span>{{element.daysToRequest ? element.daysToRequest : '0' }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="eventSilent">
+                    <th (click)="changeSorting('silenceAssentAbilitation',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 200px;width: 200px;">
+                      {{'Silence assent' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'silenceAssentAbilitation' && sortBy === '-1' , 'up': sortKey === 'silenceAssentAbilitation' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;" style="min-width: 200px;width: 200px;">
+                      <ng-container *ngIf="element.silenceAssentAbilitation">{{'Y'}}</ng-container>
+                      <ng-container *ngIf="!element.silenceAssentAbilitation">{{'N'}}</ng-container>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="responsable">
+                    <th  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'MASTER_MODULE.Responsable'| translate }} 
+                      <!-- <span
+                      [ngClass]="{'down': sortBy === 'approvalResponsable' && sortKey === '-1' , 'up': sortBy === 'approvalResponsable' && sortKey === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span> -->
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      <ng-container *ngIf="element.approvalResponsable.isFigure">
+                        <ng-container *ngIf="element.approvalResponsable.figureRole == 'Area Manager' ">
+                          <ng-container *ngIf="element.approvalResponsable.figureArea == '' ">Area Manager</ng-container>
+                          <ng-container *ngIf="element.approvalResponsable.figureArea !== '' ">{{'Manager ' + element.approvalResponsable.figureArea}}</ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="element.approvalResponsable.figureRole == 'Director' ">
+                          <ng-container *ngIf="element.approvalResponsable.figureDirection == '' ">Director</ng-container>
+                          <ng-container *ngIf="element.approvalResponsable.figureDirection !== '' ">{{'Director ' + element.approvalResponsable.figureDirection}}</ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isEmail">{{element.approvalResponsable.email}}</ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isUser">
+                        <ng-container *ngFor="let person of allPeople">
+                          <ng-container *ngIf="element.approvalResponsable.personId == person.id">{{person.name + ' ' + person.surname}}</ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isUser === false">
+                        <ng-container *ngIf="element.approvalResponsable.isEmail === false">
+                          <ng-container *ngIf="element.approvalResponsable.isFigure === false">
+                            -
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <!-- {{element.approvalResponsable ? element.approvalResponsable : '-'}} -->
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="accountable">
+                    <th  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'MASTER_MODULE.Accountable'| translate }} 
+                      <!-- <span
+                      [ngClass]="{'down': sortBy === 'approvalAccountable' && sortKey === '-1' , 'up': sortBy === 'approvalAccountable' && sortKey === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span> -->
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      <ng-container *ngIf="element.approvalAccountable.isFigure">
+                        <ng-container *ngIf="element.approvalAccountable.figureRole == 'Area Manager' ">
+                          <ng-container *ngIf="element.approvalAccountable.figureArea == '' ">Area Manager
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalAccountable.figureArea !== '' ">{{'Manager ' + element.approvalAccountable.figureArea}}
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="element.approvalAccountable.figureRole == 'Director' ">
+                          <ng-container *ngIf="element.approvalAccountable.figureDirection == '' ">Director
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalAccountable.figureDirection !== '' ">{{'Director ' + element.approvalAccountable.figureDirection}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalAccountable.isEmail">{{element.approvalAccountable.email}}
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalAccountable.isUser">
+                        <ng-container *ngFor="let person of allPeople">
+                          <ng-container *ngIf="element.approvalAccountable.personId == person.id">{{person.name + ' ' + person.surname}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isUser === false">
+                        <ng-container *ngIf="element.approvalResponsable.isEmail === false">
+                          <ng-container *ngIf="element.approvalResponsable.isFigure === false">
+                            -
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <!-- {{element.approvalAccountable ? element.approvalAccountable : '-'}} -->
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="consulted">
+                    <th  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'MASTER_MODULE.Consulted'| translate }}
+                       <!-- <span
+                      [ngClass]="{'down': sortBy === 'approvalConsulted' && sortKey === '-1' , 'up': sortBy === 'approvalConsulted' && sortKey === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span> -->
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      <ng-container *ngIf="element.approvalConsulted.isFigure">
+                        <ng-container *ngIf="element.approvalConsulted.figureRole == 'Area Manager' ">
+                          <ng-container *ngIf="element.approvalConsulted.figureArea == '' ">Area Manager
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalConsulted.figureArea !== '' ">{{'Manager ' + element.approvalConsulted.figureArea}}
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="element.approvalConsulted.figureRole == 'Director' ">
+                          <ng-container *ngIf="element.approvalConsulted.figureDirection == '' ">Director
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalConsulted.figureDirection !== '' ">{{'Director ' + element.approvalConsulted.figureDirection}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalConsulted.isEmail">{{element.approvalConsulted.email}}
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalConsulted.isUser">
+                        <ng-container *ngFor="let person of allPeople">
+                          <ng-container *ngIf="element.approvalConsulted.personId == person.id">{{person.name + ' ' + person.surname}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isUser === false">
+                        <ng-container *ngIf="element.approvalResponsable.isEmail === false">
+                          <ng-container *ngIf="element.approvalResponsable.isFigure === false">
+                            -
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+
+                      <!-- {{element.approvalConsulted ? element.approvalConsulted : '-'}} -->
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="informed">
+                    <th  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'MASTER_MODULE.Informed'| translate }}
+                       <!-- <span
+                      [ngClass]="{'down': sortBy === 'approvalInformed' && sortKey === '-1' , 'up': sortBy === 'approvalInformed' && sortKey === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span> -->
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      <ng-container *ngIf="element.approvalInformed.isFigure">
+                        <ng-container *ngIf="element.approvalInformed.figureRole == 'Area Manager' ">
+                          <ng-container *ngIf="element.approvalInformed.figureArea == '' ">Area Manager
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalInformed.figureArea !== '' ">{{'Manager ' + element.approvalInformed.figureArea}}
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="element.approvalInformed.figureRole == 'Director' ">
+                          <ng-container *ngIf="element.approvalInformed.figureDirection == '' ">Director
+                          </ng-container>
+                          <ng-container *ngIf="element.approvalInformed.figureDirection !== '' ">{{'Director ' + element.approvalInformed.figureDirection}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalInformed.isEmail">{{element.approvalInformed.email}}
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalInformed.isUser">
+                        <ng-container *ngFor="let person of allPeople">
+                          <ng-container *ngIf="element.approvalInformed.personId == person.id">{{person.name + ' ' + person.surname}}
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <ng-container *ngIf="element.approvalResponsable.isUser === false">
+                        <ng-container *ngIf="element.approvalResponsable.isEmail === false">
+                          <ng-container *ngIf="element.approvalResponsable.isFigure === false">
+                            -
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                      <!-- {{element.approvalInformed ? element.approvalInformed : '-'}} -->
+                    </td>
+                  </ng-container>
+
+                  <!--<ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'TABLE.Action' | translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <div class="action-icons d-flex switch">
+                        <img src="assets/images/edit-action.svg"  class="" alt="" routerLink="add-edit-event">
+                        <img src="assets/images/delete-action.svg" (click)="openAccountDeleteDialog(element.id, i, $event)" alt="">
+                      </div>
+                    </td>
+                  </ng-container>-->
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="eventTypeDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: eventTypeDisplayedColumns"></tr>
+              </table>
+            </div>
+            <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page'| translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div> -->
+            <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

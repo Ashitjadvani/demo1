@@ -1,0 +1,33 @@
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px  rgba(0, 0, 0, 0.14), 0 3px 14px 2px  rgba(0, 0, 0, 0.12);
+  height: 48px;
+  background-color: white;
+  display: table;
+  td {
+    flex-grow: 2;
+    font-size: 16px;
+    padding: 9px;
+    vertical-align: middle;
+    &:first-child{
+      padding-left: 24px;
+      width: 70px;
+    }
+    &:nth-child(2){
+      width: 100px;
+    }
+    &:nth-last-child(2){
+      width: 130px;
+    }
+    &:nth-last-child(1){
+      width: 100px;
+    }
+  }
+}
+.no-record-found{
+  margin-top: 20px !important;
+}
+.table-wrapper {
+  padding-bottom: 0px !important;
+}

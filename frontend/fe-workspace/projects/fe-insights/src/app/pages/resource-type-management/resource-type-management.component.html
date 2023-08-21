@@ -1,0 +1,278 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+        <app-table-data-view [tableDataSet]="resourceTypes" [columnTemplates]="tableColumnTemplates"
+            [rowActions]="tableRowActions" [mainActions]="tableMainActions" [filterFunction]="filterCallback">
+        </app-table-data-view>
+    </mat-tab>
+    <mat-tab>
+        <div *ngIf="!showResourceList" class="general-container">
+            <div class="card width-90">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="input-row">
+                        <div class="width-25">
+                            <mat-form-field class="width-100">
+                                <mat-select placeholder="Resource Type" [disabled]="isModify"
+                                    [(ngModel)]="currentResourceType.type" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let rt of availableTypes" [value]="rt">{{ rt }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="width-25">
+                            <mat-form-field class="width-100">
+                                <input matInput placeholder="Name" [(ngModel)]="currentResourceType.name"
+                                    [disabled]="isModify">
+                            </mat-form-field>
+                        </div>
+                        <div class="width-40">
+                            <mat-form-field class="width-100">
+                                <input matInput placeholder="Desciption" [(ngModel)]="currentResourceType.description">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="currentResourceType.type == RESOURCE_TYPE.PARKING">
+                        <div class="input-row">
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="availability start" [(ngModel)]="availabilityStart">
+                                    <button mat-button matSuffix mat-icon-button (click)="pickerStartTime1.open()">
+                                        <mat-icon>schedule</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <ngx-material-timepicker #pickerStartTime1 [format]="24"
+                                    (timeSet)="setAvailabilityTime(true, $event)">
+                                </ngx-material-timepicker>
+                            </div>
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Visibilità (ore)"
+                                        [(ngModel)]="currentResourceType.availabilityHoursAfterStart">
+                                </mat-form-field>
+                            </div>
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Pool di riserva"
+                                        [(ngModel)]="currentResourceType.minimumReservedPool">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="priority start"
+                                        [(ngModel)]="priorityAvailabilityStart">
+                                    <button mat-button matSuffix mat-icon-button (click)="pickerStartTimeP1.open()">
+                                        <mat-icon>schedule</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <ngx-material-timepicker #pickerStartTimeP1 [format]="24"
+                                    (timeSet)="setPriorityAvailabilityTime(true, $event)">
+                                </ngx-material-timepicker>
+                            </div>
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="priority end" [(ngModel)]="priorityAvailabilityEnd">
+                                    <button mat-button matSuffix mat-icon-button (click)="pickerStartTimeP2.open()">
+                                        <mat-icon>schedule</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <ngx-material-timepicker #pickerStartTimeP2 [format]="24"
+                                    (timeSet)="setPriorityAvailabilityTime(false, $event)">
+                                </ngx-material-timepicker>
+                            </div>
+                            <div class="width-30"></div>
+                        </div>
+                        <div class="input-row">
+                            <div class="width-100">
+                                <mat-form-field class="width-100">
+                                    <mat-chip-list #chipList aria-label="Priority Tags">
+                                        <mat-chip *ngFor="let tag of priorityAvailabilityTags" [selectable]="false"
+                                            [removable]="true" (removed)="onRemovePriorityTag(tag)">
+                                            {{ tag }}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="Priority tag..." #fruitInput [formControl]="tagFC"
+                                            [matChipInputFor]="chipList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            (matChipInputTokenEnd)="onAddPriorityTag($event)">
+                                    </mat-chip-list>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="width-60">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Help button text" [(ngModel)]="parkHelpButtonMessage">
+                                </mat-form-field>
+                            </div>
+                            <div class="width-30">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Help phone" [(ngModel)]="parkHelpPhoneNumber">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="width-50">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Refresh message" [(ngModel)]="parkRefreshMessage">
+                                </mat-form-field>
+                            </div>
+                            <div class="center-check-container width-20">
+                                <mat-checkbox class="center-check" [(ngModel)]="parkRefreshAvailable">Enable refresh
+                                    park tile</mat-checkbox>
+                            </div>
+                            <div class="width-20">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Refresh interval" [(ngModel)]="parkRefreshInterval">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="width-50">
+                                <mat-checkbox [(ngModel)]="personalParkAutoBookAfterAvailability">Personal park
+                                    auto-book
+                                    after availability</mat-checkbox>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="currentResourceType.type == RESOURCE_TYPE.ECHARGER">
+                        <div class="input-row-simple">
+                            <div class="width-15">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="availability start" [(ngModel)]="availabilityStart">
+                                    <button mat-button matSuffix mat-icon-button (click)="pickerStartTime1.open()">
+                                        <mat-icon>schedule</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                <ngx-material-timepicker #pickerStartTime1 [format]="24"
+                                    (timeSet)="setAvailabilityTime(true, $event)">
+                                </ngx-material-timepicker>
+                            </div>
+                            <span class="width-5"></span>
+                            <div class="width-15">
+                                <mat-form-field class="width-100">
+                                    <input matInput placeholder="Visibilità (ore)"
+                                        [(ngModel)]="currentResourceType.availabilityHoursAfterStart">
+                                </mat-form-field>
+                            </div>
+                            <span class="width-5"></span>
+                            <div class="input-row-simple width-50">
+                                <button mat-flat-button class="action-button width-45 height-75" color="primary"
+                                    (click)="onStartMailClick(true)">Mail avviso</button>
+                                <div class="width-10"></div>
+                                <button mat-flat-button class="action-button width-45 height-75" color="primary"
+                                    (click)="onStartMailClick(false)">Mail ritiro</button>
+                            </div>
+                        </div>
+                        <app-timeslot-table-editor [(Timeslots)]="currentResourceType.availabilityTimeslots">
+                        </app-timeslot-table-editor>
+                    </ng-container>
+                    <ng-container *ngIf="currentResourceType.type == RESOURCE_TYPE.ROOM">
+                        <div class="room-parameters-container">
+                            <div class="list-container width-30">
+                                <div class="line">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="area" [(ngModel)]="newArea">
+                                    </mat-form-field>
+                                    <button mat-icon-button color="primary" class="action-button" color="primary" (click)="onAddListItem(LIST_ITEM.liAreas)" [disabled]="(newArea == null) || (newArea.length == 0)" cdkFocusInitial>
+                                        <i class="material-icons" [ngStyle]="{'color': 'white'}">add</i>
+                                    </button>
+                                </div>
+                                <mat-list class="card-list item-list" *ngIf="currentResourceType.customData && currentResourceType.customData.areas && (currentResourceType.customData.areas.length > 0)">
+                                    <mat-list-item *ngFor="let area of currentResourceType.customData.areas">
+                                        <div class="card-list-item">
+                                            <div class="card-list-item-text">{{ area }}</div>
+                                            <div class="card-list-item-action">
+                                                <button mat-icon-button matTooltip="Delete" (click)="onDeleteListItem(LIST_ITEM.liAreas, area)">
+                                                    <i class="material-icons" style="color: red">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-list-item>
+                                </mat-list>
+                                <div class="no-item-label" *ngIf="!currentResourceType.customData || !currentResourceType.customData.areas || (currentResourceType.customData.areas.length == 0)">No areas</div>                    
+                            </div>
+                            <div class="list-container width-30">
+                                <div class="line">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="facility" [(ngModel)]="newFacility">
+                                    </mat-form-field>
+                                    <button mat-icon-button color="primary" class="action-button" color="primary" (click)="onAddListItem(LIST_ITEM.liFacility)" [disabled]="(newFacility == null) || (newFacility.length == 0)" cdkFocusInitial>
+                                        <i class="material-icons" [ngStyle]="{'color': 'white'}">add</i>
+                                    </button>
+                                </div>
+                                <mat-list class="card-list" *ngIf="currentResourceType.customData && currentResourceType.customData.facilities && (currentResourceType.customData.facilities.length > 0)">
+                                    <mat-list-item *ngFor="let facility of currentResourceType.customData.facilities">
+                                        <div class="card-list-item">
+                                            <div class="card-list-item-text">{{ facility }}</div>
+                                            <div class="card-list-item-action">
+                                                <button mat-icon-button matTooltip="Delete" (click)="onDeleteListItem(LIST_ITEM.liFacility, facility)">
+                                                    <i class="material-icons" style="color: red">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-list-item>
+                                </mat-list>
+                                <div class="no-item-label" *ngIf="!currentResourceType.customData || !currentResourceType.customData.facilities || (currentResourceType.customData.facilities.length == 0)">No facilities</div>                    
+                            </div>
+                            <div class="list-container width-30">
+                                <div class="line">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="layout" [(ngModel)]="newLayout">
+                                    </mat-form-field>
+                                    <button mat-icon-button color="primary" class="action-button" color="primary" (click)="onAddListItem(LIST_ITEM.liLayout)" [disabled]="(newLayout == null) || (newLayout.length == 0)" cdkFocusInitial>
+                                        <i class="material-icons" [ngStyle]="{'color': 'white'}">add</i>
+                                    </button>
+                                </div>
+                                <mat-list class="card-list" *ngIf="currentResourceType.customData && currentResourceType.customData.layouts && (currentResourceType.customData.layouts.length > 0)">
+                                    <mat-list-item *ngFor="let layout of currentResourceType.customData.layouts">
+                                        <div class="card-list-item">
+                                            <div class="card-list-item-text">{{ layout }}</div>
+                                            <div class="card-list-item-action">
+                                                <button mat-icon-button matTooltip="Delete" (click)="onDeleteListItem(LIST_ITEM.liLayout, layout)">
+                                                    <i class="material-icons" style="color: red">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </mat-list-item>
+                                </mat-list>
+                                <div class="no-item-label" *ngIf="!currentResourceType.customData || !currentResourceType.customData.layouts || (currentResourceType.customData.layouts.length == 0)">No facilities</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="showResourceList && (currentResourceType.type == RESOURCE_TYPE.PARKING)">
+            <app-resource-list-management class="width-100" [currentResourceType]="currentResourceType"
+                (onBack)="onResourceBack()">
+            </app-resource-list-management>
+        </div>
+
+        <div *ngIf="showResourceList && (currentResourceType.type == RESOURCE_TYPE.ECHARGER)">
+            <app-timeslot-resource-list-management class="width-100" [currentResourceType]="currentResourceType"
+                (onBack)="onResourceBack()"></app-timeslot-resource-list-management>
+        </div>
+
+        <div *ngIf="showResourceList && (currentResourceType.type == RESOURCE_TYPE.ROOM)">
+            <app-room-resource-list-management class="width-100" [currentResourceType]="currentResourceType"
+                (onBack)="onResourceBack()"></app-room-resource-list-management>
+        </div>
+
+        <div *ngIf="showResourceList && (currentResourceType.type == RESOURCE_TYPE.DESK)">
+            <app-room-resource-list-management class="width-100" [currentResourceType]="currentResourceType"
+                (onBack)="onResourceBack()"></app-room-resource-list-management>
+        </div>
+    </mat-tab>
+</mat-tab-group>

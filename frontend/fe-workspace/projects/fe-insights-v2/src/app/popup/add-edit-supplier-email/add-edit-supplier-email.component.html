@@ -1,0 +1,30 @@
+<section class="popups">
+  <form (ngSubmit)="onSubmit()"  [formGroup]="supplierEmailForm">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading | translate}}</h4>
+            <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div class="form-field" >
+                <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{data.placeholder | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="supplierEmail" matInput  name="supplierEmail" >
+                    <mat-error *ngIf="supplierEmailForm.controls.supplierEmail.errors?.required" >
+                        {{data.validation | translate}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onClick(false)" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true)"  class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+  </form>
+</section>

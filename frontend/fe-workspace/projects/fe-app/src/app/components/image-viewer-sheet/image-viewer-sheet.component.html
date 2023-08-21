@@ -1,0 +1,15 @@
+<button *ngIf="mapImageURL" mat-icon-button class="save-button" (click)="onDownloadMapClick()">
+    <i class="material-icons">file_download</i>
+</button>
+
+<div class="map-container">
+    <div class="image-container">
+        <div *ngIf="mapImageURL">
+            <img class="map-image" [src]="mapImageURL">
+        </div>
+        <div *ngIf="!imageId" class="no-image-text">
+            Nessuna immagine caricata
+        </div>
+        <mat-spinner *ngIf="!mapImageURL" class="loader"></mat-spinner>
+    </div>
+</div>

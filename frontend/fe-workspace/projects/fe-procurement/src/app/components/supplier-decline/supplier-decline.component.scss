@@ -1,0 +1,48 @@
+@import '../../../theme-color.scss';
+$primary_font: 'Proxima-Nova';
+.signup-submit{
+    min-height: 100vh;
+     header{
+        background-color: $theme_color;
+        img{margin: 20px;cursor: pointer;}
+        .title{
+            padding: 70px 0px;
+            h2{
+                font-size: 53px;
+                color: $white;
+                font-family: $primary_font;
+                font-weight: 100;
+            }
+        }
+     }
+     .main-content {
+        min-height: calc(100vh - 310px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        p {
+            max-width: 1084px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: 600;
+            line-height: 30px;
+            color: #262121;
+            font-weight: 500;
+            font-family: $primary_font;
+        }
+        h5{
+            font-size: 22px;
+            font-weight: 600;
+            color: #2B2B2B;
+            margin-top: 20px;
+            span{
+                color: #28C76F;
+                cursor: pointer;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+ }

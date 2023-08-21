@@ -1,0 +1,27 @@
+<div class="table-content-box max-height-scroll">
+    <table class="table custom-table">
+        <tr class="header-row">
+            <th class="header table-head">Codice Articolo</th>
+            <th class="header table-head">Descrizione</th>
+            <th class="header table-head">Destinazione</th>
+            <th class="header table-head">Quantità da evadere</th>
+            <th class="header table-head">Tempo Lavorazione</th>
+            <th class="header table-head"></th>
+        </tr>
+        <tr class="table-row" *ngFor="let element of workPlanItems">
+            <td class="cell">{{ element.code ? element.code : '-' }}</td>
+            <td class="cell">{{ element.description ? element.description : '-' }}</td>
+            <td class="cell">{{ element.destination ? element.destination : '-' }}</td>
+            <td class="cell">{{ element.qty_prod ? element.qty_prod : '-' }}</td>
+            <td class="cell">{{ element.work_time ? element.work_time : '-' }}</td>
+            <td class="cell">
+                <div class="actions-btn">
+                    <button (click)="onWorkReportStart(element)" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                        Start
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="no-record-found mt-3 mb-2" *ngIf="workPlanItems?.length == 0"><strong>{{'TABLE.No_record_found' | translate}}</strong></div>
+</div>

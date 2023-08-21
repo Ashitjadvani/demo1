@@ -1,0 +1,64 @@
+<h2 mat-dialog-title><b>{{'INSIGHTS_PEOPLE_PAGE.Justifications Settings'|translate}}</b></h2>
+
+ 
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-form-field class="width-100">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.SendEmail' | translate}}" [(ngModel)]="justificationsSettings.sendMailForEveryRequest">
+                <mat-option [value]='true'>
+                    {{'INSIGHTS_PEOPLE_PAGE.ForEveryRequest' | translate}}
+                </mat-option>
+                <mat-option [value]='false'>
+                    {{'INSIGHTS_PEOPLE_PAGE.OnceADay' | translate}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div *ngIf="!justificationsSettings.sendMailForEveryRequest">
+            <mat-form-field class="width-100">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.SelectTime' | translate}}" [ngModel]="getJustificationMailTime()">
+                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime1.open()">
+                    <mat-icon>schedule</mat-icon>
+                </button>
+            </mat-form-field>
+            <ngx-material-timepicker #pickerStartTime1 [format]="24" (timeSet)="setJustificationMailTime($event)">
+            </ngx-material-timepicker>
+        </div>
+
+
+        <mat-form-field>
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Object'|translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.OBJECT'|translate}}" appearance="legacy"
+                [(ngModel)]="justificationsSettings.mailObject">
+        </mat-form-field>
+
+        <mat-checkbox [(ngModel)]="justificationsSettings.enableAutoMergeRequests">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Enable Auto Merge'|translate}}</div>
+        </mat-checkbox>
+
+        <!--mat-form-field>
+
+        </mat-form-field-->
+
+        <!--mat-form-field class="mail-start-container">
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Mail Start'|translate}}</mat-label>
+            <textarea matInput matTextareaAutosize placeholder="{{'INSIGHTS_PEOPLE_PAGE.Mail Start' | translate}}" appearance="legacy" maxRows="5" matAutosizeMaxRows="5" matAutosizeMinRows="5"
+                [(ngModel)]="justificationsSettings.mailStart"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="mail-end-container">
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Mail End'|translate}}</mat-label>
+            <textarea matInput matTextareaAutosize placeholder="{{'INSIGHTS_PEOPLE_PAGE.Mail End' | translate}}" appearance="legacy" maxRows="5" matAutosizeMaxRows="5" matAutosizeMinRows="5"
+                [(ngModel)]="justificationsSettings.mailEnd"></textarea>
+        </mat-form-field-->
+
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+        <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+            (click)="onSave()">{{'GENERAL.SAVE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

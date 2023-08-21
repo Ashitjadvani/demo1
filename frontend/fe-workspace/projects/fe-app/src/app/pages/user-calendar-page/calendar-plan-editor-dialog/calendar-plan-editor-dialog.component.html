@@ -1,0 +1,72 @@
+<h2 mat-dialog-title><b>{{ calendarPlanEditorDialogData.date | date: 'dd/MM/yyyy'}}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <div class="calendar-param-container">
+            <div class="control-row">
+                <mat-form-field class="control-item">
+                    <mat-select placeholder="{{'APP_PEOPLE_PAGE.SITE' | translate}}"
+                        [(ngModel)]="calendarPlanEditorDialogData.eventSite" [disabled]="calendarPlanEditorDialogData.modifyOnlyEndTime">
+                        <ng-container *ngFor="let site of calendarPlanEditorDialogData.sites" >
+                            <mat-option *ngIf="site.globalStatus=='Free'||site.globalStatus=='RestrictedMode'" [value]="site">
+                                {{ site.name }}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <span class="h-spacer"></span>
+                <mat-form-field class="control-item">
+                    <mat-select placeholder="{{'APP_PEOPLE_PAGE.PLAN' | translate}}"
+                        [(ngModel)]="calendarPlanEditorDialogData.eventActivityTypeData" [disabled]="calendarPlanEditorDialogData.modifyOnlyEndTime">
+                        <mat-option *ngFor="let at of getActivityTypeDatas()" [value]="at">
+                            {{ at.activityLabel }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="control-row">
+                <div class="control-item">
+                    <mat-form-field class="width-100">
+                        <input matInput placeholder="{{'APP_PEOPLE_PAGE.START' | translate}}"
+                            [(ngModel)]="newEventTime[0]" [disabled]="calendarPlanEditorDialogData.modifyOnlyEndTime">
+                        <button mat-button matSuffix mat-icon-button (click)="pickerStartTime.open()">
+                            <mat-icon>schedule</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <ngx-material-timepicker #pickerStartTime [format]="24" (timeSet)="setEventTime(0, $event)">
+                    </ngx-material-timepicker>
+                </div>
+                <span class="h-spacer"></span>
+                <div class="control-item">
+                    <mat-form-field class="width-100">
+                        <input matInput placeholder="{{'APP_PEOPLE_PAGE.END' | translate}}"
+                            [(ngModel)]="newEventTime[1]">
+                        <button mat-button matSuffix mat-icon-button (click)="pickerEndTime.open()">
+                            <mat-icon>schedule</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <ngx-material-timepicker #pickerEndTime [format]="24" (timeSet)="setEventTime(1, $event)">
+                    </ngx-material-timepicker>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!calendarPlanEditorDialogData.isModify && !calendarPlanEditorDialogData.isOvertime" class="calendar-param-container">
+            <div class="label-row">
+                <span class="label-repeat">{{'APP_PEOPLE_PAGE.REPEAT FOR' | translate}}
+                </span>
+                <mat-form-field class="input-repeat width-15">
+                    <input matInput type="number" [(ngModel)]="calendarPlanEditorDialogResult.dayRepeatCount">
+                </mat-form-field>
+                <span class="label-repeat">{{'APP_PEOPLE_PAGE.DAYS' | translate}}
+                </span>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button class="action-button" color="primary"
+        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()" cdkFocusInitial
+        (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+</mat-dialog-actions>

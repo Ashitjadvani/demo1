@@ -1,0 +1,42 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.EVENT_MANAGEMENT'" [routePath2]="'/event-management/event-external-venues'" [title2]="'INSIGHTS_MENU.External_venues'" [title3]="title" [type]="'EVENT_MANAGEMENT.Add_Edit_External_Venues'"></app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{title | translate}} {{'EVENT_MANAGEMENT.Add_Edit_External_Venues' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addEventScopesForm" [formGroup]="addEventExternalVenuesForm" novalidate #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.External_Venues_Name' | translate}}</mat-label>
+                    <input  formControlName="name" type="text"  matInput  name="name" (keydown)="space($event)" >
+                    <mat-error *ngIf="addEventExternalVenuesForm.controls.name.errors?.required" >
+                      {{'EVENT_MANAGEMENT.EnterExternalVenueName'| translate}}
+                    </mat-error>
+                    <mat-error *ngIf="addEventExternalVenuesForm.controls.name.errors?.nameValidator">{{'Special character not allowed' | translate}}</mat-error>
+
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit" (click)="onEditConfirmClick()">{{'GENERAL.Save' | translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="/event-management/event-external-venues" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

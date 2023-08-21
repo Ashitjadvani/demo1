@@ -1,0 +1,101 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content">
+        <div class="tab-actions">
+            <div class="action">
+                <button mat-icon-button (click)="onTabSelected(0)">
+                    <i *ngIf="tabIndex==0" class="material-icons blue-color">hourglass_bottom</i>
+                    <i *ngIf="tabIndex!=0" class="material-icons">hourglass_bottom</i>
+                </button>
+            </div>
+            <div class="action">
+                <button mat-icon-button (click)="onTabSelected(1)">
+                    <i *ngIf="tabIndex==1" class="material-icons blue-color">thumb_up_off_alt</i>
+                    <i *ngIf="tabIndex!=1" class="material-icons">thumb_up_off_alt</i>
+                </button>
+            </div>
+            <div class="action">
+                <button mat-icon-button (click)="onTabSelected(2)">
+                    <i *ngIf="tabIndex==2" class="material-icons blue-color">thumb_down_off_alt</i>
+                    <i *ngIf="tabIndex!=2" class="material-icons">thumb_down_off_alt</i>
+                </button>
+            </div>
+            <div class="action">
+                <button mat-icon-button (click)="onToggleFilters()">
+                    <i *ngIf="tabFiltersVisible" class="material-icons transparent-blue-color">filter_list</i>
+                    <i *ngIf="!tabFiltersVisible" class="material-icons transparent-black-color">filter_list</i>
+                </button>
+            </div>
+        </div>
+        <div>
+            <mat-divider *ngIf="tabFiltersVisible"></mat-divider>
+            <div *ngIf="tabFiltersVisible" class="tab-filters">
+                <mat-chip-list>
+                    <mat-chip [removable]="true" (removed)="onRemoveFilter('data')" *ngIf="filterData.dataSelected">{{getOnlyData(filterData.dataStart)}} - {{getOnlyData(filterData.dataEnd)}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <mat-chip [removable]="true" (removed)="onRemoveFilter('justificative')" *ngIf="filterData.justificativeSelected">{{filterData.justificative}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                    <mat-chip [removable]="true" (removed)="onRemoveFilter('user')" *ngIf="filterData.userSelected">{{filterData.user.name}} {{filterData.user.surname}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </div>
+        <mat-tab-group class="group-tab">
+            <mat-tab>
+                <div class="tile-container">
+                    <div class="no-req" *ngIf="allRequestPendingListEmpty">{{'EMPLOYEE PAGE.NO PENDING REQ'|translate}}</div>
+                    <div class="request-tile-container" *ngFor="let request of requestResPendingList">
+                        <app-request-tile [request]="request" [isResponsable]='true' [isAccountable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestAccPendingList">
+                        <app-request-tile [request]="request" [isAccountable]='true' [isResponsable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestConsPendingList">
+                        <app-request-tile [request]="request" [isConsulted]='true' [isResponsable]='false' [isAccountable]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestInfoPendingList">
+                        <app-request-tile [request]="request" [isInformed]='true' [isResponsable]='false' [isConsulted]='false' [isAccountable]='false'></app-request-tile>   
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <div class="tile-container">
+                    <div class="no-req" *ngIf="allRequestAcceptedListEmpty">{{'EMPLOYEE PAGE.NO ACCEPTED REQ'|translate}}</div>
+                    <div class="request-tile-container" *ngFor="let request of requestResAcceptedList">
+                        <app-request-tile [request]="request" [isResponsable]='true' [isAccountable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestAccAcceptedList">
+                        <app-request-tile [request]="request" [isAccountable]='true' [isResponsable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestConsAcceptedList">
+                        <app-request-tile [request]="request" [isConsulted]='true' [isResponsable]='false' [isAccountable]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestInfoAcceptedList">
+                        <app-request-tile [request]="request" [isInformed]='true' [isResponsable]='false' [isConsulted]='false' [isAccountable]='false'></app-request-tile>   
+                    </div>
+                </div>
+            </mat-tab>   
+            <mat-tab>
+                <div class="tile-container">
+                    <div class="no-req" *ngIf="allRequestRejectedListEmpty">{{'EMPLOYEE PAGE.NO REJECTED REQ'|translate}}</div>
+                    <div class="request-tile-container" *ngFor="let request of requestResRejectedList">
+                        <app-request-tile [request]="request" [isResponsable]='true' [isAccountable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestAccRejectedList">
+                        <app-request-tile [request]="request" [isAccountable]='true' [isResponsable]='false' [isConsulted]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestConsRejectedList">
+                        <app-request-tile [request]="request" [isConsulted]='true' [isResponsable]='false' [isAccountable]='false' [isInformed]='false'></app-request-tile>   
+                    </div>
+                    <div class="request-tile-container" *ngFor="let request of requestInfoRejectedList">
+                        <app-request-tile [request]="request" [isInformed]='true' [isResponsable]='false' [isConsulted]='false' [isAccountable]='false'></app-request-tile>   
+                    </div>
+                </div>
+            </mat-tab> 
+        </mat-tab-group> 
+    </div>
+    <app-main-tab-bar class="main-tab-bar" (QrScanEvent)="onQrScanEvent()" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

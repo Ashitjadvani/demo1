@@ -1,0 +1,34 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'Turni'" [title3]="'Turni'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600">
+                        Turni
+                        <!--
+                        <span class="refresh-btn" (click)="onRefreshTable()" matTooltip="Refresh">
+                            <mat-icon>autorenew</mat-icon>
+                        </span>
+                        -->
+                    </h3>
+                </div>
+                <div class="table-wrapper resource-color-table">
+                    <table #table mat-table matSort [dataSource]="listOfShifts | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" style="width: 100%">
+                        <mat-tab-group>                        
+
+                        </mat-tab-group>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+                <!--
+                <app-pagination [noRecordFound]="noRecordFound" [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="totalItems"></app-pagination>
+                -->
+            </div>
+        </div>
+    </div>
+</section>

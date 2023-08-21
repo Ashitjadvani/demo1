@@ -1,0 +1,175 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+          - <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+          <li class="breadcrumb-item">{{'INSIGHTS_MENU.MANAGE_INFORMATION' | translate}}</li>
+          <li routerLink="/manage-information/informations" class="breadcrumb-item">{{'INSIGHTS_MENU.INFORMATION' | translate}}</li>
+          <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'Information' | translate}}</span> </li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'INSIGHTS_MENU.MANAGE_INFORMATION'" [title2]="'INSIGHTS_MENU.INFORMATION'" [routePath2]="'/manage-information/informations'"
+      [type]="'Information'" [title3]="title ">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{title | translate}} {{'Information' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addCategoryForm" [formGroup]= "addCategoryForm"  novalidate
+                (ngSubmit)="onSubmit()"
+                #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Information Title (English)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input [(ngModel)]="realtimeTitle" type="text" formControlName="informationEnglish" matInput  name="informationEnglish" style="text-transform: capitalize;">
+                    <mat-error *ngIf="addCategoryForm.controls.informationEnglish.errors?.required" >
+                      {{'Enter information title (English)' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Information Title (Italian)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="informationItalian" matInput name="informationItalian" style="text-transform: capitalize;">
+                    <mat-error *ngIf="addCategoryForm.controls.informationItalian.errors?.required" >
+                      {{'Enter information title (Italian)' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-12 col-xxl-12">
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Category' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <!-- <input  type="text" formControlName="categoryEnglish" matInput  name="categoryEnglish" > -->
+                    <mat-select formControlName="categoryEnglish">
+                      <mat-option>{{'Select Typology' | translate}}</mat-option>
+                      <mat-option *ngFor="let e of categoriesTableData" value="{{e.id}}" style="text-transform: capitalize;">
+                         <span *ngIf="language !== 'it'">{{e.titleLanguages[0].title}}</span>
+                         <span *ngIf="language === 'it'">{{e.titleLanguages[1].title}}</span>
+                      </mat-option>
+                  </mat-select>
+                    <mat-error *ngIf="addCategoryForm.controls.categoryEnglish.errors?.required" >
+                      {{'Enter category (English)' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field error-message-custom">
+                    <div class="custom-switch">
+                      <mat-checkbox formControlName="isPublic">{{'Public Document' | translate}}</mat-checkbox>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-xl-12">
+                <div class="select-icon-wrapper">
+                    <h4>{{'Select Icon' | translate}}</h4>
+                    <div class="icons-upload">
+                        <ul class="icons-list">
+                            <li class="icons" *ngIf="iconUploaded" [ngClass]="selectedImage=='uploaded' ? 'info-circle-sel': 'info-circle'">
+                                <div class="info-icon" [innerHTML]="safeSvgUploaded" (click)="onUploadedClick()"></div>
+                            </li>
+                            <li class="icons" *ngFor="let image of iconsList" [ngClass]="image==selectedImageName ? 'info-circle-sel': 'info-circle'" >
+                                <img src="./assets/images/{{image}}" alt="Icons" (click)="onImageClick(image)">
+                            </li>
+                        </ul>
+                        <button mat-fab type="button" class="upload-btn" color="primary" (click)="onIconAttachment()">
+                            <span class="material-icons">add</span>
+                        </button>
+                        <input style="visibility: hidden;opacity: 0;" type="file" accept=".svg" id="file" #icon (change)="onFileChanged(icon); onUploadIcon($event)" id="emp-input-profile"/>
+                        <span class="red-label" *ngIf="!documentInput && submitted">{{'Only svg file is allowed' | translate}}</span>
+                    </div>
+                    <div class="candidates-info-box">
+                        <div class="info-wrapper" [ngStyle]="{ 'backgroundColor': currentInfo.tileBackgroundColor }">
+                            <div class="selected-icon" [ngStyle]="{'color': iconColor}" [innerHTML]="safeSvg"></div>
+                            <span [ngStyle]="{'color': currentInfo.textColor}" style="text-transform: capitalize;">{{realtimeTitle ? realtimeTitle : 'Candidates Information'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              <div class="col-xl-12"></div>
+
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field color-picker">
+                <mat-form-field appearance="outline" class="element-full-width" >
+                    <mat-label>{{'Change Icon Color' | translate}}</mat-label>
+                    <input formControlName="iconColor" matInput type="color" name="iconColor" [(ngModel)]="iconColor" (change)="onIconColorChange($event)">
+                        Hex : {{iconColor}}
+                    <mat-error *ngIf="addCategoryForm.controls.iconColor.errors?.required">
+                        {{'EDIT COMPANY.Please choose color' | translate}}
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field color-picker">
+                  <mat-form-field appearance="outline" class="element-full-width" >
+                    <mat-label>{{'Change Background Color' | translate}}</mat-label>
+                    <input formControlName="backgroundColor" matInput type="color" name="backgroundColor" [(ngModel)]="currentInfo.tileBackgroundColor" >
+                    Hex : {{currentInfo.tileBackgroundColor}}
+                    <mat-error *ngIf="addCategoryForm.controls.backgroundColor.errors?.required">
+                      {{'EDIT COMPANY.Please choose color' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field color-picker">
+                <mat-form-field appearance="outline" class="element-full-width" >
+                    <mat-label>{{'Change Text Color' | translate}}</mat-label>
+                    <input formControlName="textColor" matInput type="color" name="textColor" [(ngModel)]="currentInfo.textColor" >
+                        Hex : {{currentInfo.textColor}}
+                    <mat-error *ngIf="addCategoryForm.controls.textColor.errors?.required">
+                        {{'EDIT COMPANY.Please choose color' | translate}}
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-12 col-xxl-12">
+                <label>{{'Upload File' | translate}}</label>
+                <div class="generate-button">
+                  <button class="btn-style red-btn file-upload-button" type="button">
+                    <span class="material-icons">upload</span>
+                    {{'EDIT COMPANY.Drag and Drop here' | translate}} <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                    <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                    <input type="file" id="file2" accept=".jpeg,.jpg,.png,.pdf,.pjp,.pjpeg,.jfif,.mp3,.m4v,.mp4" #documentInput (change)="onFileChanged2(documentInput)" id="emp-input-profile2"/>
+                  </button>
+                  <!-- <span class="file-info">{{fileName}}
+                    <span class="material-icons close-icon" (click)="resetCoverValue()">{{ fileName ? "close" : null }}
+                    </span>
+                  </span> -->
+                  <span class="file-info">{{ this.documentName2 }}
+                    <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName2 ? "close" : null }}
+                  </span>
+                  <span *ngIf="!documentInput2 && submitted" class="red-label">{{'Please Select File' | translate}}
+                    </span>
+                </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="/manage-information/informations" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

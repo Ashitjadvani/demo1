@@ -1,0 +1,89 @@
+
+  <mat-tab-group #tabgroup class="group-tab custom-group-tab" (selectedTabChange)="onTabChanged($event);">
+    <mat-tab [label]="'RECRUITINGTXT.CMS' | translate">
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 width-100">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container> -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;text-align: center;"> Action </th>
+            <td mat-cell *matCellDef="let element" style="width: 100px;text-align: center;">
+              <button (click)="onClickCMS(element)" mat-button mat-tool matTooltip="Edit" ><img src="./assets/images/account-edit.svg"/></button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="cmsTitle | translate" *ngIf="showPrivacyDetail">
+      <div class="general-container">
+        <form id="frmDetail" [formGroup]="frmDetail" class="width-100" (ngSubmit)="onPrivacySubmit()">
+          <mat-card class="detail-card card" style="margin-bottom: 50px;height: initial;">
+            <mat-card-header class="card-header">
+              {{cmsTitle | translate}} - ENGLISH
+            </mat-card-header>
+              <mat-card-content class="card-body">
+                <div class="form-row">
+                  <div class="form-row">
+                    <ckeditor [editor]="Editor" data="" formControlName="descriptionEN"></ckeditor>
+                  </div>
+                </div>
+              </mat-card-content>
+          </mat-card>
+
+          <mat-card class="detail-card card">
+            <mat-card-header class="card-header">
+              {{cmsTitle | translate}} - ITALIAN
+            </mat-card-header>
+              <mat-card-content class="card-body">
+                <div class="form-row">
+                  <div class="form-row">
+                    <ckeditor [editor]="Editor" data="" formControlName="descriptionIT"></ckeditor>
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" type="submit" >{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+          </mat-card>
+        </form>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'Upload Default Image'">
+      <div class="table-wrapper">
+        <input #Image type="file" (change)="handleFileInput($event.target.files)"/> <br>
+        <div class="" style="min-height:200px;">
+          <img *ngIf="imageUrl" [src]="imageUrl" class="image" style="max-width: 200px;">
+        </div>
+        <button mat-flat-button class="action-button" color="primary" (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+        <span class="width-5"></span>
+        <button mat-flat-button class="action-button" (click)="saveJobDefaultImage()" color="primary" type="submit" >{{'GENERAL.SAVE'|translate}}</button>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'CMSTXT.CMS_CANDIDATE_TXT' | translate}}">
+      <div class="table-wrapper">
+        <h3 style="font-weight: 500;">{{'CMSTXT.CMS_CANDIDATE_TITLE_TXT' | translate}}</h3>
+        <mat-form-field class="width-25">
+          <mat-select placeholder="{{'CMSTXT.CMS_SELECT_CANDIDATE_TXT' | translate}}">
+            <mat-option *ngFor="let activeTime of candidateActivePeriod" value="{{activeTime.name}}">
+              {{activeTime.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div style="margin-top: 40px;">
+          <button mat-flat-button class="action-button" color="primary">{{'GENERAL.CANCEL'|translate}}</button>
+          <span class="width-5"></span>
+          <button mat-flat-button class="action-button" color="primary">{{'GENERAL.SAVE'|translate}}</button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>

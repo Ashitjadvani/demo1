@@ -1,0 +1,31 @@
+<!--======================== Main Header Title ==================== -->
+<div class="main-title">
+    <h1>{{'MAIN-TITLE.MyAccount' | translate}}</h1>
+    <!-- <p>{{'MAIN-TITLE.OfferRequest' | translate}}</p> -->
+</div>
+<!--======================= Main Section Body ==================== -->
+<section class="rfqs-section ">
+    <div class="container">
+        <div class="box-style content-wrapper">
+            <div class="dashboard-content">
+                <div class="account-wrapper">
+                    <div class="account-list">
+                        <div class="box-style">
+                            <ul>
+                                <!--<li routerLink="my-account/my-quotes" routerLinkActive="active">{{'MYACCOUNT.MyQuotes' | translate}}</li>-->
+                                <li routerLink="my-account/edit-profile" routerLinkActive="active"> {{'MYACCOUNT.EditProfile' | translate}}</li>
+                                <li routerLink="my-account/change-password" routerLinkActive="active">{{'MYACCOUNT.ChangePassword' | translate}}</li>
+                                <li routerLink="my-account/activity-log" routerLinkActive="active">{{'MYACCOUNT.ActivityLog' | translate}}</li>
+                                <li routerLink="my-account/delete-account" routerLinkActive="active"> {{'MYACCOUNT.DeleteAccount' | translate}}</li>
+                                <li (click)="logout()" routerLink="" >{{'GENERAL.Logout' | translate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-content-box box-style">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

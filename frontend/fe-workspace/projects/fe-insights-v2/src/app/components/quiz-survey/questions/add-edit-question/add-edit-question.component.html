@@ -1,0 +1,230 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="/quiz-survey/questions" class="breadcrumb-item">{{'Questions' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'Quiz/Survey.Questions' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Questions'" [routePath]="'/quiz-survey/questions'" [title3]="title"
+            [type]="'Quiz/Survey.Questions'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'Quiz/Survey.Questions' | translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addQuestionForm" [formGroup]= "addQuestionForm"  novalidate
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Questions' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="question" matInput  name="question" (keydown)="space($event)">
+                                        <mat-error *ngIf="addQuestionForm.controls.question.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourquestion' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Code' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="code" matInput  name="code"  autocomplete="off" (keydown)="space($event)">
+                                        <mat-error *ngIf="addQuestionForm.controls.code.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourcode' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xxl-12"></div>
+                          <div class="col-xl-12 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                              <div class="custom-switch">
+                                <mat-checkbox (change)="questionTimerChange($event)" formControlName="question_timer_status" #timeShow>{{'Time Required' | translate}}</mat-checkbox>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-xxl-12" ></div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field" *ngIf="this.addQuestionForm.get('question_timer_status').value">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Minutes' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="minutes">
+                                            <mat-option>{{'Select Minutes' | translate}}</mat-option>
+                                          <mat-option *ngFor="let minute of minutesSelect" [value]="minute">
+                                            {{minute}}
+                                          </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addQuestionForm.controls.minutes.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselectminute' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field" *ngIf="this.addQuestionForm.get('question_timer_status').value">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Seconds' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="seconds">
+                                            <mat-option>{{'Select Seconds' | translate}}</mat-option>
+                                          <mat-option *ngFor="let seconds of secondsSelect" [value]="seconds">
+                                            {{seconds}}
+                                          </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addQuestionForm.controls.seconds.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourseconds' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4"></div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Subtitle' | translate}}</mat-label>
+                                        <input  type="text" formControlName="subtitle" matInput  name="subtitle" >
+                                       <!-- <mat-error *ngIf="addQuestionForm.controls.subtitle.errors?.required" >
+                                          {{'Quiz/Survey.Enteryoursubtitle' | translate}}
+                                        </mat-error>-->
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Category' | translate}}</mat-label>
+                                        <input  type="text" formControlName="category" matInput  name="category" >
+                                      <!--  <mat-error *ngIf="addQuestionForm.controls.category.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourcategory' | translate}}
+                                        </mat-error>-->
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox formControlName="mandatory">{{'Quiz/Survey.Mandatory' | translate}}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Privacy' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="privacy">
+                                            <mat-option>{{'Select Privacy' | translate}}</mat-option>
+                                            <mat-option *ngFor="let privacy of privacyList" value="{{privacy.value}}">{{privacy.viewValue}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addQuestionForm.controls.privacy.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselectprivacy' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Type' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="type" #options>
+                                            <mat-option>{{'Select Type' | translate}}</mat-option>
+                                          <mat-option value="singleRadio" >{{'SingleRadio' | translate}}</mat-option>
+                                          <mat-option value="singleCheck" >{{'SingleCheck' | translate}}</mat-option>
+                                          <mat-option value="FreeText" >{{'FreeText' | translate}}</mat-option>
+<!--                                            <mat-option *ngFor="let questionType of questionTypeList" value="{{questionType.value}}">{{questionType.viewValue}}</mat-option>-->
+                                        </mat-select>
+                                        <mat-error *ngIf="addQuestionForm.controls.type.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselecttype' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div  *ngIf="this.option1 == 'SingleRadio' || this.option2 == 'SingleCheck' "> -->
+                        <!--<div  *ngIf="options.value === 'singleRadio' || options.value === 'singleCheck' ">-->
+                        <div>
+                          <button class="btn-style" type="button" style="background-color: #38bf1d; color: #f7f7f7; font-weight: bold" (click)="optionTables()">
+                            <span class="material-icons">add </span>{{'Add Option' | translate}}
+                          </button>
+                        </div>
+                        <!--<div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save'| translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="../" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                        </div>
+                    </form>-->
+                      <!--<div class="col-xl-12" *ngIf="this.optionTable == true">-->
+                      <div class="col-xl-12">
+                        <div class="edit-application-history mt-30">
+                          <div class="table-content">
+                            <h3>{{'Quiz/Survey.Option' | translate}}</h3>
+                            <div class="table-wrapper resource-color-table" >
+                              <table mat-table matSort #table  [dataSource]="addOptionList" style="width: 100%" cdkDropList (cdkDropListDropped)="drop($event)" formArrayName="answers">
+                                <ng-container matColumnDef="drag">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 70px;"></th>
+                                    <td mat-cell *matCellDef="let element;  let i = index" cdkDragHandle >
+                                      <mat-icon style="margin-right: 10px; cursor: grabbing;">drag_indicator</mat-icon>
+                                    </td>
+                                  </ng-container>
+                                  <ng-container matColumnDef="order">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">{{'Quiz/Survey.Order' | translate}}</th>
+                                    <td mat-cell *matCellDef="let element;  let i = index "  >
+                                      <!--<input  type="hidden" formControlName="order" matInput  name="order">-->
+                                      {{i+1}}
+                                    </td>
+                                  </ng-container>
+                                  <ng-container matColumnDef="answer">
+                                    <th mat-header-cell *matHeaderCellDef>{{'Quiz/Survey.Answer' | translate}}</th>
+                                    <td mat-cell *matCellDef="let element;let index=index"  [formGroupName]="index">
+                                      <input  type="text" formControlName="value" matInput value="{{value}}" (keyup)="changeTableValue($event, index)"  name="value" placeholder="{{'GENERAL.TypeHere' | translate}}">
+                                      <!--{{ element.answer}}-->
+                                    </td>
+                                  </ng-container>
+                                  <ng-container matColumnDef="sideEffect">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center;width: 130px">{{'Quiz/Survey.SideEffect' | translate}}</th>
+                                    <td mat-cell *matCellDef="let element" >
+                                      <div class="action-icons d-flex switch">
+                                        <img src="assets/images/sideEffect.svg" (click)="addEditSideEffect(element)" class="" alt="" >
+                                      </div>
+                                    </td>
+                                  </ng-container>
+                                  <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">{{'TABLE.Action' | translate}}</th>
+                                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                      <div class="action-icons d-flex switch">
+                                        <!--<img src="assets/images/up-icons.svg"  class="" alt="">
+                                        <img src="assets/images/down-icon.svg"  alt="">-->
+                                        <img src="assets/images/delete-disable.svg"  alt=""(click)="removeData(i)">
+                                      </div>
+                                    </td>
+                                  </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="optionDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let element; columns: optionDisplayedColumns" cdkDrag ></tr>
+                                <div *cdkDragPlaceholder></div>
+                              </table>
+                            </div>
+                            <div *ngIf="addOptionList.length == 0" class="no-record-found mt-30"> {{'TABLE.No_record_found' | translate}}</div>
+                            <!--                        <div  *ngIf="noRecordFound"class="paginate-footer"></div>-->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-footer">
+                        <button class="btn-style theme-btn" type="submit" (click)="addQuestion()">{{'GENERAL.Save'| translate}}</button>
+                        <button class="btn-style red-line-btn" routerLink="/quiz-survey/questions" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                      </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,66 @@
+@import "../../../../styles";
+.general-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 40px;
+  ul{
+    &.cdk-drop-list {
+      li {
+        display: flex;align-items: center;margin-bottom: 12px;
+        .mat-icon {
+          margin-right: 10px;color: #999;font-size: 18px;display: flex;align-items: center;justify-content: center;cursor: grabbing;
+        }
+      }
+    }
+  }
+}
+.cdk-drag-preview{
+    display: flex;align-items: center;margin-bottom: 12px;
+    .mat-icon {
+      margin-right: 10px;color: #999;font-size: 18px;display: flex;align-items: center;justify-content: center;
+    }
+}
+
+.delete-color {
+  color: red;
+}
+
+.mat-button-disabled .delete-color {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+.detail-card{
+  width: 90%;
+  height: 600px
+}
+
+.form-row{
+  margin-bottom: 20px;
+  .mat-form-field{
+    margin-right: 10px;
+  }
+}
+.general-container {
+  ul {
+    list-style-type: none;
+    margin-top: 4px;
+  }
+}
+
+.ck-editor__editable_inline {
+  min-height: 250px !important;
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 250px;
+}
+
+:host ::ng-deep mat-header-cell:first-of-type{
+  padding-left: 24px !important;
+}
+
+:host ::ng-deep .mat-header-cell{
+  padding: 0 0px;
+  padding-left: 0;
+}

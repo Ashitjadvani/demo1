@@ -1,0 +1,241 @@
+<app-header></app-header>
+<div class="stepper-head">
+  {{'JOBAPPLICATION.JobApplicationFor' | translate}} {{applicationDetails.jobTitle}}
+</div>
+<div class="details-content-wrapper">
+  <div class="mat-horizontal-content-container survey-question-tag">
+    <mat-tab-group>
+      <mat-tab label="{{'JOBAPPLICATION.PersonalDetails' | translate}}">
+          <div class="stepper-form-head">
+            <h2 style="font-weight: 700;">{{'JOBAPPLICATION.PersonalDetails' | translate}}</h2>
+            <span [matTooltip]="applicationDetails.historyNotes">{{applicationDetails.statusDescription}}</span>
+          </div>
+          <div class="row stepper-form-content">
+            <div class="col-sm-4">
+                <div class="form-field">
+                  <label>{{'JOBAPPLICATION.Name' | translate}}</label>
+                  <h5>{{userData.nome ? userData.nome : '-'}}</h5>
+                </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Surname' | translate}}</label>
+                <h5>{{userData.cognome ? userData.cognome : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.DateOfBirth' | translate}}</label>
+                <h5>{{userData.data_nascita | date: 'dd/MM/YYYY'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Gender' | translate}}</label>
+                <h5>{{userData.sesso ? userData.sesso : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Nationality' | translate}}</label>
+                <h5>{{userData.nationality ? userData.nationality : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'LOGINPAGE.EmailAddress' | translate}}</label>
+                <h5>{{userData.email ? userData.email : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.PhoneNumber' | translate}}</label>
+                <h5>{{userData.telefono ? userData.telefono : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Address' | translate}}</label>
+                <h5>{{userData.indirizzo ? userData.indirizzo : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.City' | translate}}</label>
+                <h5>{{userData.cityName ? userData.cityName : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.State' | translate}}</label>
+                <h5>{{userData.stateName ? userData.stateName : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Country' | translate}}</label>
+                <h5>{{userData.countryName ? userData.countryName : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Company' | translate}}</label>
+                <h5>{{userData.azienda ? userData.azienda : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.JobTitle' | translate}}</label>
+                <h5>{{userData.titolo ? userData.titolo : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.LevelOfEducation' | translate}}</label>
+                <h5>{{(levelEducation.get(userData.livello_studi) || '-') | translate}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.UniversityName' | translate}}</label>
+                <h5>{{userData.univ_name ? userData.univ_name : userData.universityOther}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'not-graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.ScoreAaverage' | translate}}</label>
+                <h5>{{userData.scoreAverage ? userData.scoreAverage : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.DegreeMark' | translate}}</label>
+                <h5>{{userData.voto_laurea ? userData.voto_laurea : '-'}} <span *ngIf="userData.lode">- Lode</span></h5>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.MasterDescription' | translate}}</label>
+                <h5>{{userData.materDescription ? userData.materDescription : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.DoctorateDescription' | translate}}</label>
+                <h5>{{userData.doctorateDescription ? userData.doctorateDescription : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12"></div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.StateExamination' | translate}}</label>
+                <h5>{{userData.stateExamination ? 'Yes' : 'No'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4" *ngIf="userData.livello_studi == 'graduated'">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.Degree' | translate}}</label>
+                <h5>{{userData.laurea_name ? userData.laurea_name : userData.degreeOther}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-field" *ngIf="userData.livello_studi == 'graduated'">
+                <label>{{'JOBAPPLICATION.DegreeYear' | translate}}</label>
+                <h5>{{userData.degreeYear ? userData.degreeYear : '-'}}</h5>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="form-field">
+                <label>{{'JOBAPPLICATION.UploadFile' | translate}}</label>
+                <h5>{{imageDetails?.file ? imageDetails.file : '-'}}</h5>
+              </div>
+            </div>
+          </div>
+      </mat-tab>
+      <mat-tab label="{{'JOBAPPLICATION.AdditionalDetails' | translate}}" *ngIf="customFields.length > 0">
+        <div class="stepper-form-head">
+          <h2 style="font-weight: 700;">{{'JOBAPPLICATION.AdditionalDetails' | translate}} </h2>
+        </div>
+        <div class="stepper-form-content">
+          <div class="form-field mb-5" *ngFor="let customField of customFields">
+            <h4>{{customField.question}}</h4>
+            <p>{{customField.answer ? customField.answer : '-'}}</p>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{'JOBAPPLICATION.VideoAssessment' | translate}}" *ngIf="applicationDetails.videoId && videoAssessment.length > 0">
+        <div class="stepper-form-head">
+          <h2 style="font-weight: 700;">{{'JOBAPPLICATION.VideoAssessment' | translate}}</h2>
+        </div>
+        <div class="stepper-form-content">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="questions" *ngFor="let question of videoAssessment; let i= index;" style="margin-bottom: 20px">
+                Q{{i+1}}. {{question.question}}
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <!--<p>{{videoDetailsData}}</p>-->
+              <!--{{baseImageUrl + userVideoDetails.videoId}}-->
+              <video width="100%" controls>
+                <source src="{{baseImageUrl + userVideoDetails.videoId}}" type="video/mp4">
+                <source src="movie.ogg" type="video/ogg">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="isCandidateRead == 'yes' && userRole === true" label=" {{'JOBAPPLICATION.Quiz' | translate}}">
+        <div class="stepper-form-head">
+          <h2 style="font-weight: 700;"> {{'JOBAPPLICATION.Quiz' | translate}}</h2>
+        </div>
+        <div class="stepper-form-content">
+          <ng-template matTabContent>
+            <mat-tab-group>
+              <mat-tab *ngFor="let server of conditionQuestionList " label="{{server.surveyName}}">
+                <ng-template matStepLabel>{{server.surveyName}}</ng-template>
+                <div class="stepper-form-content">
+                  <div *ngFor="let quiz of server.questionData;let i = index" class="form-field mb-5">
+                    <h4>Q{{i + 1}}. {{quiz.question}}</h4>
+                    <p>{{(quiz?.answer[0] && findOnlyManager(server.surveyPrivacy)) ? quiz.answer[0] : '-'}}</p>
+                  </div>
+                </div>
+<!--                <div class="form-content-box stpper-footer">-->
+<!--                  <div class="step-form-bottom">-->
+<!--                    <div>-->
+<!--                      <button class="custom-btn trans-btn" mat-button matStepperPrevious>{{'JOBAPPLICATION.Previous' | translate}}</button>-->
+<!--                    </div>-->
+<!--                    <div class="right-btns">-->
+<!--                      <button class="custom-btn" mat-button matStepperNext >{{'JOBAPPLICATION.Next' | translate}}</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+              </mat-tab>
+
+            </mat-tab-group>
+            <div *ngIf="!surveyQuestion?.length > 0" class="stepper-form-head" style="justify-content: center;">
+              <h2>{{'GENERAL.NoDataAvailable' | translate}}</h2>
+            </div>
+          </ng-template>
+
+          <div *ngFor="let quiz of surveyQuestion;let i = index" class="form-field mb-5">
+            <ng-container *ngIf="quiz.type !== 'FreeText'">
+              <h4>Q{{i + 1}}. {{quiz.question_label}}</h4>
+              <p>{{(quiz.answers?.value) ? quiz.answers.value : '-'}}</p>
+            </ng-container>
+            <ng-container *ngIf="quiz.type === 'FreeText'">
+              <h4>Q{{i + 1}}. {{quiz.question_label}}</h4>
+              <p>{{(quiz.givenAnswer) ? quiz.givenAnswer : '-'}}</p>
+            </ng-container>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

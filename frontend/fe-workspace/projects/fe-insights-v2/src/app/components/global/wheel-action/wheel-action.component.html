@@ -1,0 +1,56 @@
+<div class="hover-effect-menu {{icons}}-icons">
+    <div class="short-arrow">
+        <span class="material-icons">more_horiz</span>
+        <span class="badge-notify" *ngIf="element.unreadCount > 0">{{element.unreadCount}}</span>
+        <span *ngIf="element.isReadCandidate || element.isReadJob" class="red-dot"></span>
+    </div>
+    <div class="hover-round-effect">
+        <button mat-menu-item *ngIf="!element.unreadCount && dissOn" [routerLink]="route" [queryParams]="{ id: element.id}" matTooltip="{{'See Applications' | translate}}">
+            <span class="material-icons">description</span>
+            <!--<img src="assets/images/view-report.svg" alt="" style="margin: 0px">-->
+        </button>
+        <button mat-menu-item *ngIf="element.unreadCount > 0 && dissOn" [routerLink]="route" [queryParams]="{ id: element.id}" matTooltip="{{'See Applications' | translate}}">
+            <span class="badge-notify-wrap">
+                <!--<img src="assets/images/view-report.svg" alt="" style="margin: 0px">-->
+                <span class="material-icons">description</span>
+                <span class="badge-notify">{{element.unreadCount}}</span>
+            </span>
+        </button>
+        <button *ngIf="viewOn" mat-menu-item (click)="viewDetail()" matTooltip="{{'TABLE.ViewDetails' | translate}}">
+            <span class="material-icons">remove_red_eye <span *ngIf="element.isReadCandidate || element.isReadJob" class="red-dot"></span></span>
+        </button>
+        <button *ngIf="logOn" mat-menu-item (click)="changeDetails()" matTooltip="{{'TABLE.ChangeLog' | translate}}">
+            <span class="material-icons">checklist_rtl</span>
+        </button>
+        <button *ngIf="editOn" mat-menu-item (click)="editEvent()" matTooltip="{{'Edit' | translate}}">
+            <span class="material-icons">edit</span>
+        </button>
+        <button *ngIf="cancelOn" mat-menu-item (click)="cancelEvent()" matTooltip="{{'Cancel' | translate}}">
+            <span class="material-icons">event_busy</span>
+        </button>
+        <button *ngIf="activeOn" mat-menu-item (click)="activeEvent()" matTooltip="{{'Active_Event' | translate}}">
+            <span class="material-icons">event_available</span>
+        </button>
+        <button *ngIf="commentOn" mat-menu-item (click)="commentAction()" matTooltip="{{'TABLE.ShowUserActivity' | translate}}">
+            <span class="material-icons">comment</span>
+        </button>
+        <button *ngIf="lockOn" mat-menu-item (click)="openUnlock()" matTooltip="{{'Unlock Pairing' | translate}}">
+            <span class="material-icons">lock</span>
+        </button>
+        <button *ngIf="qrOn" mat-menu-item (click)="openQR()" matTooltip="{{'INSIGHTS_PEOPLE_PAGE.TOUCHPOINT QR' | translate}}">
+            <span class="material-icons">qr_code_2</span>
+        </button>
+      <button *ngIf="editCreditOn" mat-menu-item (click)="editEventCredit()" matTooltip="{{'EVENT_MANAGEMENT.Edit Event Credit' | translate}}">
+        <span class="material-icons">edit_note</span>
+      </button>
+        <button *ngIf="planOn" mat-menu-item (click)="planAction()" matTooltip="{{'TABLE.ShowUserActivity' | translate}}">
+            <span class="material-icons">event</span>
+        </button>
+        <button *ngIf="deleteOn" mat-menu-item (click)="deleteEvent()" matTooltip="{{'Delete' | translate}}">
+            <span class="material-icons">delete</span>
+        </button>
+        <button *ngIf="reservationOn" mat-menu-item (click)="reservationResource()" matTooltip="Reservation">
+            <span class="material-icons"> event_available </span>
+        </button>
+    </div>
+</div>

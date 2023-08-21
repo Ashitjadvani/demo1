@@ -1,0 +1,425 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+  <div class="container">
+    <h1>{{'MYACCOUNT.MyAccount' | translate}}</h1>
+  </div>
+</div>
+<!--======================== Dashboard section start ==================== -->
+<section class="dashboard-content">
+  <div class="container">
+    <div class="account-wrapper main-content-wrapper">
+      <div class="account-list">
+        <div class="box-style">
+          <div class="my-account-title">
+            <h4>{{'MYACCOUNT.MyAccount' | translate}}</h4>
+          </div>
+          <ul>
+            <li routerLink="/my-application">{{'MYACCOUNT.MyApplications' | translate}}</li>
+            <li class="active" routerLink="/edit-profile">{{'MYACCOUNT.EditProfile' | translate}}</li>
+            <li routerLink="/change-password" *ngIf="userDetails === null">{{'MYACCOUNT.ChangePassword' | translate}}</li>
+            <li routerLink="/activity-log">{{'MYACCOUNT.ActivityLog' | translate}}</li>
+            <li routerLink="/download-document">{{'GENERAL.Download' | translate}}</li>
+            <li routerLink="/delete-account">{{'MYACCOUNT.DeleteAccount' | translate}}</li>
+            <li (click)="logout()">{{'GENERAL.Logout' | translate}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-content-box box-style">
+        <div class="name-title">
+          <h4>{{'MYACCOUNT.EditProfile' | translate}}</h4>
+        </div>
+        <hr>
+        <form class="w-100" name="editProfileForm" [formGroup]="myProfileForm" novalidate
+              (ngSubmit)="onEditProfile()" #myform="ngForm">
+          <div class="form-main mb-4">
+            <div class="form-row-wrapper">
+              <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'SIGNUPPAGE.FirstName' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="nome" id="first-name" placeholder="{{'SIGNUPPAGE.FirstName' | translate}}"
+                             matInput type="text"
+                             name="currentPassword" required autocomplete="off"  (keydown)="space($event)" style="text-transform: capitalize;">
+                      <mat-error *ngIf="myProfileForm.controls.nome.errors?.required">
+                        {{'SIGNUPPAGE.FirstNameRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field error-message-custom">
+                    <label>{{'SIGNUPPAGE.LastName' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input name="cognome" id="last-name" placeholder="{{'SIGNUPPAGE.LastName' | translate}}"
+                             formControlName="cognome" matInput
+                             type="text" required autocomplete="off"  (keydown)="space($event)" style="text-transform: capitalize;">
+                      <mat-error *ngIf="myProfileForm.controls.cognome.errors?.required">
+                        {{'SIGNUPPAGE.LastNameRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'SIGNUPPAGE.EmailAddress' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input name="emailAddress" formControlName="email" id="email-id"
+                             placeholder="{{'SIGNUPPAGE.EmailAddress' | translate}}"
+                             matInput type="email" required autocomplete="off"  (keydown)="space($event)">
+                      <mat-error
+                        *ngIf="myProfileForm.controls.email.errors?.required">{{'SIGNUPPAGE.EmailAddressRequire' | translate}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="myProfileForm.controls.email.errors?.email">{{'SIGNUPPAGE.EmailAddressValid' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field age-date-validation">
+                    <label>{{'JOBAPPLICATION.DateOfBirth' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width date-select">
+                      <input [matDatepicker]="picker" [max]="maxDob" formControlName="data_nascita" matInput >
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker (opened)="streamOpened()" ></mat-datepicker>
+                      <mat-error *ngIf="myProfileForm.controls.data_nascita.errors?.required">
+                        {{'JOBAPPLICATION.DateOfBirthRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                    <span class="select-dob">({{'JOBAPPLICATION.AgeConfirmValidation' | translate}})</span>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Gender' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-select formControlName="sesso" name="genderName" matInput type="text">
+                        <mat-option value="Male">{{'JOBAPPLICATION.Male' | translate}}</mat-option>
+                        <mat-option value="Female">{{'JOBAPPLICATION.Female' | translate}}</mat-option>
+                        <mat-option value="Other">{{'JOBAPPLICATION.Other' | translate}}</mat-option>
+                        <mat-option value="Not Specified">{{'JOBAPPLICATION.NotSpecified' | translate}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="myProfileForm.controls.sesso.errors?.required">
+                        {{'JOBAPPLICATION.GenderRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Nationality' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="nationality" name="nationalityName" matInput type="text" autocomplete="off" (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.nationality.errors?.required">
+                        {{'JOBAPPLICATION.NationalityRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.PhoneNumber' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="telefono" name="phoneNumber" matInput type="tel" autocomplete="off" (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.telefono.errors?.required">
+                        {{'JOBAPPLICATION.PhoneRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-8 col-sm-6 ">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Address' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="indirizzo" name="addressDetails" matInput type="text" autocomplete="off" (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.indirizzo.errors?.required">
+                        {{'JOBAPPLICATION.AddressRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.City' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="cityName" name="cityName" matInput type="text" autocomplete="off"  (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.cityName.errors?.required">
+                        {{'JOBAPPLICATION.CityRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.State' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="stateName" name="stateName" matInput type="text" autocomplete="off"  (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.stateName.errors?.required">
+                        {{'JOBAPPLICATION.StateRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Country' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="countryName" name="countryName" matInput type="text" autocomplete="off"  (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.countryName.errors?.required">
+                        {{'JOBAPPLICATION.CountryRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Company' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="azienda" name="companyName" matInput type="text" autocomplete="off"  (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.azienda.errors?.required">
+                        {{'JOBAPPLICATION.CompanyRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.JobTitle' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <input formControlName="titolo" name="jobTitle" matInput type="text" autocomplete="off" (keydown)="space($event)">
+                      <mat-error *ngIf="myProfileForm.controls.titolo.errors?.required">
+                        {{'JOBAPPLICATION.JobTitleRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.LevelOfEducation' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-select formControlName="livello_studi" name="livello_studi" (ngModelChange)="changeEducationLevel()">
+                        <mat-option value="{{item.id}}" *ngFor="let item of levelEducation">{{item.name}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="myProfileForm.controls.livello_studi.errors?.required">
+                        {{'JOBAPPLICATION.LevelOfEducationRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-6">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.UniversityName' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-select (ngModelChange)="changeUniversity()" formControlName="univ_id" matInput name="universityName" type="text" >
+                        <mat-option value="{{item.id}}"
+                                    *ngFor="let item of universities">{{item.description}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="myProfileForm.controls.univ_id.errors?.required">
+                        {{'JOBAPPLICATION.UniversityRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-sm-4" *ngIf="myProfileForm.value.univ_id === 'other'">
+                  <div class="form-field" id="graduation_yes">
+                    <label>{{'JOBAPPLICATION.UniName' | translate}}</label>
+                    <div class="form-field">
+                      <mat-form-field appearance="outline"  class="element-full-width">
+                        <input formControlName="universityOther" name="universityOther" matInput type="text" autocomplete="off">
+                        <mat-error *ngIf="myProfileForm.controls.universityOther.errors?.required">
+                          {{'JOBAPPLICATION.UniNameRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-6" *ngIf="myProfileForm.value.livello_studi === 'graduated'">
+                  <div class="form-field">
+                    <label>{{'JOBAPPLICATION.Degree' | translate}}</label>
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-select (ngModelChange)="changeDegree()" formControlName="laurea_id" matInput name="degreeName" type="text" >
+                        <mat-option value="{{item.id}}" *ngFor="let item of degrees">{{item.description}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="myProfileForm.controls.laurea_id.errors?.required">
+                        {{'JOBAPPLICATION.DegreeRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="col-sm-4" *ngIf="myProfileForm.value.livello_studi === 'graduated' && myProfileForm.value.laurea_id === 'other'">
+                  <div class="form-field" id="graduation_yes">
+                    <label>{{'JOBAPPLICATION.DegreeName' | translate}}</label>
+                    <div class="form-field">
+                      <mat-form-field appearance="outline"  class="element-full-width">
+                        <input formControlName="degreeOther" name="degreeOther" matInput type="text" autocomplete="off"  >
+                        <mat-error *ngIf="myProfileForm.controls.degreeOther.errors?.required" >
+                          {{'JOBAPPLICATION.DegreeNameRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Show on select 1 -->
+                <div class="col-sm-12">
+                  <div class="row">
+                    <div class="col-lg-8" *ngIf="myProfileForm.value.livello_studi === 'not-graduated'">
+                      <div class="form-field" id="graduation_yes">
+                        <label>{{'JOBAPPLICATION.ScoreAaverage' | translate}}</label>
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <input formControlName="scoreAverage" name="scoreAverage" min="18" max="30" matInput type="number" autocomplete="off">
+                            <mat-error *ngIf="myProfileForm.controls.scoreAverage.errors?.min">
+                              {{'JOBAPPLICATION.18_to_30' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="myProfileForm.controls.scoreAverage.errors?.max">
+                              {{'JOBAPPLICATION.18_to_30' | translate}}
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-lg-8" *ngIf="myProfileForm.value.livello_studi === 'graduated'">
+                      <div id="cc_signup">
+                        <label>{{'JOBAPPLICATION.DegreeMark' | translate}}</label>
+                        <div class="d-flex wrapper-field">
+                          <div class="form-field" style="width: 100%;min-width: 250px;margin-right: 25px;">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <input formControlName="voto_laurea" name="voto_laurea" min="66" max="110" matInput type="number" autocomplete="off">
+                              <mat-error *ngIf="myProfileForm.controls.voto_laurea.errors?.min">
+                                {{'JOBAPPLICATION.60_to_110' | translate}}
+                              </mat-error>
+                              <mat-error *ngIf="myProfileForm.controls.voto_laurea.errors?.max">
+                                {{'JOBAPPLICATION.60_to_110' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div class="form-field" style="width: 100px;min-width: 100px;" >
+                            <div class="form-field-box" *ngIf="myProfileForm.value.voto_laurea >= 110">
+                              <mat-checkbox class="example-margin" name="lode" formControlName="lode" type="checkbox"
+                                             >{{'JOBAPPLICATION.Lode' | translate}}</mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-6" *ngIf="myProfileForm.value.livello_studi === 'graduated'">
+                      <div class="form-field">
+                        <label>{{'JOBAPPLICATION.DegreeYear' | translate}}</label>
+                        <mat-form-field appearance="outline" class="element-full-width">
+                          <input formControlName="degreeYear" name="degreeYear" matInput type="number" min="1900" max="{{currentYear}}">
+                          <mat-error *ngIf="myProfileForm.controls.degreeYear.errors?.max">
+                            {{'JOBAPPLICATION.noMoreThanCurrentYear' | translate}}
+                          </mat-error>
+                          <mat-error *ngIf="myProfileForm.controls.degreeYear.errors?.min">
+                            {{'JOBAPPLICATION.noLessThen1900' | translate}}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+
+                    <div class="col-lg-4 col-sm-6" *ngIf="myProfileForm.value.livello_studi === 'graduated'">
+                      <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.MasterDescription' | translate}}</span>
+                        <div class="d-flex">
+                          <mat-slide-toggle class="education-switch" formControlName="isReadMaster" (ngModelChange)="changeIsRead($event, 'materDescription')"></mat-slide-toggle>
+                          <!-- <mat-radio-group formControlName="isReadMaster" (ngModelChange)="changeIsRead($event, 'materDescription')">
+                            <mat-radio-button class="example-margin" [value]="true" >Yes</mat-radio-button>
+                            <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                          </mat-radio-group> -->
+                         </div>
+                      </label>
+                      <div class="d-flex wrapper-field" [ngStyle]="{'visibility': (myProfileForm.value.isReadMaster) ? 'visible' : 'hidden'}">
+                        <div class="form-field" id="master_yes"
+                             style="width: 100%;min-width: 250px;margin-right: 25px;">
+                          <mat-form-field appearance="outline" class="element-full-width" >
+                            <input formControlName="materDescription" name="materDescription" matInput type="text" autocomplete="off">
+                            <!-- <mat-error *ngIf="jobApplicationForm.controls.materDescription.errors?.required">
+                              {{'JOBAPPLICATION.MasterDescriptionRequired' | translate}}
+                            </mat-error> -->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-6" *ngIf="myProfileForm.value.livello_studi === 'graduated'">
+                      <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.DoctorateDescription' | translate}}</span>
+                        <div class="d-flex">
+                          <mat-slide-toggle class="education-switch" formControlName="isReadDoctorate" (ngModelChange)="changeIsRead($event, 'doctorateDescription')"></mat-slide-toggle>
+                         <!-- <mat-radio-group formControlName="isReadDoctorate" (ngModelChange)="changeIsRead($event, 'doctorateDescription')">
+                           <mat-radio-button class="example-margin"  [value]="true">Yes</mat-radio-button>
+                           <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                         </mat-radio-group> -->
+                        </div>
+                     </label>
+                      <div class="d-flex wrapper-field" [ngStyle]="{'visibility': (myProfileForm.value.isReadDoctorate) ? 'visible' : 'hidden'}">
+                        <div class="form-field" id="doctorate_yes"
+                             style="width: 100%;min-width: 250px;margin-right: 25px;">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <input formControlName="doctorateDescription" name="doctorateDescription" matInput
+                                   type="text" autocomplete="off">
+                            <!-- <mat-error *ngIf="jobApplicationForm.controls.doctorateDescription.errors?.required">
+                              {{'JOBAPPLICATION.DoctorateDescriptionRequired' | translate}}
+                            </mat-error> -->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="myProfileForm.value.livello_studi === 'graduated'" >
+                      <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.StateExamination' | translate}}</span>
+                        <div class="d-flex">
+                          <mat-slide-toggle class="education-switch" formControlName="stateExamination" ></mat-slide-toggle>
+                         <!-- <mat-radio-group formControlName="isReadState" (ngModelChange)="changeIsRead($event, 'stateExamination')">
+                           <mat-radio-button class="example-margin"  [value]="true">Yes</mat-radio-button>
+                           <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                         </mat-radio-group> -->
+                        </div>
+                     </label>
+                      <!-- <div class="d-flex wrapper-field" [ngStyle]="{'visibility': (myProfileForm.value.isReadState) ? 'visible' : 'hidden'}">
+                        <div class="form-field" id="state_examination" style="width: 100%;">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <input formControlName="stateExamination" name="stateExamination" matInput type="text" autocomplete="off">
+                          </mat-form-field>
+                        </div>
+                      </div> -->
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="col-sm-12">
+                <div class="form-field">
+                  <div class="file-upload-wrapper">
+                    <div class="file-upload-in">
+                      <div class="file-upload-text"><span class="material-icons">attachment</span>{{'JOBAPPLICATION.UploadCV' | translate}} ({{'JOBAPPLICATION.OnlyPdfAllowed' | translate}})</div>
+                      <label for="upload_btn" type="button" >{{'JOBAPPLICATION.Browse' | translate}}</label>
+                    </div>
+                    <input id="upload_btn" type="file"  #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf" />
+                    <span class="file-info">{{this.resumeDetailsData}} <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.resumeDetailsData? 'close' : null}}</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button mat-raised-button class="btn-submit" type="submit">{{'GENERAL.Save' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

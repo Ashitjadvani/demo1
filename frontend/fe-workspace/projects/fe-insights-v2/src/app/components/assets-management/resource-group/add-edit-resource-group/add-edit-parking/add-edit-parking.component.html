@@ -1,0 +1,162 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <!-- <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li> -->
+                  <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                  <li routerLink="/assets-management/resource-group/add-edit-resource-group" class="breadcrumb-item">Resource Group</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>Add Resource Group</span> </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>Parking</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addResourceGroupForm" [formGroup]= "addResourceGroupForm"  novalidate
+                    (ngSubmit)="changeRole()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Availability Start Time<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="time" formControlName="availabilityStartTime" matInput name="availabilityStartTime" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.availabilityStartTime.errors?.required" >
+                                            Enter your availability start time.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Visibility (hours)<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="time" formControlName="visibilityHours" matInput name="visibilityHours" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.visibilityHours.errors?.required" >
+                                            Enter your visibility (hours).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Reserve Pool<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="reservePool" matInput name="reservePool" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.reservePool.errors?.required" >
+                                            Enter your reserve pool.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Priority Start<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="time" formControlName="priorityStart" matInput name="priorityStart" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.priorityStart.errors?.required" >
+                                            Enter your priority start.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Priority End<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="time" formControlName="priorityEnd" matInput name="priorityEnd" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.priorityEnd.errors?.required" >
+                                            Enter your priority end.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Priority Tag<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="priorityTag" matInput name="priorityTag" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.priorityTag.errors?.required" >
+                                            Enter your priority tag.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Help Button Text<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="helpButtonText" matInput name="helpButtonText" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.helpButtonText.errors?.required" >
+                                            Enter your help button text.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Help Phone No<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="number" maxlength="10" minlength="10" formControlName="helpPhoneNo" matInput  name="helpPhoneNo" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.helpPhoneNo.errors?.required" >
+                                            Enter your help phone no.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Refresh Message</mat-label>
+                                    <textarea formControlName="refreshMessage" matInput placeholder="type here.." required type="text"></textarea>
+                                    <mat-error *ngIf="addResourceGroupForm.controls.refreshMessage.errors?.required">
+                                      Enter your refresh message.
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox formControlName="enableEventRefreshPark">Enable Refresh Park Tile</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Refresh Interval<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="refreshInterval" matInput name="refreshInterval" >
+                                        <mat-error *ngIf="addResourceGroupForm.controls.refreshInterval.errors?.required" >
+                                            Enter your refresh interval.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox formControlName="enableEventAutoBook">Personal Park auto-book after Availability</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer d-flex justify-content-between">
+                            <button class="btn-style red-line-btn" routerLink="/assets-management/resource-group/add-edit-resource-group" type="button">Cancel</button>
+                            <button class="btn-style theme-btn" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

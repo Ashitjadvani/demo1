@@ -1,0 +1,169 @@
+@import "../../../../styles.scss";
+
+.group-tab {
+    margin-top: -48px;
+    height: calc(100% + 48px);
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+}
+
+:host ::ng-deep .mat-column-Name {
+    flex: 2 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Responsable {
+    flex: 2 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Accountable {
+    flex: 2 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Consulted {
+    flex: 2 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Informed {
+    flex: 2 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-ApprovationNeeded {
+    flex: 1 1 40px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Enable {
+    flex: 1 1 40px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-DaysToRequest {
+    flex: 1 1 40px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-SilenceAssent {
+    flex: 1 1 40px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-ScheduleAbilitation {
+    flex: 1 1 40px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Action {
+    flex: 0 1 80px;
+    font-size: 0.9em;
+}
+
+.input-row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    height:42px;
+}
+
+.input-row-abilitation {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    height:42px;
+}
+
+.names {
+    text-align: middle;
+    vertical-align: middle;
+    
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 15px;
+    min-width: 120px;
+}
+
+.name-abilitation {
+    text-align: middle;
+    vertical-align: middle;
+    
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.name-silence-assent-time {
+    text-align: middle;
+    vertical-align: middle;
+    
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 16px;
+}
+
+hr {
+    display: block;
+       position: relative;
+       padding: 0;
+       margin: 8px auto;
+       height: 0;
+       width: 100%;
+       max-height: 0;
+       font-size: 1px;
+       line-height: 0;
+       clear: both;
+       border: none;
+       border-top: 1px solid #aaaaaa;
+       border-bottom: 1px solid #ffffff;
+}
+
+.width-100px {
+    width:100px;
+}
+
+.width-50px {
+    width:50px;
+}
+
+
+.height-700 {
+    height:700px;
+}
+
+.height-600 {
+    height:600px;
+}
+
+.height-650 {
+    height:650px;
+}
+
+.height-750 {
+    height:730px;
+}
+
+.people-search-popup {
+    width: 300px;
+    height: 480px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+}
+
+.vl {
+    border-left: 1px solid gray;
+    height: 35px;
+    position: relative;
+  }
+
+

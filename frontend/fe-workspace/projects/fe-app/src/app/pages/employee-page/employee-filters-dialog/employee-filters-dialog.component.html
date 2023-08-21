@@ -1,0 +1,57 @@
+<h2 mat-dialog-title><b>{{'EMPLOYEE PAGE.FILTERS' | translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <div class="filter-container">
+            <mat-checkbox [(ngModel)]="employeeFiltersDialogData.dataSelected">
+                <div class="checkbox">{{'EMPLOYEE PAGE.DATA' | translate}}</div>
+            </mat-checkbox>
+            <mat-form-field *ngIf="employeeFiltersDialogData.dataSelected" appearance="fill" class="width-80">
+                <mat-label>{{'EMPLOYEE PAGE.DATE RANGE' | translate}}</mat-label>
+                <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="{{'EMPLOYEE PAGE.START DATE' | translate}}">
+                  <input matEndDate formControlName="end" placeholder="{{'EMPLOYEE PAGE.END DATE' | translate}}">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="dateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                <mat-error *ngIf="dateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="filter-container">
+            <mat-checkbox [(ngModel)]="employeeFiltersDialogData.justificativeSelected">
+                <div class="checkbox">{{'EMPLOYEE PAGE.JUSTIFICATIVE' | translate}}</div>
+            </mat-checkbox>
+            <mat-form-field *ngIf="employeeFiltersDialogData.justificativeSelected" appearance="fill" class="width-80">
+                <mat-label>{{'EMPLOYEE PAGE.SEL JUSTIFICATIVE' | translate}}</mat-label>
+                <mat-select [(value)]="employeeFiltersDialogData.justificative">
+                    <mat-option *ngFor="let justificative of sortedJustificatives" [value]="justificative.name">
+                        {{justificative.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="filter-container">
+            <mat-checkbox [(ngModel)]="employeeFiltersDialogData.userSelected">
+                <div class="checkbox">{{'EMPLOYEE PAGE.USER' | translate}}</div>
+            </mat-checkbox>
+            <mat-form-field *ngIf="employeeFiltersDialogData.userSelected" appearance="fill" class="width-80">
+                <mat-label>{{'EMPLOYEE PAGE.SEL USER' | translate}}</mat-label>
+                <mat-select [(ngModel)]="employeeFiltersDialogData.user">
+                    <mat-option *ngFor="let user of sortedPeople; let i = index" [(value)]="sortedPeople[i]">
+                        {{user.name}} {{user.surname}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button class="action-button" color="primary"
+        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()"
+        (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+</mat-dialog-actions>

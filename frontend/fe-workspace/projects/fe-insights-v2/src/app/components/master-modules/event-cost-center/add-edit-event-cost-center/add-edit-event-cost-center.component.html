@@ -1,0 +1,62 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.MASTER_MODULES'" [routePath2]="'/master-modules/event-cost-center'" [title2]="'INSIGHTS_MENU.Cost_Centers'" [title3]="title" [type]="'Procurement_Management.CostCenter'"></app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{title | translate}} {{'Procurement_Management.CostCenter' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addEventCostCenterForm" [formGroup]="addEventCostCenterForm" novalidate #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.CostCenterName' | translate}}<span class="red-label">*</span></mat-label>
+                    <input  formControlName="costcentername" type="text"  matInput  name="costcentername" (keydown)="space($event)">
+                    <mat-error *ngIf="addEventCostCenterForm.controls.costcentername.errors?.required" >
+                      {{'EVENT_MANAGEMENT.EnterCostCenterName'| translate}}
+                    </mat-error>
+                    <mat-error *ngIf="addEventCostCenterForm.controls.costcentername.errors?.nameValidator">{{'Special character not allowed' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.CostCenterCode' | translate}}</mat-label>
+                    <input  formControlName="costcentercode" type="text"  matInput  name="costcentercode" (keydown)="space($event)">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'INSIGHTS_MENU.Cost_Center_Type' | translate}}</mat-label>
+                    <mat-select formControlName="costcentertype" [value]="selectedCost" >
+                      <!--<mat-option>{{'Select Prov' | translate}}</mat-option>-->
+                      <mat-option  *ngFor="let cost of costCenterTypeList" value="{{cost.id}}">{{cost.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addEventCostCenterForm.controls.costcentername.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectCostCenterType' | translate}}</mat-error>
+                  </mat-form-field>
+                  <a class="add-center-type" (click)="openAddCostCentreType()">{{'INSIGHTS_MENU.Add_Cost_Center_Type' | translate}}</a>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit" (click)="onEditConfirmClick()">{{'GENERAL.Save' | translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

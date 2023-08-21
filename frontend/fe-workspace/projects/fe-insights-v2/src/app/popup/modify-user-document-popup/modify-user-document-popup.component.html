@@ -1,0 +1,70 @@
+<script src="modify-user-document-popup.component.ts"></script>
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{'DOCUMENTS.Modify staff document' | translate}}</h4>
+      <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <div class="popup-body">
+    <div class="popup-content m-auto text-center" style="max-height: 65vh;">
+      <div class="row">
+        <div class="col">
+          <div class="form-field">
+            <mat-form-field [ngClass]="{'mat-form-field-invalid':documentSelectCheck===true}" appearance="outline" class="element-full-width">
+              <mat-label>{{'DOCUMENTS.Select staff document'|translate}}</mat-label>
+                <mat-select [(ngModel)]="staffDocumentId" (selectionChange)="staffDocumentData($event.value)">
+                    <mat-option value="new"><img alt="" style="padding-right:7px; margin-top:-2px" matSuffix src="assets/images/plus.svg"> {{'DOCUMENTS.New staff document type' | translate}}</mat-option>
+                    <mat-option *ngFor="let doc of staffDocumentList"  [value]="doc.id" >{{doc.name}}</mat-option>
+                </mat-select>
+                <mat-hint *ngIf="documentSelectCheck===true" class="mat-error" >{{'DOCUMENTS.Please select staff document'|translate}}</mat-hint>
+            </mat-form-field>
+          </div>
+            <div class="row" *ngIf="selectedDocId=='new'">
+                <div class="col">
+                    <div class="form-field">
+                        <mat-form-field [ngClass]="{'mat-form-field-invalid':selectDocumentName === true}" appearance="outline" class="element-full-width">
+                            <mat-label>{{'INSIGHTS_MENU.StaffDocumentName' | translate}}</mat-label>
+                            <input (keyup)="changeValue($event)" matInput type="text" [(ngModel)]="newDocType.name">
+                            <mat-hint *ngIf="selectDocumentName === true" class="mat-error" >{{'MASTER_MODULE.Enter staff document name' | translate}}</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+          <div class="row">
+            <div class="col">
+              <div [ngClass]="{'upload-container-valid':fileCheck===true}" class="upload-container" appDnd (fileDropped)="onFileDropped($event)">
+                <div class="no-file-container">
+                  <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)">
+                  <h4 class="small-font">{{'DOCUMENTS.UploadedFile' | translate}}</h4>
+                  <h4>{{fileName}}</h4>
+                  <button style="margin-top:15px" class="btn-style theme-btn">{{'DOCUMENTS.Browse new' | translate}}</button>
+                </div>
+              </div>
+                <div *ngIf="fileCheck===true" class="ErrorMsg" >{{'DOCUMENTS.please upload document'|translate}}</div>
+            </div>
+          </div>
+          <div class="row" style="padding-top:20px">
+            <div class="col">
+              <div class="form-field">
+                <mat-form-field [ngClass]="{'mat-form-field-invalid': isMandatory === true}" appearance="outline" class="element-full-width date-select">
+                  <mat-label>{{'DOCUMENTS.ExpirationDate'| translate}}</mat-label>
+                  <input [min]="now" (dateChange)="addEvent( $event)" [(ngModel)]="expiration" [matDatepicker]="datePicker"  matInput type="text">
+                  <mat-datepicker-toggle matSuffix [for]="datePicker" class="full-date-select"></mat-datepicker-toggle>
+                  <mat-datepicker #datePicker></mat-datepicker>
+                    <mat-hint *ngIf="isMandatory === true" class="mat-error" >{{'DOCUMENTS.Please select expiration date'|translate}}</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="popup-footer">
+    <div class="footer-content justify-content-end">
+      <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+      <button (click)="onSave()" class="btn-style theme-btn">{{'GENERAL.Confirm' | translate}}</button>
+    </div>
+  </div>
+</section>

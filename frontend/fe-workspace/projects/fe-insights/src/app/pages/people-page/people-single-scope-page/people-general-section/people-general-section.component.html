@@ -1,0 +1,50 @@
+<div class="user-param-box">
+    <div class="input-row">
+        <mat-form-field class="width-50">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.NAME *' | translate}}"
+                [(ngModel)]="currentEditPerson.name">
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-50">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.SURNAME *' | translate}}"
+                [(ngModel)]="currentEditPerson.surname">
+        </mat-form-field>
+    </div>
+    <div class="input-row">
+        <mat-form-field class="width-75">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.FISCAL CODE' | translate}}"
+                [(ngModel)]="currentEditPerson.cf">
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-25">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.GENDER' | translate}}" [(ngModel)]="currentEditPerson.gender">
+                <mat-option *ngFor="let gender of genderList" value="{{ gender }}">
+                    {{ gender }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="input-row">
+        <mat-form-field class="width-25">
+            <input matInput [matDatepicker]="pickerDate" placeholder="{{'INSIGHTS_PEOPLE_PAGE.BIRTHDAY' | translate}}"
+                [(ngModel)]="currentEditPerson.birthDay">
+            <mat-datepicker-toggle matSuffix [for]="pickerDate">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDate></mat-datepicker>
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-50">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.BIRTHPLACE' | translate}}"
+                [(ngModel)]="currentEditPerson.birthPlace">
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-25">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.PROV' | translate}}"
+                [(ngModel)]="currentEditPerson.birthProv">
+                <mat-option *ngFor="let prov of provITA" value="{{ prov }}">
+                    {{ prov }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

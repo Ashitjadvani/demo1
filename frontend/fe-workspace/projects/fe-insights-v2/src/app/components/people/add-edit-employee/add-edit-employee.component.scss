@@ -1,0 +1,31 @@
+@import '../../../../theme-color.scss';
+
+.form-sub-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.stepper-link {
+    display: inline-block;
+    margin-right: 20px;
+    color: $theme_color;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+.btn-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.bordered {
+    border-style: solid;
+    border-width: 1px;
+    border-color:black;
+}
+.no-record-found{
+    margin-top: -20px !important;
+}

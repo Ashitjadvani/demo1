@@ -1,0 +1,20 @@
+<h2 mat-dialog-title><b>Seleziona Mese</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-form-field class="full-width">
+            <mat-select [(ngModel)]="selectedMonth" [ngModelOptions]="{standalone: true}">
+                <mat-option *ngFor="let m of months" [value]="m">{{ m.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button class="action-button" color="primary"
+        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+    <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+        (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+</mat-dialog-actions>

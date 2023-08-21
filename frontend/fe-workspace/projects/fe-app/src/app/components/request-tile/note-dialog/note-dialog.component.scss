@@ -1,0 +1,52 @@
+
+h2 {
+    text-transform: uppercase;
+}
+
+
+.dialog-container {
+
+    .notes-container {
+        height: 330px;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .note-header {
+            width: 100%;
+
+            .note-name {
+                width: auto;
+                font-weight: bold;
+                font-size: 1em;
+            }
+
+            .note-date {
+                width: auto;
+                padding-left: 10px;
+            }
+        }
+        .note-text {
+            width: 100%;
+            padding-bottom: 10px;
+            word-wrap: break-word;
+            color:midnightblue;
+        }
+    }
+
+    .new-note-container {
+        height: 70px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .new-note-ta {
+            width:178px;
+        }
+
+        .new-note-btn {
+            height:66px;
+        }
+    }
+}

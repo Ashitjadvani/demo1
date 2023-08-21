@@ -1,0 +1,13 @@
+.hover-effect-menu{
+    .short-arrow{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .material-icons{
+            font-size: 18px !important;
+            text-align: center;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.list-table{
+    max-height: 450px;
+    overflow: auto;
+    min-width: 1024px;
+    @media (max-width: 1360px) {
+        min-width: initial;
+    }
+    .mat-cell {
+        padding: 0px 10px;
+    }
+}

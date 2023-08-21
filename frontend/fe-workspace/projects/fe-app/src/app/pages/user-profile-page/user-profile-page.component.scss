@@ -1,0 +1,106 @@
+@import "../../../theme/theme.scss";
+
+
+.page-content {
+    overflow-y: auto;
+}
+
+.profile-tab-group {
+    margin-top: 0px;
+}
+
+.profile-accordion {
+    width: 98%;
+}
+
+.user-profile-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    //max-width: 300px;
+
+    .info-header {
+        margin-top: 20px;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .table-data {
+        margin-top: 10px;
+        width: 90%;
+    }
+
+    .table-user-activity {
+        margin-top: 10px;
+        width: 90%;
+    }
+
+    .qr-code {
+        margin-top: 20px;
+        flex-grow: 1;
+    }
+
+    .print-button {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .info-app-version {
+        margin-top: 30px;
+        flex-grow: 1;
+    }
+}
+
+.profile-accordion {
+    margin-top: 10px;
+}
+
+.group-container {
+    max-width: 300px;
+}
+
+.tabgroup-container {
+    width: 100% !important;
+}
+
+.activity-container {
+    width: 300px !important;
+}
+
+.lang-field {
+    width: 100%;
+}
+
+.mat-column-Field {
+    flex: 0 0 100px;
+    font-size: 0.9em;
+    padding-left: 0px !important;
+}
+
+.mat-column-Value {
+    font-size: 0.9em;
+    padding-right: 0px !important;
+}
+
+.lang-select {
+    width: 100%;
+    text-align: center;
+}
+
+.mat-option {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+

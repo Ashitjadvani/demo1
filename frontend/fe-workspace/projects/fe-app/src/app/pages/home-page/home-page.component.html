@@ -1,0 +1,36 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar" (LogoEvent)="onLogoClick()"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="flex-container" *ngIf="homeData">
+            <!-- <app-question-tile class="main-tile" [@slideInOutV]="questionDrawer" [questionMessage]="questionMessage" (onConfirmQuestion)="onQuestionConfirm($event)"></app-question-tile> -->
+            <app-lunch-settings class="main-tile" [@slideInOutV]="questionDrawer" [currentPerson]="homeData.user"
+                (onConfirmLunchSetting)="onLunchSettings($event)"></app-lunch-settings>
+            <app-main-action-tile class="main-tile" *ngIf="showInstantAction" [backgroundColor]="mainTileBackground"
+                [textSiteColor]="homeData.mainTile.status.mainTileTextColor" [textAction]="mainTileTextAction"
+                [textSite]="homeData.mainTile.status.mainTileTextSite" [textSizeInfo]="mainTileTextSiteInfo"
+                [textLastAction]="mainTileTextLastAction" [textDesk]="mainTileTextDesk"
+                (clickEvent)="onMainTileClick($event)" [icon]="homeData.mainTile.status.mainTileIcon"
+                [iconAction]="mainTileIconAction" [topText]="" [qrCode]="userQrCode">
+            </app-main-action-tile>
+            <div *ngIf="enableQrCode()" class="qr-code-tile-container">
+                <div *ngIf="enableQrCode() && greenpassVerify()" class="qr-code-tile" (click)="onClickQrCode()">
+                    <qr-code *ngIf="userQrCode!=''" #qrcode class="qr-code" [value]="userQrCode" [level]="qrLevel" [size]="145"></qr-code>
+                    <div *ngIf="userQrCode!==''" class="empty"> </div>
+                </div>
+                <div *ngIf="enableQrCode() && !greenpassVerify()" class="qr-code-tile" (click)="onMainTileClick($event)">
+                    <i class="material-icons verify-greenpass-icon">qr_code</i>
+                </div>
+            </div>
+            <app-action-tile *ngFor="let actionTile of menuActionTiles; let index"
+                (clickEvent)="onTileClick(actionTile)" [caption]="actionTile.Caption" [icon]="actionTile.Icon"
+                [textColor]="actionTile.TextColor" [backgroundColor]="actionTile.BackgroundColor"
+                [topText]="actionTile.ExtraInfo" [borderColor]="actionTile.BorderColor">
+            </app-action-tile>
+            <app-action-tile *ngIf="actionTiles && (actionTiles.length % 2==0)" class="padding-tile" [caption]=""
+                [icon]="">
+            </app-action-tile>
+        </div>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="showBack" (MenuEvent)="onMenuClick()"
+        (HomeEvent)="onHomeClick()" (BackEvent)="onBackClick()"></app-main-tab-bar>
+</div>

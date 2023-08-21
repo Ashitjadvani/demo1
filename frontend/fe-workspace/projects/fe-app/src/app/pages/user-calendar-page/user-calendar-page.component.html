@@ -1,0 +1,202 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar" (LogoEvent)="onRefreshPage()"></app-main-toolbar>
+    <div class="page-content">
+        <div class="day-title">
+            <div class="control-row">
+                <button mat-icon-button (click)="onChangeDay(-1)" matTooltip="Previous">
+                    <i class="material-icons">navigate_before</i>
+                </button>
+                <div class="day-text-container">
+                    <div class="day-text" (click)="onToggleParamDrawer()">
+                        {{ getCalendarDayTitle() }}
+                    </div>
+                    <button mat-icon-button (click)="onShowActivityLog()" matTooltip="Le mie attività">
+                        <i class="material-icons">event_note</i>
+                    </button>
+                </div>
+                <button mat-icon-button (click)="onChangeDay(1)" matTooltip="Next">
+                    <i class="material-icons">navigate_next</i>
+                </button>
+            </div>
+        </div>
+        <div class="calendar-container">
+            <mat-calendar class="calendar-small" #calendar (selectedChange)="onDateSelectedChange($event)"
+                [dateClass]="calendarDateClassCallback"></mat-calendar>
+        </div>
+
+        <!-- <div [@slideInOutV]="paramDrawer" class="calendar-drawer">
+            <div class="calendar-param-container">
+                <div class="control-row">
+                    <mat-form-field class="control-item">
+                        <mat-select placeholder="{{'APP_PEOPLE_PAGE.SITE' | translate}}" [(ngModel)]="eventSite"
+                            [disabled]="!isParamEditorEnabled()">
+                            <mat-option *ngFor="let site of sites" [value]="site">
+                                {{ site.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <span class="h-spacer"></span>
+                    <mat-form-field class="control-item">
+                        <mat-select placeholder="{{'APP_PEOPLE_PAGE.PLAN' | translate}}"
+                            [(ngModel)]="eventActivityTypeData" [disabled]="!isParamEditorEnabled()">
+                            <mat-option *ngFor="let at of activityTypeDatas" [value]="at">
+                                {{ at.activityLabel }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="control-row">
+                    <div class="width-40">
+                        <mat-form-field class="width-100">
+                            <input matInput placeholder="{{'APP_PEOPLE_PAGE.START' | translate}}"
+                                [(ngModel)]="eventTimeFrame[0]" [disabled]="!isParamEditorEnabled()">
+                            <button mat-button matSuffix mat-icon-button (click)="pickerStartTime.open()">
+                                <mat-icon>schedule</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <ngx-material-timepicker #pickerStartTime [format]="24" (timeSet)="setEventTime(0, $event)">
+                        </ngx-material-timepicker>
+                    </div>
+                    <div class="width-40">
+                        <mat-form-field class="width-100">
+                            <input matInput placeholder="{{'APP_PEOPLE_PAGE.END' | translate}}"
+                                [(ngModel)]="eventTimeFrame[1]" [disabled]="!isParamEditorEnabled()">
+                            <button mat-button matSuffix mat-icon-button (click)="pickerEndTime.open()">
+                                <mat-icon>schedule</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <ngx-material-timepicker #pickerEndTime [format]="24" (timeSet)="setEventTime(1, $event)">
+                        </ngx-material-timepicker>
+                    </div>
+                    <button class="width-20" mat-icon-button (click)="onAddEvent()"
+                        matTooltip="{{'APP_PEOPLE_PAGE.Confirm' | translate}}" [disabled]="!isParamEditorEnabled()">
+                        <i class="material-icons">task_alt</i>
+                    </button>
+                </div>
+            </div>
+            <div class="calendar-param-container">
+                <div class="control-row">
+                    <mat-form-field class="width-100">
+                        <input matInput type="number" placeholder="{{'APP_PEOPLE_PAGE.REPEAT DAYS' | translate}}"
+                            [(ngModel)]="dayRepeatCount" [disabled]="!isParamEditorEnabled()">
+                    </mat-form-field>
+                    <button class="width-20" mat-icon-button (click)="onRepeatPlan()"
+                        matTooltip="{{'APP_PEOPLE_PAGE.Confirm' | translate}}" [disabled]="!isParamEditorEnabled()">
+                        <i class="material-icons">task_alt</i>
+                    </button>
+
+                </div>
+            </div>
+        </div> -->
+        <div class="calendar-add-plan-tile" *ngIf="isAddPlanEnabled() || ALLOW_PAST_EVENT_UPDATE" (click)="onCreateEvent(false)">{{'APP_PEOPLE_PAGE.ADDPLAN' | translate}}</div>
+        <!--div class="calendar-add-plan-tile" *ngIf="isOvertimeAvailable()" (click)="onCreateEvent(true)">Aggiungi Straordinario</div-->
+        <div class="calendar-add-plan-tile" *ngIf="isPastPlanAvailable()" (click)="onCreateEvent(true)">{{'APP_PEOPLE_PAGE.ADDPLAN' | translate}}</div>
+
+        <div class="calendar-day-events-container">
+            <app-lunch-settings class="main-tile" [@slideInOutV]="lunchQuestionDrawer" [currentPerson]="currentPerson" (onConfirmLunchSetting)="onLunchSettings($event)"></app-lunch-settings>
+
+            <div *ngIf="selectedDayPlanItems.length == 0" class="event-tile noplan-tile">
+                <div class="event-tile-content">
+                    <div class="event-body">
+                        <div class="event-tile-time">
+                            <mat-icon class="event-icon">schedule</mat-icon>
+                            <div class="width-15">{{ eventTimeFrame[0] }}</div>
+                            <span class="event-time-spacer"></span>
+                            <div class="width-15">{{ eventTimeFrame[1] }}</div>
+                            <span class="event-time-span"></span>
+                            <mat-icon class="event-icon">calendar_today</mat-icon>
+                            <div>{{ selectedCalendarDay.dateRef | date: 'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="event-tile-activity">
+                            {{'APP_PEOPLE_PAGE.NO PLAN' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngFor="let event of selectedDayPlanItems" class="event-tile"
+                [ngStyle]="{'background': getActivityTypeColor(event), 'height': getActivityTypeHeight(event)}">
+
+                <div class="event-tile-content">
+                    <div [@slideInOutH]="actionDrawer" class="event-actions">
+                        <button class="size-30x30"*ngIf="showDeleteEvent(event)" mat-icon-button (click)="onRemoveEvent(event)"
+                            matTooltip="Elimina">
+                            <i class="material-icons btn-icon" style="color: red">delete</i>
+                        </button>
+                        <button class="size-30x30" *ngIf="showEditEvent(event)" mat-icon-button (click)="onEditEvent(event)"
+                            matTooltip="Modifica">
+                            <i class="material-icons btn-icon">edit_calendar</i>
+                        </button>
+                        <button class="size-30x30" *ngIf="getActivityType(event)=='NoWorking' || getActivityType(event)=='ExtraWorking'" mat-icon-button (click)="onNotes(event)"
+                            matTooltip="Note">
+                        <i class="material-icons btn-icon">edit</i>
+                    </button>
+                    </div>
+
+                    <div class="event-body" (click)="onToggleActionDrawer(event)">
+                        <div class="event-tile-time">
+                            <mat-icon class="event-icon">schedule</mat-icon>
+                            <div class="width-15">{{ event.start | date: 'HH:mm'}}</div>
+                            <span class="event-time-spacer"></span>
+                            <div class="width-15">{{ event.end | date: 'HH:mm'}}</div>
+                            <span class="event-time-span"></span>
+                            <mat-icon class="event-icon">calendar_today</mat-icon>
+                            <div>{{ selectedCalendarDay.dateRef | date: 'dd/MM/yyyy'}}</div>
+                        </div>
+
+                        <div class="event-tile-time">
+                            <mat-icon class="event-icon">pending_actions</mat-icon>
+                            <div class="width-15">{{ event.activityStartTime | date: 'HH:mm' }}</div>
+                            <span class="event-time-spacer"></span>
+                            <div class="width-15">{{ event.activityEndTime | date: 'HH:mm' }}</div>
+                            <mat-icon *ngIf="showCalendarTimeWarning(event)" class="event-icon">notification_important</mat-icon>
+                            <div *ngIf="showCalendarTimeWarning(event)" class="width-30">{{ getCalendarWarningInfo(event) }}</div>
+                        </div>
+                        <div class="event-tile-activity" *ngIf="getActivityTypeTitle(event)!='NoWorking' && getActivityTypeTitle(event)!=''">
+                            {{ getActivityTypeTitle(event) }}
+                        </div>
+                        <div class="activity-details">
+                            <div class="event-tile-activity-details">
+                                {{ getActivityTypeDetails(event) }} 
+                            </div>
+                            <div class="event-tile-request-state" *ngIf="getActivityRequestState(event)=='Initialized' || getActivityRequestState(event)=='Pending'">
+                                <i class="material-icons icon-image color-black" >hourglass_bottom</i>
+                            </div>
+                            <div class="event-tile-request-state" *ngIf="getActivityRequestState(event)=='AccAccepted' || getActivityRequestState(event)=='ResAccepted' || getActivityRequestState(event)=='AutoAccepted'">
+                                <i class="material-icons icon-image color-green" >thumb_up_off_alt</i>
+                                
+                            </div>
+                            <div class="event-tile-request-state" *ngIf="getActivityRequestState(event)=='AccRejected' || getActivityRequestState(event)=='ResRejected'">
+                                <i class="material-icons icon-image color-red" >thumb_down_off_alt</i>
+                                
+                            </div>
+                        </div>
+                        <div class="event-tile-activity" *ngIf="getActivityType(event)=='NoWorking' || getActivityType(event)=='ExtraWorking'">                      
+                            <div class="event-tile-last-action" *ngIf="getActivityRequestState(event)=='AccAccepted' || getActivityRequestState(event)=='ResAccepted'">{{'EMPLOYEE PAGE.ACCEPTED BY' | translate}} {{getActivityLastActionName(event)}} {{'EMPLOYEE PAGE.AT' | translate}} {{getActivityLastActionDate(event)}}</div>
+                            <div class="event-tile-last-action" *ngIf="getActivityRequestState(event)=='AutoAccepted'">{{'EMPLOYEE PAGE.ACCEPTED BY' | translate}} {{'EMPLOYEE PAGE.SILENCE ASSENT' | translate}} {{'EMPLOYEE PAGE.AT' | translate}} {{getActivityLastActionDate(event)}}</div>
+                            <div class="event-tile-last-action" *ngIf="getActivityRequestState(event)=='AccRejected' || getActivityRequestState(event)=='ResRejected'">{{'EMPLOYEE PAGE.REJECTED BY' | translate}} {{getActivityLastActionName(event)}} {{'EMPLOYEE PAGE.AT' | translate}} {{getActivityLastActionDate(event)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currentLunchItem" class="event-tile lunch-tile">
+                <div class="event-tile-content">
+                    <div class="event-body">
+                        <div class="event-tile-time">
+                            <mat-icon class="event-icon">schedule</mat-icon>
+                            <div class="width-15">{{ currentLunchItem.start | date: 'HH:mm'}}</div>
+                            <span class="event-time-spacer"></span>
+                            <div class="width-15">{{ currentLunchItem.end | date: 'HH:mm'}}</div>
+                            <span class="event-time-span"></span>
+                            <mat-icon class="event-icon">calendar_today</mat-icon>
+                            <div>{{ selectedCalendarDay.dateRef | date: 'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="event-tile-activity">
+                            {{ 'APP_PEOPLE_PAGE.LUNCH' | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" (QrScanEvent)="onQrScanEvent()" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

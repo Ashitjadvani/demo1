@@ -1,0 +1,140 @@
+<h2 mat-dialog-title><b>{{'ADMIN DIALOGS.ADDCENTRALUNIT'|translate}}</b><mat-spinner *ngIf="waiting" class="loader" [diameter]="36"></mat-spinner></h2>
+
+<mat-dialog-content>
+    <!--div class="dialog-container">
+        <mat-form-field>
+            <input matInput placeholder="{{'ADMIN DIALOGS.GROUPNAME'|translate}}" appearance="legacy" 
+                [(ngModel)]="group.name">
+        </mat-form-field>
+        <div class="label">{{'ADMIN DIALOGS.PASSAGES'|translate}}:</div>
+        <mat-checkbox *ngFor="let passage of site.accessControlPassages" [checked]="checkPassage(passage)" (change)="checkChanged($event, passage)" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{passage.name}}</div>
+        </mat-checkbox>
+    </div-->
+    <mat-tab-group #tabgroup class="group-tab">
+        <mat-tab>
+            <div class="tab-container">
+                <div class="line">
+                    <div class="question">{{'ACCESS_CONTROL.HowManyCentralUnits'|translate}}</div>
+                    <mat-form-field class="width-20" style="padding-top:10px">
+                        <input placeholder="{{'ACCESS_CONTROL.Specify Number' | translate}}" matInput type="number" [(ngModel)]="centralUnitsNumber" min="1" max="30">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <div class="tab-container">
+                <div class="line">
+                    <div *ngIf="centralUnitsNumber!=1" class="question">{{'ACCESS_CONTROL.NameOfCentralUnits'|translate}}</div>
+                    <div *ngIf="centralUnitsNumber==1" class="question">{{'ACCESS_CONTROL.NameOfCentralUnit'|translate}}</div>
+                    <mat-form-field class="width-30" style="padding-top:6px">
+                        <input matInput placeholder="{{'ACCESS_CONTROL.Specify Name'|translate}}" appearance="legacy" 
+                            [(ngModel)]="centralUnitsName">
+                    </mat-form-field>
+                </div>
+                <div class="line">
+                    <div *ngIf="centralUnitsNumber!=1" class="question note">{{'ACCESS_CONTROL.MoreCentralUnitsNameDescription'|translate}}</div>
+                </div>
+            </div>
+        </mat-tab>
+        <!--mat-tab>
+            <div class="tab-container">
+                <div class="line">
+                    <div class="question">{{'ACCESS_CONTROL.CheckData'|translate}}</div>
+                </div>
+                <div class="line">
+                    <mat-form-field class="width-30" style="padding-top:6px">
+                        <input matInput placeholder="LOmnia address" appearance="legacy" 
+                            [(ngModel)]="lomniaAddress">
+                    </mat-form-field>
+                </div>                
+                <div class="line">
+                    <mat-form-field class="width-30" style="padding-top:6px">
+                        <input matInput placeholder="LOmnia address" appearance="legacy" 
+                            [(ngModel)]="lomniaAddress">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-tab-->
+        <mat-tab>
+            <div class="tab-container">
+                <div class="line top-10">
+                    <div class="question">{{'ACCESS_CONTROL.InsertWifiData'|translate}}</div>
+                </div>
+                <div class="line">
+                    <mat-form-field class="width-30" style="padding-top:6px">
+                        <input matInput placeholder="SSID" appearance="legacy" 
+                            [(ngModel)]="wifiSSID">
+                    </mat-form-field>              
+                    <mat-form-field class="width-30" style="padding-top:6px">
+                        <input matInput placeholder="Password" appearance="legacy" 
+                            [(ngModel)]="wifiPassword">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <div class="tab-container gap-10 height-500">
+                <div id="div">
+                    <!--div class="line center">
+                        <mat-spinner *ngIf="waiting" class="loader" [diameter]="36"></mat-spinner>
+                    </div-->
+                    <!--div class="line top-10">
+                        <div class="question bold">{{'ACCESS_CONTROL.CentralUnitsGenerated'|translate}}</div>
+                    </div-->
+                    <div *ngFor="let unit of generatedCentralUnits" class="line" style="padding-bottom:80px">
+                        <!--div class="question">{{unit.name}}</div-->
+                        <div class="qr-codes-container">
+                            <div class="qr-code-container">
+                                <qr-code class="qr-code" *ngIf="unit.createQrCode" [value]="unit.createQrCode" [level]="qrLevel" [size]="150"></qr-code>
+                                <div class="no-qr-code" *ngIf="!unit.createQrCode">
+                                    <i class="material-icons icon">error</i>
+                                </div>
+                                <div class="qr-code-name">{{unit.name}} create</div>
+                            </div>
+                            <div class="qr-code-container">
+                                <qr-code class="qr-code" *ngIf="unit.setWifiQrCode" [value]="unit.setWifiQrCode" [level]="qrLevel" [size]="150"></qr-code>
+                                <div class="no-qr-code" *ngIf="!unit.setWifiQrCode">
+                                    <i class="material-icons icon">error</i>
+                                </div>
+                                <div class="qr-code-name">{{unit.name}} set wifi</div>
+                            </div>
+                            <div class="qr-code-container">
+                                <qr-code class="qr-code" *ngIf="unit.setPathQrCode" [value]="unit.setPathQrCode" [level]="qrLevel" [size]="150"></qr-code>
+                                <div class="no-qr-code" *ngIf="!unit.setPathQrCode">
+                                    <i class="material-icons icon">error</i>
+                                </div>
+                                <div class="qr-code-name">{{unit.name}} set path</div>
+                            </div>
+                            <div class="qr-code-container">
+                                <qr-code class="qr-code" *ngIf="unit.resetKeypadQrCode" [value]="unit.resetKeypadQrCode" [level]="qrLevel" [size]="150"></qr-code>
+                                <div class="no-qr-code" *ngIf="!unit.resetKeypadQrCode">
+                                    <i class="material-icons icon">error</i>
+                                </div>
+                                <div class="qr-code-name">{{unit.name}} reset keypad</div>
+                            </div>
+                            <div class="qr-code-container">
+                                <qr-code class="qr-code" *ngIf="unit.resetBlacklistQrCode" [value]="unit.resetBlacklistQrCode" [level]="qrLevel" [size]="150"></qr-code>
+                                <div class="no-qr-code" *ngIf="!unit.resetBlacklistQrCode">
+                                    <i class="material-icons icon">error</i>
+                                </div>
+                                <div class="qr-code-name">{{unit.name}} reset blacklist</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+    <button mat-flat-button class="action-button" color="primary" [disabled]="disablePreviousButton()"
+        (click)="onPrevious()">{{'ACCESS_CONTROL.Previous'|translate}}</button>
+    <button *ngIf="tabgroup.selectedIndex!=2" mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="disableNextButton()"
+        (click)="onNext()">{{'ACCESS_CONTROL.Next'|translate}}</button>
+    <button *ngIf="tabgroup.selectedIndex==3" mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="waiting"
+        (click)="onDownload()">Download QR</button>
+    <button *ngIf="tabgroup.selectedIndex==2" mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="disableGenerateButton()"
+        (click)="onGenerate()">{{'ACCESS_CONTROL.Generate'|translate}}</button>
+</mat-dialog-actions>

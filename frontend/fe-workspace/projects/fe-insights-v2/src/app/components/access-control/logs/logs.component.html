@@ -1,0 +1,212 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+            <li  class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.GatesOpeningList'| translate}}</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'ACCESS_CONTROL.GatesOpeningList'| translate}}
+                <span class="refresh-btn" (click)="getLogsList()" matTooltip="Refresh">
+                  <mat-icon>autorenew</mat-icon>
+                </span>
+              </h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'ACCESS_CONTROL.SearchBadge'| translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                </div>
+                <button  class="btn-style" (click)="addLog()">
+                  <span class="material-icons">add</span>{{'ACCESS_CONTROL.AddLog'| translate}}
+                </button>
+                <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                  <mat-icon >more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="onDownloadLogReport()">
+                    <span>{{'PEOPLE.Download Report' | translate}}</span>
+                  </button>
+                  <button mat-menu-item (click)="onFilter()">
+                    <span>{{'ACCESS_CONTROL.Filter' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table [dataSource]="logsListTransformed | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+
+                  <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'ACCESS_CONTROL.Actions'| translate}}
+                    </th>
+                    <td class="p-0" mat-cell *matCellDef="let element" style="width: 100px;">
+                      <span *ngIf="element.valid" title="{{'ACCESS_CONTROL.ValidAccess' | translate}}" [style.borderLeftColor]="'#00A042'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="viewLogBadge(element)" matTooltip="{{'ACCESS_CONTROL.ViewQrCode' | translate}}">
+                              <span class="material-icons">visibility</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>
+                      <span *ngIf="!element.valid" title="{{'ACCESS_CONTROL.NotValidAccess' | translate}}" [style.borderLeftColor]="'#FF0000'" class="border-types" style="white-space: nowrap;">
+                        <div class="hover-effect-menu two-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="viewLogBadge(element)" matTooltip="{{'ACCESS_CONTROL.ViewQrCode' | translate}}">
+                              <span class="material-icons">visibility</span>
+                            </button>
+                          </div>
+                        </div>
+                      </span>                       
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="type">
+                    <th *matHeaderCellDef mat-header-cell style="width: 80px">
+                      {{'ACCESS_CONTROL.LogType'| translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 80px">
+                      <img *ngIf="element.logType=='Beacon'" alt="" src="assets/images/beacon.svg" title="Beacon">
+                      <img *ngIf="element.logType=='Ring'" alt="" src="assets/images/ring.svg" title="Ring">
+                      <img *ngIf="element.logType=='Manual'" alt="" src="assets/images/keyboard-icon.svg" title="Added by {{element.addedByUserName}}">
+                      <img *ngIf="element.logType!='Beacon' && element.logType!='Ring' && element.logType!='Manual'" alt="" src="assets/images/qrcode-scan.svg" title="QR Code">
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="site">
+                    <th  (click)="changeSorting('siteId',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px">
+                      {{'ACCESS_CONTROL.Site'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'siteId' && sortKey === '-1' , 'up': sortBy === 'siteId' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'siteId'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'siteId'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px">
+                      {{element.siteName ? element.siteName : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="gate">
+                    <th  (click)="changeSorting('centralUnitId',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px">
+                      {{'ACCESS_CONTROL.Gate'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'centralUnitId' && sortKey === '-1' , 'up': sortBy === 'centralUnitId' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'centralUnitId'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'centralUnitId'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px">
+                      {{element.gateName ? element.gateName : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="timestamp">
+                    <th  (click)="changeSorting('timestamp',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px">
+                      Timestamp <span
+                      [ngClass]="{'down': sortBy === 'timestamp' && sortKey === '-1' , 'up': sortBy === 'timestamp' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'timestamp'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'timestamp'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px">
+                      {{element.timestamp ? (element.timestamp | date:'dd/MM/yyyy HH:mm:ss'):'-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="surname">
+                    <th  (click)="changeSorting('surname',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 220px;min-width: 220px">
+                      {{'ACCESS_CONTROL.Surname'| translate}} {{'ACCESS_CONTROL.Name'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'surname' && sortKey === '-1' , 'up': sortBy === 'surname' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'surname'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'surname'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 220px;min-width: 220px">
+                        {{element.surnameName ? element.surnameName : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <!--ng-container matColumnDef="name">
+                    <th  (click)="changeSorting('name',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                      {{'TABLE.Name'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'name' && sortKey === '-1' , 'up': sortBy === 'name' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'name'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'name'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                      {{element.name ? element.name : '-'}}
+                    </td>
+                  </ng-container-->
+                  
+                  <ng-container matColumnDef="scope">
+                    <th *matHeaderCellDef mat-header-cell style="width: 160px;min-width: 160px">
+                      {{'ACCESS_CONTROL.UserScope'| translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 160px;min-width: 160px">
+                      {{element.scope ? element.scope : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="valid">
+                    <th *matHeaderCellDef mat-header-cell style="width: 80px">
+                      {{'ACCESS_CONTROL.Valid'| translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 80px">
+                      <!--img *ngIf="!element.valid" alt="" src="assets/images/cross-icon-red.svg" title="{{'ACCESS_CONTROL.NotValidAccess' | translate}}">
+                      <img *ngIf="element.valid" alt="" src="assets/images/valid-icon.svg" title="{{'ACCESS_CONTROL.ValidAccess' | translate}}"-->
+                      <label *ngIf="!element.valid" class="btn-style table-btn sm-btn label-btn" style="color: #ea5455;border: 1px solid #ea5455;background-color: rgba(234,84,85,.1);min-width:80px;" disabled>
+                        {{'ACCESS_CONTROL.NotValid' | translate}}
+                      </label>
+                      <label *ngIf="element.valid" class="btn-style table-btn sm-btn label-btn" style="color: #22c55e;border: 1px solid #22c55e;background-color: rgba(34,197,94,.10196078431372549);min-width:80px;" disabled>
+                        {{'ACCESS_CONTROL.Valid' | translate}}
+                      </label>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;min-width: 120px">
+                      {{'ACCESS_CONTROL.Actions'| translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 120px;min-width: 120px">
+                      <div class="flex-start">
+                        <img src="assets/images/view-action.svg" title="{{'ACCESS_CONTROL.ViewQrCode' | translate}}" (click)="viewLogBadge(element)" alt="">
+                      </div>
+                    </td>
+                  </ng-container>
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="  logsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns:   logsDisplayedColumns"></tr>
+              </table>
+            </div>
+            <div *ngIf="!noRecordFound" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

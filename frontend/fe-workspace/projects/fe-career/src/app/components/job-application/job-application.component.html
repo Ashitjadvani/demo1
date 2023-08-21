@@ -1,0 +1,633 @@
+<app-header></app-header>
+<div class="stepper-head">
+    {{'JOBAPPLICATION.JobApplicationFor' | translate}} {{application.description}}
+</div>
+<mat-horizontal-stepper linear #stepper="matHorizontalStepper" [linear]="isLinear" (selectionChange)="selectionChange($event)">
+    <mat-step [stepControl]="jobApplicationForm">
+        <div class="stpper-content-wrap no-shadow">
+            <form class="form-content-box" name="jobApplicationForm" [formGroup]="jobApplicationForm" (ngSubmit)="saveMyApplication(2)" novalidate #myform1="ngForm">
+                <ng-template matStepLabel>{{'JOBAPPLICATION.PersonalDetails' | translate}}</ng-template>
+                <div class="stepper-form-head">
+                    <h2 style="font-weight: 700;">{{'JOBAPPLICATION.PersonalDetails' | translate}}</h2>
+                </div>
+                <div class="row stepper-form-content">
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Name' | translate}}<span *ngIf="jobApplicationForm.controls.nome.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="nome" name="nome" matInput type="text" style="text-transform: capitalize;">
+                                <mat-error *ngIf="jobApplicationForm.controls.nome.errors?.required" autocomplete="off">
+                                    {{'JOBAPPLICATION.NameRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Surname' | translate}}<span *ngIf="jobApplicationForm.controls.cognome.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="cognome" name="surName" matInput type="text" autocomplete="off" style="text-transform: capitalize;">
+                                <mat-error *ngIf="jobApplicationForm.controls.cognome.errors?.required">
+                                    {{'JOBAPPLICATION.SurnameRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-4">
+                        <div class="form-field age-date-validation">
+                            <label>{{'JOBAPPLICATION.DateOfBirth' | translate}}<span *ngIf="jobApplicationForm.controls.data_nascita.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                <input [matDatepicker]="picker" [max]="maxDob" formControlName="data_nascita" matInput>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker (opened)="streamOpened()"></mat-datepicker>
+                                <mat-error *ngIf="jobApplicationForm.controls.data_nascita.errors?.required">
+                                    {{'JOBAPPLICATION.DateOfBirthRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                            <span class="select-dob">({{'JOBAPPLICATION.AgeConfirmValidation' | translate}})</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Gender' | translate}}<span *ngIf="jobApplicationForm.controls.sesso.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-select formControlName="sesso" name="genderName" matInput type="text">
+                                    <mat-option value="Male">{{'JOBAPPLICATION.Male' | translate}}</mat-option>
+                                    <mat-option value="Female">{{'JOBAPPLICATION.Female' | translate}}</mat-option>
+                                    <mat-option value="Other">{{'JOBAPPLICATION.Other' | translate}}</mat-option>
+                                    <mat-option value="Not Specified">{{'JOBAPPLICATION.NotSpecified' | translate}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="jobApplicationForm.controls.sesso.errors?.required">
+                                    {{'JOBAPPLICATION.GenderRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Nationality' | translate}}<span *ngIf="jobApplicationForm.controls.nationality.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="nationality" name="nationalityName" matInput type="text" autocomplete="off" (keydown)="space($event)">
+                                <mat-error *ngIf="jobApplicationForm.controls.nationality.errors?.required">
+                                    {{'JOBAPPLICATION.NationalityRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12"></div>
+                    <!-- <div class="col-sm-4">
+                  <div class="form-field">
+                    <label>{{'LOGINPAGE.EmailAddress' | translate}}<span *ngIf="jobApplicationForm.controls.email.errors?.required" style="color:#EA5455">*</span></label>
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <input formControlName="email" name="emailAddress" matInput type="text" autocomplete="off" required>
+                        <mat-error *ngIf="jobApplicationForm.controls.email.errors?.required">
+                          {{'LOGINPAGE.Email_Address_Required' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                  </div>
+              </div> -->
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.PhoneNumber' | translate}}<span *ngIf="jobApplicationForm.controls.telefono.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="telefono" name="telefono" matInput type="tel" (keydown)="space($event)">
+                                <mat-error *ngIf="jobApplicationForm.controls.telefono.errors?.required">
+                                    {{'JOBAPPLICATION.PhoneRequired' | translate}}
+                                </mat-error>
+                                <mat-error *ngIf="jobApplicationForm.controls.telefono.errors?.pattern">
+                                    {{'GENERAL.EnterOnlyNumber' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Address' | translate}}<span *ngIf="jobApplicationForm.controls.indirizzo.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="indirizzo" name="addressDetails" matInput type="text" autocomplete="off">
+                                <mat-error *ngIf="jobApplicationForm.controls.indirizzo.errors?.required">
+                                    {{'JOBAPPLICATION.AddressRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.City' | translate}}<span *ngIf="jobApplicationForm.controls.cityName.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="cityName" name="cityName" matInput type="text">
+                                <mat-error *ngIf="jobApplicationForm.controls.cityName.errors?.required" autocomplete="off">
+                                    {{'JOBAPPLICATION.CityRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.State' | translate}}<span *ngIf="jobApplicationForm.controls.stateName.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="stateName" name="stateName" matInput type="text">
+                                <mat-error *ngIf="jobApplicationForm.controls.stateName.errors?.required" autocomplete="off">
+                                    {{'JOBAPPLICATION.StateRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Country' | translate}}<span *ngIf="jobApplicationForm.controls.countryName.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="countryName" name="countryName" matInput type="text" autocomplete="off">
+                                <mat-error *ngIf="jobApplicationForm.controls.countryName.errors?.required">
+                                    {{'JOBAPPLICATION.CountryRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Company' | translate}}<span *ngIf="jobApplicationForm.controls.azienda.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="azienda" name="companyName" matInput type="text" autocomplete="off">
+                                <mat-error *ngIf="jobApplicationForm.controls.azienda.errors?.required">
+                                    {{'JOBAPPLICATION.CompanyRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.JobTitle' | translate}}<span *ngIf="jobApplicationForm.controls.titolo.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="titolo" name="jobTitle" matInput type="text" autocomplete="off">
+                                <mat-error *ngIf="jobApplicationForm.controls.titolo.errors?.required">
+                                    {{'JOBAPPLICATION.JobTitleRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.LevelOfEducation' | translate}}<span *ngIf="jobApplicationForm.controls.livello_studi.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-select formControlName="livello_studi" name="livello_studi" matInput type="text" (ngModelChange)="changeEducationLevel()">
+                                    <mat-option value="{{item.id}}" *ngFor="let item of levelEducation">{{item.name | translate}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="jobApplicationForm.controls.livello_studi.errors?.required">
+                                    {{'JOBAPPLICATION.LevelOfEducationRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.UniversityName' | translate}}<span *ngIf="jobApplicationForm.controls.univ_id.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-select (ngModelChange)="changeUniversity()" formControlName="univ_id" matInput name="universityName" type="text">
+                                    <mat-option value="{{item.id}}" *ngFor="let item of universities">{{item.description}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="jobApplicationForm.controls.univ_id.errors?.required">
+                                    {{'JOBAPPLICATION.UniversityRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.univ_id === 'other'">
+                        <div class="form-field" id="graduation_yes">
+                            <label>{{'JOBAPPLICATION.UniName' | translate}}<span *ngIf="jobApplicationForm.controls.universityOther.errors?.required" style="color:#EA5455">*</span></label>
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <input formControlName="universityOther" name="universityOther" matInput type="text" autocomplete="off">
+                                    <mat-error *ngIf="jobApplicationForm.controls.universityOther.errors?.required">
+                                        {{'JOBAPPLICATION.UniNameRequired' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.Degree' | translate}}<span *ngIf="jobApplicationForm.controls.laurea_id.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-select (ngModelChange)="changeDegree()" formControlName="laurea_id" matInput name="degreeName" type="text">
+                                    <mat-option value="{{item.id}}" *ngFor="let item of degrees">{{item.description}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="jobApplicationForm.controls.laurea_id.errors?.required">
+                                    {{'JOBAPPLICATION.DegreeRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated' && jobApplicationForm.value.laurea_id === 'other'">
+                        <div class="form-field" id="graduation_yes">
+                            <label>{{'JOBAPPLICATION.DegreeName' | translate}}<span *ngIf="jobApplicationForm.controls.degreeOther.errors?.required" style="color:#EA5455">*</span></label>
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <input formControlName="degreeOther" name="degreeOther" matInput type="text" autocomplete="off" [attr.required]="{'required': (jobApplicationForm.value.laurea_id === 'other') ? 'true' : 'false'}">
+                                    <mat-error *ngIf="jobApplicationForm.controls.degreeOther.errors?.required">
+                                        {{'JOBAPPLICATION.DegreeNameRequired' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                        <div id="cc_signup">
+                            <label>{{'JOBAPPLICATION.DegreeMark' | translate}}<span *ngIf="jobApplicationForm.controls.voto_laurea.errors?.required" style="color:#EA5455">*</span></label>
+                            <div class="d-flex wrapper-field">
+                                <div class="form-field" style="width: 100%;">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <input formControlName="voto_laurea" name="voto_laurea" matInput type="number" min="66" max="110">
+                                        <mat-error *ngIf="jobApplicationForm.controls.voto_laurea.errors?.required">
+                                            {{'JOBAPPLICATION.DegreeMarkRequired' | translate}}
+                                        </mat-error>
+                                        <mat-error *ngIf="jobApplicationForm.controls.voto_laurea.errors?.min">
+                                            {{'JOBAPPLICATION.60_to_110' | translate}}
+                                        </mat-error>
+                                        <mat-error *ngIf="jobApplicationForm.controls.voto_laurea.errors?.max">
+                                            {{'JOBAPPLICATION.60_to_110' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-field" style="width: 100px;min-width: 100px;">
+                                    <div class="form-field-box" *ngIf="jobApplicationForm.value.voto_laurea >= 110">
+                                        <mat-checkbox class="example-margin" name="lode" formControlName="lode" type="checkbox">
+                                            {{'JOBAPPLICATION.Lode' | translate}}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'not-graduated'">
+                        <div class="form-field" id="graduation_yes">
+                            <label>{{'JOBAPPLICATION.ScoreAaverage' | translate}}<span *ngIf="jobApplicationForm.controls.scoreAverage.errors?.required" style="color:#EA5455">*</span></label>
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <input formControlName="scoreAverage" name="scoreAverage" matInput min="18" max="30" type="number" autocomplete="off">
+                                    <mat-error *ngIf="jobApplicationForm.controls.scoreAverage.errors?.required">
+                                        {{'JOBAPPLICATION.ScoreAverageRequired' | translate}}
+                                    </mat-error>
+                                    <mat-error *ngIf="jobApplicationForm.controls.scoreAverage.errors?.min">
+                                        {{'JOBAPPLICATION.18_to_30' | translate}}
+                                    </mat-error>
+                                    <mat-error *ngIf="jobApplicationForm.controls.scoreAverage.errors?.max">
+                                        {{'JOBAPPLICATION.18_to_30' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                        <div class="form-field">
+                            <label>{{'JOBAPPLICATION.DegreeYear' | translate}}<span *ngIf="jobApplicationForm.controls.degreeYear.errors?.required" style="color:#EA5455">*</span></label>
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <input formControlName="degreeYear" name="degreeYear" matInput type="number" autocomplete="off" min="1900" max="{{currentYear}}">
+                                <mat-error *ngIf="jobApplicationForm.controls.degreeYear.errors?.required">
+                                    {{'JOBAPPLICATION.DegreeYearRequired' | translate}}
+                                </mat-error>
+                                <mat-error *ngIf="jobApplicationForm.controls.degreeYear.errors?.max">
+                                    {{'JOBAPPLICATION.noMoreThanCurrentYear' | translate}}
+                                </mat-error>
+                                <mat-error *ngIf="jobApplicationForm.controls.degreeYear.errors?.min">
+                                    {{'JOBAPPLICATION.noLessThen1900' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                                <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.MasterDescription' |
+                                        translate}}</span>
+                                    <div class="d-flex">
+                                        <mat-slide-toggle class="education-switch" formControlName="isReadMaster" (ngModelChange)="changeIsRead($event, 'materDescription')"></mat-slide-toggle>
+                                        <!-- <mat-radio-group formControlName="isReadMaster" (ngModelChange)="changeIsRead($event, 'materDescription')">
+                        <mat-radio-button class="example-margin"  [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                      </mat-radio-group> -->
+                                    </div>
+                                    <span *ngIf="jobApplicationForm.controls.materDescription.errors?.required" style="color:#EA5455">*</span>
+                                </label>
+                                <div class="d-flex wrapper-field" [ngStyle]="{'visibility': (jobApplicationForm.value.isReadMaster) ? 'visible' : 'hidden'}">
+                                    <div class="form-field" id="master_yes" style="width: 100%;">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <input [placeholder]="'JOBAPPLICATION.MasterDescription' | translate" formControlName="materDescription" name="materDescription" matInput type="text" autocomplete="off">
+                                            <mat-error *ngIf="jobApplicationForm.controls.materDescription.errors?.required">
+                                                {{'JOBAPPLICATION.MasterDescriptionRequired' | translate}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                                <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.DoctorateDescription' |
+                                        translate}}</span>
+                                    <div class="d-flex">
+                                        <mat-slide-toggle class="education-switch" formControlName="isReadDoctorate" (ngModelChange)="changeIsRead($event, 'doctorateDescription')"></mat-slide-toggle>
+
+                                        <!-- <mat-radio-group formControlName="isReadDoctorate" (ngModelChange)="changeIsRead($event, 'doctorateDescription')">
+                        <mat-radio-button class="example-margin"  [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button class="example-margin" [value]="false">No</mat-radio-button>
+                      </mat-radio-group> -->
+                                    </div>
+                                </label>
+                                <div class="d-flex wrapper-field" [ngStyle]="{'visibility': (jobApplicationForm.value.isReadDoctorate) ? 'visible' : 'hidden'}">
+                                    <div class="form-field" id="doctorate_yes" style="width: 100%;">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <input [placeholder]="'JOBAPPLICATION.DoctorateDescription' | translate" formControlName="doctorateDescription" name="doctorateDescription" matInput type="text" autocomplete="off">
+                                            <mat-error *ngIf="jobApplicationForm.controls.doctorateDescription.errors?.required">
+                                                {{'JOBAPPLICATION.DoctorateDescriptionRequired' | translate}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" *ngIf="jobApplicationForm.value.livello_studi === 'graduated'">
+                                <label class="option-label" style="margin-bottom: 10px;"><span>{{'JOBAPPLICATION.StateExamination' |
+                                        translate}}</span>
+                                    <div class="d-flex">
+                                        <mat-slide-toggle class="education-switch" formControlName="stateExamination"></mat-slide-toggle>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-12">
+                        <div class="form-field">
+                            <div class="file-upload-wrapper">
+                                <div class="file-upload-in">
+                                    <div class="file-upload-text"><span class="material-icons">attachment</span>{{'JOBAPPLICATION.UploadCV' | translate}}
+                                        ({{'JOBAPPLICATION.OnlyPdfAllowed' | translate}})</div>
+                                    <label for="upload_btn">{{'JOBAPPLICATION.Browse' | translate}}</label>
+                                </div>
+                                <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf" />
+                                <span class="file-info">{{this.resumeDetailsData}} <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.resumeDetailsData? 'close' : null}}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+
+                <div class="form-content-box stpper-footer">
+                    <div class="step-form-bottom">
+                        <div>
+                            <button mat-button class="custom-btn" type="button" (click)="back()">{{'JOBAPPLICATION.Cancel' |
+                                translate}}</button>
+                        </div>
+                        <div class="right-btns">
+                            <button mat-button type="button" class="custom-btn light-btn" (click)="saveStepOne()">{{'JOBAPPLICATION.SaveDraft' | translate}}</button>
+                            <button mat-button matStepperNext type="submit" class="custom-btn">{{'JOBAPPLICATION.Next' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="personalDetailsForm" *ngIf="customFieldsBool">
+        <div class="stpper-content-wrap no-shadow">
+            <form class="form-content-box" [formGroup]="personalDetailsForm" (ngSubmit)="saveMyApplication(3)" novalidate #myformCustom="ngForm">
+                <ng-template matStepLabel>{{'JOBAPPLICATION.AdditionalDetails' | translate}}</ng-template>
+                <div class="stepper-form-head">
+                    <h2 style="font-weight: 700;">{{'JOBAPPLICATION.AdditionalDetails' | translate}}</h2>
+                </div>
+                <div class="row stepper-form-content" formArrayName="customFields">
+                    <div *ngFor="let item of customFieldsApplication let i = index;">
+                        <div class="stepper-form-content">
+                            <ng-container *ngFor="let question of customFields.controls; let qi = index;">
+                                <div class="question-wrapper" [formGroupName]="qi">
+                                    <div class="single-question">
+                                        <p>Q.{{qi + 1 }} {{item.questionData[qi].question}}</p>
+                                        <span class="subTitle" *ngIf="item.questionData[qi].subtitle">{{item.questionData[qi].subtitle}}</span>
+                                        <div class="form-field mt-20" *ngIf="item.questionData[qi].type == 'singleRadio'">
+                                            <div class="mat-form-field-wrapper">
+                                                <mat-radio-group formControlName="checked" aria-label="Select an option" name="radio-{{qi}}">
+                                                    <mat-radio-button (change)="changeRadio(qi, $event); item.questionData[qi].givenAnswer = ans.id;" value="{{ans.id}}" *ngFor="let ans of item.questionData[qi].answers;">{{ans.value}}
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                                <div class="mat-form-field-subscript-wrapper">
+                                                    <div style="opacity: 1; transform: translateY(0%);">
+                                                        <mat-error *ngIf="question.get('checked').hasError('required') && submited ">
+                                                            {{'Answer is required!' | translate}}
+                                                        </mat-error>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-field mt-20" *ngIf="item.questionData[qi].type == 'singleCheck'">
+                                            <span class="example-list-section changeRadioToCheckBox">
+                                                <!-- <div class="mat-form-field-wrapper">
+                          <mat-checkbox (change)="changeCheck(qi, $event, ans.id,item);"
+                            [checked]="item.questionData[qi].givenAnswer === ans.id" formControlName="checked"
+                            *ngFor="let ans of item.questionData[qi].answers;let j = index">{{ans.value}}</mat-checkbox>
+                          <div class="mat-form-field-subscript-wrapper">
+                            <div style="opacity: 1; transform: translateY(0%);">
+                              <mat-error *ngIf="question.get('checked').hasError('required') && submited">
+                                {{'Answer is required!' | translate}}
+                              </mat-error>
+                            </div>
+                          </div>
+                        </div> -->
+                                                <div class="mat-form-field-wrapper">
+                                                    <mat-radio-group formControlName="checked" aria-label="Select an option" name="radio-{{qi}}">
+                                                        <mat-radio-button (change)="changeRadio(qi, $event); item.questionData[qi].givenAnswer = ans.id;" value="{{ans.id}}" *ngFor="let ans of item.questionData[qi].answers;">{{ans.value}}
+                                                        </mat-radio-button>
+                                                    </mat-radio-group>
+                                                    <div class="mat-form-field-subscript-wrapper">
+                                                        <div style="opacity: 1; transform: translateY(0%);">
+                                                            <mat-error *ngIf="question.get('checked').hasError('required') && submited ">
+                                                                {{'Answer is required!' | translate}}
+                                                            </mat-error>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div class="form-field mt-20" *ngIf="item.questionData[qi].type == 'FreeText'">
+                                            <span class="example-list-section">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <input matInput id="textAnswer" type="text" name="textAnswer-{{qi}}" (blur)="customTextAnswer(item.questionData[qi], $event,qi)" formControlName="checked">
+                                                    <mat-error *ngIf="question.get('checked').hasError('required') && submited">
+                                                        {{'Answer is required!' | translate}}
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+
+                <div class="form-content-box stpper-footer">
+                    <div class="step-form-bottom">
+                        <div>
+                            <button mat-button matStepperPrevious (click)="previousButton(0)" class="custom-btn trans-btn">{{'JOBAPPLICATION.Previous' | translate}}</button>
+                        </div>
+                        <div class="right-btns">
+                            <button mat-button type="button" class="custom-btn light-btn" (click)="saveCustomDrafts()">{{'JOBAPPLICATION.SaveDraft' | translate}}</button>
+                            <button mat-button matStepperNext class="custom-btn">{{'JOBAPPLICATION.Next' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="videoAssessmentForm" *ngIf="videoAssessmentBool">
+        <div class="stpper-content-wrap no-shadow">
+            <form class="form-content-box" name="videoAssessmentForm" [formGroup]="videoAssessmentForm" (ngSubmit)="saveMyApplication(4)" novalidate #myformVideo="ngForm">
+                <ng-template matStepLabel>{{'JOBAPPLICATION.VideoAssessment' | translate}}</ng-template>
+                <div class="stepper-form-head">
+                    <h2 style="font-weight: 700;">{{'JOBAPPLICATION.VideoAssessment' | translate}}</h2>
+                </div>
+                <div class="stepper-form-content">
+                    <div class="file-upload-wrapper file-upload-wrapper-new">
+                        <div class="file-upload-in">
+                            <div class="file-upload-text"><img src="assets/image/upload-icon-new.svg" />
+                                {{'JOBAPPLICATION.UploadVideoHere' | translate}}</div>
+                            <label for="upload_btn_video" type="button">{{'JOBAPPLICATION.Browse' | translate}}</label>
+                        </div>
+                        <input id="upload_btn_video" name="videoUpload" type="file" #fileCoverVideo (change)="onVideoUpload(fileCoverVideo)" accept="video/mp4" />
+                        <span class="file-info">{{ this.videoDetailsData }} <span class="material-icons close-icon" (click)="resetCoverValue2()">{{ this.videoDetailsData? 'close' : null}}</span></span>
+                    </div>
+                    <div class="content-wrapper">
+                        <h3>{{'JOBAPPLICATION.ReadCarefullyContent' | translate}}</h3>
+                        <ul>
+                            <li *ngFor="let assessment of videoAssessmentApplication; let i = index">
+                              Q{{i+1}}. {{assessment.question}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-content-box stpper-footer">
+                    <div class="step-form-bottom">
+                        <div>
+                            <button mat-button matStepperPrevious (click)="previousButton(1)" class="custom-btn trans-btn">{{'JOBAPPLICATION.Previous' | translate}}</button>
+                        </div>
+                        <div class="right-btns">
+                            <button mat-button type="button" (click)="saveVideo()" class="custom-btn light-btn">{{'JOBAPPLICATION.SaveDraft' | translate}}</button>
+                            <button type="submit" mat-button matStepperNext class="custom-btn">{{'JOBAPPLICATION.Next' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-step>
+    <mat-step label="Quiz Step" [stepControl]="quizeFormGroup" *ngIf="quizesBool">
+        <div class="stpper-content-wrap no-shadow quiz-stepper">
+            <form class="form-content-box" name="quizeFormGroup" [formGroup]="quizeFormGroup" (ngSubmit)="saveMyApplication(5)" #myform="ngForm">
+                <ng-template matStepLabel>{{'JOBAPPLICATION.Quiz' | translate}}</ng-template>
+                <div class="stepper-form-head">
+                    <h2 style="font-weight: 700;">{{'JOBAPPLICATION.Quiz' | translate}} </h2>
+                </div>
+
+                <div class="stepper-form-content stepper-timer">
+                    <div class="remaining-time" *ngIf="viewTimer && !lastQuestion">
+                        <h4>{{'JOBAPPLICATION.TimeRemaining' | translate}}</h4>
+                        <div class="timer-count">
+                            <mat-progress-spinner value="{{progress}}" mode="determinate"></mat-progress-spinner>
+                            <span class="small-txt">
+                                <countdown #cd [config]="{ leftTime: leftTime }" (event)="handleEvent($event)"></countdown>
+                            </span>
+                        </div>
+                    </div>
+                    <mat-horizontal-stepper linear #stepper2="matHorizontalStepper" [linear]="isLinear">
+                        <mat-step *ngFor="let server of quizes">
+                            <ng-template matStepLabel>{{server.surveyName}}</ng-template>
+                            <form class="form-content-box no-shadow" name="quizeFormGroup" #myformQuestion="ngForm" *ngIf="!this.questionView.isShowDisclaimer">
+                                <div class="stepper-form-content">
+                                    <div class="question-wrapper">
+                                        <div class="single-question">
+                                            <p>{{questionView.question}}</p>
+                                            <span class="subTitle" *ngIf="questionView.subtitle">{{questionView.subtitle}}</span>
+                                            <div class="mt-20" *ngIf="questionView.type == 'singleRadio'">
+                                                <mat-radio-group aria-label="Select an option" [ngModelOptions]="{standalone: true}" [(ngModel)]="questionView.givenAnswer">
+                                                    <mat-radio-button value="{{ans.id}}" *ngFor="let ans of questionView.answers;">{{ans.value}}
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="mt-20" *ngIf="questionView.type == 'singleCheck'">
+                                                <span class="example-list-section">
+                                                    <mat-checkbox (change)="questionView.givenAnswer = ans.id" [checked]="questionView.givenAnswer === ans.id" [value]="ans.id" *ngFor="let ans of questionView.answers;let j = index">{{ans.value}}</mat-checkbox><br />
+                                                </span>
+                                            </div>
+                                            <div class="mt-20" *ngIf="questionView.type == 'FreeText'">
+                                                <span class="example-list-section">
+                                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                                        <input matInput id="textAnswer" type="email" name="textAnswer" [(ngModel)]="questionView.givenAnswer">
+                                                    </mat-form-field>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <span>{{questionView.numberOfQuestion}}</span> / <span>{{questionView.totalQuestion}}</span>
+                                            {{'GENERAL.Questions' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="quiz-desclaimer" *ngIf="this.questionView.isShowDisclaimer">
+                                <!--<p>Disclaimer:-</p>-->
+                                <p>{{questionView.disclaimer}}</p>
+                            </div>
+                        </mat-step>
+                        <mat-step>
+                            <ng-template matStepLabel>{{'JOBAPPLICATION.QuizFinish' | translate}}</ng-template>
+                            <div class="complete-quiz">
+                                {{'JOBAPPLICATION.QuizSubmited' | translate}}
+                            </div>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+                </div>
+                <div class="form-content-box stpper-footer">
+                    <div class="step-form-bottom">
+                        <div>
+                            <button (click)="previousButton(2); skipQuestion();" class="custom-btn trans-btn" mat-button matStepperPrevious>{{'JOBAPPLICATION.Previous' | translate}}</button>
+                        </div>
+                        <div class="right-btns">
+                            <button mat-button type="button" (click)="saveQuizFields('draft')" class="custom-btn light-btn">{{'JOBAPPLICATION.SaveDraft' | translate}}</button>
+                            <button *ngIf="!lastQuestion" type="button" mat-button class="custom-btn" (click)="surveyButton()">{{'JOBAPPLICATION.Next' | translate}}</button>
+                            <button *ngIf="lastQuestion" mat-button matStepperNext class="custom-btn">{{'GENERAL.Submit' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-step>
+    <mat-step class="last-success-step">
+        <ng-template matStepLabel>{{'JOBAPPLICATION.Completed' | translate}}</ng-template>
+        <div class="success-content">
+            <img src="assets/image/success-icon.svg" />
+            <h3>{{'JOBAPPLICATION.Congratulations' | translate}}</h3>
+            <p>{{'JOBAPPLICATION.ApplicationSuccessMessage' | translate}}</p>
+            <button mat-button class="custom-btn" routerLink="/">{{'JOBAPPLICATION.ViewOtherPositions' | translate}}</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

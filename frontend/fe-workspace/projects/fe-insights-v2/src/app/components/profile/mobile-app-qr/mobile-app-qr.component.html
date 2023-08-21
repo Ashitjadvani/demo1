@@ -1,0 +1,40 @@
+<section class="client-management new-event-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb  [title2]="'Dashboard'"  [title3]="'Mobile_Application'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <div class="table-content box-style company-info">
+                    <div class="table-heading">
+                        <h3 style="font-weight: 600">{{'Mobile_Application'| translate}}
+                        </h3>
+                    </div>
+                    <div class="row">
+                       <div class="col-md-12">
+                           <div class="finish-step">
+                               <div class="download-qr download-qr-generated mobile-qr-generated">
+                                   <qr-code [value]="qrData" [size]="150"></qr-code>
+                                   <div>
+                                       <h4 style="margin-bottom: 30px">{{'Scan QR Code to Install Application'| translate}}</h4>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <!--div class="col-md-6">
+                           <div class="finish-step">
+                               <div class="download-qr download-qr-generated">
+                                   <qrcode [qrdata]="qrData" [size]="256" [level]="'M'"></qrcode>
+                                   <div>
+                                       <h4 style="margin-top: margin-top: 30px;">Scan QR Code to Open Application</h4>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

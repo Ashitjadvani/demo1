@@ -1,0 +1,100 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'Programmi di Produzioni'" [title3]="'Programmi di Produzione'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600">
+                        Programmi di Produzione
+                        <span class="refresh-btn" (click)="onRefreshTable()" matTooltip="Refresh">
+                            <mat-icon>autorenew</mat-icon>
+                        </span>
+                    </h3>
+                    <div class="search-form-wrapper">
+                        <div class="search-form">
+                            <mat-icon (click)="datePicker.open()" matPrefix class="material-icons search">search</mat-icon>
+                            <input (click)="datePicker.open()" (ngModelChange)="onDateProductionChange($event)" readonly placeholder="Data Produzione" [ngModel]="productionDate" [matDatepicker]="datePicker" />
+                            <mat-datepicker #datePicker></mat-datepicker>
+                        </div>
+
+
+                        <button class="btn-style" (click)="onSyncProductionPlans()">
+                            <span class="material-icons">sync</span>Sync
+                        </button>
+
+                        <!--
+                        <button class="btn-style" (click)="onFilterItems()">
+                            <span class="material-icons">filter_alt</span>{{'ACCESS_CONTROL.Filter' | translate}}
+                        </button>
+                        -->
+                    </div>
+                </div>
+                <div class="table-wrapper resource-color-table">
+                    <table #table [dataSource]="listOfProductionPlans | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" style="width: 100%" mat-table multiTemplateDataRows style="width: 100%">
+                        <!--
+                        <ng-container matColumnDef="code_resource">
+                            <th (click)="changeSorting('code_resource',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 180px;">
+                                <app-sort-table-column [sortColumnName]="'code_resource'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Name_of_Event'| translate)"></app-sort-table-column>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.name ? element.name : '-' }}
+                            </td>
+                        </ng-container>
+                        -->
+
+                        <ng-container matColumnDef="code_resource">
+                            <th (click)="changeSorting('code_resource',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                <div class="table-title">
+                                    <span>Centro di Lavoro</span>
+                                    <span class="arrow-sorting" [ngClass]="{'down': sortKey === 'code_resource' && sortBy === '-1' , 'up': sortKey === 'code_resource' && sortBy === '1'}">
+                                        <img alt="" src="assets/images/up-arrow.svg">
+                                    </span>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; onPlanItemsExpand(element)">{{element.code_resource ? element.code_resource : '-'}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="code_odl">
+                            <th (click)="changeSorting('code_odl',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                <div class="table-title">
+                                    <span>Codice ODL</span>
+                                    <span class="arrow-sorting" [ngClass]="{'down': sortKey === 'code_odl' && sortBy === '-1' , 'up': sortKey === 'code_odl' && sortBy === '1'}">
+                                        <img alt="" src="assets/images/up-arrow.svg">
+                                    </span>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; onPlanItemsExpand(element)">{{element.code_odl ? element.code_odl : '-'}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="serial">
+                            <th (click)="changeSorting('serial',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                <div class="table-title">
+                                    <span>Codice Seriale</span>
+                                    <span class="arrow-sorting" [ngClass]="{'down': sortKey === 'serial' && sortBy === '-1' , 'up': sortKey === 'serial' && sortBy === '1'}">
+                                        <img alt="" src="assets/images/up-arrow.svg">
+                                    </span>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; onPlanItemsExpand(element)">{{element.serial ? element.serial : '-'}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                    <app-products-tracking-plan-expand-row [planItems]="element.items" style="width: 100%;"></app-products-tracking-plan-expand-row>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="event-element-row" [class.example-expanded-row]="expandedElement === element"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    </table>
+                </div>
+                <app-pagination [noRecordFound]="noRecordFound" [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="totalItems"></app-pagination>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,9 @@
+<!-- <th (click)="changeSorting()" *matHeaderCellDef class="short-arrow" mat-header-cell
+    style="min-width: 180px;"> -->
+<div class="table-title">
+    {{eventManagementName}}
+    <span
+        [ngClass]="{'down': sortColumnKey === sortColumnName && sortColumnBy === '-1' , 'up': sortColumnKey === sortColumnName && sortColumnBy === '1'}">
+        <img *ngIf="visibleSortingIcon" alt="" src="assets/images/up-arrow.svg"></span>
+</div>
+<!-- </th> -->

@@ -1,0 +1,8 @@
+<div *ngIf="searchResults.length > 0; else noresults">
+    <div *ngFor="let resource of searchResults">
+        <app-book-resource-list-item [resourceItem]="resource" (selected)="onResourceSelected($event)"></app-book-resource-list-item>
+    </div>
+</div>
+<ng-template #noresults>
+    <p class="no-results-msg">{{'BOOK SEARCH RESULTS.NO RESULTS'|translate}}</p>
+</ng-template>

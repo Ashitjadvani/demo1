@@ -1,0 +1,22 @@
+h2 {
+    text-transform: uppercase;
+}
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 350px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.action-button {
+    margin-right: 4px;
+    height: 37px;
+    font-size: 10px;
+    color: white !important;
+    border-radius: 0px;
+}

@@ -1,0 +1,63 @@
+<section class="login">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-lg-7 d-flex align-item-center">
+                    <div class="banner-img">
+                        <img src="./assets/images/login-img.svg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-content">
+                        <div class="logo">
+                            <img src="assets/images/legance-color.svg" routerLink="" alt="">
+                        </div>
+                      <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+                            <div class="form-wrapper">
+                                <div class="input-wrapper">
+                                    <div class="form-title">
+                                        <h3>{{'LOGIN-PAGE.SupplierLogin' | translate}}</h3>
+                                        <p>{{'LOGIN-PAGE.LoginInfo' | translate}}</p>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'LOGIN-PAGE.Username' | translate}}</mat-label>
+                                            <input matInput formControlName="email"  type="email" id="email" name="email" maxlength="50" (keydown)="space($event)">
+                                            <mat-error *ngIf="loginForm.controls.email.errors?.required">{{'LOGIN-PAGE.UsernameERROR' | translate}}</mat-error>
+                                            <mat-error *ngIf="loginForm.controls.email.errors?.pattern">{{'LOGIN-PAGE.UsernameValidERROR' | translate}}</mat-error>
+                                         </mat-form-field>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'LOGIN-PAGE.Password' | translate }}</mat-label>
+                                            <input matInput formControlName="password"  name="password"  [type]="hide ? 'password' : 'text'" (keydown)="space($event)">
+                                          <mat-error *ngIf="loginForm.controls.password.errors?.required" >{{'LOGIN-PAGE.PasswordERROR' | translate}}</mat-error>
+                                          <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                          </button>
+                                         </mat-form-field>
+                                    </div>
+                                    <div class="remember-forgot">
+                                        <mat-checkbox class="remember-check">{{'LOGIN-PAGE.RememberPassword' | translate }} </mat-checkbox>
+                                        <a routerLink="/forgot-password" class="forgot-link">{{'LOGIN-PAGE.Forgot_Password_link' | translate }}</a>
+                                    </div>
+                                </div>
+                                <div class="form-btn">
+                                    <button class="full-btn"  mat-button  type="submit">{{'GENERAL.Login' | translate }}</button>
+                                </div>
+                                <div class="login-footer text-center">
+                                    <!-- <div class="privacy"><span routerLink="privacy-policy"></span></div> -->
+                                    <div class="bottom-links">{{'By Signing up or Login, you agree to the' | translate}}
+                                        <a href="" routerLink="/privacy-policy" target="_blank">{{'PrivatePolicy' | translate}}</a>
+                                    </div>
+                                    <div class="signup">{{'LOGIN-PAGE.NOAccount' | translate}} <span routerLink="signup">{{'GENERAL.Register' | translate}}</span></div>
+                                    <!-- <div class="privacy"><span routerLink="privacy-policy">{{'GENERAL.PrivatePolicy' | translate}}</span><span routerLink="terms-condition">{{'GENERAL.TermsCondition' | translate}}</span></div> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

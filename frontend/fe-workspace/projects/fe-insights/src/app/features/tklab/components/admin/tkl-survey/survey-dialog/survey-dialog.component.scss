@@ -1,0 +1,56 @@
+.form-row{
+  margin-bottom: 10px;
+}
+mat-card{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display:flex;
+  flex-direction: column;
+}
+
+.mat-card-content{
+  padding:10px;
+}
+.mat-card-header {
+  flex-shrink: 0;
+}
+
+.mat-card-content{
+  flex-grow: 1;
+  overflow: auto;
+}
+mat-form-field {
+  width: 100%;
+}
+
+
+.survey_row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+
+}
+
+.survey_column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-right:20px;
+}
+
+#frmsurvey{
+  flex: 0.5;
+}
+
+#tbquestions{
+  flex: 1;
+}
+
+
+#question_container{
+  border: 1px solid #CCCCCC;
+
+}

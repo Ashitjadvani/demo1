@@ -1,0 +1,103 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'Add Side Effect' | translate}}</h4>
+            <img (click)="onNoClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="side-effect-add">
+            <button type="button" class="btn-style theme-btn sm-btn btn-green mb-30" (click)="addSideEffect($event)">
+               <mat-icon>add</mat-icon> {{'Add Side Effect' | translate}}
+            </button>
+        </div>
+        <div class="side-effect-table">
+            <form class="w-100" name="addSideEffectForm" [formGroup]="_form"  novalidate
+            #myform="ngForm">
+            <input type="hidden" formControlName="id">
+                <div class="table-wrapper">
+                    <table [dataSource]="sideEffectDataSource$" formArrayName="side_effects" mat-table style="width: 100%" >
+                        <ng-container matColumnDef="metrics">
+                            <th *matHeaderCellDef  mat-header-cell>
+                                {{'Quiz/Survey.Matrics' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element ; let i = index" [formGroupName]="i" >
+                                <mat-form-field>
+                                    <mat-select formControlName="metric" >
+                                        <mat-option *ngFor="let opt of metricsData"  [value]="opt.id" >{{opt.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- {{element.metric}} -->
+                            </td>
+                        </ng-container>
+                            <ng-container matColumnDef="sideEffect">
+                            <th *matHeaderCellDef  mat-header-cell>
+                                {{'Quiz/Survey.SideEffect' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                                <mat-form-field>
+                                    <mat-select formControlName="effect">
+                                        <mat-option *ngFor="let opt of sideEffectTypes" [value]="opt.id">{{opt.label}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- {{element.effect}} -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="values">
+                            <th *matHeaderCellDef  mat-header-cell>
+                                {{'Quiz/Survey.Value' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i" >
+                                <ng-container *ngIf="this._form.get('side_effects')?.at(i).get('metric').value as current_metric">
+                                    <!--{{this.metrics[current_metric] | json}} -->
+                                    <mat-form-field *ngIf="getMetrixByID(current_metric)?.type=='text'">
+                                        <input type="text" matInput formControlName="val_txt"/>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="getMetrixByID(current_metric)?.type=='numeric'">
+                                        <input type="number" matInput formControlName="val_numeric"/>
+                                    </mat-form-field>
+                                    <mat-slide-toggle formControlName="val_bool" *ngIf="getMetrixByID(current_metric)?.type=='flag'"></mat-slide-toggle>
+                                </ng-container>
+                                <!-- {{element.value}} -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="scopes">
+                            <th *matHeaderCellDef  mat-header-cell>
+                                {{'PEOPLE_MANAGEMENT.Scope' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                                <mat-form-field>
+                                    <mat-select formControlName="scope">
+                                        <mat-option *ngFor="let opt of scopeTypes"  [value]="opt.id">{{opt.label}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- {{element.scope}} -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                {{'TABLE.Action' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                <div class="action-icons d-flex switch">
+                                    <img src="assets/images/delete-action.svg" (click)="deleteSideEffect($event,element,i)" alt="">
+                                </div>
+                            </td>
+                        </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="sideEffectDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: sideEffectDisplayedColumns"></tr>
+                    </table>
+                </div>
+                <div *ngIf="sideEffectDataSource$?.value == 0" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+            </form>
+        </div>
+
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="submit()" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+            <button (click)="onNoClick(false)"  class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="dashboard-content">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <!--- <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>  -->
+                  <li class="breadcrumb-item active" aria-current="page">{{'Settings' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="account-wrapper">
+        <div class="account-list">
+            <div class="box-style">
+                <ul>
+                  <!-- <li routerLink="/settings" routerLinkActive="active">{{'INSIGHTS_MENU.PUSH_NOTIFICATIONS' | translate}}</li> -->
+                    <li routerLink="/settings" routerLinkActive="active">{{'Email Configuration' | translate}}</li>
+                    <li routerLink="dashboard-customization" routerLinkActive="active">{{'Dashboard Customization' | translate}}</li>
+                    <li routerLink="work-settings" routerLinkActive="active">{{'Work Settings' | translate}}</li>
+                    <li routerLink="server-settings" routerLinkActive="active">{{'Server Settings' | translate}}</li>
+                    <li routerLink="native-languages" routerLinkActive="active">{{'Native Languages' | translate}}</li>
+                    <li routerLink="greenpass-settings" routerLinkActive="active">{{'Green Pass Settings' | translate}}</li>
+                    <li routerLink="secret-code" routerLinkActive="active">{{'Event management Secret code' | translate}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-content-box box-style">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</section>

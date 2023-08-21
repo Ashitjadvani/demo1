@@ -1,0 +1,31 @@
+<div class="list-container">
+    <div class="action-button-list">
+        <button mat-fab class="action-button" color="primary" matTooltip="{{'ADMIN SETTINGS.SaveSettings' | translate}}"
+            (click)="onSaveSettings()">
+            <mat-icon class='filter-white'>save</mat-icon>
+        </button>
+    </div>
+    <div class="settings-container">
+        <mat-label class="title-label">{{'INSIGHTS_PEOPLE_PAGE.SERVER SETTINGS' | translate}}</mat-label>
+        <mat-checkbox [(ngModel)]="serverSettings.fullSmartWorkingFlow">
+            {{'ADMIN SETTINGS.SmartworkingFlag' | translate}}
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="serverSettings.deskCheckOutMandatory">
+            {{'ADMIN SETTINGS.DeskCheckOutMandatoryFlag' | translate}}
+        </mat-checkbox>
+        <mat-form-field class="lang-field">
+            <mat-label>{{'APP_PEOPLE_PAGE.SELECT LANGUAGE'|translate}}</mat-label>
+            <mat-select [(ngModel)]="userLanguageSelect" name='language' matNativeControl required
+                (selectionChange)='onLanguageChange($event)'>
+                <mat-option value="en">{{'LANGUAGES.ENGLISH'|translate}}</mat-option>
+                <mat-option value="es">{{'LANGUAGES.SPANISH'|translate}}</mat-option>
+                <mat-option value="it">{{'LANGUAGES.ITALIAN'|translate}}</mat-option>
+                <mat-option value="fr">{{'LANGUAGES.FRENCH'|translate}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="lang-field">
+            <input matInput placeholder="People Dashboard URL"
+                [(ngModel)]="serverSettings.peopleDashboardUrl">
+        </mat-form-field>
+    </div>
+</div>

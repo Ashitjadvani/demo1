@@ -1,0 +1,86 @@
+.resource-date {
+    padding: 0px 10px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.resource-overview {
+    padding: 0px 10px;
+
+    .overview-group {
+        margin: 10px 0 10px;
+
+        .title {
+            font-weight: bold;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .meeting-attendees {
+            display: flex;
+            flex-direction: column;
+
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+            .meeting-attendees-head {
+                display: flex;
+                flex-direction: row;
+
+                .meeting-attendees-title {
+                    margin: auto;
+                    font-size: large;
+
+                    font-weight: bold;
+                    flex-grow: 1;
+                }
+            }
+
+            .meeting-attendees-list {
+                display: flex;
+                flex-direction: column;
+                margin-top: 10px;
+                margin-bottom: 10px;
+
+                .meeting-attendees-list-empty {
+                    text-align: center;
+                    font-weight: bold;
+                }
+
+                .attendee-icon {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    margin-right: 10px;
+                }
+
+                .attendee-name {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    flex-grow: 1;
+                }
+
+                .meeting-attendees-card {
+                    display: flex;
+                    flex-direction: row;
+
+                    background: #dddddd;
+                    padding: 5px;
+                    margin-bottom: 5px;
+
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+}
+
+.book-details-wrapper {
+    width: 100%;
+    .book-details-container {
+        padding: 24px;
+    }
+}

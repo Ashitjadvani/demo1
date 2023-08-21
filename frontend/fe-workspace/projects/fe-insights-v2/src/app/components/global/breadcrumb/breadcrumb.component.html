@@ -1,0 +1,23 @@
+<ng-container >
+  <nav>
+    <ol class="breadcrumb box-style">
+      <li [routerLink]="routePath" class="breadcrumb-item"aria-current="page" *ngIf="title">{{title | translate}}</li>
+      <li [routerLink]="routePath2" class="breadcrumb-item" *ngIf="title2">{{title2 | translate}}</li>
+      <li (click)="Back()" class="breadcrumb-item" *ngIf="backPath">{{backPath | translate}}</li>
+      <li [routerLink]="routePath3" class="breadcrumb-item " [ngClass]="title4 ? '' : 'active'" aria-current="page" *ngIf="title3"><span>{{title3 | translate}} {{type | translate}}</span></li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="title4"><span>{{title4 | translate}} {{type2 | translate}}</span></li>
+    </ol>
+  </nav>
+</ng-container>
+
+<!--
+<ng-container *ngIf="size != 2">
+  <nav>
+    <ol class="breadcrumb box-style">
+      <li class="breadcrumb-item" *ngIf="title">{{title | translate}}</li>
+      <li [routerLink]="routePath" class="breadcrumb-item" *ngIf="title2">{{title2 | translate}}</li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="title3"><span>{{title3 | translate}} {{type | translate}}</span></li>
+    </ol>
+</nav>
+</ng-container> -->
+

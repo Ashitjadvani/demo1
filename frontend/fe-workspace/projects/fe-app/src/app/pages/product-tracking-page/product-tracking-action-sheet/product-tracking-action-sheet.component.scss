@@ -1,0 +1,79 @@
+@import "../../../../theme/theme.scss";
+
+.tracking-action-sheet {
+    width: 100%;
+    max-width: 350px;
+    height: 70vh;
+
+    display: flex;
+    flex-direction: column;
+
+    .product-info-container {
+        display: flex;
+        flex-direction: column;
+
+        border: 1px solid black;
+        background: #eeeeee;
+        padding: 5px;
+        border-radius: 10px;
+
+        .product-info-title {
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+        }
+
+        .product-info-descr {
+            font-family: "Open Sans", Arial, sans-serif;
+            font-size: 10px;
+            color: #666666;
+            margin-top: 2px;
+        }
+    }
+
+    .spacer {
+        flex-grow: 1;
+    }
+
+    .action-item {
+        border-radius: 10px;
+        margin-top: 10px;
+        height: 50px;
+        background-color: mat-color($mat-primary, main);
+        background: mat-color($mat-primary, main);
+
+        .item-text {
+            height: 40px;
+            line-height: 40px;
+            font-weight: 500;
+            white-space: normal !important;
+            text-overflow: unset !important;
+        }
+    }
+
+    .white-text {
+        color: white;
+    }
+
+    .product-log-item  {
+        border: 1px solid black;
+        background: #eeeeee;
+        padding: 5px;
+        border-radius: 10px;
+
+        margin-top: 4px;
+
+        .timestamp {
+            width: 100%;
+            text-align: left;
+            font-weight: 200;
+        }
+
+        .activity-text {
+            width: 100%;
+            text-align: left;
+            font-weight: 500;
+        }
+    }
+}

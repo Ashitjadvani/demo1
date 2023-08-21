@@ -1,0 +1,18 @@
+<h2 mat-dialog-title><b>{{mode}} {{title | translate}}</b></h2>
+<form name="form" (ngSubmit)="f.form.valid && onSave()" #f="ngForm" novalidate>
+  <mat-dialog-content>
+      <div class="dialog-container">
+          <mat-form-field>
+              <mat-label>{{mode}} {{title | translate}}</mat-label>
+              <input matInput [(ngModel)]="customField.question" id="custom" #custom="ngModel" placeholder="{{mode}} {{ title | translate}}" appearance="legacy" required>
+          </mat-form-field>
+      </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+      <ng-container>
+          <button mat-flat-button class="action-button" color="primary" (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+          <button mat-flat-button class="action-button" color="primary" [disabled]="!f.form.valid">{{'GENERAL.SAVE'|translate}}</button>
+      </ng-container>
+  </mat-dialog-actions>
+</form>

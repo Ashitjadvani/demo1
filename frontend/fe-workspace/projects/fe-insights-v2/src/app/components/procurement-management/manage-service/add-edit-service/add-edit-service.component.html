@@ -1,0 +1,288 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/procurement-dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+                    <li routerLink="/manage-service" class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SERVICE'| translate}}</li>
+                    <li aria-current="page" class="breadcrumb-item active"><span> {{'Procurement_Management.AddService' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [title2]="'INSIGHTS_MENU.PROCUREMENT_MANAGE_SERVICE'" [routePath2]="'/manage-service'"
+       [title3]="'Procurement_Management.AddService' ">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+
+            <mat-vertical-stepper #stepper [linear]="true" class="vertical-stepper-style" labelPosition="bottom">
+                <mat-step [stepControl]="addServiceForm">
+                    <ng-template matStepLabel>
+                        {{'Procurement_Management.AddService' | translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600"><span>{{'Procurement_Management.AddService' | translate}}</span></h3>
+                            <div class="search-form-wrapper">
+                                <div class="buttons-group">
+                                    <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field'| translate}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-content-box">
+                            <form #myform="ngForm" [formGroup]="addServiceForm" class="w-100" name="addServiceForm" novalidate>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Procurement_Management.ServiceName'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="serviceName" matInput name="serviceName" type="text" style="text-transform: capitalize;">
+                                                <mat-error *ngIf="addServiceForm.controls.serviceName.errors?.required">
+                                                    {{'Procurement_Management.EnterYourServiceName'| translate}}.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Procurement_Management.CostCenter'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="costCenterName" matInput name="costCenterName" type="text" (keydown)="space($event)">
+                                                <mat-error *ngIf="addServiceForm.controls.costCenterName.errors?.required">
+                                                    {{'Procurement_Management.EnterCostCenterName'| translate}}.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-xxl-12">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'TABLE.Description'| translate}}</mat-label>
+                                                <textarea formControlName="descriptionEnglish" matInput name="serviceDescription" type="text"></textarea>
+                                                <mat-error *ngIf="addServiceForm.controls.descriptionEnglish.errors?.required">
+                                                    {{'Procurement_Management.EnterYourServiceDescription'| translate}}.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-xxl-12">
+                                        <div class="row mandatory-fields">
+                                            <div class="col-xl-12">
+                                                <p>{{'Procurement_Management.TheMandatoryFieldsForThisService'| translate}}:</p>
+                                            </div>
+                                            <!-- <div *ngFor="let mandatory of mandatoryFields" class="col-xl-12 col-xxl-12">
+                        <div class="form-field dir-change">
+                          <div class="custom-switch switch">
+                            <mat-checkbox (change)="$event ? toggleMandatory(mandatory.value, $event) : null"
+                                          (click)="$event.stopPropagation()"
+                                          [checked]="existsMandatory(mandatory.value)">{{mandatory.name | translate}}</mat-checkbox>
+
+                            <mat-slide-toggle (change)="$event ? toggleMandatory(mandatory.value, $event) : null"
+                                              (click)="$event.stopPropagation()"
+                                              [checked]="existsMandatory(mandatory.value)">{{mandatory.name | translate}}</mat-slide-toggle>
+                          </div>
+                        </div>
+                      </div> -->
+
+                                            <div class="mandatory-service-table">
+                                                <div class="table-content">
+                                                    <div class="table-wrapper">
+                                                        <table [dataSource]="mandatoryFields" mat-table style="width: 100%">
+
+                                                            <ng-container matColumnDef="name">
+                                                                <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                                                                    {{'Services'| translate}}
+                                                                </th>
+                                                                <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                                                    {{element.name ? (element.name | translate) : '-'}}
+                                                                </td>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="switch">
+                                                                <th *matHeaderCellDef class="short-arrow" mat-header-cell style="max-width: 150px;width: 150px;text-align: center;">
+                                                                    {{'MASTER_MODULE.Is Required'| translate}}
+                                                                </th>
+                                                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;max-width: 150px;width: 150px;text-align: center;">
+                                                                    <div class="custom-switch switch">
+                                                                        <mat-slide-toggle (change)="$event ? toggleMandatory(element.value, $event) : null" (click)="$event.stopPropagation()" [checked]="existsMandatory(element.value)"></mat-slide-toggle>
+                                                                    </div>
+                                                                </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="MandatoryDisplayedColumns"></tr>
+                                                            <tr mat-row *matRowDef="let element; columns: MandatoryDisplayedColumns"></tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-footer d-flex justify-content-between">
+                                    <div>
+                                        <button class="btn-style red-line-btn" routerLink="/manage-service" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn-style theme-btn" type="submit" (click)="onSubmit('Yes')">{{'GENERAL.Save&Exit'| translate}}</button>
+                                        <button class="btn-style theme-btn" matStepperNext type="submit" (click)="onSubmit('No')">{{'GENERAL.Save&Next'| translate}}
+                                            <span class="material-icons" style="font-size: 18px;margin-left: 5px;">arrow_forward</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl]="serviceAgreementForm">
+                    <ng-template matStepLabel>
+                        {{'Procurement_Management.ServiceAgreement'| translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600"><span>{{'Procurement_Management.ServiceAgreement'| translate}}</span></h3>
+                            <div class="search-form-wrapper">
+                                <div class="buttons-group">
+                                    <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field'| translate}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-content-box">
+                            <form [formGroup]="serviceAgreementForm" class="w-100" name="serviceAgreementForm" novalidate>
+                                <div class="row" formArrayName="serviceAgreement">
+                                    <div class="col-xl-12 col-xxl-12 mb-30" *ngFor="let itemrow of formArr.controls; let i=index;  last as isLast; first as isFirst" [formGroupName]="i">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'INSIGHTS_PEOPLE_PAGE.TITLE'| translate}}</mat-label>
+                                                <input formControlName="title" matInput type="title" name="title">
+                                                <mat-error *ngIf="!checkValue.valid"></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Procurement_Management.ServiceAgreement'| translate}}</mat-label>
+                                                <textarea class="big-textarea" formControlName="description" matInput name="description" #checkValue type="text" required></textarea>
+                                                <!-- <mat-error *ngIf="serviceAgreementForm.controls.description.errors?.required">
+                          {{'Procurement_Management.EnterYourServiceDescription'| translate}}
+                        </mat-error> -->
+                                                <mat-error *ngIf="!checkValue.valid">{{'Procurement_Management.EnterYourServiceDescription'| translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <button (click)="deleteRow(i)" *ngIf="!isFirst" class="btn-style red-btn" type="button">{{'GENERAL.DeleteField'| translate}}</button>
+                                        <button (click)="addNewRow()" *ngIf="isLast" class="btn-style green-btn" type="button"><span class="material-icons">add</span>{{'GENERAL.AddMore'| translate}}
+                                        </button>
+                                    </div>
+                                    <!--<div class="col-xl-12 col-xxl-12 mb-30">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>Service Agreement</mat-label>
+                        <textarea class="big-textarea" type="text" formControlName="serviceDescription" matInput  name="serviceDescription"></textarea>
+                        <mat-error *ngIf="serviceAgreementForm.controls.serviceDescription.errors?.required" >
+                          Enter your service description.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <button class="btn-style green-btn"><span class="material-icons">add</span> Add More</button>
+                  </div>-->
+                                </div>
+                                <div class="form-footer d-flex justify-content-between">
+                                    <button class="btn-style red-line-btn" routerLink="/manage-service" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                                    <div>
+                                        <button class="btn-style dark-grey-btn" matStepperPrevious type="submit"><span class="material-icons" style="font-size: 18px;margin-left: 5px;width: 20px;">arrow_backward</span>{{'GENERAL.Previous'| translate}}
+                                        </button>
+                                        <button class="btn-style theme-btn" type="submit" (click)="onSubmitAgreement('Yes')">{{'GENERAL.Save&Exit'| translate}}</button>
+                                        <button class="btn-style theme-btn" matStepperNext type="submit" (click)="onSubmitAgreement('No')">{{'GENERAL.Save&Next'| translate}} <span class="material-icons" style="font-size: 18px;margin-left: 5px;">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>
+                        {{'GENERAL.AddQuiz'| translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600"><span>{{'GENERAL.AddQuiz'| translate}}</span></h3>
+                        </div>
+                        <div class="form-content-box">
+                            <form (ngSubmit)="saveServiceSurvey()" class="w-100" name="serviceAgreementForm" novalidate>
+                                <div class="table-wrapper resource-color-table">
+                                    <table [dataSource]="quiz_data" mat-table matSort style="width: 100%">
+                                        <ng-container matColumnDef="quizName">
+                                            <th *matHeaderCellDef class="remember-forgot" mat-header-cell mat-sort-header="quizName">
+                                                <mat-checkbox (change)="$event ? toggleAll($event) : null" [checked]="isChecked()" [indeterminate]="isIndeterminate()" class="mr-15"></mat-checkbox>
+                                                Quiz
+                                            </th>
+                                            <td *matCellDef="let element" class="remember-forgot" mat-cell>
+                                                <mat-checkbox (change)="$event ? toggle(element, $event) : null" (click)="$event.stopPropagation()" [checked]="exists(element)">{{element.title}}</mat-checkbox>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="questionNumber">
+                                            <th *matHeaderCellDef mat-header-cell mat-sort-header="questionNumber">{{'Procurement_Management.TotalNumberOfQuestions'| translate}}
+                                            </th>
+                                            <td *matCellDef="let element" mat-cell>
+                                                {{element.totalQuestion}}
+                                            </td>
+                                        </ng-container>
+                                        <tr *matHeaderRowDef="quizDisplayedColumns" mat-header-row></tr>
+                                        <tr *matRowDef="let element; columns: quizDisplayedColumns" mat-row></tr>
+                                    </table>
+                                    <div *ngIf="quiz_data.length === 0" class="no-record-found">{{'TABLE.No_record_found'| translate}}</div>
+                                </div>
+                                <div class="form-footer d-flex justify-content-between">
+                                    <button class="btn-style red-line-btn" routerLink="/manage-service" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                                    <div>
+                                        <button class="btn-style dark-grey-btn" matStepperPrevious type="button"><span class="material-icons" style="font-size: 18px;margin-left: 5px;width: 20px;">arrow_backward</span>{{'GENERAL.Previous'| translate}}
+                                        </button>
+                                        <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Finish'| translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+
+            <!--      <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>-->
+            <!--        <mat-step [stepControl]="firstFormGroup">-->
+            <!--          <form [formGroup]="firstFormGroup">-->
+            <!--            <ng-template matStepLabel>Fill out your name</ng-template>-->
+            <!--            <mat-form-field appearance="fill">-->
+            <!--              <mat-label>Name</mat-label>-->
+            <!--              <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>-->
+            <!--            </mat-form-field>-->
+            <!--            <div>-->
+            <!--              <button mat-button matStepperNext>Next</button>-->
+            <!--            </div>-->
+            <!--          </form>-->
+            <!--        </mat-step>-->
+            <!--        <mat-step [stepControl]="secondFormGroup">-->
+            <!--          <form [formGroup]="secondFormGroup">-->
+            <!--            <ng-template matStepLabel>Fill out your address</ng-template>-->
+            <!--            <mat-form-field appearance="fill">-->
+            <!--              <mat-label>Address</mat-label>-->
+            <!--              <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"-->
+            <!--                     required>-->
+            <!--            </mat-form-field>-->
+            <!--            <div>-->
+            <!--              <button mat-button matStepperPrevious>Back</button>-->
+            <!--              <button mat-button matStepperNext>Next</button>-->
+            <!--            </div>-->
+            <!--          </form>-->
+            <!--        </mat-step>-->
+            <!--        <mat-step>-->
+            <!--          <ng-template matStepLabel>Done</ng-template>-->
+            <!--          <p>You are now done.</p>-->
+            <!--          <div>-->
+            <!--            <button mat-button matStepperPrevious>Back</button>-->
+            <!--            <button mat-button (click)="stepper.reset()">Reset</button>-->
+            <!--          </div>-->
+            <!--        </mat-step>-->
+            <!--      </mat-stepper>-->
+
+
+        </div>
+    </div>
+</section>

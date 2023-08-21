@@ -1,0 +1,100 @@
+<mat-card class="frm_container mat-elevation-z20" *ngIf="this.config.mode == 'delete' else formCard">
+  <mat-card-content>
+    {{'TKLAB.DELETE_CONFIRM' | translate}}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="warn" (click)="delete(false)" cdkFocusInitial>{{'TKLAB.NO' | translate}}</button>
+    <button mat-button color="primary" (click)="delete(true)">{{'TKLAB.YES' | translate}}</button>
+  </mat-card-actions>
+</mat-card>
+<ng-template #formCard>
+  <mat-card class="frm_container mat-elevation-z20">
+    <mat-card-title>
+      <ng-container>{{'TKLAB.INSERT' | translate}}</ng-container>
+    </mat-card-title>
+    <mat-card-content>
+      <div class="survey_row">
+        <div class="survey_column" id="frmsurvey">
+          <form [formGroup]="this.form_fit_index" id="frmSurveyQuestion" (ngSubmit)="this.submitFitIndex($event)">
+            <div class="form-row">
+              <mat-form-field class="mat-form-field">
+                <mat-label>{{'EXTRA_WORD.Matrics' | translate}}</mat-label>
+                <mat-select formControlName="metric_id">
+                  <mat-option value="{{matric.metricId}}"
+                              *ngFor="let matric of matricData">{{matric.metricName}}</mat-option>
+                </mat-select>
+                <mat-error *ngFor="let error of this.form_fit_index.get('metric_id').errors | keyvalue; let i=index">
+                  <span *ngIf="error.key=== 'required' ">
+                    {{ 'TKLAB.VALIDATIONS.REQUIRED' | translate}}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="mat-form-field">
+                <mat-label>  {{'EXTRA_WORD.Operator' | translate}}</mat-label>
+                <mat-select formControlName="operator">
+                  <mat-option value="==">{{'EXTRA_WORD.Equal' | translate}}</mat-option>
+                  <mat-option value="!=">{{'EXTRA_WORD.NotEqual' | translate}}</mat-option>
+                  <mat-option value=">">{{'EXTRA_WORD.GreaterThan' | translate}}</mat-option>
+                  <mat-option value=">=">{{'EXTRA_WORD.GreaterThanEqual' | translate}}</mat-option>
+                  <mat-option value="<">{{'EXTRA_WORD.LessThan' | translate}}</mat-option>
+                  <mat-option value="<=">{{'EXTRA_WORD.LessThanEqual' | translate}}</mat-option>
+                </mat-select>
+                <mat-error *ngFor="let error of this.form_fit_index.get('operator').errors | keyvalue; let i=index">
+                  <span *ngIf="error.key=== 'required' ">
+                    {{ 'TKLAB.VALIDATIONS.REQUIRED' | translate}}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field class="mat-form-field">
+                <mat-label>{{'EXTRA_WORD.Value' | translate}}</mat-label>
+                <input type="number" matInput formControlName="value" autocomplete="off">
+                <mat-error *ngFor="let error of this.form_fit_index.get('value').errors | keyvalue; let i=index">
+                  <span *ngIf="error.key=== 'required' ">
+                    {{ 'TKLAB.VALIDATIONS.REQUIRED' | translate}}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field class="mat-form-field">
+                <mat-label>{{'EXTRA_WORD.TextResult' | translate}}</mat-label>
+                <input type="text" matInput formControlName="result" autocomplete="off">
+                <mat-error *ngFor="let error of this.form_fit_index.get('result').errors | keyvalue; let i=index">
+                  <span *ngIf="error.key=== 'required' ">
+                    {{ 'TKLAB.VALIDATIONS.REQUIRED' | translate}}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-row">
+              <mat-form-field class="mat-form-field">
+                <mat-label>{{'EXTRA_WORD.ScalarResult'| translate}}</mat-label>
+                <input type="number" matInput formControlName="scalarResult" autocomplete="off">
+                <mat-error *ngFor="let error of this.form_fit_index.get('scalarResult').errors | keyvalue; let i=index">
+                  <span *ngIf="error.key=== 'required' ">
+                    {{ 'TKLAB.VALIDATIONS.REQUIRED' | translate}}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button color="warn" mat-dialog-close>
+        <mat-icon>arrow_back</mat-icon>
+        {{'TKLAB.BACK' | translate}}
+      </button>
+      <div style="flex:1 1 auto"></div>
+      <button mat-button color="primary" type="submit" form="frmSurveyQuestion">
+        <mat-icon>save</mat-icon>
+        {{'TKLAB.SAVE' | translate}}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

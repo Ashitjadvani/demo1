@@ -1,0 +1,303 @@
+<div class="dashboard-container" fxLayout="row" *ngIf="currentUIState == UIState.uiDashboard">
+    <ng-container *ngFor="let oc of overviewDataCards">
+        <mat-card class="overview-card">
+            <div class="main-container" [ngStyle]="{'background': oc.mainColor }">
+                <div class="image filter-black">
+                    <i class="material-icons larger">{{ oc.image }}</i>
+                </div>
+
+                <div class="info">
+                    <div class="title">
+                        {{ oc.title | translate}}
+                    </div>
+                    <div class="data">
+                        {{ dashboardDataCounter[oc.counterIndex] }}
+                    </div>
+                </div>
+            </div>
+            <div class="footer-container" [ngStyle]="{'background': oc.footerColor }">
+                <button mat-flat-button class="footer-button" (click)="onNavigateUIState(oc.id)">{{ oc.footerText }}</button>
+            </div>
+        </mat-card>
+    </ng-container>
+</div>
+
+<ng-container *ngIf="currentUIState == UIState.uiOrders">
+    <mat-tab-group #tabgroup class="group-tab">
+        <mat-tab>
+            <div *ngIf="showQR" class="qr-info">
+                <h1 class="splash-info-text">Codice QR Ordine Lavorazione</h1>
+                <div class="print-qr" id="print-qr">
+                    <qr-code #qrcode [value]="orderQR" [level]="qrLevel" [size]="160"></qr-code>
+                    <mat-label>{{ orderQR }}</mat-label>
+                </div>
+                <div class="action-buttons">
+                    <button mat-flat-button class="qr-button" color="primary"
+                        (click)="onCloseLoginQR()">{{'GENERAL.CLOSE'|translate}}</button>
+                    <button mat-flat-button class="qr-button" color="primary"
+                        (click)="onDownloadLoginQR(qrcode)">{{'GENERAL.DOWNLOAD'|translate}}</button>
+                </div>
+            </div>
+
+            <div [@slideInOutV]="chartDrawerAction" class="chart-drawer">
+                <div class="chart-container">
+                </div>
+            </div>
+
+            <app-table-data-view [tableDataSet]="ordersTableData" [columnTemplates]="tableColumnTemplates"
+                [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+            </app-table-data-view>
+        </mat-tab>
+        <mat-tab>
+            <div *ngIf="showActivity" class="product-activity-info">
+                <h1 class="splash-info-text">Attività Produzione: {{ currentActivityPtoduct.itemCode }} </h1>
+
+                <div class="activity-container">
+                    <div *ngFor="let ai of currentActivityPtoduct.operationLog" class="activity-item">
+                        <div class="timestamp">{{ ai.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</div>
+                        <div class="activity-text">{{ ai.user }} - {{ ai.status }}</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button mat-flat-button class="qr-button" color="primary"
+                        (click)="onCloseProductActivity()">{{'GENERAL.CLOSE'|translate}}</button>
+                </div>
+            </div>
+
+            <div class="general-container">
+                <div class="card width-80 card-height-600">
+                    <div class="card-header">
+                        <div class="card-title">{{ titleCard }}</div>
+                    </div>
+                    <div class="card-body">
+                        <mat-tab-group class="card-group-tab" #tabgroupeditor>
+                            <mat-tab label="Ordine Lavorazione">
+                                <div class="card-body">
+                                    <div class="input-row">
+                                        <div class="width-30">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Codice" [(ngModel)]="currentOrder.name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-60">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Descrizione"
+                                                    [(ngModel)]="currentOrder.description">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="input-row">
+                                        <div class="width-30">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Cliente"
+                                                    [(ngModel)]="currentOrder.orderData.customer">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-10">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Numero Ordine"
+                                                    [(ngModel)]="currentOrder.orderData.orderNo">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-10">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Quantità"
+                                                    [(ngModel)]="currentOrder.orderData.quantity">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-20">
+                                            <mat-form-field class="width-100">
+                                                <input matInput [matDatepicker]="pickerDate1"
+                                                    placeholder="Data Consegna Prevista"
+                                                    [(ngModel)]="currentOrder.orderData.deliveryDateReqired">
+                                                <mat-datepicker-toggle matSuffix [for]="pickerDate1">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #pickerDate1></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-20">
+                                            <mat-form-field class="width-100">
+                                                <input matInput [matDatepicker]="pickerDate2"
+                                                    placeholder="Data Consegna Pianificata"
+                                                    [(ngModel)]="currentOrder.orderData.deliveryDatePlanned">
+                                                <mat-datepicker-toggle matSuffix [for]="pickerDate2">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #pickerDate2></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="input-row">
+                                        <div class="width-20">
+                                            <mat-form-field class="width-100">
+                                                <mat-select placeholder="Plant Produzione"
+                                                    [(ngModel)]="currentOrder.orderData.plant">
+                                                    <mat-option *ngFor="let plant of plantSites" [value]="plant.name">
+                                                        {{ plant.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-20">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Ciclo Produzione"
+                                                    [(ngModel)]="currentOrder.orderData.cycle">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-10">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Turno"
+                                                    [(ngModel)]="currentOrder.orderData.turn">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-20">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Macchina"
+                                                    [(ngModel)]="currentOrder.orderData.machine">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="width-10">
+                                            <mat-form-field class="width-100">
+                                                <input matInput placeholder="Linea Lavorazione"
+                                                    [(ngModel)]="currentOrder.orderData.line">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="input-row">
+                                        <mat-form-field class="width-20">
+                                            <mat-label>Codice Prodotto</mat-label>
+                                            <input matInput autocomplete="off" [(ngModel)]="orderItem.code">
+                                        </mat-form-field>
+                                        <mat-form-field class="width-60">
+                                            <mat-label>Descrizione Prodotto</mat-label>
+                                            <input matInput autocomplete="off" [(ngModel)]="orderItem.description">
+                                        </mat-form-field>
+                                        <mat-form-field class="width-10">
+                                            <mat-label>Quantità</mat-label>
+                                            <input matInput [(ngModel)]="orderItem.quantity">
+                                        </mat-form-field>
+                                        <button mat-icon-button (click)="onAddOrderItem()"
+                                            matTooltip="Aggiungi Prodotto">
+                                            <i class="material-icons">
+                                                add_circle
+                                            </i>
+                                        </button>
+                                    </div>
+                                    <div class="input-row">
+                                        <div class="orderitem-table-container">
+                                            <mat-table #table [dataSource]="currentOrder.items">
+                                                <ng-container matColumnDef="CodProd">
+                                                    <mat-header-cell *matHeaderCellDef>Codice Prodotto
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{ element.code }} </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="DesrProd">
+                                                    <mat-header-cell *matHeaderCellDef>Descrizione Prodotto
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{ element.description }}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="QtyProd">
+                                                    <mat-header-cell *matHeaderCellDef>Quantità
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element"> {{ element.quantity }}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                <ng-container matColumnDef="Action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                                    <mat-cell *matCellDef="let element; let i = index">
+                                                        <button mat-icon-button (click)="onDeleteOrderItem(i, element)"
+                                                            matTooltip="{{'GENERAL.DELETE'|translate}}">
+                                                            <i class="material-icons" style="color: red">delete</i>
+                                                        </button>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <mat-header-row
+                                                    *matHeaderRowDef="['CodProd', 'DesrProd', 'QtyProd', 'Action']; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row
+                                                    *matRowDef="let row; columns: ['CodProd', 'DesrProd', 'QtyProd', 'Action'];">
+                                                </mat-row>
+                                            </mat-table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Produzione" class="group-tab">
+                                <div class="production-table-container">
+                                    <mat-table #table [dataSource]="currentOrderProducts">
+                                        <ng-container matColumnDef="CodProd">
+                                            <mat-header-cell *matHeaderCellDef>Codice Prodotto
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{ element.itemCode }} </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="QrProd">
+                                            <mat-header-cell *matHeaderCellDef>Codice QR
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{ element.codeId }} </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="StatusProd">
+                                            <mat-header-cell *matHeaderCellDef>Stato
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{ element.status }} </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="Action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                            <mat-cell *matCellDef="let element; let i = index">
+                                                <button mat-icon-button matTooltip="Attività"
+                                                    (click)="onShowProductActivity(element)">
+                                                    <i class="material-icons">list_alt</i>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row
+                                            *matHeaderRowDef="['CodProd', 'QrProd', 'StatusProd', 'Action']; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row
+                                            *matRowDef="let row; columns: ['CodProd', 'QrProd', 'StatusProd', 'Action'];">
+                                        </mat-row>
+                                    </mat-table>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                    <div class="card-footer">
+                        <button mat-flat-button class="action-button" color="primary"
+                            (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                        <span class="width-5"></span>
+                        <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()"
+                            cdkFocusInitial (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</ng-container>
+
+<ng-container *ngIf="currentUIState == UIState.uiProduct">
+    <div class="general-container">
+        <div *ngIf="showActivity" class="product-activity-info">
+            <h1 class="splash-info-text">Attività Produzione: {{ currentActivityPtoduct.itemCode }} </h1>
+
+            <div class="activity-container">
+                <div *ngFor="let ai of currentActivityPtoduct.operationLog" class="activity-item">
+                    <div class="timestamp">{{ ai.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</div>
+                    <div class="activity-text">{{ ai.user }} - {{ ai.status }}</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button mat-flat-button class="qr-button" color="primary"
+                    (click)="onCloseProductActivity()">{{'GENERAL.CLOSE'|translate}}</button>
+            </div>
+        </div>
+
+        <div class="production-table-container">
+            <app-table-data-view [tableDataSet]="currentProducts" [columnTemplates]="tableProductsColumnTemplates"
+                [rowActions]="tableProductsRowActions" [mainActions]="tableProductsMainActions">
+            </app-table-data-view>
+        </div>
+    </div>
+</ng-container>

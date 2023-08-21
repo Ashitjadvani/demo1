@@ -1,0 +1,110 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+           <li routerLink="/procurement-dashboard" class="breadcrumb-item"> {{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+            <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+            <li routerLink="/manage-supplier" class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER' | translate}}</li>
+            <li class="breadcrumb-item active" aria-current="page"><span>{{'Procurement_Management.AddSupplier' | translate}}</span></li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [routePath2]="'/manage-supplier'" [title2]="'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER'"
+        [title3]="'Procurement_Management.AddSupplier'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="table-content box-style">
+          <div class="table-heading">
+            <h3 style="font-weight: 600"><span>{{'Procurement_Management.AddSupplier' | translate}}</span><!-- <span>Edit Supplier</span> --> </h3>
+            <div class="search-form-wrapper">
+              <div class="buttons-group">
+                <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field' | translate}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-content-box">
+            <form (ngSubmit)="onSubmit()" [formGroup]="addSupplierForm" class="w-100"  name="addSupplierForm" novalidate>
+              <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'Procurement_Management.CompanyName' | translate}}</mat-label>
+                      <input  formControlName="companyName" matInput name="companyName" (keydown)="space($event)"  required type="text">
+                      <mat-error *ngIf="addSupplierForm.controls.companyName.errors?.required" >
+                        {{'Procurement_Management.CompanyName_Required' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field error-message-custom">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'Procurement_Management.CompanyReferenceEmail' | translate}}</mat-label>
+                      <input  formControlName="companyReferenceEmail" matInput name="companyReferenceEmail"(keydown)="space($event)"  required type="email">
+                      <mat-error *ngIf="addSupplierForm.controls.companyReferenceEmail.errors?.required" >
+                        {{'Procurement_Management.CompanyReferenceEmail_Required' | translate}}
+                      </mat-error>
+                      <mat-error *ngIf="addSupplierForm.controls.companyReferenceEmail.errors?.pattern" >
+                        {{'FORGOT_PASSWORD.Email_Address_Valid' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+<!--                <div class="col-xl-6 col-xxl-4">-->
+<!--                  <div class="form-field error-message-custom">-->
+<!--                    <mat-form-field appearance="outline" class="element-full-width">-->
+<!--                      <mat-label>{{'Procurement_Management.CompanyWebsite' | translate}}</mat-label>-->
+<!--                      <input  formControlName="companyWebsiteURL" matInput name="companyWebsiteURL" required type="text">-->
+<!--                      <mat-error *ngIf="addSupplierForm.controls.companyWebsiteURL.errors?.required" >-->
+<!--                        {{'Procurement_Management.CompanyWebsite_Required' | translate}}-->
+<!--                      </mat-error>-->
+<!--                    </mat-form-field>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="col-xl-12">-->
+<!--                  <div class="form-field error-message-custom date-picker-style">-->
+<!--                    <mat-form-field appearance="outline" class="element-full-width">-->
+<!--                      <mat-label> {{'Procurement_Management.CompanyDescription' | translate}}</mat-label>-->
+<!--                      <textarea formControlName="companyDescription" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text"></textarea>-->
+<!--                      <mat-error *ngIf="addSupplierForm.controls.companyDescription.errors?.required">-->
+<!--                        {{'Procurement_Management.CompanyDescription_Required' | translate}}-->
+<!--                      </mat-error>-->
+<!--                    </mat-form-field>-->
+<!--                  </div>-->
+<!--                </div>-->
+                <div class="col-xl-12">
+                    <div class="form-field error-message-custom date-picker-style">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'Procurement_Management.BriefDescriptionForCollaboration' | translate}}</mat-label>
+                        <textarea formControlName="briefDescription" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required (keydown)="space($event)" type="text"></textarea>
+                        <mat-error *ngIf="addSupplierForm.controls.briefDescription.errors?.required">
+                          {{'Procurement_Management.BriefDescriptionForCollaboration_Required' | translate}}
+                          </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field error-message-custom">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label> {{'Procurement_Management.ServiceCategory' | translate}}</mat-label>
+                      <mat-select formControlName="serviceCategory" multiple required>
+                        <mat-option *ngFor="let category of serviceCategoryList" [value]="category.id">{{category.serviceName}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="addSupplierForm.controls.serviceCategory.errors?.required">
+                        {{'Procurement_Management.ServiceCategory_Required' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer">
+                <button class="btn-style theme-btn" type="submit">{{'Procurement_Management.Invite' | translate}}</button>
+                <button class="btn-style red-line-btn" routerLink="/manage-supplier" type="button">{{'GENERAL.Cancel' | translate}}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

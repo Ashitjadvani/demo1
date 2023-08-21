@@ -1,0 +1,35 @@
+@import "../people-single-scope-page.component.scss";
+
+.dispute-table {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-column-Date {
+    flex: 1 1 50px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Dispute {
+    flex: 1 1 100px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Author {
+    flex: 1 1 100px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Note {
+    flex: 1 1 200px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-NotDate {
+    flex: 1 1 50px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Action {
+    flex: 1 1 100px;
+    font-size: 0.9em;
+}

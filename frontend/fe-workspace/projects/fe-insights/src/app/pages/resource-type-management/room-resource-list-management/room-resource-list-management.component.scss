@@ -1,0 +1,230 @@
+@import "../../../../theme/theme.scss";
+
+.group-tab {
+    margin-top: -48px;
+    height: 100%;
+}
+
+.input-row {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card {
+    height: 600px;
+}
+
+.check-box {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.center-justify {
+    justify-content: center !important;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .card-group-tab {
+        height: 100%;
+    }
+
+    .user-param-box {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+
+        .input-row {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .map-container {
+        display: flex;
+        flex-direction: row;
+
+        padding: 10px;
+        height: 100%;
+
+        .control-container {
+            display: flex;
+            flex-direction: column;
+
+            width: 40px;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: row;
+
+            flex-grow: 1;
+            width: 100%;
+
+            .map-image {
+                width: 100%;
+                object-fit: none;
+            }
+
+            .no-image-text {
+                width: 100%;
+                margin-top: 60px;
+                text-align: center;
+                font-size: x-large;
+                font-weight: 800;
+            }
+        }
+    }
+}
+
+.panel-scheduler-container {
+    display: flex;
+    flex-direction: column;
+
+    flex-grow: 1;
+
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+    .panel-scheduler-timeframes {
+        display: flex;
+        flex-direction: column;
+
+        padding: 30px;
+
+        .schedule-title {
+            color: mat-color($mat-primary, main);
+
+            text-align: center;
+            font-size: xx-large;
+            font-weight: bold;
+
+            margin-bottom: 20px;
+        }
+
+        .in-progess {
+            background-color: #00ff0022;
+        }
+
+        .timeframe-card {
+            display: flex;
+            flex-direction: row;
+            background: #eeeeee;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+            height: 60px;
+
+            .timeframe-content {
+                flex-grow: 1;
+
+                margin-top: auto;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-bottom: auto;
+
+                display: flex;
+                flex-direction: column;
+
+                font-size: larger;
+                color: mat-color($mat-primary, main);
+
+                .timeframe-content-title {
+                    font-size: large;
+                    font-weight: bold;
+                }
+
+                .timeframe-content-time {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 5px;
+
+                    .clock-icon {
+                        font-size: large;
+                        margin-right: 10px;
+                        margin-top: auto;
+                        margin-bottom: auto;
+                    }
+
+                    .time-text {
+                        margin-top: auto;
+                        margin-bottom: auto;
+                    }
+
+                    .title-container {
+                        flex-grow: 1;
+                        flex-direction: column;
+
+                        .title-text {
+                            flex-grow: 1;
+                            text-align: end;
+                            font-weight: bold;
+                        }
+
+                        .title-notes {
+                            flex-grow: 1;
+                            text-align: end;
+                            font-weight: normal;
+                        }
+                    }
+                }
+
+                .timeframe-no-event {
+                    width: 100%;
+                    text-align: center;
+
+                    font-size: large;
+                    font-weight: bold;
+                }
+            }
+
+            .timeframe-action {
+                align-self: flex-end;
+            }
+        }
+    }
+}
+
+.label-title {
+    font-size: larger;
+    font-weight: 600;
+}
+
+.features-icon-row {
+    display: flex;
+    flex-direction: row;
+
+    .feature-icon {
+        object-fit: scale-down;
+        width: 56px;
+        height: 56px;
+        margin-right: 8px;
+    }
+}
+
+:host ::ng-deep .red {
+    color: red;
+}
+
+:host ::ng-deep .green {
+    color: greenyellow;
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+    height: 100% !important;
+}

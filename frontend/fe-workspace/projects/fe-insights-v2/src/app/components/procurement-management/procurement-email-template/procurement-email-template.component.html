@@ -1,0 +1,14 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="(scopeId === null) ? 'INSIGHTS_MENU.PROCUREMENT' : 'INSIGHTS_MENU.Training'" [title3]="'EVENT_MANAGEMENT.EmailTemplate'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <app-procurement-list-template *ngIf="!sharedData"></app-procurement-list-template>
+                <app-procurement-edit-template *ngIf="sharedData"></app-procurement-edit-template>
+            </div>
+        </div>
+    </div>
+</section>

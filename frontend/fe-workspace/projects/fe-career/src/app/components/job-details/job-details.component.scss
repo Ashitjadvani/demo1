@@ -1,0 +1,224 @@
+@import '../../../styles.scss';
+
+hr{
+    background-color: $grey;
+    opacity: 0.3;
+}
+button.apply-btn {
+    max-width: 209px;
+    width: 100%;
+    height: 50px;
+}
+
+
+
+.open-positions {
+    background-color: $primary;
+    padding: 70px 0px;
+}
+
+.full-job-details{
+    background-color: $skyblue;
+    padding-bottom: 80px;
+    @media (max-width: $mobile){
+      padding-bottom: 30px;
+    }
+    .position-deatils{
+        display: inline-block;
+        margin-top: -93px;
+        width: 100%;
+        .part-1 {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 24px 30px 33px 40px;
+            background-color: $white;
+            box-shadow: 0px 1px 20px $shadow;
+            @media (max-width: $mobile){
+              padding: 20px 15px 20px;
+            }
+            .top-profile {
+                display: flex;
+                width: 100%;
+                @media (max-width: $mobile){
+                  display: block;
+                  text-align: center;
+                }
+                img {
+                    width: 77px;
+                    height: 77px;
+                    margin-bottom: 20px;
+                }
+                .position-name {
+                    display: flex;
+                    margin-left: 20px;
+                    flex-direction: column;
+                    width: 100%;
+                    @media (max-width: $mobile){
+                      margin: 0px;
+                    }
+                    h3 {
+                        font-size: 30px;
+                        line-height: 37px;
+                        font-weight: bold;
+                        @media (max-width : $small-desktop) {
+                          font-size: 26px;
+                          line-height: 34px;
+                        }
+                        @media (max-width: $tablet){
+                          font-size: 24px;
+                          line-height: 32px;
+                        }
+                    }
+                    .job-address {
+                        display: flex;
+                        @media (max-width: $mobile){
+                          display: block;
+                         text-align: left;
+                        }
+                        p{
+                            font-weight: 600;
+                            margin-right: 30px;
+                            @media (max-width: $mobile){
+                              width: 100%;
+                              text-align: left;
+                            }
+                        }
+                        span{
+                            margin-right: 30px;
+                            font-size: 14px;
+                            line-height: 30px;
+                        }
+                    }
+                }
+                .job-status{
+                  @media (max-width: $mobile){
+                    margin-bottom: 15px;
+                    margin-top: 10px;
+                  }
+                }
+            }
+            .bottom-profile {
+                .job-details {
+                    display: flex;
+                    width: 100%;
+                    list-style: none;
+                    justify-content: space-between;
+                    margin: 15px 0px 0px;
+                    @media (max-width: $mobile){
+                      display: block;
+                    }
+                    li{
+                      @media (max-width: $mobile){
+                        float: left;
+                        width: 50%;
+                        margin-bottom: 10px;
+                      }
+                    }
+                    span {
+                        font-size: 14px;
+                        line-height: 17px;
+                    }
+                    h5 {
+                        font-size: 18px;
+                        line-height: 23px;
+                        margin-top: 6px;
+                        @media (max-width: $mobile){
+                          font-size: 16px;
+                        }
+                    }
+                }
+            }
+        }
+        .part-2{
+            display: inline-block;
+            max-width: 886px;
+            margin-top: 30px;
+            padding: 25px 40px 25px;
+            background-color: $white;
+            box-shadow: 0px 1px 20px $shadow;
+            width: 100%;
+            @media (max-width: $mobile){
+              padding: 25px 20px 15px;
+            }
+            .position-description{
+                h3 {
+                    font-size: 20px;
+                    line-height: 24px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+                .description-list {
+                    margin-left: 20px;
+                    li {
+                        margin-bottom: 10px;
+                        // padding-left: 5px;
+                        &::marker {
+                            font-size: 21px;
+                        }
+                    }
+                }
+            }
+        }
+        .part-3{
+            float: right;
+            width: 100%;
+            max-width: 285px;
+            margin-top: 30px;
+            padding: 29px 33px 42px 32px;
+            background-color: $white;
+            box-shadow: 0px 3px 20px $shadow;
+            @media (max-width: $mobile){
+              max-width: 100%;
+              padding: 20px 20px 20px;
+            }
+            .share-position {
+                .validate {
+                    li {
+                        list-style: none;
+                        margin-bottom: 23px;
+                        span {
+                            font-size: 14px;
+                            line-height: 17px;
+                        }
+                        h5{
+                            margin-top: 7px;
+                        }
+                    }
+                }
+                .social-link {
+                    margin-top: 25px;
+                    h5{
+                        font-weight: 500;
+                    }
+                    ul{
+                        list-style: none;
+                        margin-top: 17px;
+                        display: flex;
+                        width: 100%;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.content-wrapper-main {
+  display: flex;
+  @media (max-width: $mobile){
+    display: block;
+  }
+  .content-description {
+    width: 100%;
+    padding-right: 25px;
+    @media (max-width: $mobile){
+      padding: 0px;
+    }
+  }
+  .content-socials {
+    min-width: 285px;
+  }
+}
+
+

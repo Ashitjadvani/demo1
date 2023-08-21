@@ -1,0 +1,89 @@
+<section class="dashboard-content">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                  <li routerLink="/edit-profile" class="breadcrumb-item active" aria-current="page">Settings</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="account-wrapper">
+        <div class="account-list">
+            <div class="box-style">
+                <ul>
+                    <li routerLink="/edit-profile" routerLinkActive="active">Edit Profile</li>
+                    
+                    <li routerLink="/change-password" routerLinkActive="active">Change Password</li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-content-box box-style">
+            <form class="w-100" name="profileForm" [formGroup]= "profileForm"  novalidate
+            (ngSubmit)="changeProfile()"
+            #myform="ngForm">
+                <div class="form-main table-content box-heading">
+                    <h3>Edit Profile</h3>
+                    <div class="form-row-wrapper">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="profile-upload">
+                                    <div class="form-field">
+                                        <label for="emp-input-profile">
+                                          <img [src]="url" height="200">
+                                          <span class="material-icons">edit</span>
+                                        </label>
+                                        <input type="file" accept="image/png, image/gif, image/jpeg" [(ngModel)]="empProfileImage"
+                                               [ngModelOptions]="{standalone: true}" id="emp-input-profile"
+                                               class="device-input-img" name="profileImage"
+                                               (change)="onFileChanged($event)"/>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>First Name</mat-label>
+                                        <input formControlName="first_name" matInput type="text" name="first_name">
+                                        <mat-error *ngIf="profileForm.controls.first_name.errors?.required" >
+                                          Enter your first name.
+                                       </mat-error>
+                                      </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Last Name</mat-label>
+                                      <input name="last_name" formControlName="last_name" matInput type="text">
+                                      <mat-error *ngIf="profileForm.controls.last_name.errors?.required">
+                                        Enter your last name.
+                                     </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                              <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>Email Address</mat-label>
+                                    <input name="email" formControlName="email" matInput type="text" required >
+                                    <mat-error *ngIf="profileForm.controls.email.errors?.required">
+                                      Enter your email address.
+                                   </mat-error>
+                                   <mat-error *ngIf="profileForm.controls.email.errors?.email">
+                                    Please enter your valid email address.
+                                 </mat-error>
+                                  </mat-form-field>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button class="btn-style theme-btn" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

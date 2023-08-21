@@ -1,0 +1,1244 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "cli": {
+      "analytics": "1cef330d-bc4f-48e1-9625-b4523316d643"
+    },
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "fe-touchpoint": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "root": "projects/fe-touchpoint",
+            "sourceRoot": "projects/fe-touchpoint/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-touchpoint",
+                        "index": "projects/fe-touchpoint/src/index.html",
+                        "main": "projects/fe-touchpoint/src/main.ts",
+                        "polyfills": "projects/fe-touchpoint/src/polyfills.ts",
+                        "tsConfig": "projects/fe-touchpoint/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-touchpoint/src/favicon.ico",
+                            "projects/fe-touchpoint/src/assets",
+                            "projects/fe-touchpoint/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+                            "projects/fe-touchpoint/src/theme/theme.scss",
+                            "projects/fe-touchpoint/src/theme/theme-icons.scss",
+                            "projects/fe-touchpoint/src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "serviceWorker": true,
+                        "ngswConfigPath": "projects/fe-touchpoint/ngsw-config.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-touchpoint/src/environments/environment.ts",
+                                    "with": "projects/fe-touchpoint/src/environments/environment.prod.ts"
+                                },
+                                {
+                                  "replace": "projects/fe-insights/src/build-spec/index.ts",
+                                  "with": "projects/fe-insights/src/build-spec/index.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "12mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-touchpoint/src/environments/environment.ts",
+                                    "with": "projects/fe-touchpoint/src/environments/environment.test.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "12mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-touchpoint:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-touchpoint:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-touchpoint:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-touchpoint/src/test.ts",
+                        "polyfills": "projects/fe-touchpoint/src/polyfills.ts",
+                        "tsConfig": "projects/fe-touchpoint/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-touchpoint/karma.conf.js",
+                        "assets": [
+                            "projects/fe-touchpoint/src/favicon.ico",
+                            "projects/fe-touchpoint/src/assets",
+                            "projects/fe-touchpoint/src/manifest.webmanifest"
+
+                        ],
+                        "styles": [
+                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+                            "projects/fe-touchpoint/src/theme/theme.scss",
+                            "projects/fe-touchpoint/src/theme/theme-icons.scss",
+                            "projects/fe-touchpoint/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-touchpoint/tsconfig.app.json",
+                            "projects/fe-touchpoint/tsconfig.spec.json",
+                            "projects/fe-touchpoint/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-touchpoint/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-touchpoint:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-touchpoint:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-app": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "root": "projects/fe-app",
+            "sourceRoot": "projects/fe-app/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-app",
+                        "index": "projects/fe-app/src/index.html",
+                        "main": "projects/fe-app/src/main.ts",
+                        "polyfills": "projects/fe-app/src/polyfills.ts",
+                        "tsConfig": "projects/fe-app/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-app/src/favicon.ico",
+                            "projects/fe-app/src/assets",
+                            "projects/fe-app/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "projects/fe-app/src/theme/theme.scss",
+                            "projects/fe-app/src/theme/theme-icons.scss",
+                            "projects/fe-app/src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "serviceWorker": true,
+                        "ngswConfigPath": "projects/fe-app/ngsw-config.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-app/src/environments/environment.ts",
+                                    "with": "projects/fe-app/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "12mb",
+                                    "maximumError": "12mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ],
+                            "serviceWorker": true,
+                            "ngswConfigPath": "projects/fe-app/ngsw-config.json"
+                        },
+                        "test": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-app/src/environments/environment.ts",
+                                    "with": "projects/fe-app/src/environments/environment.test.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "12mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ],
+                            "serviceWorker": true,
+                            "ngswConfigPath": "projects/fe-app/ngsw-config.json"
+                        }
+
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-app:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-app:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-app:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-app/src/test.ts",
+                        "polyfills": "projects/fe-app/src/polyfills.ts",
+                        "tsConfig": "projects/fe-app/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-app/karma.conf.js",
+                        "assets": [
+                            "projects/fe-app/src/favicon.ico",
+                            "projects/fe-app/src/assets",
+                            "projects/fe-app/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "projects/fe-app/src/styles.scss",
+                            "projects/fe-app/src/theme/theme-icons.scss",
+                            "projects/fe-app/src/theme/theme.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-app/tsconfig.app.json",
+                            "projects/fe-app/tsconfig.spec.json",
+                            "projects/fe-app/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-app/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-app:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-app:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-common": {
+            "projectType": "library",
+            "root": "projects/fe-common",
+            "sourceRoot": "projects/fe-common/src",
+            "prefix": "fco",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "tsConfig": "projects/fe-common/tsconfig.lib.json",
+                        "project": "projects/fe-common/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/fe-common/tsconfig.lib.prod.json"
+                        },
+                        "test": {
+                            "tsConfig": "projects/fe-common/tsconfig.lib.test.json"
+                        }
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-common/src/test.ts",
+                        "tsConfig": "projects/fe-common/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-common/karma.conf.js"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-common/tsconfig.lib.json",
+                            "projects/fe-common/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        },
+        "fe-insights": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss",
+                    "skipTests": true
+                },
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:module": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "root": "projects/fe-insights",
+            "sourceRoot": "projects/fe-insights/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-insights",
+                        "index": "projects/fe-insights/src/index.html",
+                        "main": "projects/fe-insights/src/main.ts",
+                        "polyfills": "projects/fe-insights/src/polyfills.ts",
+                        "tsConfig": "projects/fe-insights/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-insights/src/favicon.ico",
+                            "projects/fe-insights/src/assets",
+                            "projects/fe-insights/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "projects/fe-touchpoint/src/theme/theme.scss",
+                            "projects/fe-touchpoint/src/theme/theme-icons.scss",
+                            "projects/fe-insights/src/styles.scss"
+                        ],
+                        "scripts": [
+                            "node_modules/html2canvas/dist/html2canvas.min.js"
+                        ],
+                        "serviceWorker": true,
+                        "ngswConfigPath": "projects/fe-insights/ngsw-config.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-insights/src/environments/environment.ts",
+                                    "with": "projects/fe-insights/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "12mb",
+                                    "maximumError": "30mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-insights/src/environments/environment.ts",
+                                    "with": "projects/fe-insights/src/environments/environment.test.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "11mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-insights:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-insights:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-insights:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-insights/src/test.ts",
+                        "polyfills": "projects/fe-insights/src/polyfills.ts",
+                        "tsConfig": "projects/fe-insights/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-insights/karma.conf.js",
+                        "assets": [
+                            "projects/fe-insights/src/favicon.ico",
+                            "projects/fe-insights/src/assets",
+                            "projects/fe-insights/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "projects/fe-touchpoint/src/theme/theme.scss",
+                            "projects/fe-touchpoint/src/theme/theme-icons.scss",
+                            "projects/fe-insights/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-insights/tsconfig.app.json",
+                            "projects/fe-insights/tsconfig.spec.json",
+                            "projects/fe-insights/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-insights/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-insights:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-insights:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-graphs": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/fe-graphs",
+            "sourceRoot": "projects/fe-graphs/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-graphs",
+                        "index": "projects/fe-graphs/src/index.html",
+                        "main": "projects/fe-graphs/src/main.ts",
+                        "polyfills": "projects/fe-graphs/src/polyfills.ts",
+                        "tsConfig": "projects/fe-graphs/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-graphs/src/favicon.ico",
+                            "projects/fe-graphs/src/assets"
+                        ],
+                        "styles": [
+                            "projects/fe-graphs/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-graphs/src/environments/environment.ts",
+                                    "with": "projects/fe-graphs/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-graphs:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-graphs:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-graphs:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-graphs/src/test.ts",
+                        "polyfills": "projects/fe-graphs/src/polyfills.ts",
+                        "tsConfig": "projects/fe-graphs/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-graphs/karma.conf.js",
+                        "assets": [
+                            "projects/fe-graphs/src/favicon.ico",
+                            "projects/fe-graphs/src/assets"
+                        ],
+                        "styles": [
+                            "projects/fe-graphs/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-graphs/tsconfig.app.json",
+                            "projects/fe-graphs/tsconfig.spec.json",
+                            "projects/fe-graphs/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-graphs/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-graphs:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-graphs:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-career": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/fe-career",
+            "sourceRoot": "projects/fe-career/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-career",
+                        "index": "projects/fe-career/src/index.html",
+                        "main": "projects/fe-career/src/main.ts",
+                        "polyfills": "projects/fe-career/src/polyfills.ts",
+                        "tsConfig": "projects/fe-career/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-career/src/favicon.ico",
+                            "projects/fe-career/src/assets"
+                        ],
+                        "styles": [
+                            "projects/fe-career/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-career/src/environments/environment.ts",
+                                    "with": "projects/fe-career/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "11mb",
+                                    "maximumError": "12mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "250kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        },
+                        "test": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-career/src/environments/environment.ts",
+                                    "with": "projects/fe-career/src/environments/environment.test.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "11mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "150kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-career:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-career:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-career:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-career/src/test.ts",
+                        "polyfills": "projects/fe-career/src/polyfills.ts",
+                        "tsConfig": "projects/fe-career/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-career/karma.conf.js",
+                        "assets": [
+                            "projects/fe-career/src/favicon.ico",
+                            "projects/fe-career/src/assets"
+                        ],
+                        "styles": [
+                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "projects/fe-career/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-career/tsconfig.app.json",
+                            "projects/fe-career/tsconfig.spec.json",
+                            "projects/fe-career/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-career/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-career:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-career:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-superadmin": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/fe-superadmin",
+            "sourceRoot": "projects/fe-superadmin/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-superadmin",
+                        "index": "projects/fe-superadmin/src/index.html",
+                        "main": "projects/fe-superadmin/src/main.ts",
+                        "polyfills": "projects/fe-superadmin/src/polyfills.ts",
+                        "tsConfig": "projects/fe-superadmin/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-superadmin/src/favicon.ico",
+                            "projects/fe-superadmin/src/assets"
+                        ],
+                        "styles": [
+                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                            "projects/fe-superadmin/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-superadmin/src/environments/environment.ts",
+                                    "with": "projects/fe-superadmin/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "11mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-superadmin:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-superadmin:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-superadmin:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-superadmin/src/test.ts",
+                        "polyfills": "projects/fe-superadmin/src/polyfills.ts",
+                        "tsConfig": "projects/fe-superadmin/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-superadmin/karma.conf.js",
+                        "assets": [
+                            "projects/fe-superadmin/src/favicon.ico",
+                            "projects/fe-superadmin/src/assets"
+                        ],
+                        "styles": [
+                            "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                            "projects/fe-superadmin/src/styles.scss"
+                        ],
+                        "scripts": [
+                            "node_modules/chart.js/dist/Chart.min.js"
+                        ]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-superadmin/tsconfig.app.json",
+                            "projects/fe-superadmin/tsconfig.spec.json",
+                            "projects/fe-superadmin/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-superadmin/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-superadmin:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-superadmin:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-insights-v2": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/fe-insights-v2",
+            "sourceRoot": "projects/fe-insights-v2/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-insights-v2",
+                        "index": "projects/fe-insights-v2/src/index.html",
+                        "main": "projects/fe-insights-v2/src/main.ts",
+                        "polyfills": "projects/fe-insights-v2/src/polyfills.ts",
+                        "tsConfig": "projects/fe-insights-v2/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-insights-v2/src/favicon.ico",
+                            "projects/fe-insights-v2/src/assets",
+                            "projects/fe-insights-v2/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "./node_modules/@smart-webcomponents-angular/button/styles/smart.base.css",
+                            "./node_modules/@smart-webcomponents-angular/button/styles/smart.button.css",
+                            "./node_modules/@smart-webcomponents-angular/calendar/styles/smart.calendar.css",
+                            "./node_modules/@smart-webcomponents-angular/input/styles/smart.input.css",
+                            "./node_modules/@smart-webcomponents-angular/tree/styles/smart.tree.css",
+                            "./node_modules/@smart-webcomponents-angular/scheduler/styles/smart.scheduler.css",
+                            "./node_modules/@smart-webcomponents-angular/button/styles/smart.common.css",
+                            "projects/fe-insights-v2/src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "serviceWorker": true,
+                        "ngswConfigPath": "projects/fe-insights-v2/ngsw-config.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-insights-v2/src/environments/environment.ts",
+                                    "with": "projects/fe-insights-v2/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "15mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-insights-v2:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-insights-v2:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-insights-v2:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-insights-v2/src/test.ts",
+                        "polyfills": "projects/fe-insights-v2/src/polyfills.ts",
+                        "tsConfig": "projects/fe-insights-v2/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-insights-v2/karma.conf.js",
+                        "assets": [
+                            "projects/fe-insights-v2/src/favicon.ico",
+                            "projects/fe-insights-v2/src/assets",
+                            "projects/fe-insights-v2/src/manifest.webmanifest"
+                        ],
+                        "styles": [
+                            "projects/fe-insights-v2/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-insights-v2/tsconfig.app.json",
+                            "projects/fe-insights-v2/tsconfig.spec.json",
+                            "projects/fe-insights-v2/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-insights-v2/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-insights-v2:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-insights-v2:serve:production"
+                        }
+                    }
+                }
+            }
+        },
+        "fe-procurement": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "projects/fe-procurement",
+            "sourceRoot": "projects/fe-procurement/src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/fe-procurement",
+                        "index": "projects/fe-procurement/src/index.html",
+                        "main": "projects/fe-procurement/src/main.ts",
+                        "polyfills": "projects/fe-procurement/src/polyfills.ts",
+                        "tsConfig": "projects/fe-procurement/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "projects/fe-procurement/src/favicon.ico",
+                            "projects/fe-procurement/src/assets"
+                        ],
+                        "styles": [
+                            "projects/fe-procurement/src/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "projects/fe-procurement/src/environments/environment.ts",
+                                    "with": "projects/fe-procurement/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "11mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "fe-procurement:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "fe-procurement:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "fe-procurement:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/fe-procurement/src/test.ts",
+                        "polyfills": "projects/fe-procurement/src/polyfills.ts",
+                        "tsConfig": "projects/fe-procurement/tsconfig.spec.json",
+                        "karmaConfig": "projects/fe-procurement/karma.conf.js",
+                        "assets": [
+                            "projects/fe-procurement/src/favicon.ico",
+                            "projects/fe-procurement/src/assets"
+                        ],
+                        "styles": [
+                            "projects/fe-procurement/src/styles.scss"
+                        ],
+                        "scripts": []
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "projects/fe-procurement/tsconfig.app.json",
+                            "projects/fe-procurement/tsconfig.spec.json",
+                            "projects/fe-procurement/e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "projects/fe-procurement/e2e/protractor.conf.js",
+                        "devServerTarget": "fe-procurement:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "fe-procurement:serve:production"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "defaultProject": "fe-touchpoint"
+}

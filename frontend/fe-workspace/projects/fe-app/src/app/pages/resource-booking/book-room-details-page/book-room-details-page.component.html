@@ -1,0 +1,64 @@
+<div [ngClass]="{'page-container': standalone}">
+    <app-main-toolbar class="main-toolbar" *ngIf="standalone"></app-main-toolbar>
+    <div class="page-content-container">
+        <div [ngClass]="{'book-details-wrapper': standalone}">
+            <div [ngClass]="{'book-details-container': standalone}">
+                <span class="resource-date">{{ displayDate() }}</span>
+                <app-book-resource-list-item [resourceItem]="resourceItem" [displayActions]="false">
+                </app-book-resource-list-item>
+                <div class="resource-overview">
+                    <!-- <sat-popover #searchAttendee forceAlignment hasBackdrop>
+                        <div class="people-search-popup">
+                            <app-attendee-picker (selectedAttendee)="onSelectedAttendee($event)">
+                            </app-attendee-picker>
+                        </div>
+                    </sat-popover> -->
+
+                    <div class="overview-group">
+                        <span class="title">{{ 'BOOK ROOM DETAILS.CAPACITY' | translate }} </span>
+                        <span>{{ getRoomMaxCapacity() }}</span>
+                    </div>
+
+                    <div class="overview-group">
+                        <form [formGroup]="bookFormGroup">
+                            <div class="primary-filters">
+                                <mat-form-field>
+                                    <input matInput placeholder="Meeting Title" formControlName="title" required>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput placeholder="Meeting Notes" formControlName="notes">
+                                    <!-- <textarea matInput placeholder="Notes" formControlName="notes"></textarea> -->
+                                </mat-form-field>
+                                <div class="meeting-attendees">
+                                    <div class="meeting-attendees-head">
+                                        <div class="meeting-attendees-title">{{ 'BOOK ROOM DETAILS.ATTENDEES' |
+                                            translate }}</div>
+                                        <button mat-icon-button (click)="addMeetingAttendee()" matTooltip="Add">
+                                            <i class="material-icons">add_circle_outline</i>
+                                        </button>
+                                    </div>
+                                    <div class="meeting-attendees-list">
+                                        <div *ngIf="meetingAttendees.length == 0" class="meeting-attendees-list-empty">
+                                            {{ 'BOOK ROOM DETAILS.NO ATTENDEES' | translate }}</div>
+                                        <div *ngFor="let ma of meetingAttendees" class="meeting-attendees-card">
+                                            <mat-icon class="attendee-icon">person</mat-icon>
+                                            <mat-label class="attendee-name">{{ ma.name }}</mat-label>
+                                            <button mat-icon-button (click)="deleteMeetingAttendee(ma)">
+                                                <i class="material-icons">clear</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filters-footer">
+                                <button mat-flat-button color="primary" class="no-round" (click)="onClickConfirm()"
+                                    [disabled]="!bookFormGroup.valid">{{ 'BOOK ROOM DETAILS.CONFIRM BOOKING' | translate
+                                    }}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

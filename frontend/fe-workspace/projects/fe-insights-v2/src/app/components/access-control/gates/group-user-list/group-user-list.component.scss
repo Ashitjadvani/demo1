@@ -1,0 +1,181 @@
+.actions-btn {
+    display: flex;
+    img{
+        margin-right: 20px;
+    }
+  }
+  .manage-supplier-tab {
+  .actions-btn {
+    button{
+      margin-right: 10px;margin-left: 0px;
+      &:last-child {margin-right: 0px;}
+    }
+  }
+  }
+  .count-label{
+  display: flex;
+  min-width: 27px;
+  height: 27px;
+  border-radius: 35px;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 16%);
+  background-color: #FFCC00;
+  background-color: #c9d3e3;
+  color: #000000;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  padding: 5px;
+  }
+  
+  .custom-table{
+  margin: 0px;
+  td {
+    border: none;
+    padding: 13px 20px 13px 20px;
+    vertical-align: middle;
+    &.cell{
+      max-width: 300px;
+      min-width: 200px;
+    }
+    &.custom-table-content{
+      padding: 0px 20px;
+      .table tr {
+        border-top: 1px solid #eeeeee;
+      }
+    }
+  }
+  
+  & > tbody {
+    margin: 0px;
+    border-bottom: 1px solid #eeeeee;
+    border-top: none;
+    vertical-align: top;
+  }
+  
+  th.header {
+    word-break: initial;
+    font-size: 16px;
+    color: #000000;
+    line-height: 20px;
+    font-weight: 600;
+    padding: 0px 20px 0px 20px;
+    border-bottom-color: #f1f1f1;
+    background-color: #f1f1f1;
+    height: 65px;
+    cursor: pointer;
+    &:hover {
+      .down, .up {
+        opacity: 1;
+      }
+    }
+  }
+  
+  tr.table-row-not-expanded {
+    cursor: pointer;
+  }
+  
+  & > tbody:nth-child(2n + 1) {
+    background-color: #fcfcfc;
+  }
+  }
+  
+  .width-40 {
+  width: 40%;
+  }
+  
+  .width-60 {
+  width: 60%;
+  }
+  
+  .chart-header{
+  padding-right: 30px;
+  .chart-tools{
+      .date-select {
+          position: relative;
+          display: flex;
+          max-width: 100%;
+          flex-wrap: wrap;
+          justify-content: end;
+          .mat-form-field{margin-left: 15px;max-width: 194px;margin-bottom: 20px;}
+      }
+  }
+  .chart-details{
+      display: flex;
+      flex-wrap: wrap;
+      li {
+          padding-left: 20px;
+          font-size: 18px;
+          letter-spacing: 0.09px;
+          color: #444444;
+          position: relative;
+          margin-bottom: 10px;
+          margin-right: 10px;
+          @media (max-width:1400px) {
+              margin-bottom: 15px;
+          }
+          &::before, .list-dot {
+              content: '';
+              width: 10px;
+              height: 10px;
+              background-color: #262f79;
+              position: absolute;
+              left: 0px;
+              top: 0;
+              bottom: 0;
+              margin: auto;
+              border-radius: 100%;
+          }
+          &:nth-child(2), &.orange-line {
+              &::before{background-color: #30c76f;}
+          }
+          &:nth-child(3), &.green-line{
+              &::before{background-color: #FF443A;}
+          }
+          &:nth-child(4), &.purple-line{
+              &::before{background-color: #FF443A;}
+          }
+          &:nth-child(5), &.light-blue-line{
+              &::before{background-color: #00CFE8;}
+          }
+          &:nth-child(6){
+              &::before{background-color: #EA5455;}
+          }
+          &:nth-child(7){
+              &::before{background-color: #66D1D1;}
+          }
+          &:nth-child(8){
+              &::before{background-color: #FF66FF;}
+          }
+          &:nth-child(9){
+            &::before{background-color: #e0987b;}
+          }
+          &:nth-child(10){
+            &::before{background-color: #fff13a;}
+          }
+          &:nth-child(11){
+            &::before{background-color: #6bc12e;}
+          }
+          &:nth-child(12){
+            &::before{background-color: #96b6f2;}
+          }
+          &:nth-child(13){
+            &::before{background-color: #9772d3;}
+          }
+          &:nth-child(14){
+            &::before{background-color: #fdadff;}
+          }
+          &:nth-child(15){
+            &::before{background-color: #e0dc6d;}
+          }
+      }
+    }
+  }
+
+.red-bkg {
+    background-color: rgba(255, 0, 0, 0.07);
+}
+
+.green-bkg {
+    background-color: rgba(0, 255, 0, 0.07);
+}

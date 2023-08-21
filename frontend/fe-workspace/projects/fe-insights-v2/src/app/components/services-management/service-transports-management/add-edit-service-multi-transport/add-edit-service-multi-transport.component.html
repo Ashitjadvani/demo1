@@ -1,0 +1,240 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                    <li routerLink="../" class="breadcrumb-item">Richiesta Trasporto</li>
+                    <li class="breadcrumb-item active" aria-current="page"><span>Richiesta Trasporto</span> </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper clickableStepper">
+                <mat-horizontal-stepper linear labelPosition="bottom" #stepper>
+                    <mat-step [stepControl]="transportRequestFormS1">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/General.svg" />
+                            <p>Tipo Richiesta</p>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'General' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' |
+                                    translate}}</p>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="onSubmit(false)" [formGroup]="transportRequestFormS1">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Richiedente<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="requester" (selectionChange)="onRequesterChange($event)">
+                                                    <mat-option *ngFor="let reqType of transportRequestType" value="{{ reqType.value }}">
+                                                        {{ reqType.text }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="showRequester" class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Nome richiedente<span class="red-label">*</span></mat-label>
+                                                <input formControlName="requesterName" matInput type="text" name="requesterName">
+                                                <mat-error *ngIf="!transportRequestFormS1.controls.requesterName.value">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Cognome richiedente<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="requesterSurname" matInput type="text" name="requesterSurname">
+                                                <mat-error *ngIf="!transportRequestFormS1.controls.requesterSurname.value">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Telefono richiedente<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="requesterPhone" matInput type="text" name="requesterPhone">
+                                                <mat-error *ngIf="!transportRequestFormS1.controls.requesterPhone.value">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button routerLink="/services-management/srv-transports-management" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="">
+                                        <button matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+
+                    <mat-step [stepControl]="transportRequestFormS2">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/Quiz.svg" />
+                            <p>Condizioni di Servizio</p>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Condizioni di servizio</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' |
+                                    translate}}</p>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="onSubmit(false)" [formGroup]="transportRequestFormS2">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <mat-checkbox name="accept1" formControlName="accept1" type="checkbox">{{ acceptItems[0] }}</mat-checkbox>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <mat-checkbox name="accept2" formControlName="accept2" type="checkbox">{{ acceptItems[1] }}</mat-checkbox>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <mat-checkbox name="accept3" formControlName="accept3" type="checkbox">{{ acceptItems[2] }}</mat-checkbox>
+                                    </div>
+                                    <mat-error *ngIf="!getAcceptValidStatus()">
+                                        Per procedere devi accettare tutte le condizioni del servizio
+                                    </mat-error>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Carrozina Propria?<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="wheelchairType">
+                                                    <mat-option *ngFor="let wct of wheelchairTypes" value="{{ wct.value }}">{{ wct.text }}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="transportRequestFormS2?.controls.wheelchairType.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button routerLink="/services-management/srv-transports-management" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button matStepperPrevious class="btn-style privious-btn" type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+
+                    <mat-step [stepControl]="transportRequestFormS3">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/Contact.svg" />
+                            <p>Elenco Trasporti</p>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Elenco Trasporti</h3>
+                                <button class="btn-style" (click)="onAddTransportPerson()" style="min-height: 50px;">
+                                    <span class="material-icons">add</span>Aggiungi un trasporto
+                                </button>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="onSubmit(true)" [formGroup]="transportRequestFormS3">
+                                <div class="table-wrapper">
+                                    <table [dataSource]="serviceTransport.transportEntries" mat-table style="width: 100%">
+                                        <ng-container matColumnDef="wheelAction">
+                                            <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                                {{'TABLE.Action' | translate}}
+                                            </th>
+                                            <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                                <div class="hover-effect-menu two-icons">
+                                                    <div class="short-arrow">
+                                                        <span class="material-icons">more_horiz</span>
+                                                    </div>
+                                                    <div class="hover-round-effect">
+                                                        <button mat-menu-item matTooltip="{{'Edit' | translate}}">
+                                                            <span class="material-icons">edit</span>
+                                                        </button>
+                                                        <button mat-menu-item matTooltip="{{'Delete' | translate}}">
+                                                            <span class="material-icons">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="date">
+                                            <th *matHeaderCellDef mat-header-cell style="min-width: 200px;">
+                                                Data
+                                            </th>
+                                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                                {{ renderTableColumn(TABLE_COLUMN_REF.DATE, element) }}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="user">
+                                            <th *matHeaderCellDef mat-header-cell style="min-width: 200px;">
+                                                Utente
+                                            </th>
+                                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                                {{ renderTableColumn(TABLE_COLUMN_REF.USER, element) }}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="from">
+                                            <th *matHeaderCellDef mat-header-cell style="min-width: 200px;">
+                                                Partenza
+                                            </th>
+                                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                                {{ renderTableColumn(TABLE_COLUMN_REF.FROM, element) }}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="to">
+                                            <th *matHeaderCellDef mat-header-cell style="min-width: 200px;">
+                                                Destinazione
+                                            </th>
+                                            <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                                {{ renderTableColumn(TABLE_COLUMN_REF.TO, element) }}
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="transportPersonsColumns"></tr>
+                                        <tr mat-row *matRowDef="let element; columns: transportPersonsColumns"></tr>
+                                    </table>
+                                </div>
+                                <!-- <div *ngIf="transportPersons.length <= 0" class="no-record-found">Nessun trasporto/i</div> -->
+                                <mat-error class="no-record-found" *ngIf="!transportRequestFormS3.valid">
+                                    Nessun trasporto/i definito
+                                </mat-error>
+
+                                <div formArrayName="listTransportPersons"></div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button routerLink="/services-management/srv-transports-management" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button matStepperPrevious class="btn-style privious-btn" type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button class="btn-style green-btn" type="submit">{{'GENERAL.Save&Finish' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

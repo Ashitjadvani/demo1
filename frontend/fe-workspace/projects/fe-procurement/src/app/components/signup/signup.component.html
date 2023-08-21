@@ -1,0 +1,120 @@
+<section class="login signup">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <!-- <div class="col-lg-7 d-flex align-item-center">
+                    <div class="banner-img">
+                        <img src="./assets/images/login-img.svg" alt="">
+                    </div>
+                </div> -->
+                <div class="col-lg-12">
+                    <div class="form-content">
+                        <div  routerLink="" class="back-btn"><mat-icon>arrow_back</mat-icon>{{'GENERAL.Back' | translate}}</div>
+                        <div class="logo">
+                            <img src="./assets/images/legance-color.svg" routerLink="" alt="">
+                        </div>
+                      <form name="signupForm" [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
+                            <div class="form-wrapper">
+                                <div class="input-wrapper">
+                                    <div class="form-title">
+                                        <h3>{{'SIGNUP.SupplierSignUp' | translate }}</h3>
+                                        <p>{{'SIGNUP.SignupInfo' | translate }}</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="form-field m-0">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'SIGNUP.CompanyName' | translate }}</mat-label>
+                                                    <input matInput formControlName="companyName"  type="text" id="companyName" name="companyName" >
+                                                    <mat-error *ngIf="signupForm.controls.companyName.errors?.required">{{'SIGNUP.CompanyNameRequired' | translate }}</mat-error>
+                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="form-field m-0">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'SIGNUP.CompanyReferenceEmail' | translate }}</mat-label>
+                                                    <input formControlName="companyReferenceEmail" id="companyReferenceEmail"  matInput name="companyReferenceEmail" type="email">
+                                                    <mat-error *ngIf="signupForm.controls.companyReferenceEmail.errors?.required">{{'SIGNUP.CompanyReferenceEmailRequired' | translate }}</mat-error>
+                                                    <mat-error *ngIf="signupForm.controls.companyReferenceEmail.errors?.email">{{'SIGNUP.CompanyReferenceEmailERROR' | translate }}</mat-error>
+                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="form-field m-0">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'SIGNUP.ServiceCategory' | translate }}</mat-label>
+                                                    <mat-select formControlName="serviceCategory" multiple>
+                                                        <mat-option *ngFor="let service of serviceList" [value]="service.id" >{{service.serviceName}}</mat-option>
+                                                    </mat-select>
+                                                    <!--<input matInput formControlName="serviceCategory"  type="email" id="serviceCategory" name="email">-->
+                                                    <mat-error *ngIf="signupForm.controls.serviceCategory.errors?.required">{{'SIGNUP.ServiceCategoryRequired' | translate }}</mat-error>
+                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+                                      <div class="col-lg-6 col-xl-4">
+                                        <div class="form-field m-0" >
+                                          <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'SIGNUP.CompanyWebsite' | translate }}</mat-label>
+                                            <input matInput formControlName="companyWebsiteURL" id="companyWebsiteURL" name="companyWebsiteURL" type="text">
+                                            <mat-error *ngIf="signupForm.controls.companyWebsiteURL.errors?.required">{{'SIGNUP.CompanyWebsiteRequired' | translate }}</mat-error>
+                                          </mat-form-field>
+                                        </div>
+                                      </div>
+                                        <div class="col-md-12">
+                                            <div class="form-field m-0 textarea-field" >
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'SIGNUP.CompanyDescription' | translate }}</mat-label>
+                                                    <textarea matInput formControlName="companyDescription" id="companyDescription" name="companyDescription"></textarea>
+                                                    <mat-error *ngIf="signupForm.controls.companyDescription.errors?.required">{{'SIGNUP.CompanyDescriptionRequired' | translate }}</mat-error>
+                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-field m-0 textarea-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'SIGNUP.BriefDescription' | translate }}</mat-label>
+                                                    <textarea matInput formControlName="briefDescription" name="briefDescription"></textarea>
+                                                    <mat-error *ngIf="signupForm.controls.briefDescription.errors?.required">{{'SIGNUP.BriefDescriptionRequired' | translate }}</mat-error>
+                                                 </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-7 ">
+                                            <div class="form-field">
+                                                <div class="file-upload-wrapper">
+                                                  <div class="file-upload-in">
+                                                    <div class="file-upload-text"><span class="material-icons">attachment</span>{{'SIGNUP.AttachCompanyBrochure' | translate }}</div>
+                                                    <label for="upload_btn" >{{'GENERAL.Browse' | translate }}</label>
+                                                  </div>
+                                                  <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                                  <input #fileCoverImage (change)="onFileChanged(fileCoverImage)"  accept=".pdf" id="upload_btn" type="file" />
+                                                  <span class="file-info">{{ this.documentName }}
+                                                    <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                                    </span>
+                                                  </span>
+                                                </div>  
+                                            </div>
+                                            <div class="form-field accept-terms">
+                                                <mat-checkbox class="example-margin" [(ngModel)]="checkBoxVerify" [ngModelOptions]="{standalone: true}">
+                                                    {{'GENERAL.Acknowledgment' | translate}}
+                                                    <a href="javascript:;" routerLink="/privacy-policy" target="_blank">{{'PrivatePolicy' | translate}}</a>
+                                                  </mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 offset-xl-3 offset-lg-2 ma">
+                                            <div class="form-btn">
+                                                <button class="full-btn"  mat-button  type="submit">{{'GENERAL.Submit' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

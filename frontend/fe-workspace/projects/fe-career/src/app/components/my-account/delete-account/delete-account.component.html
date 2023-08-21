@@ -1,0 +1,48 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+  <div class="container">
+    <h1>{{'MYACCOUNT.MyAccount' | translate}}</h1>
+  </div>
+</div>
+<!--======================== Dashboard section start ==================== -->
+<section class="dashboard-content">
+  <div class="container">
+    <div class="account-wrapper main-content-wrapper">
+      <div class="account-list">
+        <div class="box-style">
+          <div class="my-account-title">
+            <h4>{{'MYACCOUNT.MyAccount' | translate}}</h4>
+          </div>
+          <ul>
+            <li routerLink="/my-application">{{'MYACCOUNT.MyApplications' | translate}}</li>
+            <li routerLink="/edit-profile">{{'MYACCOUNT.EditProfile' | translate}}</li>
+            <li routerLink="/change-password" *ngIf="userDetails === null">{{'MYACCOUNT.ChangePassword' | translate}}</li>
+            <li routerLink="/activity-log">{{'MYACCOUNT.ActivityLog' | translate}}</li>
+            <li routerLink="/download-document">{{'GENERAL.Download' | translate}}</li>
+            <li class="active" routerLink="/delete-account">{{'MYACCOUNT.DeleteAccount' | translate}}</li>
+            <li (click)="logout()">{{'GENERAL.Logout' | translate}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-content-box box-style">
+            <div class="name-title" >
+              <h4>{{'MYACCOUNT.DeleteAccount' | translate}}</h4>
+            </div>
+            <hr>
+            <form class="w-100" name="deleteAccount"  novalidate
+            (ngSubmit)="deleteAccount()"
+            #myform="ngForm">
+              <div class="form-main">
+                <p>
+                  {{'MYACCOUNT.ConfirmDeleteWarning' | translate}}
+                </p>
+                <div class="form-footer">
+                  <button mat-raised-button  type="submit">{{'MYACCOUNT.DeleteAccount' | translate}}</button>
+                </div>
+              </div>
+          </form>
+      </div>
+    </div>
+</div>
+</section>

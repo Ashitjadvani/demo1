@@ -1,0 +1,41 @@
+<div class="general-container">
+    <div class="card card-mail width-50">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.EmailConfiguration' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <!--<mat-form-field class="full-width">
+                  <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_PROTOCOL' | translate}}" [(ngModel)]="currentCompany.mailProtocol">
+            </mat-form-field>-->
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_HOST' | translate}}" [(ngModel)]="currentCompany.mailHost">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_PORT' | translate}}" [(ngModel)]="currentCompany.mailPort">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_USER_NAME' | translate}}" [(ngModel)]="currentCompany.mailUserName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_PASSWORD' | translate}}" [(ngModel)]="currentCompany.mailPassword">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_FROM_NAME' | translate}}" [(ngModel)]="currentCompany.mailFromName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_ENCRYPTION' | translate}}" [(ngModel)]="currentCompany.mailEncryption">
+                <mat-option *ngFor="let encryption of mailEncryption; let i = index" value="{{ encryption.value }}">
+                  {{ encryption.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MAIL_WEB_LOGIN_URL' | translate}}" [(ngModel)]="currentCompany.mailWebUrl">
+            </mat-form-field>
+        </div>
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+        </div>
+    </div>
+</div>

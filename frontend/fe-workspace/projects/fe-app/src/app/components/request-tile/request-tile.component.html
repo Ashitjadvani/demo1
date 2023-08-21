@@ -1,0 +1,44 @@
+<div class="request-tile-container">
+    <div class="request-tile" [ngStyle]="{ 'background-color': tileBackgroundColor , 'color': tileTextColor}">
+        <div class ="main-tile-container">
+            <div class="text-container" (click)="onToggleActionDrawer()">
+                <div *ngIf="isAccountable" class="is-acc">ACCOUNTABLE</div>
+                <div *ngIf="isResponsable" class="is-acc">RESPONSABLE</div>
+                <div *ngIf="isConsulted" class="is-acc">CONSULTED</div>
+                <div *ngIf="isInformed" class="is-acc">INFORMED</div>
+                <div class="text-user">{{employeeName}}</div>
+                <div *ngIf="moreDays" class="text-date">{{startDate}} - {{endDate}}</div>
+                <div *ngIf="!moreDays" class="text-date">{{startDate}}</div>
+                <div class="text-time">{{startTime}} - {{endTime}}</div>
+                <div class="text-justificative">{{request.justificative}}</div>
+                <div *ngIf="request.requestState == 'AccAccepted' || request.requestState == 'ResAccepted'" class="text-lastaction color-green">{{'EMPLOYEE PAGE.ACCEPTED BY' | translate}} {{request.lastActionName}} {{'EMPLOYEE PAGE.AT' | translate}} {{getDate()}}</div>
+                <div *ngIf="request.requestState == 'AutoAccepted'" class="text-lastaction color-green">{{'EMPLOYEE PAGE.ACCEPTED BY' | translate}} {{'EMPLOYEE PAGE.SILENCE ASSENT' | translate}} {{'EMPLOYEE PAGE.AT' | translate}} {{getDate()}}</div>
+                <div *ngIf="request.requestState == 'AccRejected' || request.requestState == 'ResRejected'" class="text-lastaction color-red">{{'EMPLOYEE PAGE.REJECTED BY' | translate}} {{request.lastActionName}} {{'EMPLOYEE PAGE.AT' | translate}} {{getDate()}}</div>
+            </div>
+            <div class="action-container">
+                <button mat-icon-button class="icon" (click)="onAcceptClick()">
+                    <i class="material-icons icon-image" [ngStyle]="{ 'color': acceptColor }">thumb_up_off_alt</i>
+                </button>
+                <button mat-icon-button class="icon" (click)="onRejectClick()">
+                    <i class="material-icons icon-image" [ngStyle]="{ 'color': rejectColor }">thumb_down_off_alt</i>
+                </button>
+                <button mat-icon-button class="icon" (click)="onNoteClick()" *ngIf="!isInformed">
+                    <i class="material-icons icon-image" >edit</i>
+                </button>
+            </div>
+        </div>
+        <!--div class="info-container" [@openClose]="actionDrawer">
+            <div *ngIf="actionDrawer=='open'" class="chart-container">
+            </div>
+            <div *ngIf="actionDrawer=='open'" class="week-select-container">
+                <div class="week-select-prevnext" (click)="onPrevWeek()">
+                    <img class="icon prev" src="./assets/images/prev.svg">
+                </div>
+                <div class="week-select-text">{{weekSelectedText}}</div>
+                <div class="week-select-prevnext" (click)="onNextWeek()">
+                    <img class="icon next" src="./assets/images/next.svg">
+                </div>
+            </div>
+        </div-->
+    </div>   
+</div>

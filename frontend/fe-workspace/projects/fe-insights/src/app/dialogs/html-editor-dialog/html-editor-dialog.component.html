@@ -1,0 +1,41 @@
+<div class="dialog-head">
+    <mat-label class="title"><strong>{{ currentData.title }}</strong></mat-label>
+    <span class="spacer"></span>
+    <div *ngIf="currentData.helpContents">
+        <button [satPopoverAnchor]="helpPopover" (click)="helpPopover.toggle()" class="help-button" mat-button
+            matSuffix mat-icon-button aria-label="Clear">
+            <mat-icon>help_outline</mat-icon>
+        </button>
+        <sat-popover #helpPopover horizontalAlign="center" verticalAlign="below"
+            hasBackdrop [interactiveClose]="true">
+            <div class="popover-help">
+                <mat-label class="help-title"><strong>{{ currentData.helpContents.title }}</strong></mat-label>
+                <div *ngFor="let hr of currentData.helpContents.helpRows" class="help-row">
+                    <mat-label class="help-row-name">{{ hr[0] }}</mat-label>
+                    <mat-label class="help-row-value">{{ hr[1] }}</mat-label>
+                </div>
+            </div>
+        </sat-popover>
+    </div>
+</div>
+
+<mat-dialog-content>
+    <div class="html-editor">
+        <div class="head-param">
+            <mat-form-field class="full-width">
+                <mat-label>{{'ADMIN DIALOGS.SUBJECT' | translate}}</mat-label>
+                <input matInput placeholder="Subject" appearance="legacy" [(ngModel)]="currentData.mailSubject">
+            </mat-form-field>
+        </div>
+        <angular-editor [(ngModel)]="currentData.mailBody" [config]="config">
+
+        </angular-editor>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button class="action-button" color="primary"
+        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+    <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+        (click)="onConfirmClick()">{{'GENERAL.SAVE'|translate}}</button>
+</mat-dialog-actions>

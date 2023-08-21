@@ -1,0 +1,424 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="../../" class="breadcrumb-item">{{'Quiz/Survey.Survey' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'Quiz/Survey.Survey' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Quiz/Survey.Survey'" [routePath]="'../../'" [title3]="title"
+            [type]="'Quiz/Survey.Survey'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+          <div class="common-stepper clickableStepper">
+            <mat-horizontal-stepper linear labelPosition="bottom" #surveyDetailsStep class="{{noClickClass}}" (selectionChange)="onStepChange($event)">
+              <mat-step [stepControl]="addSurveyForm">
+                <ng-template matStepLabel>
+                  <div>
+                    <img src="assets/images/survey-details.svg"/>
+                    <p>{{'Quiz/Survey.SurveyDetails' | translate}}</p>
+                  </div>
+                </ng-template>
+                <div class="table-content box-style">
+                  <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'Quiz/Survey.Survey' | translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                      <div class="buttons-group">
+                        <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-content-box">
+                    <form class="w-100" name="addSurveyForm" [formGroup]= "addSurveyForm" novalidate (ngSubmit)="addEditSurveyDetails()" #myform="ngForm">
+                      <div class="row">
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'Quiz/Survey.Title(English)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                              <input  type="text" formControlName="title" matInput  name="title" (keydown)="space($event)" style="text-transform: capitalize;">
+                              <mat-error *ngIf="addSurveyForm.controls.title.errors?.required" >
+                                {{'Quiz/Survey.Enteryourtitle(English)' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'Quiz/Survey.Subtitle(English)' | translate}}</mat-label>
+                              <input  type="text" formControlName="subTitle" matInput  name="subTitle" style="text-transform: capitalize;">
+                              <mat-error *ngIf="addSurveyForm.controls.subTitle.errors?.required" >
+                                {{'Quiz/Survey.Enteryoursubtitle(English)' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'RECRUITING.Scope' | translate}}</mat-label>
+                              <mat-select formControlName="scope" name="scope">
+                                <mat-option>{{'Quiz/Survey.Select Scope' | translate}}</mat-option>
+                                <mat-option *ngFor="let peopleScopes of peopleScopeList" value="{{peopleScopes.id}}">{{peopleScopes.label | translate}}</mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="addSurveyForm.controls.scope.errors?.required" >
+                                {{'Quiz/Survey.Select your scope' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-12">
+                          <div class="row">
+                            <div class="col-xl-6">
+                              <div class="form-field error-message-custom date-picker-style">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                  <mat-label>{{'Quiz/Survey.Disclaimer' | translate}}</mat-label>
+                                  <textarea formControlName="disclaimer" name="disclaimer" matInput placeholder="{{'GENERAL.TypeHere' | translate}}"  type="text"></textarea>
+                                  <mat-error *ngIf="addSurveyForm.controls.disclaimer.errors?.required">
+                                    {{'Quiz/Survey.EnteryourDisclaimer' | translate}}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-xl-6">
+                              <div class="form-field error-message-custom date-picker-style">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                  <mat-label>{{'Quiz/Survey.OnCompletion' | translate}}</mat-label>
+                                  <textarea formControlName="onCompletion" name="onCompletion" matInput placeholder="{{'GENERAL.TypeHere' | translate}}"  type="text"></textarea>
+                                  <mat-error *ngIf="addSurveyForm.controls.onCompletion.errors?.required">
+                                    {{'Quiz/Survey.EnteryourCompletion' | translate}}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom">
+                            <div class="custom-switch">
+                              <mat-checkbox formControlName="random_sequence" name="random_sequence">{{'Quiz/Survey.Random Sequence' | translate}}</mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'Quiz/Survey.QuestionLimit' | translate}}</mat-label>
+                              <input  type="number" formControlName="question_limit" matInput name="question_limit" >
+                              <mat-error *ngIf="addSurveyForm.controls.question_limit.errors?.required" >
+
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xxl-4"></div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom date-picker-style">
+                            <mat-form-field appearance="outline" class="element-full-width" >
+                              <mat-label>{{'Quiz/Survey.StartDate' | translate}}</mat-label>
+                              <input matInput [matDatepicker]="startDate"  formControlName="start" name="start" placeholder="Start Date" >
+                              <mat-datepicker-toggle  [for]="startDate" class="full-date-select"></mat-datepicker-toggle>
+                              <mat-datepicker #startDate (opened)="streamOpened()"></mat-datepicker>
+                              <mat-error *ngIf="addSurveyForm.controls.start.errors?.required" >
+                                {{'Quiz/Survey.Enteryourstartdate' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom date-picker-style">
+                            <mat-form-field appearance="outline" class="element-full-width" >
+                              <mat-label>{{'Quiz/Survey.EndDate' | translate}}</mat-label>
+                              <input matInput [matDatepicker]="endDate"  formControlName="end" name="end" placeholder="End Date">
+                              <mat-datepicker-toggle  [for]="endDate" class="full-date-select"></mat-datepicker-toggle>
+                              <mat-datepicker #endDate  (opened)="streamOpened()"></mat-datepicker>
+                              <mat-error *ngIf="addSurveyForm.controls.end.errors?.required" >
+                                {{'Quiz/Survey.Enteryourenddate' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                          <div class="form-field error-message-custom">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'Quiz/Survey.Privacy' | translate}}<span style="color:#EA5455" *ngIf="addSurveyForm.controls.privacy.errors?.required">*</span></mat-label>
+                              <mat-select formControlName="privacy" name="privacy" multiple>
+                                <!-- <mat-option disabled>Select Privacy</mat-option> -->
+                                <mat-option #allSelected (click)="toggleAllSelection()" value = "all">{{'Procurement_Management.All' | translate}}</mat-option>
+                                <mat-option *ngFor="let privacys of privacyList" value="{{privacys.value}}" (click)="tosslePerOne(allSelected.id)">{{privacys.viewValue | translate}}</mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="addSurveyForm.controls.privacy.errors?.required" >
+                                {{'Quiz/Survey.Select your privacy' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-xl-6">
+                          <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                              <mat-label>{{'Quiz/Survey.Instruction' | translate}}</mat-label>
+                              <textarea  type="text" formControlName="instruction" matInput  name="instruction"></textarea>
+                              <mat-error *ngIf="addSurveyForm.controls.instruction.errors?.required" >
+                                {{'Quiz/Survey.EnterInstruction' | translate}}
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-footer step-form-bottom">
+                        <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        <button class="btn-style theme-btn" type="submit" (click)="noTabChangeFunc()" >{{'GENERAL.Save&Next'| translate}} <span class="material-icons">arrow_forward</span></button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step>
+                <ng-template matStepLabel>
+                  <!--<div (click)="tabChangeFunc()" class="{{noClickClass}}>-->
+                  <div (click)="tabChangeFunc($event)" >
+                    <img src="assets/images/questions-icons.svg"  />
+                    <p>{{'Questions' | translate}}</p>
+                  </div>
+                </ng-template>
+                <div class="table-content box-style">
+                  <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'Questions' | translate}}</span></h3>
+                    <button  class="btn-style" (click)="addQuestionPopup()" style="min-height: 50px;">
+                      <span class="material-icons">add</span>{{'Quiz/Survey.Add Question' | translate}}
+                    </button>
+                  </div>
+                  <div class="table-wrapper">
+                    <table [dataSource]="questions" mat-table style="width: 100%" >
+                      <ng-container matColumnDef="wheelAction">
+                        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                          {{'TABLE.Action' | translate}}
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                          <div class="hover-effect-menu three-icons">
+                            <div class="short-arrow">
+                              <span class="material-icons" >more_horiz</span>
+                            </div>
+                            <div class="hover-round-effect">
+                              <button mat-menu-item (click)="editSurveyQuestion(element, i, 'View')" matTooltip="{{'TABLE.ViewDetails' | translate}}">
+                                <span class="material-icons">remove_red_eye</span>
+                              </button>
+                              <button mat-menu-item (click)="editSurveyQuestion(element, i, 'Edit')" matTooltip="{{'Edit' | translate}}">
+                                <span class="material-icons">edit</span>
+                              </button>
+                              <button mat-menu-item (click)="deleteSurveyQuestion(element.id)" matTooltip="{{'Delete' | translate}}">
+                                <span class="material-icons">delete</span>
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="order">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 260px;">
+                          {{'TKLAB.ORDER' | translate}}
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="min-width: 260px;">
+                          {{element.order ? element.order : '-'}}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="code">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 260px;">
+                          {{'TKLAB.CODE' | translate}}
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="min-width: 260px;">
+                          {{element.code_label ? element.code_label : '-'}}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="question">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 260px;">
+                          {{'TKLAB.QUESTION' | translate}}
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="min-width: 260px;">
+                          {{element.question_label ? element.question_label : '-'}}
+                        </td>
+                      </ng-container>
+                      <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>
+                          {{'TKLAB.ACTION' | translate}}
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <!--<button mat-icon-button type="button"  (click)="viewSurveyQuestion(element)" [disabled]="this.readonly">
+                            <mat-icon>visibility</mat-icon>
+                          </button>
+                          <button mat-icon-button color="primary" type="button"  (click)="editSurveyQuestion(element)" [disabled]="this.readonly">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button type="button" color="warn"  (click)="deleteSurveyQuestion(element)" [disabled]="this.readonly">
+                            <mat-icon>delete</mat-icon>
+                          </button>-->
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="questionsColumns"></tr>
+                      <tr mat-row *matRowDef="let element; columns: questionsColumns"></tr>
+                    </table>
+                  </div>
+                  <div *ngIf="questions.length <= 0" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                  <div class="form-footer step-form-bottom">
+                    <div>
+                      <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                    </div>
+                    <div>
+                      <button matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                      <button matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next'| translate}} <span class="material-icons">arrow_forward</span></button>
+                    </div>
+                  </div>
+                </div>
+              </mat-step>
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>
+                    <img src="assets/images/fit-index-calc-management.svg"/>
+                    <p>{{'Quiz/Survey.Fit-Index Calc Management' | translate}}</p>
+                  </div>
+                </ng-template>
+                <div class="table-content box-style company-info">
+                  <div class="table-heading">
+                    <h3 style="font-weight: 600">{{'Quiz/Survey.Fit-Index Calc Management' | translate}}</h3>
+                    <div class="search-form-wrapper">
+                      <div class="search-form">
+                        <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                        <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Quiz/Survey.SearchFit-Index' | translate}}" />
+                        <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                      </div>
+                      <button  class="btn-style" (click)="addFitIndexPopup()">
+                        <span class="material-icons">add</span>{{'Quiz/Survey.AddFit-Index' | translate}}
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table-wrapper resource-color-table">
+                    <table [dataSource]="metricsData | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                        <ng-container matColumnDef="wheelAction">
+                          <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                            {{'TABLE.Action' | translate}}
+                          </th>
+                          <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                            <div class="hover-effect-menu two-icons">
+                              <div class="short-arrow">
+                                <span class="material-icons" >more_horiz</span>
+                              </div>
+                              <div class="hover-round-effect">
+                                <button mat-menu-item (click)="editFitIndex(element)" matTooltip="{{'Edit' | translate}}">
+                                  <span class="material-icons">edit</span>
+                                </button>
+                                <button mat-menu-item (click)="fitIndexDeleteDialog(element.id)" matTooltip="{{'Delete' | translate}}">
+                                  <span class="material-icons">delete</span>
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="metric">
+                          <th  (click)="changeSorting('metrics_name', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                            {{'EXTRA_WORD.Matrics'| translate}}  <span
+                            [ngClass]="{'down': sortBy === 'metrics_name' && sortKey === '-1' , 'up': sortBy === 'metrics_name' && sortKey === '1'}" >
+                                        <img alt="" src="assets/images/up-arrow.svg"></span>
+                            <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                            {{element.metrics_name ? element.metrics_name : '-'}}
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="operator">
+                          <th  *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                            {{'EXTRA_WORD.Operator'| translate}}
+                            <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                            {{element.operator ? element.operator : '-'}}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                          <th (click)="changeSorting('value', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                            {{'EXTRA_WORD.Value'| translate}}
+                            <span
+                              [ngClass]="{'down': sortBy === 'value' && sortKey === '-1' , 'up': sortBy === 'value' && sortKey === '1'}" >
+                                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                            <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                            {{element.value ? element.value : '-'}}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="textResult">
+                          <th (click)="changeSorting('result', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                            {{'EXTRA_WORD.TextResult'| translate}}
+                            <span
+                              [ngClass]="{'down': sortBy === 'result' && sortKey === '-1' , 'up': sortBy === 'result' && sortKey === '1'}" >
+                                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                            <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                            {{element.result ? element.result : '-'}}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="scalarResult">
+                          <th (click)="changeSorting('scalarResult', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                            {{'EXTRA_WORD.ScalarResult'| translate}}
+                            <span
+                              [ngClass]="{'down': sortBy === 'scalarResult' && sortKey === '-1' , 'up': sortBy === 'scalarResult' && sortKey === '1'}" >
+                                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                            <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                          </th>
+                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                            {{element.scalarResult ? element.scalarResult : '-'}}
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                            {{'TABLE.Action'| translate}}
+                          </th>
+                          <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                            <div class="action-icons d-flex switch">
+                              <img src="assets/images/edit-action.svg"  class="" alt="" (click)="editFitIndex(element.id)">
+                              <img src="assets/images/delete-action.svg" (click)="fitIndexDeleteDialog(element.id)" alt="">
+                            </div>
+                          </td>
+                        </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="fitIndexDisplayedColumns"></tr>
+                      <tr mat-row *matRowDef="let element; columns: fitIndexDisplayedColumns"></tr>
+                    </table>
+                  </div>
+                  <div *ngIf="0 >= metricsData.length" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                  <div *ngIf="metricsData.length > 0 " class="paginate-footer">
+                    <div class="page-item">
+                      <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                      <mat-form-field appearance="fill">
+                        <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                          <mat-option value="5" selected >5</mat-option>
+                          <mat-option value="10">10</mat-option>
+                          <mat-option value="15">15</mat-option>
+                          <mat-option value="20">20</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+                    </div>
+                    <div class="table-paginator">
+                      <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+                    </div>
+                  </div>
+                  <div class="form-footer step-form-bottom">
+                    <div>
+                      <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                    </div>
+                    <div>
+                      <button matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                      <button  class="btn-style green-btn" type="button" (click)="fullSurveySave()">{{'GENERAL.Save&Finish' | translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </mat-step>
+            </mat-horizontal-stepper>
+          </div>
+        </div>
+    </div>
+</section>

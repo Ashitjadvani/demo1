@@ -1,0 +1,19 @@
+
+
+.feature-contents.provice-switch {
+  .custom-switch-group{
+    display: initial;
+    flex-wrap: wrap;
+    .features-switch{
+      margin: 0;
+      .mat-slide-toggle {
+        max-width: 100%;
+        height: 60px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+

@@ -1,0 +1,105 @@
+
+<div class="dashboard-customization">
+    <div class="common-tabbing">
+        <mat-tab-group animationDuration="0ms">
+            <mat-tab label="{{'Enable Disable Modules' | translate}}">
+                <div class="box-style">
+                    <div class="box-style">
+                        <form class="w-100" name="changeModuleForm" [formGroup]= "changeModuleForm"  novalidate (ngSubmit)="submitEnableDisable()" #myform="ngForm">
+                            <div class="form-main table-content box-heading">
+                                <h3>{{'Enable Disable Modules' | translate}}</h3>
+                                <div class="form-row-wrapper module-wrapper"  >
+                                    <h5>{{'INSIGHTS_MENU.PEOPLE_MANAGEMENT' | translate}}</h5>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-xxl-3" *ngFor="let peopleManagement of peopleManagementList; let i = index">
+                                            <div class="form-field">
+                                                <div class="custom-switch">
+                                                    <mat-checkbox  [checked]="peopleManagement.moduleStatus" [value]="peopleManagement.moduleStatus" (change)="Checklist($event, i, 1)">{{peopleManagement.moduleName | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row-wrapper module-wrapper">
+                                    <h5>{{'INSIGHTS_MENU.MASTER_MODULES' | translate}}</h5>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-xxl-3" *ngFor="let masterModules of masterModulesList; let i = index">
+                                            <div class="form-field">
+                                                <div class="custom-switch">
+                                                    <mat-checkbox [checked]="masterModules.moduleStatus" [value]="masterModules.moduleStatus" (change)="Checklist($event, i, 2)">{{masterModules.moduleName | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row-wrapper module-wrapper">
+                                    <h5>{{'Alerts and Touchpoint' | translate}}</h5>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-xxl-3"  *ngFor="let alerts of alertsList; let i = index">
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch">
+                                                    <mat-checkbox [checked]="alerts.moduleStatus" [value]="alerts.moduleStatus" (change)="Checklist($event, i, 3)">{{alerts.moduleName | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row-wrapper module-wrapper">
+                                    <h5>{{'INSIGHTS_MENU.RECRUITING' | translate}}</h5>
+                                    <div class="row">
+                                        <div class="col-xl-6 col-xxl-3" *ngFor="let recruiting of recruitingList; let i = index" >
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch">
+                                                    <mat-checkbox [checked]="recruiting.moduleStatus" [value]="recruiting.moduleStatus" (change)="Checklist($event, i, 4)">{{recruiting.moduleName | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-footer">
+                                    <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{'Change Ordering' | translate}}">
+                <div class="box-style">
+                    <div class="box-style">
+                        <form class="w-100" name="nativeLanguagesForm" [formGroup]= "nativeLanguagesForm"  novalidate (ngSubmit)="submitChangeOrdering()" #myform="ngForm">
+                            <div class="form-main table-content box-heading">
+                                <h3>{{'Change Ordering' | translate}}</h3>
+                                <div class="form-row-wrapper">
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="form-field">
+                                                <div class="drag-custom-table">
+                                                    <div class="drage-header">
+                                                        <ul>
+                                                            <li style="min-width: 80px"><span>{{'Drag' | translate}}</span> </li>
+                                                            <li class="checkbox-style" style="min-width: 80px;"><span>{{'Modules' | translate}}</span></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div cdkDropList class="drag-content" (cdkDropListDropped)="changeOrder($event)">
+                                                        <ul *ngFor="let module of changeOrderingList" cdkDrag cdkDragLockAxis="y">
+                                                            <li style="min-width: 80px;" cdkDragHandle><img src="assets/images/drag-icon.svg" alt="" style="cursor: pointer;"></li>
+                                                            <li class="checkbox-style" style="min-width: 200px;"><span>{{module.modulename | translate}}</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-footer">
+                                    <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

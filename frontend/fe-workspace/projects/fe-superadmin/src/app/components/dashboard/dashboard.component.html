@@ -1,0 +1,444 @@
+
+<section class="dashboard">
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="congrats-tag" style="background-image: url(assets/images/congrats-img.svg);">
+                <h3>Congratulations John,</h3>
+                <p>All the <b>Instances</b> & <b>Microservices</b> are working fine.</p>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="statistics box-style" >
+                <h5>Statistics</h5>
+                <ul>
+                    <li routerLink="/contact-type">
+                        <img [src]="contactTypeIMG" alt="">
+                        <div>
+                            <h4>{{statesticData?.contactType ? statesticData.contactType: '0'}}</h4>
+                            <p>Contact Type</p>
+                        </div>
+                    </li>
+                    <li routerLink="/features">
+                        <img [src]="featuresIMG" alt="">
+                        <div>
+                            <h4>{{statesticData?.features ? statesticData.features : '0'}}</h4>
+                            <p>Features</p>
+                        </div>
+                    </li>
+                    <li routerLink="/client-management">
+                        <img [src]="clientsIMG" alt="">
+                        <div>
+                            <h4>{{statesticData?.clients ? statesticData.clients : '0'}}</h4>
+                            <p>Clients</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>Clients Report</h4>
+                        <!-- <div class="chart-tools">
+                            <div class="date-select">
+                                <mat-form-field appearance="outline">
+                                    <mat-date-range-input [rangePicker]="picker">
+                                      <input matStartDate placeholder="Start date">
+                                      <input matEndDate placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                            </div>
+                        </div> -->
+                        <div class="chart-tools">
+                            <div class="radio-types">
+                                <mat-button-toggle-group >
+                                    <mat-button-toggle value="weekly" (click)="clientReportCall('weekly')" checked>Weekly</mat-button-toggle>
+                                    <mat-button-toggle value="monthly" (click)="clientReportCall('monthly')">Monthly</mat-button-toggle>
+                                    <mat-button-toggle value="yearly" (click)="clientReportCall('yearly')">Yearly</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas baseChart
+                            [data]="clientReportChartData"
+                            [labels]="clientReportChartLabels"
+                            [options]="clientReportChartOptions"
+                            [legend]="clientReportChartLegend"
+                            [colors]="clientReportChartColors"
+                            [chartType]="clientReportChartType">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart ">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>Client By Type</h4>
+                    </div>
+                    <div class="chart-body">
+                        <div class="client-type">
+                            <canvas baseChart
+                                    [data]="pieChartData"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [colors]="pieChartColors"
+                            ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mt-30">
+            <div class="client-chart features-report">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>Features Report</h4>
+                    </div>
+                    <div class="chart-body">
+                        <canvas baseChart
+                            [data]="featureChartData"
+                            [labels]="featureChartLabels"
+                            [options]="featureChartOptions"
+                            [legend]="featureChartLegend"
+                            [colors]="featureChartColors"
+                            [chartType]="featureChartType">
+                        </canvas>
+                    </div>
+                    <hr>
+                    <div class="chart-content">
+                        <div class="row">
+                            <ng-container *ngFor="let features of getFeatureChartData">
+                                <div class="col-md-6 col-lg-4 col-xl-3 progress-wrapper">
+                                    <div class="progress-wrapper-1">
+                                        <h5>{{features?.featureName? features.featureName :''}}: <span>{{features?.percentage? features.percentage:'0'}}%</span></h5>
+                                        <mat-progress-bar mode="determinate" value="{{features?.percentage? features.percentage:'0'}}"></mat-progress-bar>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mt-30">
+            <div class="client-chart">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <div class="row w-100">
+                            <div class="col-xxl-3">
+                                <div class="title-wrapper">
+                                    <h4>Active Clients Report</h4>
+                                </div>
+                            </div>
+                            <div class="col-xxl-9">
+                                <div class="chart-tools active-date">
+                                    <div class="date-select">
+                                        <mat-form-field appearance="outline">
+                                            <mat-date-range-input [rangePicker]="picker1">
+                                              <input matStartDate #startDate placeholder="Start date" >
+                                              <input matEndDate #endDate  placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker1 (closed)="onStartChange(startDate.value,endDate.value)"></mat-date-range-picker>
+                                            <!-- <mat-error *ngIf="activeClientDate.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                                            <mat-error *ngIf="activeClientDate.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error> -->
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="radio-types">
+                                        <mat-button-toggle-group >
+                                            <mat-button-toggle value="1day" (click)="clientActiveReportCall('1')" >1 Day Active Clients</mat-button-toggle>
+                                            <mat-button-toggle value="7day"  (click)="clientActiveReportCall('7')" checked>7 Day Active Clients</mat-button-toggle>
+                                            <mat-button-toggle value="14day" (click)="clientActiveReportCall('14')">14 Day Active Clients</mat-button-toggle>
+                                            <mat-button-toggle value="28day" (click)="clientActiveReportCall('28')">28 Day Active Clients</mat-button-toggle>
+                                        </mat-button-toggle-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas baseChart
+                                [data]="clientActiveReportChartData"
+                                [labels]="clientActiveReportChartLabels"
+                                [options]="clientActiveReportChartOptions"
+                                [legend]="clientActiveReportChartLegend"
+                                [plugins]="lineChartPlugins"
+                                [colors]="clientActiveReportChartColors"
+                                [chartType]="clientActiveReportChartType">
+                        </canvas>
+                    </div>
+                    <!-- <ng-container *ngFor="let data of getClientActiveReportsData"> -->
+                    <div class="chart-footer">
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="day-wise-report border-0">
+                                    <p>1 Day Active Clients</p>
+                                    <h4>{{oneDayActiveClientsCount}}</h4>
+                                    <span>{{oneDayActiveClientsPercentage}}% of Total: 100% ({{oneDayActiveClientsCount}})</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="day-wise-report">
+                                    <p>7 Day Active Clients</p>
+                                    <h4>{{sevenDayActiveClientsCount}}</h4>
+                                    <span>{{sevenDayActiveClientsPercentage}}% of Total: 100% ({{sevenDayActiveClientsCount}})</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="day-wise-report">
+                                    <p>14 Day Active Clients</p>
+                                    <h4>{{fourteenDayActiveClientsCount}}</h4>
+                                    <span>{{fourteenDayActiveClientsPercentage}}% of Total: 100% ({{fourteenDayActiveClientsCount}})</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="day-wise-report">
+                                    <p>28 Day Active Clients</p>
+                                    <h4>{{twentyEightDayActiveClientsCount}}</h4>
+                                    <span>{{twentyEightDayActiveClientsPercentage}}% of Total: 100% ({{twentyEightDayActiveClientsCount}})</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </ng-container> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12" *ngFor="let companyData of companyData;let i= index">
+            <div class="row" *ngIf="peopleManagementPin || masterModulesPin || alertsPin || recruitingPin || touchPointPin">
+                <div class="col-xl-12 mt-30">
+                    <div class="client-chart statistic-charts">
+                        <h3 class="mb-30">{{companyData?.companyName? companyData.companyName : ''}} Dashboard</h3>
+                        <div class="chart-box box-style" *ngIf="peopleManagementPin">
+                            <div class="chart-pin" (click)="changePinDialog('peopleManagement', peopleManagementPin, companyData.companyId, index)">
+                              <img *ngIf="peopleManagementPin" src="assets/images/pin-icon.svg" alt="">
+                              <img *ngIf="!peopleManagementPin" src="assets/images/pin-view.svg" alt="">
+                            </div>
+                            <div class="chart-header">
+                                <h4>Statistics</h4>
+                            </div>
+                            <div class="statistics-box">
+                                <div class="statistic-content">
+                                    <img src="assets/images/people-manage-icon.png" alt="">
+                                    <div class="statistic-info">
+                                        <h5>People Management</h5>
+                                        <p><b>{{peopleData[i]?.areaCount? peopleData[i].areaCount : '00'}}</b> Areas</p>
+                                        <p><b>{{peopleData[i]?.peopleRolesCount? peopleData[i].peopleRolesCount : '00'}}</b> Roles</p>
+                                        <p><b>{{peopleData[i]?.jobTitleCount? peopleData[i].jobTitleCount : '00'}}</b> Job Titles</p>
+                                    </div>
+                                </div>
+                                <div class="statistic-content">
+                                    <img src="assets/images/people-icon.svg" alt="">
+                                    <div class="statistic-info">
+                                        <h5>{{peopleData[i]?.peopleCount? peopleData[i].peopleCount : '00'}}</h5>
+                                        <p>People</p>
+                                    </div>
+                                </div>
+                                <div class="statistic-content">
+                                    <img src="assets/images/people-group-icon.svg" alt="">
+                                    <div class="statistic-info">
+                                        <h5>{{peopleData[i]?.peopleGroupCount? peopleData[i].peopleGroupCount : '00'}}</h5>
+                                        <p> People Groups</p>
+                                    </div>
+                                </div>
+                                <div class="statistic-content">
+                                    <img src="assets/images/account-icon.svg" alt="">
+                                    <div class="statistic-info">
+                                        <h5>{{peopleData[i]?.accountCount? peopleData[i].accountCount : '00'}}</h5>
+                                        <p> Accounts</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-body">
+                                <div class="charts-wrapper">
+                                    <div class="client-chart people-by-gender">
+                                        <div class="chart-box">
+                                            <div class="chart-header">
+                                                <h4>People By Gender</h4>
+                                            </div>
+                                            <div class="chart-body">
+                                                <div class="client-type">
+                                                    <canvas baseChart
+                                                            [data]="genderPieChartData[i]"
+                                                            [labels]="genderPieChartLabels"
+                                                            [chartType]="genderPieChartType"
+                                                            [colors]="genderPieChartColors"
+                                                    ></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="client-chart people-by-role">
+                                        <div class="chart-box">
+                                            <div class="chart-header">
+                                                <h4>People By Role</h4>
+                                            </div>
+                                            <div class="chart-body">
+                                                <div class="client-type">
+                                                    <canvas baseChart
+                                                        [data]="peopleByRoleChartData[i]"
+                                                        [labels]="peopleByRoleChartLabels[i]"
+                                                        [options]="peopleByRoleChartOptions"
+                                                        [legend]="peopleByRoleChartLegend"
+                                                        [colors]="peopleByRoleChartColors"
+                                                        [chartType]="peopleByRoleChartType">
+                                                    </canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 mt-30" *ngIf="masterModulesPin">
+                    <div class="client-chart recruit-alert">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="chart-group-wrapper">
+                                    <div class="chart-header mb-30"><h4>Master Modules</h4></div>
+                                    <div class="chart-box box-style">
+                                        <div class="chart-pin" (click)="changePinDialog('masterModules', masterModulesPin, companyData.companyId, index)">
+                                          <img *ngIf="masterModulesPin" src="assets/images/pin-icon.svg" alt="">
+                                          <img *ngIf="!masterModulesPin" src="assets/images/pin-view.svg" alt="">
+                                        </div>
+                                        <div class="chart-header">
+                                            <h4>Statistics</h4>
+                                        </div>
+                                        <div class="statistics-box">
+                                            <div class="statistic-content">
+                                                <img src="assets/images/people-manage-icon.png" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.eventTypesCount? masterModuleData[i].eventTypesCount: '0'}}</h5>
+                                                    <p>Event Types</p>
+                                                </div>
+                                            </div>
+                                            <div class="statistic-content">
+                                                <img src="assets/images/people-icon.svg" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.disputeTypesCount? masterModuleData[i].disputeTypesCount: '0'}}</h5>
+                                                    <p>Dispute Types</p>
+                                                </div>
+                                            </div>
+                                            <div class="statistic-content">
+                                                <img src="assets/images/people-group-icon.svg" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.scopeCount? masterModuleData[i].scopeCount: '0'}}</h5>
+                                                    <p>Scopes</p>
+                                                </div>
+                                            </div>
+                                            <div class="statistic-content">
+                                                <img src="assets/images/account-icon.svg" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.siteCount? masterModuleData[i].siteCount: '0'}}</h5>
+                                                    <p>Sites</p>
+                                                </div>
+                                            </div>
+                                            <div class="statistic-content">
+                                                <img src="assets/images/account-icon.svg" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.universityCount? masterModuleData[i].universityCount: '0'}}</h5>
+                                                    <p>University</p>
+                                                </div>
+                                            </div>
+                                            <div class="statistic-content">
+                                                <img src="assets/images/account-icon.svg" alt="">
+                                                <div class="statistic-info">
+                                                    <h5>{{masterModuleData[i]?.degreeCount? masterModuleData[i].degreeCount: '0'}}</h5>
+                                                    <p>Degree</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 mt-30">
+                    <div class="client-chart recruit-alert">
+                        <div class="row">
+                            <div class="col-xl-8" *ngIf="recruitingPin">
+                                <div class="chart-group-wrapper">
+                                    <div class="chart-header mb-30"><h4>Recruiting</h4></div>
+                                    <div class="chart-box box-style">
+                                        <div class="chart-pin" (click)="changePinDialog('recruiting', recruitingPin, companyData.companyId, index)">
+                                          <img *ngIf="recruitingPin" src="assets/images/pin-icon.svg" alt="">
+                                          <img *ngIf="!recruitingPin" src="assets/images/pin-view.svg" alt="">
+                                        </div>
+                                        <div class="chart-header">
+                                            <ul class="chart-details">
+                                                <li>Job Openings</li>
+                                                <li>Candidates</li>
+                                                <li>Job Applications</li>
+                                                <li>Hired Applications</li>
+                                                <li>Rejected Applications</li>
+                                            </ul>
+                                            <div class="chart-tools">
+                                              <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onTabChanged($event, i);">
+                                                <mat-tab label="This Week"></mat-tab>
+                                                <mat-tab label="This Month"></mat-tab>
+                                                <mat-tab label="This Year"></mat-tab>
+                                              </mat-tab-group>
+                                            </div>
+                                        </div>
+                                        <div class="chart-body">
+                                          <canvas id="recruitingMainChart" baseChart class="chart"
+                                                  [datasets]="recruitingChartData[i]"
+                                                  [labels]="recruitingChartLabels[i]"
+                                                  [options]="recruitingChartOptions"
+                                                  [legend]="recruitingChartLegend"
+                                                  [plugins]="recruitingChartPlugins"
+                                                  [colors]="recruitingChartColors"
+                                                  [chartType]="recruitingChartType">
+                                          </canvas>
+                                          <div class="noDataAvail" *ngIf="(recruitingRejectedApplicationData.length == 0) && (recruitingHiredApplicationData.length == 0) && (recruitingApplicationData.length == 0) && (recruitingCandidateData.length == 0) && (recruitingOpeningData.length == 0)">
+                                            <span>No Data Available</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="alert-cards" *ngIf="alertsPin">
+                                    <div class="chart-header mb-30"><h4>Alerts</h4></div>
+                                    <div class="chart-box box-style mt-30" style="background-image: url(assets/images/alerts-bg.svg);">
+                                        <div class="chart-pin" (click)="changePinDialog('alerts', alertsPin, companyData.companyId, index)">
+                                          <img *ngIf="alertsPin" src="assets/images/white-pin.svg" alt="">
+                                          <img *ngIf="!alertsPin" src="assets/images/pin-view-white.svg" alt="">
+                                        </div>
+                                        <img src="assets/images/alert-icon-card.png" class="card-icon" alt="">
+                                        <div class="alert-details">
+                                            <h3>{{companyData?.alertCount? companyData.alertCount: '0'}}</h3>
+                                            <p>Alerts</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-cards" *ngIf="touchPointPin">
+                                    <div class="chart-box box-style mt-30" style="background-image: url(assets/images/touchpoint-bg.svg);">
+                                        <div class="chart-pin" (click)="changePinDialog('touchPoint', touchPointPin, companyData.companyId, index)">
+                                          <img *ngIf="touchPointPin" src="assets/images/white-pin.svg" alt="">
+                                          <img *ngIf="!touchPointPin" src="assets/images/pin-view-white.svg" alt="">
+                                        </div>
+                                        <img src="assets/images/touchpoint-icon-card.png" class="card-icon" alt="">
+                                        <div class="alert-details">
+                                            <h3>{{companyData?.touchPointCount? companyData.touchPointCount: '0'}}</h3>
+                                            <p>Touch Point</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

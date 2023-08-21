@@ -1,0 +1,22 @@
+<section class="popups" style="max-width:400px">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{title}}</h4>
+            <img *ngIf="image && image != ''" alt="" src="{{image}}">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <mat-icon *ngIf="icon != ''" style="color: lightgrey; font-size:100px; height:100px; width:100px" class="material-icons">{{icon}}</mat-icon>
+            <p *ngIf="message1 != ''" style="margin-top:20px">{{message1}}</p>
+            <p *ngIf="message2 != ''" style="margin-top:10px;">{{message2}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onConfirmClick()" class="btn-style theme-btn">{{'GENERAL.Yes' | translate}}</button>
+            <button (click)="onCancelClick()"  class="btn-style inactive">{{'GENERAL.No' | translate}}</button>
+        </div>
+    </div>
+</section>

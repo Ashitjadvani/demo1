@@ -1,0 +1,30 @@
+<div class="main-container">
+    <mat-toolbar color="primary">
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <app-header-bar class="main-header-bar"></app-header-bar>
+    </mat-toolbar>
+    <mat-sidenav-container class="main-sidenav-container">
+        <!--[style.marginTop.px]="mobileQuery.matches ? 56 : 0">-->
+        <mat-sidenav #snav class="side-nav" [mode]="'side'" fixedTopGap="56" opened>
+            <mat-nav-list>
+                <div *ngFor="let nav of navigationItems" class='menu-item-container'>
+                    <a mat-list-item [ngClass]="nav.selected ? 'menu-selected' : 'menu-normal'"
+                        (click)="onSideBarAction(nav)">
+                        <img class="nav-item-img" [src]="nav.icon">
+                        <div class="nav-item">{{ nav.caption }}
+                          <span *ngIf="nav.count && applicationBudgeCount" class="dashboard-budge">
+                            {{applicationBudgeCount}}
+                          </span>
+                        </div>
+                    </a>
+                </div>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

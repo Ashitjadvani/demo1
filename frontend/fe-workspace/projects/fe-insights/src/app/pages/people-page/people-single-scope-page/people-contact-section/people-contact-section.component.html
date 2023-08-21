@@ -1,0 +1,30 @@
+<div class="user-param-box">
+    <mat-form-field class="full-width">
+        <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.ADDRESS' | translate}}"
+            [(ngModel)]="currentEditPerson.address">
+    </mat-form-field>
+    <div class="input-row">
+        <mat-form-field class="width-50">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.CITY' | translate}}" [(ngModel)]="currentEditPerson.city">
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-25">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.PROV' | translate}}"
+                [(ngModel)]="currentEditPerson.prov">
+                <mat-option *ngFor="let prov of provITA" value="{{ prov }}">
+                    {{ prov }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="vspan-5"></span>
+        <mat-form-field class="width-25">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.CAP' | translate}}" [(ngModel)]="currentEditPerson.cap">
+        </mat-form-field>
+    </div>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.PHONE' | translate}}" [(ngModel)]="currentEditPerson.phone">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.EMAIL *' | translate}}" [(ngModel)]="currentEditPerson.email">
+    </mat-form-field>
+</div>

@@ -1,0 +1,86 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+        <app-table-data-view [tableDataSet]="categoriesTableData" [columnTemplates]="tableColumnTemplates"
+            [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+        </app-table-data-view>
+    </mat-tab>
+    <mat-tab>
+        <div class="general-container">
+            <div class="card width-60 card-height-450">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+
+                    <mat-tab-group class="title-mat-tab" [(selectedIndex)]="langTabIndex" (selectedTabChange)="onLanguageChange()" mat-stretch-tabs>
+                        <mat-tab *ngFor="let lang of availableLanguages" [value]="lang.id" [label]="lang.desc">
+                            <mat-form-field class="category-title">
+                                <mat-label>{{'INFORMATION_PAGE.Category Title'|translate}} *
+                                </mat-label>
+                                <input matInput placeholder="{{'INFORMATION_PAGE.Category Title' | translate}}*" appearance="legacy"
+                                    [(ngModel)]="currentTitle" (change)="onTitleChange()">
+                            </mat-form-field>
+                        </mat-tab>
+                    </mat-tab-group>
+
+                    <!--div class="title-lang-container">
+                        <mat-form-field class="sel-lang">
+                            <mat-select placeholder="{{'INFORMATION_PAGE.Languages' | translate}}" [(value)]="languageSelected" (selectionChange)="onLanguageChange()">
+                                <mat-option *ngFor="let lang of availableLanguages" [value]="lang">
+                                    {{lang}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="category-title">
+                            <mat-label>{{'INFORMATION_PAGE.Category Title'|translate}}</mat-label>
+                            <input matInput placeholder="{{'INFORMATION_PAGE.Category Title' | translate}}" appearance="legacy"
+                                [(ngModel)]="currentTitle" (change)="onTitleChange()">
+                        </mat-form-field>
+                    </div-->
+
+                    <div class="icon-select-container">
+                        <div class="attach-file">
+                            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial (click)="onIconAttachment()">{{'INFORMATION_PAGE.Upload Icon'|translate}}</button>
+                            {{'INFORMATION_PAGE.Select Icon'|translate}}
+                        </div>
+                        <input type="file" #icon style="display: none" accept="image/svg+xml" (change)="onUploadIcon($event)" />
+                        <div *ngIf="iconUploaded" [ngClass]="selectedImage=='uploaded' ? 'info-circle-sel': 'info-circle'" >
+                            <div class="info-icon" [innerHTML]="safeSvgUploaded" (click)="onUploadedClick()"></div>
+                        </div>
+                        <div *ngFor="let image of images" [ngClass]="image==selectedImage ? 'info-circle-sel': 'info-circle'">
+                            <img class="info-icon" src="./assets/images/{{image}}" (click)="onImageClick(image)">
+                        </div>
+
+                    </div>
+
+                    <div class="info-tile-container">
+                        <div class="info-tile" [ngStyle]="{ 'backgroundColor': currentCategory.tileBackgroundColor }">
+                            <div class="tile-top-line">
+                                <div class="info-tile-empty" [(colorPicker)]="currentCategory.tileBackgroundColor" [cpPosition]="'left'" 
+                                [cpPresetColors]="['#FFFFFF', '#000000', '#A8E6CF', '#DCEDC1', '#FFD3B6', '#FFAAA5', '#FF8B94', '#D399E7', '#89BADF', '#7297D6', '#59709C', '#344771']"
+                                [cpPresetLabel]="''" ></div>
+                                <div class="info-tile-icon" [ngStyle]="{'color': iconColor}" [(colorPicker)]="iconColor" 
+                                [cpPresetColors]="['#FFFFFF', '#000000', '#A8E6CF', '#DCEDC1', '#FFD3B6', '#FFAAA5', '#FF8B94', '#D399E7', '#89BADF', '#7297D6', '#59709C', '#344771']"
+                                [cpPresetLabel]="''" (colorPickerChange)="onIconColorChange($event)">
+                                    <div class="theme-icon larger info-tile-image" [innerHTML]="safeSvg"></div>
+                                </div>
+                            </div>
+                            <div class="info-tile-caption" [ngStyle]="{'color': currentCategory.textColor}" [(colorPicker)]="currentCategory.textColor" 
+                            [cpPresetColors]="['#FFFFFF', '#000000', '#A8E6CF', '#DCEDC1', '#FFD3B6', '#FFAAA5', '#FF8B94', '#D399E7', '#89BADF', '#7297D6', '#59709C', '#344771']"
+                            [cpPresetLabel]="''" >{{ currentTitle }}</div>
+                        </div>
+                    </div>
+                    <div class="description-tile">{{'INFORMATION_PAGE.Change Color' | translate}}</div>
+
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()"
+                        cdkFocusInitial (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

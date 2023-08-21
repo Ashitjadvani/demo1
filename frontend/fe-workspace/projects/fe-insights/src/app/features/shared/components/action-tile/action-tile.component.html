@@ -1,0 +1,17 @@
+<div class="action-tile-container">
+    <div class="action-tile" (click)="onClick()" [ngStyle]="{'background': backgroundColor, 'border': borderColor ? borderColor : ''}">
+        <div class="tile-top-line">
+            <div *ngIf="iconAction != null" class="action-tile-icon">
+                <i class="theme-icon larger action-tile-image" [ngClass]="iconAction"></i>
+            </div>
+            <div *ngIf="topText" class="action-tile-top-text" [ngStyle]="{'color': textColor}">
+                {{ topText }}
+            </div>
+            <div class="action-tile-icon">
+                <i class="theme-icon larger action-tile-image" [ngClass]="icon"></i>
+            </div>
+        </div>
+        <div class="action-tile-caption" [ngStyle]="{'color': textColor}">{{ caption }}</div>
+        <div *ngIf="info" class="action-tile-info" [ngStyle]="{'color': textColor}">{{ info }}</div>
+    </div>
+</div>

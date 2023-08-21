@@ -1,0 +1,795 @@
+<div xmlns="http://www.w3.org/1999/html">
+  <div class="name-title">
+    <h4>{{'MYACCOUNT.EditProfile' | translate}}</h4>
+  </div>
+  <hr>
+  <div class="tabbing-style">
+    <div class="common-tabbing">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab class="mt-5" label="{{'MYACCOUNT.PersonalData' | translate}}">
+          <div class="form-content-box">
+            <form #myform="ngForm" (ngSubmit)="savePersonalData()" [formGroup]="personalDetailsForm" class="w-100"
+                  name="personalDetailsForm" novalidate>
+              <div class="row w-100">
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'SIGNUP.CompanyName' | translate}}<span style="color:#EA5455">*</span>
+                      </mat-label>
+                      <input formControlName="companyName" matInput name="companyName" type="text">
+                      <mat-error *ngIf="personalDetailsForm.controls.companyName.errors?.required">
+                        {{'SIGNUP.CompanyNameRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-xxl-12">
+                  <!-- <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.FiscalAddress' | translate}}<span style="color:#EA5455">*</span>
+                      </mat-label>
+                      <textarea formControlName="fiscalAddress" matInput name="fiscalAddress"
+                                style="min-height:120px;"></textarea>
+                      <mat-error *ngIf="personalDetailsForm.controls.fiscalAddress.errors?.required">
+                        {{'MYACCOUNT.FiscalAddressRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div> -->
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.VATNumber' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <input formControlName="VATCode" matInput name="VATCode" type="text" [(ngModel)]="vatCodeNumber" (keyup)="bindVATValue($event)"
+                             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                      <mat-error *ngIf="personalDetailsForm.controls.VATCode.errors?.required">
+                        {{'MYACCOUNT.VATNumberReuired' | translate}}
+                      </mat-error>
+                      <mat-error *ngIf="personalDetailsForm.controls.VATCode.errors?.pattern">{{'MYACCOUNT.VATinvalid' | translate}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.TaxID' | translate}}<span style="color:#EA5455">*</span></mat-label>
+<!--                      <input formControlName="fiscalCode" matInput minlength="16" maxlength="16" name="fiscalCode" type="text">-->
+                      <input formControlName="fiscalCode" matInput name="fiscalCode" type="text" style="text-transform: uppercase;">
+                      <mat-error *ngIf="personalDetailsForm.controls.fiscalCode.errors?.required">
+                        {{'MYACCOUNT.TaxIDRequired' | translate}}
+                      </mat-error>
+                      <mat-error *ngIf="personalDetailsForm.controls.fiscalCode.errors?.pattern">{{'MYACCOUNT.TaxIDinvalid' | translate}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.DUNS' | translate}}</mat-label>
+                      <input formControlName="duns" matInput name="duns" type="text">
+                      <!-- <mat-error *ngIf="personalDetailsForm.controls.duns.errors?.required">
+                        {{'MYACCOUNT.DUNSRequired' | translate}}
+                      </mat-error> -->
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.PEC' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <input formControlName="pec" matInput name="pec" type="text">
+                      <mat-error *ngIf="personalDetailsForm.controls.pec.errors?.required">
+                        {{'MYACCOUNT.PECRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-12 col-xxl-8">
+                  <div class="form-field error-message-custom">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.AtecoCode' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <mat-select formControlName="atecoCode" [(ngModel)]="selectedValue" multiple>
+                        <div class="search-menu">
+                          <input [(ngModel)]="searchTxt" formControlName="atecoCodeSearch"  type="text" class="search-field" matInput placeholder="search">
+                        </div>
+                        <!-- <mat-option>
+                          <ngx-mat-select-search formControlName="atecoCodeCtrl" placeholderLabel="Search.."></ngx-mat-select-search>
+                        </mat-option> -->
+                        <mat-option *ngFor="let ateco of atecoRecords | search : searchTxt" [value]="ateco.description" >{{ateco.code}} - {{ateco.description}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.atecoCode.errors?.required">
+                        {{'MYACCOUNT.AtecoCodeRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="details-title mt-30">
+                  <h4>{{'MYACCOUNT.FiscalAddress' | translate}}</h4>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+<!--                    <mat-form-field appearance="outline" class="element-full-width">-->
+<!--                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>-->
+<!--                      <input formControlName="nation" matInput name="nation" type="text">-->
+<!--                      <mat-error *ngIf="personalDetailsForm.controls.nation.errors?.required">-->
+<!--                        {{'MYACCOUNT.NationRequired' | translate}}-->
+<!--                      </mat-error>-->
+<!--                    </mat-form-field>-->
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>
+                      <!--                                      <input formControlName="nation" matInput name="nation" type="text">-->
+                      <mat-select formControlName="nation" (selectionChange)="changeCountry($event.value)">
+                        <mat-select-filter #resetSearch [array]="countryRecord" (filteredReturn)="countryRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                        <mat-option *ngFor="let coutry of countryRecordFiltered" value="{{coutry.id}}">{{coutry.name}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.nation.errors?.required">
+                        {{'MYACCOUNT.NationRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+<!--                    <mat-form-field appearance="outline" class="element-full-width">-->
+<!--                      <mat-label> {{'MYACCOUNT.State' | translate}}  <span style="color:#EA5455">*</span></mat-label>-->
+<!--                      <input formControlName="state" matInput name="state" type="text">-->
+<!--                      <mat-error *ngIf="personalDetailsForm.controls.state.errors?.required">-->
+<!--                        {{'MYACCOUNT.StateRequired' | translate}}-->
+<!--                      </mat-error>-->
+<!--                    </mat-form-field>-->
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label> {{'MYACCOUNT.State' | translate}}</mat-label>
+                      <!--                                    <input formControlName="state" matInput name="state" type="text">-->
+                      <mat-select formControlName="state" (selectionChange)="changeState($event.value)">
+                        <mat-select-filter #resetSearch [array]="statesRecord" (filteredReturn)="statesRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                        <mat-option *ngFor="let state of statesRecordFiltered" value="{{state.id}}">{{state.name}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.state.errors?.required">
+                        {{'MYACCOUNT.StateRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'Province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <mat-select formControlName="province" (selectionChange)="changeProvince($event.value)" style="text-transform: uppercase;">
+                        <mat-select-filter  [array]="provList" (filteredReturn)="provListRecordFiltered = $event" placeholder="{{'Search' | translate}}" ></mat-select-filter>
+                        <mat-option *ngFor="let prov of provListRecordFiltered" [value]="prov" style="text-transform: uppercase;">{{prov}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.province.errors?.required" >
+                        {{'Select Province' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Town' | translate}}</mat-label>
+                      <mat-select formControlName="city">
+                        <mat-select-filter #resetSearch [array]="citiesRecord" (filteredReturn)="citiesRecordFiltered = $event" [displayMember]="'name'" (openedChange)="triggerEvent($event, resetSearch)"></mat-select-filter>
+                        <mat-option *ngFor="let city of citiesRecordFiltered" value="{{city.name}}">{{city.name}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.city.errors?.required">{{'MYACCOUNT.TownRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-9">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Street' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <input formControlName="address" matInput name="address" type="text">
+                      <mat-error *ngIf="personalDetailsForm.controls.address.errors?.required">
+                        {{'MYACCOUNT.StreetRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Cap' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <input formControlName="ZipCode" matInput name="ZipCode" type="text" minlength="5" maxlength="5">
+                        <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.required">{{'MYACCOUNT.CapRequired' | translate}}</mat-error>
+                        <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.pattern">{{'MYACCOUNT.EnterOnlyNumber' | translate}}</mat-error>
+                      <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.minlength">{{'Please enter minimum five digits'| translate}}</mat-error>
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="details-title mt-30">
+                  <h4>{{'MYACCOUNT.OperationalAddress' | translate}}</h4>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+<!--                    <mat-form-field appearance="outline" class="element-full-width">-->
+<!--                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>-->
+<!--                      <input formControlName="operationalNation" matInput name="operationalNation" type="text">-->
+<!--                      <mat-error *ngIf="personalDetailsForm.controls.operationalNation.errors?.required">-->
+<!--                        {{'MYACCOUNT.NationRequired' | translate}}-->
+<!--                      </mat-error>-->
+<!--                    </mat-form-field>-->
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>
+                      <mat-select formControlName="operationalNation" (selectionChange)="changeCountry2($event.value)">
+                        <mat-select-filter #resetSearch [array]="countryRecord2" (filteredReturn)="countryRecord2Filtered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                        <mat-option *ngFor="let coutry of countryRecord2Filtered" value="{{coutry.id}}">{{coutry.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label> {{'MYACCOUNT.State' | translate}} </mat-label>
+                      <mat-select formControlName="operationalState" (selectionChange)="changeState2($event.value)">
+                        <mat-select-filter #resetSearch [array]="statesRecord2" (filteredReturn)="statesRecord2Filtered = $event" [displayMember]="'name'"></mat-select-filter>
+                        <mat-option *ngFor="let state of statesRecord2Filtered" value="{{state.id}}">{{state.name}}</mat-option>
+                      </mat-select>
+                      <!--                                    <mat-error *ngIf="personalDetailsForm.controls.operationalState.errors?.required">-->
+                      <!--                                      {{'MYACCOUNT.StateRequired' | translate}}-->
+                      <!--                                    </mat-error>-->
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'Province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <mat-select formControlName="operationalProvince" (selectionChange)="changeProvince2($event.value)">
+                        <mat-select-filter  [array]="provList2" (filteredReturn)="provListRecordFiltered = $event" placeholder="{{'Search' | translate}}" ></mat-select-filter>
+                        <mat-option *ngFor="let prov of provListRecordFiltered2" [value]="prov">{{prov}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="personalDetailsForm.controls.province.errors?.required" >
+                        {{'Select Province' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Town' | translate}}</mat-label>
+                      <mat-select formControlName="operationalCity">
+                        <mat-select-filter #resetSearch [array]="citiesRecord2" (filteredReturn)="citiesRecord2Filtered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'" ></mat-select-filter>
+                        <mat-option *ngFor="let city of citiesRecord2Filtered" value="{{city.name}}">{{city.name}}</mat-option>
+                      </mat-select>
+                      <!--                                    <input formControlName="city" matInput name="city" type="text">-->
+                      <!--                                    <mat-error *ngIf="personalDetailsForm.controls.operationalCity.errors?.required">{{'MYACCOUNT.TownRequired' | translate}}</mat-error>-->
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-9">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Street' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                      <input formControlName="operationalAddress" matInput name="operationalAddress" type="text">
+                      <mat-error *ngIf="personalDetailsForm.controls.operationalAddress.errors?.required">
+                        {{'MYACCOUNT.StreetRequired' | translate}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.Cap' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <input formControlName="operationalZipCode" matInput name="operationalZipCode" type="text" minlength="5" maxlength="5">
+                        <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.required">{{'MYACCOUNT.CapRequired' | translate}}</mat-error>
+                        <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.pattern">{{'MYACCOUNT.EnterOnlyNumber' | translate}}</mat-error>
+                      <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.minlength">{{'Please enter minimum five digits'| translate}}</mat-error>
+                      </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="details-title mt-30">
+                  <h4>{{'MYACCOUNT.CompanyBrochure' | translate}} </h4>
+                </div>
+                <div class="col-xl-12">
+                  <div class="form-field">
+                    <div class="file-upload-wrapper">
+                      <div class="file-upload-in">
+                        <div class="file-upload-text"><span class="material-icons">attachment</span>{{'SIGNUP.AttachCompanyBrochure' | translate }}</div>
+                        <label for="upload_btn" >{{'GENERAL.Browse' | translate }}</label>
+                      </div>
+                      <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                      <input #companyBrochureUpload (change)="onFileUpload(companyBrochureUpload)"  accept=".pdf" id="upload_btn" type="file"/>
+                      <span class="file-info">{{ this.companyBrochureName }}
+                        <span (click)="resetFileUpload()" class="material-icons close-icon">{{ this.companyBrochureName ? "close" : null }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer mt-30">
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'MYACCOUNT.Documentation' | translate}}">
+          <ng-template mat-tab-label>
+            <div style="position: relative;">{{'MYACCOUNT.Documentation' | translate}}
+              <div *ngIf="getSupplierAgreement?.isDurcExpired" class="expired-dot"></div>
+            </div>
+          </ng-template>
+          <div class="documentation">
+            <form (ngSubmit)="saveDocumentation()" [formGroup]="documentationForm">
+            <div class="doc-wrapper">
+              <span class="title">{{'MYACCOUNT.DURC' | translate}}</span>
+              <div class="form-wrapper">
+                <div class="form-field ">
+                  <div class="profile-upload ">
+                    <div class="form-field">
+                      <label for="emp-input-profile1">
+                        <img [src]="url" height="200">
+                        <span class="material-icons">edit</span>
+                      </label>
+                      <input #fileCoverImage *ngIf="!disableDURC" (change)="onFileChanged(fileCoverImage, 1)" accept=".pdf"
+                             class="device-input-img" formControlName="DURC" id="emp-input-profile1"
+                             name="profileImage" type="file"/>
+                      <mat-error *ngIf="documentValidation && documentationForm.controls.DURC.errors?.required">
+                        {{'onBoarding.Please_select_DURC_documents' | translate}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="documentationForm.value.DURC && documentationForm.controls.DURC.errors?.invalidFile">
+                        {{'onBoarding.Please_upload_PDF_file' | translate}}
+                      </mat-error>
+                      <p *ngIf="documentName" class="file-info">{{ this.documentName }}
+                        <span (click)="documentInput = null; documentName = null; resetCoverValue('DURC'); "
+                              class="material-icons close-icon">{{ this.documentName ? "close" : null }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="select-date">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'MYACCOUNT.DURCDeadline' | translate}}</mat-label>
+                    <input [disabled]="disableDURC" (click)="disableDURC ? scadenzaDURC.open() : ''" [min]="minDate" [matDatepicker]="scadenzaDURC" formControlName="scadenzaDURC"
+                           matInput name="scadenzaDURC" readonly="true">
+                    <mat-datepicker-toggle [for]="scadenzaDURC" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #scadenzaDURC (opened)="streamOpened()"></mat-datepicker>
+                    <mat-error
+                      *ngIf="documentationForm.controls.scadenzaDURC.errors?.required">{{'onBoarding.DURCDeadlineRequired' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="diclaration-wrapper">
+                  <div class="form-field">
+                    <div class="custom-switch switch">
+                      <mat-checkbox formControlName="declarationDURC" (change)="noRequiredDURCField($event)">{{'You declare that you do not have the requirements to submit the DURC' | translate}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <p *ngIf="getSupplierAgreement?.isDurcExpired" class="expire-text">{{'MYACCOUNT.DocExpire' | translate}}</p>
+              </div>
+
+            </div>
+            <div class="doc-wrapper">
+              <span class="title">{{'MYACCOUNT.DURF' | translate}}</span>
+              <div class="form-wrapper">
+                <div class="form-field">
+                  <div class="profile-upload">
+                    <div class="form-field">
+                      <label for="emp-input-profile2">
+                        <img [src]="url" height="200">
+                        <span class="material-icons">edit</span>
+                      </label>
+                      <input *ngIf="!disableDURF" #fileCoverImage2 (change)="onFileChanged(fileCoverImage2, 2)" accept=".pdf"
+                             class="device-input-img" formControlName="DURF" id="emp-input-profile2"
+                             name="profileImage" type="file"/>
+                      <mat-error *ngIf="documentValidation && documentationForm.controls.DURF.errors?.required">
+                        {{'onBoarding.Please_select_DURF_documents' |  translate}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="documentationForm.value.DURF && documentationForm.controls.DURF.errors?.invalidFile">
+                        {{'onBoarding.Please_upload_PDF_file' | translate}}
+                      </mat-error>
+                      <p *ngIf="documentName2" class="file-info">{{ this.documentName2 }}
+                        <span (click)=" documentInput2 = null; documentName2 = null; resetCoverValue('DURF');"
+                              class="material-icons close-icon">{{ this.documentName2 ? "close" : null }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="select-date">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'MYACCOUNT.DURFDeadline' | translate}}</mat-label>
+                    <input [disabled]="disableDURF" (click)="disableDURF ? scadenzaDURF.open() : ''" [min]="minDate" [matDatepicker]="scadenzaDURF" formControlName="scadenzaDURF"
+                           matInput name="scadenzaDURF" readonly="true">
+                    <mat-datepicker-toggle  [for]="scadenzaDURF" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #scadenzaDURF (opened)="streamOpened()"></mat-datepicker>
+                    <mat-error
+                      *ngIf="documentationForm.controls.scadenzaDURF.errors?.required">{{'onBoarding.DURFDeadlineRequired' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="diclaration-wrapper">
+                  <div class="form-field">
+                    <div class="custom-switch switch">
+                      <mat-checkbox formControlName="declarationDURF" (change)="noRequiredDURFField($event)">{{'You declare that you do not have the requirements to submit the DURF' | translate}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <p *ngIf="getSupplierAgreement?.isDurfExpired" class="expire-text">{{'MYACCOUNT.DocExpire' | translate}}</p>
+              </div>
+            </div>
+            <div class="doc-wrapper">
+              <span class="title">{{'MYACCOUNT.ChamberRegistration' | translate}}</span>
+              <div class="form-wrapper">
+                <div class="form-field">
+                  <div class="profile-upload">
+                    <div class="form-field">
+                      <label for="emp-input-profile3">
+                        <img [src]="url" height="200">
+                        <span class="material-icons">edit</span>
+                      </label>
+                      <input *ngIf="!disableVisura" #fileCoverImage3 (change)="onFileChanged(fileCoverImage3, 3)" accept=".pdf"
+                             class="device-input-img" formControlName="visuraCamerale" id="emp-input-profile3"
+                             name="profileImage" type="file"/>
+                      <mat-error
+                        *ngIf="documentValidation && documentationForm.controls.visuraCamerale.errors?.required">{{'onBoarding.Visura_Camerale_Required' | translate}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="documentationForm.value.visuraCamerale && documentationForm.controls.visuraCamerale.errors?.invalidFile">
+                        {{'onBoarding.Please_upload_PDF_file' | translate}}
+                      </mat-error>
+                      <p *ngIf="documentName3" class="file-info">{{ this.documentName3 }}
+                        <span (click)=" documentInput3 = null; documentName3 = null; resetCoverValue('visuraCamerale');"
+                              class="material-icons close-icon">{{ this.documentName3 ? "close" : null }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="diclaration-wrapper">
+                  <div class="form-field">
+                    <div class="custom-switch switch">
+                      <mat-checkbox formControlName="declarationChamberOfCommerce" (change)="noRequiredChamberOfCommerceField($event)">{{'You declare that you do not have the requirements to present the Chamber of Commerce registration' | translate}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <!-- <div class="select-date">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>Scadenza DURC</mat-label>
+                        <input formControlName="dateSelect" matInput type="date" name="contactName" value="John Deo">
+                        <mat-error *ngIf="documentationForm.controls.dateSelect.errors?.required">Please enter date</mat-error>
+                      </mat-form-field>
+                </div>
+                <p>Questo documento è scaduto, si prega di rinnovare questo documento.</p> -->
+            </div>
+            <div class="doc-wrapper">
+              <span class="title">{{'MYACCOUNT.conditionsPerformance' | translate}}</span>
+                <div class="form-wrapper">
+                  <div class="profile-upload">
+                    <div class="form-field">
+                      <label for="emp-input-profile4">
+                        <img [src]="url" height="200">
+                        <span class="material-icons">edit</span>
+                      </label>
+                      <input #fileCoverImage4 (change)="onFileChanged(fileCoverImage4, 4)" accept=".pdf"
+                             class="device-input-img" formControlName="condizioniDocumento" id="emp-input-profile4"
+                             name="profileImage" type="file"/>
+                      <mat-error
+                        *ngIf="documentValidation && documentationForm.controls.condizioniDocumento.errors?.required">
+                        {{'onBoarding.General_conditions_of_performance_Required' | translate}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="documentationForm.value.condizioniDocumento && documentationForm.controls.condizioniDocumento.errors?.invalidFile">
+                        {{'onBoarding.Please_upload_PDF_file' | translate}}
+                      </mat-error>
+                      <p *ngIf="documentName4" class="file-info">{{ this.documentName4 }}
+                        <span
+                          (click)=" documentInput4 = null; documentName4 = null; resetCoverValue('condizioniDocumento');"
+                          class="material-icons close-icon">{{ this.documentName4 ? "close" : null }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="select-date">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>Scadenza DURC</mat-label>
+                        <input formControlName="dateSelect" matInput type="date" name="contactName" value="John Deo">
+                        <mat-error *ngIf="documentationForm.controls.dateSelect.errors?.required">Please enter date</mat-error>
+                      </mat-form-field>
+                </div>
+                <p>Questo documento è scaduto, si prega di rinnovare questo documento.</p> -->
+            </div>
+            <!--<div class="switch-wrapper">
+                <div class="details-title">
+                    <h4>{{'MYACCOUNT.DeclarationsConformity' | translate}}</h4>
+                </div>
+                <div class="switch">
+                    <p>{{'MYACCOUNT.DeclarationsOption-1' | translate}}</p>
+                    <mat-slide-toggle></mat-slide-toggle>
+                </div>
+                <div class="switch">
+                    <p>{{'MYACCOUNT.DeclarationsOption-2' | translate}}</p>
+                    <mat-slide-toggle></mat-slide-toggle>
+                </div>
+            </div>-->
+            <div class="form-footer mt-30">
+              <div class="mt-30">
+                <button class="custom-btn btn-style theme-btn normal-btn" mat-button
+                        type="submit">{{'GENERAL.Save' | translate}}</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'MYACCOUNT.GeneralContacts' | translate}}">
+          <div class="table-content">
+            <form (ngSubmit)="saveContactInformation()" [formGroup]="contactInformationForm" class="form-wrapper">
+              <div class="row-wrapper" formArrayName="generalContacts">
+                <div
+                  *ngFor="let itemrow of formContactInformationArr.controls; let i=index; last as isLast; first as isFirst"
+                  [formGroupName]="i" class="row row-list w-100 mt-30">
+                  <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                            <input formControlName="firstName" matInput name="firstName" type="text">
+                            <!--<mat-error *ngIf="contactInformationForm.controls.contactName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                            <input formControlName="lastName" matInput name="lastName" type="text">
+                            <!--<mat-error *ngIf="contactInformationForm.controls.contactType.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                            <input formControlName="email" matInput name="email" type="email">
+                            <!--<mat-error *ngIf="contactInformationForm.controls.contactEmail.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                            <input formControlName="contactNumber" matInput name="contactNumber" type="number">
+                            <!--<mat-error *ngIf="contactInformationForm.controls.contactPhoneNo.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row">
+<!--                      <div *ngIf="!isFirst" class="col-sm-12 btn-margin">-->
+                      <div class="col-sm-12 btn-margin delete-btn-{{i}}">
+                        <button (click)="deleteContactInformationRow(i)" class="custom-btn btn-style red-btn normal-btn"
+                                mat-button type="button">{{'MYACCOUNT.DeleteContact' | translate}}</button>
+                      </div>
+                      <div *ngIf="isLast" class="col-sm-12" >
+                        <button (click)="addContactInformationRow()" class="custom-btn btn-style green-btn normal-btn"
+                                mat-button type="button"><span
+                          class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer">
+                <div>
+                  <button class="custom-btn btn-style theme-btn normal-btn" mat-button
+                          type="submit">{{'GENERAL.Save' | translate}}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'MYACCOUNT.AdministrativeContacts' | translate}}">
+          <div class="table-content">
+            <form (ngSubmit)="saveAdministrativeContact()" [formGroup]="administrativeContactForm" class="form-wrapper">
+              <div class="row-wrapper" formArrayName="administrativeContact">
+                <div
+                  *ngFor="let itemrow of formAdministrativeContactArr.controls; let i=index; last as isLast; first as isFirst"
+                  [formGroupName]="i" class="row row-list w-100 mt-30">
+                  <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                            <input formControlName="firstName" matInput name="firstName" type="text">
+                            <!--<mat-error *ngIf="administrativeContactsForm.controls.contactName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                            <input formControlName="lastName" matInput name="lastName" type="text">
+                            <!--<mat-error *ngIf="administrativeContactsForm.controls.contactType.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                            <input formControlName="email" matInput name="email" type="email">
+                            <!--<mat-error *ngIf="administrativeContactsForm.controls.contactEmail.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                            <input formControlName="contactNumber" matInput name="contactNumber" type="text">
+                            <!--<mat-error *ngIf="administrativeContactsForm.controls.contactPhoneNo.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row">
+<!--                      <div *ngIf="!isFirst" class="col-sm-12 btn-margin">-->
+                      <div class="col-sm-12 btn-margin delete-btn-{{i}}">
+                        <button (click)="deleteAdministrativeContactRow(i)"
+                                class="custom-btn btn-style red-btn normal-btn" mat-button
+                                type="button">{{'MYACCOUNT.DeleteContact' | translate}}</button>
+                      </div>
+                      <div *ngIf="isLast"  class="col-sm-12">
+                        <button (click)="addAdministrativeContactRow()"
+                                class="custom-btn btn-style green-btn normal-btn" mat-button type="button"><span
+                          class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer">
+                <div>
+                  <button class="custom-btn btn-style theme-btn normal-btn" mat-button
+                          type="submit">{{'GENERAL.Save' | translate}}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'MYACCOUNT.ContactShipping' | translate}}">
+          <div class="table-content">
+            <form (ngSubmit)="saveContactShipping()" [formGroup]="contactShippingForm" class="form-wrapper">
+              <div class="row-wrapper" formArrayName="contactShipping">
+                <div
+                  *ngFor="let itemrow of formContactShippingArr.controls; let i=index;  last as isLast; first as isFirst"
+                  [formGroupName]="i" class="row row-list w-100 mt-30">
+                  <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                            <input formControlName="firstName" matInput name="firstName" type="text">
+                            <!--<mat-error *ngIf="contactShippingForm.controls.contactName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                            <input formControlName="lastName" matInput name="lastName" type="text">
+                            <!--<mat-error *ngIf="contactShippingForm.controls.contactType.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                            <input formControlName="email" matInput name="email" type="email">
+                            <!--<mat-error *ngIf="contactShippingForm.controls.contactEmail.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-xl-6">
+                        <div class="form-field">
+                          <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                            <input formControlName="contactNumber" matInput name="contactNumber" type="text">
+                            <!--<mat-error *ngIf="contactShippingForm.controls.contactPhoneNo.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="row">
+<!--                      <div *ngIf="!isFirst" class="col-sm-12 btn-margin">-->
+                      <div class="col-sm-12 btn-margin delete-btn-{{i}}">
+                        <button (click)="deleteContactShippingRow(i)" class="custom-btn btn-style red-btn normal-btn"
+                                mat-button type="button">{{'MYACCOUNT.DeleteContact' | translate}}</button>
+                      </div>
+                      <div *ngIf="isLast" class="col-sm-12">
+                        <button (click)="addContactShippingRow()" class="custom-btn btn-style green-btn normal-btn"
+                                mat-button type="button"><span
+                          class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer">
+                <div>
+                  <button class="custom-btn btn-style theme-btn normal-btn" mat-button
+                          type="submit">{{'GENERAL.Save' | translate}}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{'MYACCOUNT.TermsOfPayment' | translate}}">
+          <div class="form-content-box">
+            <form #myform="ngForm" (ngSubmit)="saveTermsOfPayment()" [formGroup]="termsOfPaymentForm" class="w-100"
+                  name="paymentForm" novalidate>
+              <div class="row w-100">
+                <div class="details-title">
+                  <h4>{{'MYACCOUNT.TermsOfPayment' | translate }}</h4>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.IBAN' | translate }}<span style="color:#EA5455">*</span></mat-label>
+                      <input formControlName="paymentConditionIBAN" matInput name="paymentConditionIBAN" type="text">
+                      <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.errors?.required">
+                        {{'MYACCOUNT.IBANRequired' | translate }}
+                      </mat-error>
+                      <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.errors?.iban">
+                        {{'MYACCOUNT.IBANinvalid' | translate }}
+                      </mat-error>
+                      <span class="valid-iban" *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.valid && (termsOfPaymentForm.controls.paymentConditionIBAN.dirty || termsOfPaymentForm.controls.paymentConditionIBAN.touched)">
+                        {{'MYACCOUNT.IBANvalid' | translate }}
+                      </span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                  <div class="form-field error-message-custom">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'MYACCOUNT.PaymentsDeadline' | translate }}<span style="color:#EA5455">*</span>
+                      </mat-label>
+                      <mat-select formControlName="paymentConditionScadenzaPagamenti">
+                        <mat-option>{{'MYACCOUNT.SelectPaymentsDue' | translate }}</mat-option>
+                        <mat-option value="30">30{{'gg' | translate}}</mat-option>
+                        <mat-option value="60">60{{'gg' | translate}}</mat-option>
+                        <mat-option value="90">90{{'gg' | translate}}</mat-option>
+                        <mat-option value="RD">RD - Rimessa Diretta</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionScadenzaPagamenti.errors?.required">
+                        {{'MYACCOUNT.PaymentsDeadlineRequired' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="form-footer mt-30">
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+</div>

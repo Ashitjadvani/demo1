@@ -1,0 +1,119 @@
+@import "../../../../theme-color.scss";
+
+$breakpoint-desktop: 1500px;
+$breakpoint-tablet: 1199px;
+$breakpoint-tablet-sm: 991px;
+$breakpoint-mobile: 767px;
+
+.mat-expansion-panel {
+  background-color: transparent;
+  box-shadow: none !important;
+}
+
+.mat-expansion-panel-header-title {
+  color: inherit;
+}
+
+.mat-expansion-indicator::after {
+  color: #ffffff;
+}
+button.mat-menu-item {
+  color: #A6B0CF;
+  font-size: 18px;
+  border-radius: 3px;
+  padding: 10px 10px 10px 20px;
+  height: initial;
+  line-height: initial;
+  &:hover, &.active{
+    color: $theme_color;
+  }
+  @media (max-width: $breakpoint-desktop){
+    font-size: 16px;
+  }
+}
+
+.dashboard-logo {
+  background-color: $theme_color;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 322px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100px;
+  cursor: pointer;
+  img{
+    margin: auto;
+  }
+}
+.main-side-nav {
+  background-color: $theme_color;
+  .side-nav {
+    padding: 10px;
+    height: calc(100vh - 64px);
+    min-height: 100vh;
+    overflow: auto;
+    margin-bottom: 0px;
+    padding: 115px 0px 50px 20px;
+    // @media (max-width: $breakpoint-desktop){
+    //   padding: 40px 0px 20px 20px;
+    // }
+    li{
+      margin-bottom: 10px;
+      list-style: none;
+    }
+    .sub-menu{
+      padding: 0px;
+      li {
+        list-style: none;
+        .active-link
+        {
+          color: $theme_color;
+        }
+      }
+    }
+  }
+  .side-nav {
+    .link-menu {
+      color: $white;
+      font-size: 18px;
+      line-height: 24px;
+      border-radius: 3px;
+      padding: 17px 10px 17px 25px;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      transition: 0.4s;
+      border-radius: 28px 0px 0px 28px;
+      @media (max-width: $breakpoint-desktop){
+        font-size: 16px;
+      }
+      .list-icon {
+        margin-right: 21px;
+      }
+      .list-icon-hover{
+        display: none;
+        margin-right: 21px;
+      }
+      &.active-link, &:hover, &.active{
+        background-color: $theme_color_offlight;
+        color: $theme_color;
+        .list-icon {
+          display: none;
+          transition: 0.4s;
+        }
+        .list-icon-hover{
+          display: block;
+          transition: 0.4s;
+        }
+      }
+    }
+    .active-link{
+      .link-menu {
+        background-color: $theme_color;
+        color: #ffffff;
+    }
+    }
+  }
+}

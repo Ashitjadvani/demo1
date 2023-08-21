@@ -1,0 +1,17 @@
+<div class="people-picker">
+    <div class="people-search">
+        <mat-form-field class="width-100">
+            <input matInput placeholder="search" (keyup)="applyFilter($event.target.value)">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <div class="people-list">
+        <mat-list-item *ngFor="let p of filteredPeople">
+            <div class="people-item" (click)="onSelectPerson(p)">
+                {{ p.name }} {{ p.surname }}
+            </div>
+        </mat-list-item>
+    </div>
+</div>

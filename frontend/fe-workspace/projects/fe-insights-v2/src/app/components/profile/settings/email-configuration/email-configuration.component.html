@@ -1,0 +1,95 @@
+<form class="w-100" name="emailConfigForm" [formGroup]= "emailConfigForm"  novalidate (ngSubmit)="changeEmailConfig()" #myform="ngForm">
+    <div class="form-main table-content box-heading">
+        <h3>{{'Email Configuration' | translate}}</h3>
+        <div class="form-row-wrapper">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Host' | translate}}</mat-label>
+                            <input type="text"  name="mailHost" formControlName="mailHost" matInput >
+                            <mat-error *ngIf="emailConfigForm.controls.mailHost.errors?.required">
+                            {{'Enter your host' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Port' | translate}}</mat-label>
+                            <input type="text"  name="mailPort" formControlName="mailPort" matInput >
+                            <mat-error *ngIf="emailConfigForm.controls.mailPort.errors?.required">
+                            {{'Enter your port' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Username' | translate}}</mat-label>
+                            <input type="text"  name="mailUserName" formControlName="mailUserName" matInput >
+                            <mat-error *ngIf="emailConfigForm.controls.mailUserName.errors?.required">
+                            {{'Enter your username' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Password' | translate}}</mat-label>
+                            <input type="password"  name="mailPassword" formControlName="mailPassword" matInput onkeypress="return event.charCode != 32">
+                            <mat-error *ngIf="emailConfigForm.controls.mailPassword.errors?.required">
+                            {{'Enter your password' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'From Name' | translate}}</mat-label>
+                            <input type="text"  name="mailFromName" formControlName="mailFromName" matInput >
+                            <mat-error *ngIf="emailConfigForm.controls.mailFromName.errors?.required">
+                            {{'Enter your from name' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Encryption' | translate}}</mat-label>
+                            <mat-select formControlName="mailEncryption">
+                                <mat-option>{{'Select Encryption' | translate}}</mat-option>
+                              <mat-option *ngFor="let encryption of mailEncryption; let i = index" value="{{ encryption.value }}">
+                                {{ encryption.name  | translate}}
+                              </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="emailConfigForm.controls.mailEncryption.errors?.required">
+                             {{'Select your encryption' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Login url' | translate}}</mat-label>
+                            <input type="text"  name="mailWebUrl" formControlName="mailWebUrl" matInput >
+                            <mat-error *ngIf="emailConfigForm.controls.mailWebUrl.errors?.required">
+                            {{'Enter your login url' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-footer">
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</form>

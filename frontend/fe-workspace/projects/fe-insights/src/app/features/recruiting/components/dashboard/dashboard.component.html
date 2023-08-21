@@ -1,0 +1,48 @@
+<div class="dashboard-container" fxLayout="row" *ngIf="this.dashboard$ | async as dashboard">
+    <app-overview-card *ngFor="let oc of overviewDataCards" class="overview-item" [image]="oc.image" [id]="oc.id"
+        [title]="oc.title" [data]="getData(oc.id)" [mainColor]="oc.mainColor" [footerColor]="oc.footerColor"
+        [footerText]="oc.footerText" (onFooterClick)="onViewAll($event)"></app-overview-card>
+
+    <!--
+    <div fxLayout="row">
+       <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','openings'])"
+            [caption]="'RECRUITING.JOB_OPENINGS' | translate" [icon]="'tile-survey'" [textColor]="'#ffffff'"
+            [backgroundColor]="'#479FF8'" [topText]="" [borderColor]="">
+        </app-action-tile>
+    </div>
+
+    <div fxLayout="row">
+        <div fxFlex="1 1 30%">
+            <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','candidates'])"
+                [caption]="'RECRUITING.CANDIDATES' | translate" [icon]="'tile-employee'" [textColor]="'#ffffff'"
+                [backgroundColor]="'#479FF8'" [topText]="" [borderColor]="">
+            </app-action-tile>
+        </div>
+
+        <div fxFlex="1 1 30%" *ngIf="dashboard.Candidates">
+            Tot: {{dashboard.Candidates.total}}<br>
+            Tot {{"JOB_OPENING.TYPE_OPENING" | translate}}: {{dashboard.Candidates.opening}}<br>
+            Tot {{"JOB_OPENING.TYPE_POSITION" | translate}}: {{dashboard.Candidates.position}}<br>
+        </div>
+
+        <div fxFlex="1 1 30%">
+        </div>
+    </div>
+
+    <div fxLayout="row">
+        <div fxFlex="1 1 30%">
+            <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','applications'])"
+                [caption]="'RECRUITING.JOB_APPLICATIONS' | translate" [icon]="'account-plus'" [textColor]="'#ffffff'"
+                [backgroundColor]="'#479FF8'" [topText]="" [borderColor]="">
+            </app-action-tile>
+        </div>
+
+        <div fxFlex="1 1 30%" *ngIf="dashboard.JobApplications">
+            Tot: {{dashboard.JobApplications?.total}}<br>
+            <ng-container *ngFor="let status of dashboard.JobApplications.status | keyvalue">
+                {{status.key}} : {{status.value}}<br>
+            </ng-container>
+        </div>
+    </div>
+    -->
+</div>

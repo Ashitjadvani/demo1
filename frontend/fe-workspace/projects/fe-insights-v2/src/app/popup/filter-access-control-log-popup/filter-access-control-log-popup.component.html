@@ -1,0 +1,40 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{'ACCESS_CONTROL.Filter'| translate}}</h4>
+      <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <div class="popup-body">
+    <div class="popup-content m-auto text-center" style="max-height: 65vh;overflow: auto;">
+      <mat-form-field appearance="outline" class="element-full-width date-select">
+        <mat-label>{{'ACCESS_CONTROL.StartDate' | translate}}</mat-label>
+        <input [(ngModel)]="startDate"  [matDatepicker] [matDatepicker]="picker_1" matInput type="text">
+        <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select"></mat-datepicker-toggle>
+        <mat-datepicker #picker_1 ></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="element-full-width date-select">
+        <mat-label>{{'ACCESS_CONTROL.EndDate' | translate}}</mat-label>
+        <input [(ngModel)]="endDate" [matDatepicker] [matDatepicker]="picker_2" matInput type="text">
+        <mat-datepicker-toggle matSuffix [for]="picker_2" class="full-date-select"></mat-datepicker-toggle>
+        <mat-datepicker #picker_2 ></mat-datepicker>
+      </mat-form-field>
+      <div class="form-field">
+        <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'ACCESS_CONTROL.Gate'| translate}}</mat-label>
+            <mat-select [(ngModel)]="gate">
+              <mat-option [value]="null"> </mat-option>
+              <mat-option *ngFor="let gate of gatesList" [value]="gate">{{gate.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="popup-footer">
+    <div class="footer-content justify-content-end">
+      <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+      <button (click)="onSave()" class="btn-style theme-btn">{{'GENERAL.Confirm' | translate}}</button>
+    </div>
+  </div>
+</section>

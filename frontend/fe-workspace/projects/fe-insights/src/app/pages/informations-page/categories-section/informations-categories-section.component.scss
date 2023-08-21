@@ -1,0 +1,245 @@
+
+@import "../../../../theme/theme.scss";
+
+.group-tab {
+    margin-top: -48px;
+}
+
+.card-height-450 {
+    height: 450px;
+}
+.card-height-500 {
+    height: 500px;
+}
+.card-height-550 {
+    height: 550px;
+}
+.card-height-600 {
+    height: 600px;
+}
+.card-height-650 {
+    height: 650px;
+}
+.card-height-700 {
+    height: 700px;
+}
+.card-height-750 {
+    height: 700px;
+}
+.card-height-800 {
+    height: 800px;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .main-input-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-top: 10px;
+    
+        .date-field {
+            width: auto;
+        }
+    
+        .title-field {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+    }
+
+    .attachment-container {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+    
+        .attach-file {
+            line-height: 1;
+            flex-grow: 1;
+            margin-top: auto;
+            margin-bottom: auto;
+
+            .action-button {
+                margin-left:0px;
+                width:160px;
+            }
+        }
+    }
+
+}
+
+.sel-category
+{
+    width: 100%;
+}
+
+
+.first-line-item
+{
+    width: 42%;
+}
+.second-line-item
+{
+    width: 42%;
+    margin-left: 10px;
+}
+.card-list-item-text
+{
+    width: 42%;
+}
+
+
+
+
+.description-tile {
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+
+}
+
+.category {
+    padding-bottom: 10px;
+}
+.divider {
+    border-top-width: 2px;
+    padding-top: 20px;
+}
+
+.icon-select-container {
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    margin-bottom:10px;
+    margin-top:10px;
+
+    .attach-file {
+        line-height: 1;
+        flex-grow: 1;
+        margin-top: auto;
+        margin-bottom: auto;
+
+        .action-button {
+            margin-left:0px;
+            width:160px;
+        }
+    }
+
+    .info-icon {
+        margin-left: 4px;
+        margin-top: 5px;
+        width: 40px;
+        height: 36px;
+        cursor: pointer;
+    }
+
+
+    .info-circle {
+        background-color:darkgray;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        margin-right:10px;
+        display:inline-block;
+    }
+
+    .info-circle-sel {
+        background-color: #4b6ba2;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        margin-right:10px;
+        display:inline-block;
+    }
+
+}
+
+.upload-icon-button
+{
+    display:inline-flex;
+    vertical-align: middle;
+}
+
+.title-lang-container
+{
+    width:100%;
+}
+
+.category-title
+{
+    padding-top: 10px;
+    width: 100%;
+    margin: auto;
+}
+
+.info-tile-container {
+    height: 130px;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+}
+.info-tile {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 177px;
+    height: 130px;
+    border: 0px solid mat-color($mat-primary, main);
+    border-radius: 15px;
+    background: #e9fbfd;
+    box-shadow: 2px 2px 1px lightgrey;
+}
+.info-tile-caption {
+    flex-grow: 1;
+    color: mat-color($mat-primary, main);
+    contain: content;
+    align-items: center;
+    line-height: 1;
+    margin-left: 15px;
+    font-size: medium;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.info-tile-image {
+    fill: mat-color($mat-primary, main);
+    align-self: flex-end;
+    margin-right: 8px;
+    align-self: flex-end;
+    margin-top: 8px;
+    width:70px;
+    height:70px;
+}
+.info-tile-icon {
+    width:70px;
+    height:70px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+.tile-top-line {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+.info-tile-empty {
+    width: 60px;
+    height: 70px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.title-mat-tab {
+    margin-top:-10px;
+}

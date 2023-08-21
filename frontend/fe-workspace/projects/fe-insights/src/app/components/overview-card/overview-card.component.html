@@ -1,0 +1,18 @@
+<mat-card class="overview-card">
+    <div class="main-container" [ngStyle]="{'background': mainColor }">
+        <div class="image filter-black">
+            <i class="theme-icon larger " [ngClass]="image"></i>
+        </div>
+        <div class="info">
+            <div class="title">
+                {{ title }}
+            </div>
+            <div class="data">
+                {{ data }}
+            </div>
+        </div>
+    </div>
+    <div class="footer-container" [ngStyle]="{'background': footerColor }">
+        <button mat-flat-button class="footer-button" (click)="onFooterButtonClick()">{{ footerText }}</button>
+    </div>
+</mat-card>

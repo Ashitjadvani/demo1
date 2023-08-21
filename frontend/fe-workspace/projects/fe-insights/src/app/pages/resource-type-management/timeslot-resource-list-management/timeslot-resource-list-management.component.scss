@@ -1,0 +1,180 @@
+.group-tab {
+    margin-top: -48px;
+    height: 100%;
+}
+
+.card {
+    height: 600px;
+}
+
+.check-box {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .card-group-tab {
+        height: 100%;
+    }
+
+    .user-param-box {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+
+        .input-row {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .map-container {
+        display: flex;
+        flex-direction: row;
+
+        padding: 10px;
+        height: 100%;
+
+        .control-container {
+            display: flex;
+            flex-direction: column;
+
+            width: 40px;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: row;
+
+            flex-grow: 1;
+            width: 100%;
+
+            .map-image {
+                width: 100%;
+            }
+
+            .no-image-text {
+                width: 100%;
+                margin-top: 60px;
+                text-align: center;
+                font-size: x-large;
+                font-weight: 800;
+            }
+        }
+    }
+}
+
+.popover-anchor {
+    position: absolute;
+    margin-left: calc(100vw / 2);
+    margin-top: calc(100vh / 2);
+}
+
+.book-calendar-popup {
+    width: 400px;
+    height: auto;
+    padding: 10px;
+
+    overflow-y: auto;
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+
+    .calendar-title {
+        font-size: medium;
+        font-weight: 600;
+    }
+
+    .calendar-container {
+        height: 350px;
+    }
+
+    .calendar-user {
+    }
+
+    .calendar-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+
+        margin-top: 10px;
+    }
+}
+
+:host ::ng-deep .red {
+    color: red;
+}
+
+:host ::ng-deep .green {
+    color: greenyellow;
+}
+
+.input-row {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.center-justify {
+    justify-content: center !important;
+}
+
+.reservation-table-container {
+    height: auto;
+    overflow-y: auto;
+}
+
+.custom-filter-button {
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 32px;
+    line-height: 32px;
+    font-size: inherit;
+}
+
+:host ::ng-deep .mat-column-Site {
+    flex: 0 1 200px !important;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Code {
+    flex: 0 1 100px !important;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Description {
+    flex: 1 1 240px !important;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Status {
+    flex: 0 1 50px !important;
+    font-size: 0.9em;
+    justify-content: center;
+}
+
+:host ::ng-deep .mat-column-Map {
+    flex: 0 1 50px !important;
+    font-size: 0.9em;
+    justify-content: center;
+}
+
+:host ::ng-deep .mat-column-Action {
+    flex: 1 1 40px !important;
+    font-size: 0.9em;
+}

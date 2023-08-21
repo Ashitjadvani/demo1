@@ -1,0 +1,36 @@
+<div class="main-container">
+    <mat-toolbar color="primary">
+        <app-header-bar class="main-header-bar"></app-header-bar>
+    </mat-toolbar>
+
+    <div class="page-content">
+        <div class="main-container">
+            <div class="product-image">
+                <img class="image" src='/assets/simplast/simplast-sample-img.png'>
+            </div>
+
+            <div *ngIf="product && order" class="product-info">
+                <div class="product-info-title">{{ product.itemCode }}</div>
+                <div *ngIf="productionDate" class="product-info-descr">Data Produzione: <strong>{{ productionDate | date: 'dd/MM/yyyy' }}</strong></div>
+                <div class="product-info-descr">Stabilimento: <strong>{{ order.orderData.plant }}</strong></div>
+                <div class="product-info-descr">Ciclo Produzione: <strong>{{ order.orderData.cycle }}</strong></div>
+                <div class="product-info-descr">Turno: <strong>{{ order.orderData.turn }}</strong></div>
+                <div class="product-info-descr">Macchina: <strong>{{ order.orderData.machine }}</strong></div>
+                <div class="product-info-descr">Linea: <strong>{{ order.orderData.line }}</strong></div>
+            </div>
+
+            <div class="product-download-tech">
+                <button mat-raised-button color="primary" class="action-button" (click)="onDownloadTechInfo()">
+                    <i class="material-icons">cloud_download</i>
+                    <mat-label class="action-text">Scarica Scheda Tecnica</mat-label>
+                </button>
+    
+                <button mat-raised-button color="primary" class="action-button" (click)="onHelpRequest()">
+                    <i class="material-icons">phone_enabled</i>
+                    <mat-label class="action-text">Richiedi Assistenza</mat-label>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

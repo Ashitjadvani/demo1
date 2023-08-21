@@ -1,0 +1,22 @@
+<div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+<div *ngIf="noRecordFound" class="paginate-footer">
+    <div class="page-item">
+        <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+        <mat-form-field appearance="fill">
+            <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                <mat-option value="5">5</mat-option>
+                <mat-option value="10">10</mat-option>
+                <mat-option value="15">15</mat-option>
+                <mat-option value="20">20</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ?
+                (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+    </div>
+    <div class="table-paginator">
+        <pagination-controls *ngIf="id" responsive="true" [id]="id"  (pageChange)="pageChanged($event)">
+        </pagination-controls>
+        <pagination-controls *ngIf="!id" responsive="true"(pageChange)="pageChanged($event)">
+        </pagination-controls>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+.general-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 40px;
+}
+
+.detail-card{
+  width: 90%;
+  min-height: 900px;
+  height: auto;
+  overflow: auto;
+}
+
+.form-row{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+
+  .mat-form-field{
+    margin-right: 10px;
+    flex: 1 1 20%;
+  }
+}
+
+.person-row{
+  border: 1px solid #CCCCCC;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+
+.detail-text{
+  position: absolute;
+  left:10px;
+  padding-top: 20px;
+  font-size: 18px;
+}
+
+.field-caption{
+  font-weight: bold;
+}
+
+table.mat-table {
+  display: table;
+}
+
+.mat-table {
+  width: 100% !important;
+}
+
+.stepper-form-content {
+  margin: 40px 40px;
+  h4 {
+    font-size: 14px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  .form-field.mb-5 {
+    margin-bottom: 25px;
+  }
+}
+.hover-content{
+  display: inline-block;
+  position: relative;
+  &:hover{
+    .hover-table{
+      display: block;
+    }
+  }
+}
+.hover-table{
+  position: absolute;
+  left: 100%;top: 0px;
+  display: none;
+  
+}
+
+.hover-content-wrap{
+  &:last-child{
+    .hover-table{
+      top: initial;bottom: 0;
+    }
+  }
+}
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+  padding: 0px 10px !important;
+}

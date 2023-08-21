@@ -1,0 +1,24 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>Mark As Important</h4>
+            <img src="assets/images/cross-icon.svg" (click)="onNoClick()" alt="">
+        </div>
+    </div>
+    <div class="popup-body pb-0">
+        <div class="popup-content">
+            <ul class="switch" *ngFor="let element of markImportantListUpdated">
+                <li>
+                    <mat-slide-toggle [checked]="element.pin === true ? true: false" (change)="onChangeStatus($event.checked, element.moduleName)" >{{element.menuName}}</mat-slide-toggle>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content footer-right">
+          <button class="btn-style inactive" (click)="onNoClick()">Cancel</button>
+          <button class="btn-style theme-btn" (click)="saveStatus()">Save</button>
+        </div>
+    </div>
+</section>

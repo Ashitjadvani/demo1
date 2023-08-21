@@ -1,0 +1,66 @@
+<div class="action-tile-container">
+    <div class="action-tile">
+        <div class="tile-top-line" [ngSwitch]="currentState">
+            <div class="image-container">
+                <i class="image material-icons">
+                    help_outline
+                </i>
+            </div>
+            <span class="divider"></span>
+
+            <div class="toggle-container" *ngSwitchCase="state.getSettings">
+                <div class="toggle-row-title">
+                    <div class="title-label">Cosa hai fatto in pausa pranzo?</div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-item">Non ho mangiato</div>
+                    <mat-slide-toggle [(ngModel)]="confirmLunchSettingResult.lunchDone"></mat-slide-toggle>
+                    <div class="toggle-item">Ho mangiato</div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-item">Non ho lavorato</div>
+                    <mat-slide-toggle [(ngModel)]="confirmLunchSettingResult.extraWorkDone"></mat-slide-toggle>
+                    <div class="toggle-item">Ho lavorato</div>
+                </div>
+                <div class="toggle-row-filler"></div>
+            </div>
+
+            <div class="time-range-container" *ngSwitchCase="state.getTimeRange">
+                <div class="time-range-row-title">
+                    Per favore inserisci gli orari della pausa pranzo:
+                </div>
+                <div class="time-range">
+                    <div class="time-range-row">
+                        <mat-form-field class="width-30">
+                            <input matInput placeholder="{{'APP_PEOPLE_PAGE.START' | translate}}"
+                                [(ngModel)]="confirmLunchSettingResult.startTime">
+                            <button mat-button matSuffix mat-icon-button (click)="pickerStartTime.open()">
+                                <mat-icon>schedule</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <ngx-material-timepicker #pickerStartTime [format]="24" (timeSet)="setEventTime(0, $event)">
+                        </ngx-material-timepicker>
+                        <div class="width-30"></div>
+                        <mat-form-field class="width-30">
+                            <input matInput placeholder="{{'APP_PEOPLE_PAGE.END' | translate}}" [(ngModel)]="confirmLunchSettingResult.endTime">
+                            <button mat-button matSuffix mat-icon-button (click)="pickerEndTime.open()">
+                                <mat-icon>schedule</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <ngx-material-timepicker #pickerEndTime [format]="24" (timeSet)="setEventTime(1, $event)">
+                        </ngx-material-timepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tile-bottom-line">
+            <button *ngIf="showBackButton()" mat-raised-button class="tile-button" (click)="onBackAction()">{{
+                'GENERAL.BACK' | translate }}
+            </button>
+
+            <button mat-raised-button class="tile-button" (click)="onConfimAction()" [disabled]="disableConfirm()">{{
+                'GENERAL.CONFIRM' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

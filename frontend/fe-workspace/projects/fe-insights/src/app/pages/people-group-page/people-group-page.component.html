@@ -1,0 +1,77 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+        <div class="groups-container">
+            <app-table-data-view [tableDataSet]="groups" [columnTemplates]="tableColumnTemplates"
+                [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+            </app-table-data-view>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <div class="general-container">
+            <div class="card people-group-card">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <mat-tab-group #tabgroupeditor>
+                        <mat-tab label="{{ 'ADMIN DIALOGS.GENERAL' | translate }}">
+                            <app-people-group-general-section [currentGroup]="currentGroup" [isModify]="isModify">
+                            </app-people-group-general-section>
+                        </mat-tab>
+                        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Members' | translate }}">
+                            <app-people-group-members-section [currentGroup]="currentGroup"></app-people-group-members-section>
+                        </mat-tab>
+                        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Functions' | translate }}">
+                            <app-people-group-functions-section [currentGroup]="currentGroup"></app-people-group-functions-section>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+
+
+            <!-- <div *ngIf="editType == EditType.GroupEdit" class="card width-60">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="name" [(ngModel)]="currentGroup.name" [disabled]="isModify">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="surname" [(ngModel)]="currentGroup.description">
+                    </mat-form-field>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+
+            <div *ngIf="editType == EditType.MemberEdit" class="card width-60">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div> -->
+
+        </div>
+    </mat-tab>
+</mat-tab-group>

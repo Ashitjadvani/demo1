@@ -1,0 +1,81 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+  <div class="container">
+    <h1>{{'MYACCOUNT.MyAccount' | translate}}</h1>
+  </div>
+</div>
+<!--======================== Dashboard section start ==================== -->
+<section class="dashboard-content">
+  <div class="container">
+    <div class="account-wrapper main-content-wrapper">
+      <div class="account-list">
+        <div class="box-style">
+          <div class="my-account-title">
+            <h4>{{'MYACCOUNT.MyAccount' | translate}}</h4>
+          </div>
+          <ul>
+            <li class="active" routerLink="/my-application">{{'MYACCOUNT.MyApplications' | translate}}</li>
+            <li routerLink="/edit-profile">{{'MYACCOUNT.EditProfile' | translate}}</li>
+            <li routerLink="/change-password" *ngIf="userDetails?.type === null">{{'MYACCOUNT.ChangePassword' | translate}}</li>
+            <li routerLink="/activity-log">{{'MYACCOUNT.ActivityLog' | translate}}</li>
+            <li routerLink="/download-document">{{'GENERAL.Download' | translate}}</li>
+            <li routerLink="/delete-account">{{'MYACCOUNT.DeleteAccount' | translate}}</li>
+            <li (click)="logout()">{{'GENERAL.Logout' | translate}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-content-box box-style">
+        <div class="name-title">
+          <h4>{{'MYACCOUNT.MyApplications' | translate}}</h4>
+        </div>
+        <hr>
+        <!-- Application table start here --> 
+        <div class="table-content-wrapper">
+          <table mat-table [dataSource]="dataSource" matSort class="w-100 table-style">
+            <ng-container matColumnDef="jobTitle">
+              <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.JobApplicationtitle' | translate}}</th>
+              <td mat-cell *matCellDef="let element"> {{element.description ? element.description : '-'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="applicationType">
+              <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Application_Type' | translate}}</th>
+              <td mat-cell *matCellDef="let element"> {{(element.applicationType == 1 ? "OTHERS.OpenPositions" : "OTHERS.SpontaneousApplication") | translate}}</td>
+            </ng-container>
+            <ng-container matColumnDef="site">
+              <th mat-header-cell *matHeaderCellDef>{{'POSITION_PAGE.SiteText' | translate}}</th>
+              <td *matCellDef="let element" mat-cell> {{element.city ? element.city : '-'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="department">
+              <th mat-header-cell *matHeaderCellDef>{{'POSITION_PAGE.Department' | translate}}</th>
+              <td mat-cell *matCellDef="let element"> {{element.department ? element.department : '-'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="submissionDate">
+              <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Submissiondate' | translate}}</th>
+              <td mat-cell *matCellDef="let element" style="white-space: nowrap;"> {{element.submissionDate ? (element.submissionDate | date: 'dd/MM/YYYY') : '-'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Status' | translate}}</th>
+              <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                <span [matTooltip]="element.historyNotes">{{element.status ? (element.status | translate) : '-'}}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions" >
+              <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Actions' | translate}}</th>
+              <td mat-cell *matCellDef="let element ,let i = index" style="white-space: nowrap;text-align: center;">
+                <div class="btn-wrapper">
+                  <button class="btn-transparent material-icons" mat-menu-item matTooltip="{{'OTHERS.View' | translate}}">visibility</button>
+                  <button (click)="deleteMyApplication(element.id, i, $event)" *ngIf="element.status_id === '1' || element.status_id === '2'" class="btn-transparent material-icons" mat-menu-item matTooltip="{{'OTHERS.Delete' | translate}}">delete</button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="redirectJobApp(row.opening_id, row.status)" class="inviata"></tr>
+          </table>
+        </div>
+        <div *ngIf="dataSource && dataSource.length == 0" style="margin-top: 10px;">
+          <div style="text-align: center;">{{'GENERAL.NoDataAvailable' | translate}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

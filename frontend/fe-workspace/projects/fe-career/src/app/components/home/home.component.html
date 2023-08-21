@@ -1,0 +1,241 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+    <div class="container">
+        <h1>{{Career}}</h1>
+    </div>
+</div>
+<!-- ===================== Hero section start  ===========================-->
+<section class="hero">
+    <div class="container">
+        <div class="banner">
+            <div class="hero-img">
+                <img [src]="heroImg" alt="hero image" style="max-width: 608px">
+            </div>
+            <div class="banner-content">
+                <div class="banner-title">
+                    <h2 style="white-space: pre-line;">{{BannerTitle}}</h2>
+                </div>
+                <p class="banner-info" [innerHTML]="BannerContent" style="white-space: pre-line;">
+<!--                    <p>{{'HOMEPAGE.BannerContent' | translate}}</p>-->
+<!--                    <p>{{'HOMEPAGE.BannerContent2' | translate}}</p>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ===================== Join Our Team section start  ===========================-->
+<section class="join-our-team" *ngIf="isLoginUser">
+    <div class="container">
+        <div class="team-img">
+            <img [src]="joinTeamImg" alt="Join Team Image">
+        </div>
+        <div class="team-title">
+            <h2>{{'HOMEPAGE.JoinOurTeam' | translate}}</h2>
+            <p>{{'HOMEPAGE.JoinOurTeamDescription' | translate}}</p>
+            <button mat-raised-button class="btn-submit" (click)="sendYourCV()" >{{'HOMEPAGE.SendYourCVNow' | translate}}</button>
+        </div>
+    </div>
+</section>
+<!-- ===================== Position section start  ===========================-->
+<section class="position" (scroll)="onScroll($event)" [scrollTop]="spt" [scrollLeft]="spl">
+    <div *ngIf="isLoginUser" class="position-height"></div>
+    <div class="container">
+        <div class="job-position">
+            <div class="position-title">
+                <h2>{{'POSITION_PAGE.POSITIONS' | translate}}</h2>
+                <p>{{'POSITION_PAGE.CurrentOpening' | translate}}</p>
+            </div>
+            <div class="search-bar">
+                <form name="filterDataForm" [formGroup]="filterDataForm" novalidate (ngSubmit)="onSearch()"
+                #myform="ngForm">
+                    <ul class="searching-by">
+                        <li class="input-wrapper search-field">
+                            <mat-form-field appearance="outline">
+                                <span matPrefix><img [src]="searchIcon" alt=""></span>
+                                <input matInput formControlName="searchKey" placeholder="{{'POSITION_PAGE.Search_Key_Placeholder' | translate}}">
+                            </mat-form-field>
+                        </li>
+                        <li class="input-wrapper">
+                          <mat-form-field appearance="outline">
+                              <mat-select placeholder="{{'POSITION_PAGE.Scope_By' | translate}}" formControlName="scopeBy">
+                                <mat-option [value]="null">
+                                  {{'OTHERS.scopeBy' | translate}}
+                                </mat-option>
+                                <mat-option *ngFor="let scope of scopeData" [value]="scope.scope">
+                                  {{scope.scope}}
+                                </mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                        </li>
+                        <li class="input-wrapper">
+                            <mat-form-field appearance="outline" class="custom-select">
+                                <mat-select placeholder="{{'POSITION_PAGE.Department' | translate}}" formControlName="department">
+                                  <mat-option [value]="null">{{'POSITION_PAGE.Select_Department' | translate}}</mat-option>
+                                  <mat-option *ngFor="let listofDepartment of departmentData" [value]="listofDepartment.id">
+                                    {{listofDepartment.area}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </li>
+                        <li class="input-wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-select placeholder="{{'POSITION_PAGE.Application_Types' | translate}}" formControlName="applicationType">
+                                  <mat-option *ngFor="let appType of applicationType" [value]="appType.value">
+                                    {{ appType.valueName | translate }}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </li>
+                        <li class="input-wrapper">
+                          <mat-form-field appearance="outline">
+                            <mat-select placeholder="{{'POSITION_PAGE.Sort_By' | translate}}" formControlName="sortBy">
+                              <mat-option *ngFor="let sort of sortBy" [value]="sort.value">
+                                {{ sort.valueName | translate}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </li>
+                        <li class="input-wrapper form-btn-wrap">
+                            <button mat-raised-button type="submit" class="btn-submit" style="background-color: #002A3A;color: #fff;height: 100%;max-width: 190px;
+                            width: 100%;">{{'POSITION_PAGE.Search' | translate}}</button>
+                        </li>
+                        <li class="input-wrapper form-btn-wrap">
+                          <button mat-raised-button type="reset" (click)="onResetForm()" class="btn-submit" style="background-color: #002A3A;color: #fff;height: 100%;max-width: 190px;
+                          width: 100%;">{{'POSITION_PAGE.Reset' | translate}}</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <!-- job-positions -->
+            <div class="positions-list">
+                <div class="position-parts" *ngFor="let element of postiondata | paginate: {itemsPerPage: limit, totalItems: total, currentPage: current_page }; let i = index">
+                    <div class="job-profile">
+                        <div class="job-title">
+                            <div class="profile-img">
+                                <img *ngIf="element.jobImageId" style="width: 97px; height: 97px;" [src]="baseImageUrl+element.jobImageId" (error)="onImgError($event)" alt="">
+                                <img *ngIf="!element.jobImageId" style="width: 97px; height: 97px;" [src]="imageBase64" alt="">
+                            </div>
+                            <div class="job-data">
+                                <div class="job-details">
+                                    <h3>{{element.description}}</h3>
+                                    <!-- <h4 *ngIf="element.address"><img [src]="locationIcon" alt="">{{element.address}} <span *ngIf="element.city">, {{element.city}}</span></h4> -->
+                                    <a class="h4" *ngIf="element.address" href="http://maps.google.com/?q={{element.address}} {{element.city}}" target="_blank"><img [src]="locationIcon" alt="">{{element.address}} <span *ngIf="element.city" style="white-space: nowrap;"> , {{element.city}} </span></a>
+                                </div>
+                                <ul class="job-details">
+                                    <li>
+                                      <span>{{'POSITION_PAGE.Department' | translate}}:</span>
+                                        <h5>{{element.area ? element.area : '-' }}</h5>
+                                    </li>
+                                    <li>
+                                        <span>{{'POSITION_PAGE.Application_Types' | translate}}:</span>
+                                        <h5>{{ApplicationTypeArray[element.type] | translate}}</h5>
+                                    </li>
+                                    <li>
+                                      <span>{{'POSITION_PAGE.Experience' | translate}}:</span>
+                                        <h5>{{element.totalExperience?element.totalExperience:'-'}}</h5>
+                                    </li>
+                                    <li>
+                                      <span>{{'POSITION_PAGE.SiteText' | translate}}:</span>
+                                      <h5 matTooltip="{{element.cityOtherName}}">{{element.citySingleName ? element.citySingleName :'-'}} <span *ngIf="element.cityOtherLength > 0"> & {{element.cityOtherLength}} more</span> </h5>
+                                    </li>
+                                    <li>
+                                      <span>{{'POSITION_PAGE.NoOpenings' | translate}}:</span>
+                                        <h5>{{element.noOfOpening?element.noOfOpening:'-'}}</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="job-description">
+                        <p [innerHTML]="(element.longDescription) ? element.longDescription : '-'"></p>
+                    </div>
+                    <hr>
+                    <!--<div class="job-apply">
+                        <div class="buttons">
+                            <button mat-raised-button type="button" class="btn-submit" style="background-color: #002A3A;color: #fff;" (click)="jobApplyNow(element.id)" >{{'GENERAL.ApplyNow' | translate}}</button>
+                            <button mat-raised-button type="button" class="btn-submit" (click)="jobDetails(element.id)">{{'GENERAL.SeeDetails' | translate}}</button>
+                        </div>
+                        <div class="question">
+                            <span>{{element.questionsCount}}  {{'GENERAL.Questions' | translate}}</span>
+                            <span>{{element.minutes}} {{'GENERAL.Minutes' | translate}}</span>
+                        </div>
+                    </div>-->
+                    <div class="job-apply">
+                      <div class="buttons">
+                        <button *ngIf="element.applicationStatus == 1 || element.applicationStatus == null" mat-raised-button type="button" class="btn-submit" (click)="jobApplyNow(element.id)" style="background-color: #002A3A;color: #fff;">
+                          {{'GENERAL.ApplyNow' | translate}}
+                        </button>
+                        <button mat-raised-button type="button" class="btn-submit" (click)="jobDetails(element.id)">
+                          {{'GENERAL.SeeDetails' | translate}}
+                        </button>
+                      </div>
+                      <div class="question">
+                        <span>{{element.questionsCount}} {{'GENERAL.Questions' | translate}}</span>
+                        <span>{{element.minutes}} {{'GENERAL.Minutes' | translate}}</span>
+                      </div>
+                    </div>
+                    <div *ngIf="element.applicationStatus != 1 && element.applicationStatus != null" style="color: green;margin-top: 5px;font-weight: 700;">
+                      {{'GENERAL.AppliedOpening' | translate}}
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- padination -->
+            <!-- <div class="pagination">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0"><span aria-hidden="true">Previous</span><span class="visually-hidden">Previous</span></a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">1</a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">10</a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">11</a></li>
+                    <li class="page-item active"><span class="page-link">12<span class="visually-hidden">(current)</span></span></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">13</a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">14</a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0">20</a></li>
+                    <li class="page-item"><a class="page-link" role="button" tabindex="0"><span aria-hidden="true">Next</span><span class="visually-hidden">Next</span></a></li>
+                  </ul>
+            </div> -->
+            <div *ngIf="postiondata && postiondata.length == 0">
+              <div style="text-align: center;">{{'GENERAL.NoDataAvailable' | translate}}</div>
+            </div>
+            <!-- <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+            </mat-paginator> -->
+            <pagination-controls *ngIf="postiondata && postiondata.length > 0" style="text-align: center;" (pageChange)="handlePage($event)"></pagination-controls>
+
+        </div>
+        <div class="follow-us">
+            <div class="title">
+              <h2>{{'GENERAL.FollowUs' | translate}}</h2>
+            </div>
+            <div class="follow-btns">
+              <!-- <share-button [theme]="'modern-dark'"
+                  [button]="'linkedin'"
+
+                  [autoSetMeta]="false"
+                  [showText]="true"
+                 ></share-button><share-button [theme]="'modern-dark'"
+                  [button]="'twitter'"
+
+                  [autoSetMeta]="false"
+                  [showText]="true"
+                 ></share-button> -->
+<!--                <a mat-raised-button class="btn-submit linked-in" href="https://www.linkedin.com/company/legance" target="_blank"><img [src]="linkdinIcon" alt=""> LinkedIn</a>-->
+<!--                <a mat-raised-button class="btn-submit twitter" href="https://twitter.com/legance_aa" target="_blank"><img [src]="twitterIcon" alt=""> Twitter</a>-->
+                  <a class="" href="https://www.linkedin.com/company/legance" target="_blank"><img [src]="linkdinIcon" alt=""></a>
+                  <a class="" href="https://twitter.com/legance_aa" target="_blank"><img [src]="twitterIcon" alt=""></a>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="copy-right" style="background-color: #1D1D1D;color: #fff; padding: 16px;text-align: center;">
+  {{'GENERAL.CopyRight' | translate}}
+</div>
+
+
+
+

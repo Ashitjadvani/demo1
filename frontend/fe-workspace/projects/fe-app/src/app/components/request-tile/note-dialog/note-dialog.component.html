@@ -1,0 +1,21 @@
+<h2 mat-dialog-title><b>Note</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <div #scroll class="notes-container">
+            <div class="no-note" *ngIf="requestNotes.length==0">{{'EMPLOYEE PAGE.NO NOTE' | translate}}</div>
+            <div *ngFor="let note of requestNotes">
+                <div class="note-header">
+                    <div class="note-name">{{note.name}}</div>
+                    <div class="note-data">{{getDate(note)}}</div>
+                </div>
+                <div class="note-text">{{note.note}}</div>
+            </div>
+        </div>
+        <div class= new-note-container>
+            <textarea matInput matTextareaAutosize placeholder="{{'EMPLOYEE PAGE.NEW NOTE' | translate}}" class="new-note-ta" 
+            [(ngModel)]="newNoteStr" maxRows="4" matAutosizeMaxRows="4" matAutosizeMinRows="4"></textarea>
+            <button mat-flat-button class="new-note-btn" color="primary" (click)="onNewNote()" [disabled]="newNoteStr==''">OK</button>
+        </div>
+    </div>
+</mat-dialog-content>

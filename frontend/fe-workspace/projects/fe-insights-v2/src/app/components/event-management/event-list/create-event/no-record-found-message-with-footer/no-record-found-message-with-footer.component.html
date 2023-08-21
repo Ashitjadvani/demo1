@@ -1,0 +1,20 @@
+<div *ngIf="list.length === 0" class="mt-4">
+    <div class="resources-content external-resource-no-content">
+        <h3>{{'EVENT_MANAGEMENT.NoAddedExternalPeople' | translate}}</h3>
+        <p>{{'EVENT_MANAGEMENT.PleaseAddExternalPeople' | translate}}</p>
+        <button class="btn-style green-btn" (click)="addExternal()"><span class="material-icons">add</span> {{'EVENT_MANAGEMENT.AddExternalPeople' | translate}}</button>
+    </div>
+</div>
+<div class="step-form-bottom">
+    <div>
+        <button (click)="back()" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+    </div>
+    <div class="">
+        <button matStepperPrevious (click)="previousInfo()" class="btn-style privious-btn" type="button">
+            <span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+        </button>
+        <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="savInfo(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+        <button class="btn-style theme-btn" type="submit" (click)="savInfo(attendeesStepper, false)">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+        <button class="btn-style theme-btn" type="button" (click)="savInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+    </div>
+</div>

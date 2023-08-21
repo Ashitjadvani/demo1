@@ -1,0 +1,16 @@
+<div class="general-container">
+    <div class="card width-50">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.COMPANY' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <mat-checkbox [(ngModel)]="currentCompany.enableBeaconService">
+                {{'ACCESS_CONTROL.EnableBeaconService' | translate}}
+            </mat-checkbox>
+        </div>
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'ACCESS_CONTROL.DataUpdated'|translate}}</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{'MONITOR_PRESENCES.Settings' | translate}} <span class="refresh-btn" (click)="resetFilters()" matTooltip="Reset"><mat-icon>autorenew</mat-icon></span></h4>
+      <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <div class="popup-body" style="max-height: 80vh;overflow: auto;">
+    <div class="popup-content m-auto text-center" style="border-bottom: 1px solid rgb(112 112 112 / 15%); padding-bottom: 10px;">
+      <mat-form-field appearance="outline" class="element-full-width" >
+        <mat-label>{{'MONITOR_PRESENCES.PeriodType'| translate}}</mat-label>
+        <mat-select [(value)]="periodType" >
+          <mat-option value="Daily">{{'MONITOR_PRESENCES.Daily' | translate}}</mat-option>
+          <mat-option value="Monthly">{{'MONITOR_PRESENCES.Monthly' | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="periodType=='Daily'" appearance="outline" class="element-full-width date-select" style="margin-top:-10px">
+        <mat-label>{{'ACCESS_CONTROL.SelectDate' | translate}}</mat-label>
+        <input [ngModel]="selectedDate" (ngModelChange)="selectedDateChange($event)" [matDatepicker] [matDatepicker]="picker_1" [max]="maxDate" matInput type="text">
+        <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select"></mat-datepicker-toggle>
+        <mat-datepicker #picker_1 ></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field *ngIf="periodType=='Monthly'" appearance="outline" class="element-full-width" style="margin-top:-10px">
+        <mat-label>{{'MONITOR_PRESENCES.SelectMonth'| translate}}</mat-label>
+        <mat-select [(value)]="selectedMonth">
+          <mat-option *ngFor="let month of months" [value]="month">
+            <ng-container *ngIf="month == 0">{{'MONITOR_PRESENCES.January' | translate}}</ng-container>
+            <ng-container *ngIf="month == 1">{{'MONITOR_PRESENCES.February' | translate}}</ng-container>
+            <ng-container *ngIf="month == 2">{{'MONITOR_PRESENCES.March' | translate}}</ng-container>
+            <ng-container *ngIf="month == 3">{{'MONITOR_PRESENCES.April' | translate}}</ng-container>
+            <ng-container *ngIf="month == 4">{{'MONITOR_PRESENCES.May' | translate}}</ng-container>
+            <ng-container *ngIf="month == 5">{{'MONITOR_PRESENCES.June' | translate}}</ng-container>
+            <ng-container *ngIf="month == 6">{{'MONITOR_PRESENCES.July' | translate}}</ng-container>
+            <ng-container *ngIf="month == 7">{{'MONITOR_PRESENCES.August' | translate}}</ng-container>
+            <ng-container *ngIf="month == 8">{{'MONITOR_PRESENCES.September' | translate}}</ng-container>
+            <ng-container *ngIf="month == 9">{{'MONITOR_PRESENCES.October' | translate}}</ng-container>
+            <ng-container *ngIf="month == 10">{{'MONITOR_PRESENCES.November' | translate}}</ng-container>
+            <ng-container *ngIf="month == 11">{{'MONITOR_PRESENCES.December' | translate}}</ng-container>
+            <ng-container *ngIf="month <= currentMonth"> {{currentYear}}</ng-container>
+            <ng-container *ngIf="month > currentMonth"> {{currentYear-1}}</ng-container>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="popup-content m-auto text-center" style="padding-top:30px">
+      <mat-form-field appearance="outline" class="element-full-width" >
+        <mat-label>{{'MONITOR_PRESENCES.City'| translate}}</mat-label>
+        <mat-select [ngModel]="selectedCity" (ngModelChange)="onCityChange($event)">
+          <mat-option value="">{{'MONITOR_PRESENCES.AllF' | translate}}</mat-option>
+          <mat-option value="Milano">Milano</mat-option>
+          <mat-option value="Roma">Roma</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="element-full-width" style="margin-top:-10px">
+        <mat-label>{{'MONITOR_PRESENCES.Site'| translate}}</mat-label>
+        <mat-select [ngModel]="selectedSiteId" (ngModelChange)="onSiteChange($event)" [disabled]="!(selectedCity!='')">
+          <mat-option value="">{{'MONITOR_PRESENCES.AllF' | translate}}</mat-option>
+          <mat-option *ngFor="let site of sitesFiltered" [value]="site.id">{{site.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="element-full-width" style="margin-top:-10px">
+        <mat-label>{{'MONITOR_PRESENCES.Gate'| translate}}</mat-label>
+        <mat-select [ngModel]="selectedGateId" (ngModelChange)="onGateChange($event)" [disabled]="!(selectedSiteId!='')">
+          <mat-option value="">{{'MONITOR_PRESENCES.AllM' | translate}}</mat-option>
+          <mat-option *ngFor="let gate of gatesFiltered" [value]="gate.id">{{gate.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <hr>
+  <div class="popup-footer">
+    <div class="footer-content justify-content-end">
+      <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+      <button (click)="onSave()" class="btn-style theme-btn">{{'GENERAL.Confirm' | translate}}</button>
+    </div>
+  </div>
+</section>

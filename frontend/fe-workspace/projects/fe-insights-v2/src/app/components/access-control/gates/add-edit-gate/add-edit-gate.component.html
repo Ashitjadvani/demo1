@@ -1,0 +1,175 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+                    <li routerLink="/access-control/gates/gates" class="breadcrumb-item">{{'ACCESS_CONTROL.Gates'| translate}}</li>
+                    <li *ngIf="isNew" class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.AddGate'| translate}}</li>
+                    <li *ngIf="!isNew && gate" class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.EditGate'| translate}} <b>{{gate.name}}</b></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items:center; align-content: center; justify-items: center; gap: 20px">
+                        <h3 style="font-weight: 600;">
+                            <span *ngIf="!isNew">{{'ACCESS_CONTROL.EditGate'| translate}} <ng-container *ngIf="gate"><b>{{gate.name}}</b></ng-container></span>
+                            <span *ngIf="isNew">{{'ACCESS_CONTROL.AddGate'| translate}}</span>
+                        </h3>
+                        <ng-container *ngIf="!isNew && gate">
+                            <label *ngIf="!gate.isAvailable || !gate.isOnline" class="btn-style table-btn sm-btn label-btn" style="color: #ea5455;border: 1px solid #ea5455;background-color: rgba(234,84,85,.1);min-width:80px;" disabled>
+                                Offline
+                            </label>
+                            <label *ngIf="gate.isAvailable && gate.isOnline" class="btn-style table-btn sm-btn label-btn" style="color: #22c55e;border: 1px solid #22c55e;background-color: rgba(34,197,94,.10196078431372549);min-width:80px;" disabled>
+                                Online
+                            </label>
+                        </ng-container>
+                    </div>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'|translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addGeneralInfoForm" [formGroup]= "addGeneralInfoForm"  novalidate #myform="ngForm" (ngSubmit)="onGateSubmit()">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.GateName'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="name" matInput name="name" >
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.name.errors?.required" >
+                                            {{'ACCESS_CONTROL.EnterGateName'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.AccessControlSystem'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="system" [(ngModel)]="addGeneralInfoForm.value.system">
+                                            <mat-option *ngFor="let system of systemList" value="{{system.id}}">{{system.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.system.errors?.required">
+                                            {{'ACCESS_CONTROL.SelectAccessControlSystem'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.Site'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="site" [(ngModel)]="selectedSite">
+                                            <mat-option *ngFor="let site of siteList" value="{{site.id}}">{{site.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.site.errors?.required">
+                                            {{'ACCESS_CONTROL.SelectSite'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.GateType'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="type" [(ngModel)]="selectedType">
+                                            <mat-option value="In">{{'ACCESS_CONTROL.Entrance'| translate}}</mat-option>
+                                            <mat-option value="Out">{{'ACCESS_CONTROL.Exit'| translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.type.errors?.required">
+                                            {{'ACCESS_CONTROL.SelectType'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.CentralUnitId'| translate}}</mat-label>
+                                        <input type="number" formControlName="centralUnitId" matInput name="centralUnitId">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.CentralUnitName'| translate}}</mat-label>
+                                        <input type="text" formControlName="centralUnitName" matInput name="centralUnitName">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.WifiSSID'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="wifiSSID" matInput name="wifiSSID" >
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.wifiSSID.errors?.required" >
+                                            {{'ACCESS_CONTROL.EnterWifiSSID'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.WifiPassword'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="wifiPassword" matInput name="wifiPassword" >
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.wifiPassword.errors?.required" >
+                                            {{'ACCESS_CONTROL.EnterWifiPassword'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Token Wifi</mat-label>
+                                        <input type="text" formControlName="tokenWifi" matInput name="tokenWifi">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!isNew && gate" class="row" style="padding-top:15px">
+                            <div class="col table-heading" style="border-style:solid; border-color: rgb(220, 220, 220); border-width:1px; border-radius:10px; margin:12px">
+                                <p style="width:100px">{{'ACCESS_CONTROL.SetGeneralInfoQrCode'| translate}}</p>                                 
+                                <div style="min-width:200px; min-height:200px; padding-top:10px; padding-bottom:10px"><qr-code *ngIf="gate && gate.createQrCode!=''" [value]="gate.createQrCode" level="Q" [size]="200"></qr-code></div>
+                                <span *ngIf="gate.createQrCode==''" class="material-icons" style="color: lightgrey; width:200px; height:200px; font-size:200px">qr_code_2</span>
+                            </div>
+                            <!--div class="col">
+                                <div style="text-align:center">Reset Blacklist</div> 
+                                <qr-code *ngIf="gate" #qrcode [value]="gate.resetBlacklistQrCode" level="Q" [size]="200"></qr-code>
+                            </div>
+                            <div class="col">
+                                <div style="text-align:center">Reset Keypad</div> 
+                                <qr-code *ngIf="gate" #qrcode [value]="gate.resetKeypadQrCode" level="Q" [size]="200"></qr-code>
+                            </div-->
+                            <div class="col table-heading" style="border-style:solid; border-color: rgb(220, 220, 220); border-width:1px; border-radius:10px; margin:12px">
+                                <p style="width:100px">{{'ACCESS_CONTROL.SetLomniaPathQrCode'| translate}}</p>
+                                <div style="min-width:200px; min-height:200px; padding-top:10px; padding-bottom:10px"><qr-code *ngIf="gate && gate.setPathQrCode!=''" [value]="gate.setPathQrCode" level="Q" [size]="200"></qr-code></div>
+                                <span *ngIf="gate.setPathQrCode==''" class="material-icons" style="color: lightgrey; width:200px; height:200px; font-size:200px">qr_code_2</span>
+                            </div>
+                            <div class="col table-heading" style="border-style:solid; border-color: rgb(220, 220, 220); border-width:1px; border-radius:10px; margin:12px">
+                                <p style="width:100px">{{'ACCESS_CONTROL.SetWifiInfoQrCode'| translate}}</p>
+                                <div style="min-width:200px; min-height:200px; padding-top:10px; padding-bottom:10px"><qr-code *ngIf="gate && gate.setWifiQrCode!=''" [value]="gate.setWifiQrCode" level="Q" [size]="200"></qr-code></div>
+                                <span *ngIf="gate.setWifiQrCode==''" class="material-icons" style="color: lightgrey; width:200px; height:200px; font-size:200px">qr_code_2</span>
+                            </div>
+                        </div>
+                        <div class="form-footer d-flex justify-content-between">
+                            <button class="btn-style red-line-btn" routerLink="/access-control/gates/gates" type="button"> {{'GENERAL.Cancel'| translate}}</button>
+                            <button class="btn-style theme-btn"  type="submit" >{{'GENERAL.Save&Finish'| translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

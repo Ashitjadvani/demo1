@@ -1,0 +1,60 @@
+@import "../../../theme/theme.scss";
+
+.admin-page-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+    width: 100%;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.dashboard-budge {
+  border-radius: 15px;text-align: center;float: right;background-color: #f90000;color: #ffffff;padding: 3px 8px;
+}
+.main-sidenav-container {
+    flex: 1;
+}
+
+.menu-item-container {
+    margin: 15px;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+}
+
+.menu-selected {
+    background: mat-color($mat-primary, lighter);
+}
+
+.menu-normal {
+    background: white;
+}
+
+.main-header-bar {
+    width: 100%;
+}
+
+.nav-item {
+    width: 200px;
+    margin-left: 10px;
+    font-size: small;
+}
+
+.nav-item-img {
+    width: 24px;
+    height: 24px;
+}
+
+.side-nav {
+    background-color: white;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+}
+

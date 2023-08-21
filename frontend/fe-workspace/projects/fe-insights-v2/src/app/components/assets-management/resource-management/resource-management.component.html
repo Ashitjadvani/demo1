@@ -1,0 +1,127 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{"ASSETS_MANAGEMENT.ResourceType" | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ASSETS_MANAGEMENT'" [title3]="'ASSETS_MANAGEMENT.ResourceType'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <div class="table-content box-style company-info">
+                    <div class="table-heading">
+                        <h3 style="font-weight: 600">{{"ASSETS_MANAGEMENT.ResourceType" | translate}}</h3>
+                        <div class="search-form-wrapper">
+                            <div class="search-form">
+                                <!-- <input (keyup)="onKeyUp($event)" [(ngModel)]="search" mat-input placeholder="Search Resource" />
+                  <mat-icon matSuffix class="material-icons">search</mat-icon>-->
+                                <mat-icon matPrefix class="material-icons search">search</mat-icon>
+                                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="Search Resource" />
+                                <mat-icon *ngIf="this.search !== '' " class="material-icons clear">clear</mat-icon>
+                            </div>
+                            <button class="btn-style" routerLink="add-edit-resource-type/0">
+                                <span class="material-icons">add</span>{{'ASSETS_MANAGEMENT.AddResourceType' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper resource-color-table">
+                        <table [dataSource]="resourceTypes | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%">
+                            <ng-container matColumnDef="wheelAction">
+                                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                    {{'TABLE.Action' | translate}}
+                                </th>
+                                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                    <div class="hover-effect-menu three-icons">
+                                        <div class="short-arrow">
+                                            <span class="material-icons">more_horiz</span>
+                                        </div>
+                                        <div class="hover-round-effect">
+                                            <button mat-menu-item (click)="onModifyResourceType(element)" matTooltip="{{'Edit' | translate}}">
+                                                <span class="material-icons">edit</span>
+                                            </button>
+                                            <button mat-menu-item (click)="onResourceListManagement(element)" matTooltip="{{'Edit' | translate}}">
+                                                <span class="material-icons">category</span>
+                                            </button>
+                                            <button mat-menu-item (click)="onDeleteResourceType(element)" matTooltip="{{'Delete' | translate}}">
+                                                <span class="material-icons">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="resourceType">
+                                <th (click)="changeSorting('resourceType')" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 200px;">
+                                    Resource Type <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{element.resourceType}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="name">
+                                <th (click)="changeSorting('name')" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 200px;">
+                                    Name <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{element.name}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="descr">
+                                <th (click)="changeSorting('descr')" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 250px;">
+                                    Description <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 250px;">
+                                    {{element.description}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="availStart">
+                                <th (click)="changeSorting('availStart')" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 200px;">
+                                    Availability Start <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{element.availabilityStart}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="availHours">
+                                <th (click)="changeSorting('codeavailHours')" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 200px;">
+                                    Availability Hours <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{element.availabilityHours}}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="resourceManageDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let element; columns: resourceManageDisplayedColumns"></tr>
+                        </table>
+                    </div>
+                    <div class="paginate-footer">
+                        <div class="page-item">
+                            <h3>Items per page:</h3>
+                            <mat-form-field appearance="fill">
+                                <mat-select (ngModelChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                                    <mat-option value="5" selected>5</mat-option>
+                                    <mat-option value="10">10</mat-option>
+                                    <mat-option value="15">15</mat-option>
+                                    <mat-option value="20">20</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="table-paginator">
+                            <pagination-controls (pageChange)="pageChanged($event)" responsive="true">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,26 @@
+@import "../../../../../theme/theme.scss";
+
+.service-action-sheet {
+    width: 100%;
+    height: 30vh;
+
+    display: flex;
+    flex-direction: column;
+
+    .action-item {
+        border-radius: 10px;
+        margin-top: 10px;
+        height: 50px;
+        color: mat-color($mat-primary, main);
+        background-color: #dddddd;
+
+        .item-text {
+            height: 40px;
+            line-height: 40px;
+            font-weight: 500;
+            white-space: normal !important;
+            text-overflow: unset !important;
+        }
+    }
+
+}

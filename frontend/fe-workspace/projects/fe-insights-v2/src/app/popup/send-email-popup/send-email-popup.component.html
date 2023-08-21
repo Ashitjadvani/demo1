@@ -1,0 +1,125 @@
+<div class="col-md-12 popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading | translate}}
+            <button type="button" [satPopoverAnchor]="helpPopover" (click)="helpPopover.toggle()" class="help-button" mat-button
+                    matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>help_outline</mat-icon>
+            </button>
+            <sat-popover #helpPopover horizontalAlign="center" verticalAlign="below"
+                         hasBackdrop [interactiveClose]="true">
+                <div class="popover-help">
+                    <mat-label class="help-title"><strong>Legenda</strong></mat-label>
+                    <div  class="help-row">
+                        <mat-label class="help-row-name">%USER%</mat-label>
+                        <mat-label class="help-row-value">Nome utente</mat-label>
+                    </div>
+                    <div  class="help-row">
+                        <mat-label class="help-row-name">%DATE%</mat-label>
+                        <mat-label class="help-row-value">Data prenotazione</mat-label>
+                    </div>
+                </div>
+            </sat-popover>
+            </h4>
+            <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="common-tabbing">
+        <div class="table-content box-style company-info">
+            <div class="form-content-box">
+                <form class="w-100" name="addAreasForm" [formGroup]= "sendMail"  novalidate
+                      #myform="ngForm" >
+                    <div class="row">
+                        <div class="col-xl-12 col-xxl-12">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width phone">
+                                    <mat-label>{{'EVENT_MANAGEMENT.EmailSubject' | translate}}</mat-label>
+                                    <input #inputDisabled  formControlName="subject" type="text"  matInput  name="subject">
+                                    <mat-error *ngIf="subitted && sendMail.controls.subject.errors?.required">
+                                        {{data.validation}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="custom-editor mb-30">
+                                <!--                                <mat-label>Privacy Policy (English)</mat-label>-->
+                                <div class="form-field error-message-custom" [ngClass]="{'angular-editor' : subitted && sendMail.controls.emailBody.errors?.required}">
+                                    <angular-editor  [config]="config" [(ngModel)]="data.body"  placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}" formControlName="emailBody"></angular-editor>
+
+                                </div>
+                                <mat-error *ngIf="subitted && sendMail.controls.emailBody.errors?.required">
+                                    {{'pleaseEnterEmailBody' |translate}}
+                                </mat-error>
+                            </div>
+                        </div>
+                        <!--<div class="view-legenda">
+                            <mat-accordion>
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                     (closed)="panelOpenState = false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            {{'EVENT_MANAGEMENT.View Legenda' | translate}}
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <div class="col-xl-12 col-xxl-12">
+                                        <div class="legenda">
+                                            <h4>{{'EVENT_MANAGEMENT.Legenda' | translate}}</h4>
+                                            <div class="led-container">
+                                                <ul>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Attendee_Name%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Name of attendee' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Name%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Name of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%web meeting link%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.meeting_link' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Venue%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Event_venue' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Organizer_Email_Address%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Organizer_Email_Address' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Start_Date%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Start Date of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_End_Date%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.End Date of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%From_Time%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.From time of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%To_Time%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.To time of Event' | translate}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>-->
+                    </div>
+                    <div class="form-footer">
+                        <button class="btn-style theme-btn" type="submit" (click)="onClick(true,this.sendMail.value)" >{{'GENERAL.Save'|translate}}</button>
+                        <button class="btn-style red-line-btn" (click)="onClose()"  type="button">{{'GENERAL.Cancel'|translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

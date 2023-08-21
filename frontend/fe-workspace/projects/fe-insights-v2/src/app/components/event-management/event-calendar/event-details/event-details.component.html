@@ -1,0 +1,11 @@
+<!-- <p>event-details works!</p> -->
+<div class='row'>
+    <div class='col-10'>{{event.title}}  {{event.start + ' - '+  event.end}}
+        </div>
+    <div class='col-2'>
+        <div class='row'>
+            <div class='col-6 eventEdit' [id]="event.id"><i class='bi bi-pencil-fill'></i></div>
+            <div class='col-6 eventDelete' [id]="event.id"><i class='bi bi-trash3-fill'></i></div>;
+        </div>
+    </div>
+</div>

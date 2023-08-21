@@ -1,0 +1,41 @@
+.qr-codes-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 600px;
+    justify-content: flex-start;
+    padding-bottom: 60px;
+    gap:30px;
+    padding:10px;
+    padding-bottom: 20px;
+}
+
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 170px;
+}
+
+.qr-code-name {
+    text-align: center;
+}
+
+.no-qr-code {
+    width: 130px;
+    height: 130px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: 2px;
+    margin:10px;
+    border-color: black;
+
+    .icon {
+        font-size: 70px;
+    }
+}

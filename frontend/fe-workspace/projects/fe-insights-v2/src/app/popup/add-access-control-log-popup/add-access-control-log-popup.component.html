@@ -1,0 +1,90 @@
+<section class="popups">
+  <form class="w-100" name="infoForm" [formGroup]= "infoForm"  novalidate #myform="ngForm" (ngSubmit)="onSubmit()">
+    <div class="popup-header">
+      <div class="header-content">
+        <h4>{{'ACCESS_CONTROL.AddLog' | translate}}</h4>
+        <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+      </div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-content m-auto text-center" style="max-height: 65vh;">
+        <div class="row">
+          <div class="col">
+              <div class="form-field error-message-custom">
+                <mat-form-field appearance="outline" class="element-full-width">
+                  <mat-label>{{'ACCESS_CONTROL.Person'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                  <mat-select formControlName="personId">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="personFilterControl" noEntriesFoundLabel="{{'ACCESS_CONTROL.NoFound' | translate}}" placeholderLabel="{{'ACCESS_CONTROL.Search' | translate}}" ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let person of peopleListTransformed" [value]="person.id">{{person.surname}} {{person.name}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="infoForm.controls.personId.errors?.required" >
+                    {{'ACCESS_CONTROL.SelectPerson'| translate}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+              <div class="form-field error-message-custom">
+                <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'ACCESS_CONTROL.Site'| translate}}</mat-label>
+                    <mat-select (selectionChange)="onSelectSite($event)">
+                      <mat-option value="null">-</mat-option>
+                      <mat-option *ngFor="let site of sitesListTransformed" value="{{site.id}}">{{site.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+              <div class="form-field error-message-custom">
+                <mat-form-field appearance="outline" class="element-full-width">
+                  <mat-label>{{'ACCESS_CONTROL.Gate'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                  <mat-select formControlName="gateId">
+                    <mat-option *ngFor="let gate of favouriteGates" [value]="gate.id"><img alt="" (click)="removeFromFavourites(gate.id)" matSuffix src="assets/images/favorites-selected.svg"> {{gate.name}}</mat-option>
+                    <mat-option *ngFor="let gate of gatesListTransformed" [value]="gate.id"><img alt="" (click)="addToFavourites(gate.id)" matSuffix src="assets/images/favorites.svg"> {{gate.name}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="infoForm.controls.gateId.errors?.required" >
+                    {{'ACCESS_CONTROL.SelectGate'| translate}}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-field">
+              <mat-form-field appearance="outline" class="element-full-width date-select">
+                  <mat-label>{{'ACCESS_CONTROL.Date'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                  <input formControlName="date" [matDatepicker]="datePicker" matInput type="text" name="date">
+                  <mat-datepicker-toggle matSuffix [for]="datePicker" class="full-date-select"></mat-datepicker-toggle>
+                  <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-field cursor">
+              <mat-form-field (click)="timePicker.open()" appearance="outline" class="element-full-width cursor">
+                  <mat-label>{{'ACCESS_CONTROL.Time'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                  <input class="cursor" formControlName="time" [ngModel]="getTime()" matInput type="text" name="time">
+                  <mat-icon matSuffix style="color: black">schedule</mat-icon>
+                </mat-form-field>
+                <ngx-material-timepicker #timePicker [format]="24" (timeSet)="setTime($event)"></ngx-material-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+      <div class="footer-content justify-content-end">
+        <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+        <button (click)="onSave()" type="submit" class="btn-style theme-btn">{{'GENERAL.Confirm' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</section>

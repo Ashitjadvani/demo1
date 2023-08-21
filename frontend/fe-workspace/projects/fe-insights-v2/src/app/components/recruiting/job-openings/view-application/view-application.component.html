@@ -1,0 +1,393 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li class="breadcrumb-item">{{'INSIGHTS_MENU.RECRUITING' | translate}}</li>
+                  <li routerLink="/recruiting/job-openings" class="breadcrumb-item">{{'RECRUITING.JobOpening' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page" style="text-transform: capitalize;">{{'RECRUITING.Job Openings Details' | translate}}: {{JobOpeningsDetails.description}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.RECRUITING'" [title2]="'RECRUITING.JobOpening'" [routePath2]="'/recruiting/job-openings'"
+            [title3]="'RECRUITING.Job Openings Details'" [type]="': ' + JobOpeningsDetails.description"
+            >
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="{{'RECRUITING.Job Openings Details' | translate}}" class="mt-5">
+                        <div class="box-style company-info">
+                            <div class="buttons-group">
+                                <a class="btn-style pink-btn" href="{{JOB_URL}}" target='_blank'>{{'RECRUITING.Preview Job Opening' | translate}}</a>
+                                <button class="btn-style green-btn" [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                                <button class="btn-style grey-btn" (click)="editJobOpeningRedirect()">{{'GENERAL.Edit' | translate}}</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete' | translate}} </button>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITINGTXT.Scope' | translate}}</p>
+                                        <b style="text-transform: capitalize;">{{JobOpeningsDetails.scope ? JobOpeningsDetails.scope : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITINGTXT.Area' | translate}}</p>
+                                        <b style="text-transform: capitalize;">{{JobOpeningsDetails.area}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITINGTXT.JobTitle' | translate}}</p>
+                                        <b style="text-transform: capitalize;">{{JobOpeningsDetails.description ? JobOpeningsDetails.description : '-'}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box job-disc" style="width: 100%;">
+                                        <p>{{'TABLE.Description' | translate}}</p>
+                                        <div [innerHTML] = "JobOpeningsDetails.longDescription ? JobOpeningsDetails.longDescription : '-'"></div>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.MessageShowwhenapplicationiscomplete'| translate}}</p>
+                                        <div [innerHTML] = "JobOpeningsDetails.successMessage ? JobOpeningsDetails.successMessage : '-'"></div>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.StartDate'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.start ? (JobOpeningsDetails.start | date:'dd/MM/yyyy'): '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.EndDate'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.end ? (JobOpeningsDetails.end | date:'dd/MM/yyyy'): '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'TABLE.Status' | translate}}</p>
+                                        <b *ngIf="JobOpeningsDetails.status == 1">{{'EXTRA_WORD.DRAFT' | translate}}</b>
+                                        <b *ngIf="JobOpeningsDetails.status == 2"> {{'EXTRA_WORD.ACTIVE' | translate}}</b>
+                                        <b *ngIf="JobOpeningsDetails.status == 3"> {{'EXTRA_WORD.INACTIVE' | translate}}</b>
+                                        <b *ngIf="JobOpeningsDetails.status == 4"> {{'EXTRA_WORD.ARCHIVED' | translate}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.Site'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.site ? JobOpeningsDetails.site : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p style="text-transform: capitalize;">{{'RECRUITING.Type'| translate}}</p>
+                                      <b *ngIf="JobOpeningsDetails.type == 1">{{'Open Positions' | translate}}</b>
+                                      <b *ngIf="JobOpeningsDetails.type == 2">{{'Spontaneous Applications' | translate}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.Address'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.address ? JobOpeningsDetails.address : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.City'| translate}}</p>
+                                        <b style="text-transform: capitalize;">{{JobOpeningsDetails.city ? JobOpeningsDetails.city : '-'}}</b>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper ">
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.No of Opening'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.noOfOpening ? JobOpeningsDetails.noOfOpening : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.Total Experience'| translate}}</p>
+                                        <b>{{JobOpeningsDetails.totalExperience ? JobOpeningsDetails.totalExperience : '-'}}  <span *ngIf="JobOpeningsDetails.totalExperience"></span></b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'RECRUITING.Quiz_Visible'| translate}}</p>
+                                        <b *ngIf="JobOpeningsDetails.isCandidateRead === 'yes'">Yes</b>
+                                        <b *ngIf="JobOpeningsDetails.isCandidateRead === 'no'">No</b>
+                                        <b *ngIf="JobOpeningsDetails.isCandidateRead === ''|| JobOpeningsDetails.isCandidateRead === null ||JobOpeningsDetails.isCandidateRead === '-'"> - </b>
+                                    <!--  <div class="d-flex ">
+                                        <mat-checkbox  [checked]="JobOpeningsDetails.isCandidateRead === 'yes' " disabled  style="margin-right: 15px;">{{'GENERAL.Yes' | translate}}</mat-checkbox>
+                                        <mat-checkbox  [checked]="JobOpeningsDetails.isCandidateRead === 'no' || JobOpeningsDetails.isCandidateRead === '' " disabled>{{'GENERAL.No' | translate}}</mat-checkbox>
+                                      </div>-->
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box job-image">
+                                        <p>{{'RECRUITING.Job Image'| translate}}</p>
+                                        <img [src]="imageURL" alt="">
+                                        <img *ngIf="!imageURL" [src]="defultIMG" alt="">
+                                    </div>
+                                    <div class="detail-box">
+                                        <div class="qr-image">
+                                            <img [src]="qrCodeURL" alt="QR code">
+                                            <span><a href="{{qrCodeURL}}" download="image">{{'JOB_OPENING.DOWNLOAD' | translate}}</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'RECRUITING.Mandatory Fields' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="buttons-group">
+                                <a class="btn-style pink-btn" href="{{JOB_URL}}" target='_blank'>{{'RECRUITING.Preview Job Opening' | translate}}</a>
+                                <button class="btn-style green-btn" [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                                <button class="btn-style grey-btn" (click)="editJobOpeningRedirect()">{{'GENERAL.Edit'| translate}}</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>
+                            </div>
+
+                            <!--<div class="details-listing custom-field">
+                                <form class="form-wrapper" [formGroup]="mandatoryFieldsForm">
+                                    <div class="row">
+                                      <div class="search-form-wrapper">
+                                          <div class="feature-contents">
+                                              <div class="custom-switch-group">
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="name">{{'TABLE.Name'|translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="surname">{{'TABLE.Surname'|translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="email">{{'TABLE.Email'|translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="phone">{{'TABLE.Phone No'|translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="birthdate">{{'RECRUITING.Birthdate'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="gender">{{'RECRUITING.Gender'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="nationality">{{'RECRUITING.Nationality'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="address">{{'RECRUITING.Address'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="city">{{'RECRUITING.City'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="state">{{'RECRUITING.State'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="country">{{'RECRUITING.Country'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="levelOfEducation">{{'RECRUITING.LevelofEducation'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="university">{{'RECRUITING.University'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="degree">{{'RECRUITING.Degree'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="degreeMark">{{'RECRUITING.DegreeMark'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="degreeYear">{{'RECRUITING.DegreeYear'| translate}}</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-field error-message-custom">
+                                                      <div class="custom-switch">
+                                                          <mat-checkbox formControlName="cv">CV</mat-checkbox>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                </form>
+                            </div>-->
+                          <div class="row mandatory-fields">
+                            <div class="col-xl-12">
+                              <p>{{'Procurement_Management.TheMandatoryFieldsForThisService' | translate}}:</p>
+                            </div>
+                            <div *ngFor="let mandatory of selectedMandatory" class="col-xl-4">
+                              <div class="form-field">
+                                <div class="custom-switch">
+                                  <mat-checkbox (change)="$event ? toggleMandatory(mandatory.value , $event) : null"
+                                                (click)="$event.stopPropagation()"
+                                                 *ngIf="mandatory.checked===true || mandatory.checked === null"
+                                                [checked]=true disabled >{{'EXTRA_WORD.' + mandatory.name | translate}}</mat-checkbox>
+                                  <mat-checkbox (change)="$event ? toggleMandatory(mandatory.value , $event) : null"
+                                                (click)="$event.stopPropagation()"
+                                                *ngIf="mandatory.checked===false || mandatory.checked === null"
+                                                [checked]=false disabled>{{ 'EXTRA_WORD.' + mandatory.name | translate}}</mat-checkbox>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'JOB_OPENING.CUSTOM_FIELDS' | translate}}">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <a class="btn-style pink-btn" href="{{JOB_URL}}" target='_blank'>{{'RECRUITING.Preview Job Opening' | translate}}</a>
+                                    <button class="btn-style green-btn" [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                                    <button class="btn-style grey-btn" (click)="editJobOpeningRedirect()">{{'GENERAL.Edit'| translate}}</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-6" style="width: 100%" >
+                                       <div class="details-listing" *ngFor="let item of customFieldsName; let i = index ">
+                                            <div class="number-tag" *ngIf="item !== '' ">
+                                                <div class="question">
+                                                    <h4>{{i+1}}</h4>
+                                                    <span>{{item}}</span>
+                                                </div>
+                                            </div>
+                                            <div  *ngIf="item === '' " style="text-align: center;">
+                                                {{'TABLE.No_record_found' | translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> -->
+
+                                <div class="row" *ngIf="this.customFieldsID == this.customFields">
+                                    <div class="col-md-6" style="width: 100%" >
+                                       <div class="details-listing" *ngFor="let item of customFieldsArray; let i = index ">
+                                            <div class="number-tag" *ngIf="item !== '' ">
+                                                <div class="question">
+                                                    <h4>{{i+1}}</h4>
+                                                    <span>{{item.title}}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div  *ngIf="this.customFieldsID !== this.customFields" style="text-align: center;">
+                                    {{'TABLE.No_record_found' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'JOB_OPENING.VIDEO_QUESTION' | translate}}">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <a class="btn-style pink-btn" href="{{JOB_URL}}" target='_blank'>{{'RECRUITING.Preview Job Opening' | translate}}</a>
+                                    <button class="btn-style green-btn" [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                                    <button class="btn-style grey-btn" (click)="editJobOpeningRedirect()">{{'GENERAL.Edit'| translate}}</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>
+                                </div>
+                                <div class="row" *ngIf="customFields != null" >
+                                    <div class="col-md-12">
+                                        <ng-container *ngFor="let item of videoAssessment; let i = index ">
+                                            <div class="details-listing" [ngClass]="item.checked ? '':'disabled-details' ">
+                                                <div class="number-tag "  >
+                                                    <div class="question">
+                                                        <h4>{{i+1}}</h4>
+                                                        <span>{{item.question}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                      <!--<div  *ngIf="!norecordfound" class="no-record-found">{{'TABLE.No_record_found'| translate}}</div>-->
+                                    </div>
+                                    <!-- <div class="col-md-6">
+                                        <div class="video-player" style="height: 100%;">
+                                            <iframe src="http://learn.shayhowe.com/assets/misc/courses/html-css/adding-media/earth.ogv" type="video/ogg" frameborder="0" width="100%" height="100%"></iframe>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'JOB_OPENING.QUIZ' | translate}}">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <a class="btn-style pink-btn" href="{{JOB_URL}}" target='_blank'>{{'RECRUITING.Preview Job Opening' | translate}}</a>
+                                    <button class="btn-style green-btn" [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                                    <button class="btn-style grey-btn" (click)="editJobOpeningRedirect()">{{'GENERAL.Edit'| translate}}</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>
+                                </div>
+                                <div class="table-content">
+                                    <div class="form-content-box">
+                                        <div class="table-wrapper resource-color-table">
+                                          <table [dataSource]="quiz_data" mat-table matSort style="width: 100%">
+                                            <ng-container matColumnDef="quizName">
+                                              <th *matHeaderCellDef class="remember-forgot" mat-header-cell mat-sort-header="quizName">
+                                                <!-- <mat-checkbox
+                                                  (change)="$event ? toggleAll($event) : null" [checked]="isChecked()"
+                                                  [indeterminate]="isIndeterminate()" class="mr-15"></mat-checkbox> -->
+                                                  {{'JOB_OPENING.QUIZ' | translate}}
+                                              </th>
+                                              <td *matCellDef="let element" class="remember-forgot" mat-cell>
+                                                <!-- <mat-checkbox disabled  [checked]=true *ngIf="element.checked === true">{{element.title}}</mat-checkbox>
+                                                <mat-checkbox disabled [checked]=false *ngIf="!element.checked">{{element.title}}</mat-checkbox> -->
+                                                <mat-checkbox #ref disabled [checked]="selected.includes(element.id)" [value]="element.id"
+                                                 name="quizFields">{{element.title}}
+                                                 </mat-checkbox>
+                                              </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="questionNumber">
+                                              <th *matHeaderCellDef mat-header-cell mat-sort-header="questionNumber">{{'Procurement_Management.TotalNumberOfQuestions' | translate}}
+                                              </th>
+                                              <td *matCellDef="let element" mat-cell>
+                                                {{element.questionCount}}
+                                              </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="timeRequired">
+                                                <th *matHeaderCellDef mat-header-cell mat-sort-header="timeRequired">{{'JOB_OPENING.TOTAL_TIME_REQUIRED' | translate}}
+                                                </th>
+                                                <td *matCellDef="let element" mat-cell>
+                                                  {{element.questionsMinute}} {{'RECRUITING.min' | translate}}
+                                                </td>
+                                              </ng-container>
+
+                                            <tr *matHeaderRowDef="quizDisplayedColumns" mat-header-row></tr>
+                                            <tr *matRowDef="let element; columns: quizDisplayedColumns" mat-row></tr>
+                                          </table>
+                                          <div *ngIf="quiz_data.length === 0" class="no-record-found">{{'TABLE.No_record_found'| translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

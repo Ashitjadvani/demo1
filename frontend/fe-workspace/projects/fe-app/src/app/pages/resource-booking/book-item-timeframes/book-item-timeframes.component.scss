@@ -1,0 +1,59 @@
+.timeframes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .in-progess {
+        background-color: #00ff0022;
+    }
+
+
+    .timeframe-card {
+        display: flex;
+        flex-direction: row;
+        background: #eeeeee;
+        border-radius: 5px;
+        padding: 5px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+        .timeframe-content {
+            flex-grow: 1;
+            margin-left: 5px;
+            display: flex;
+            flex-direction: column;
+
+            .timeframe-content-title {
+                font-size: large;
+                font-weight: bold;
+            }
+
+            .timeframe-content-time {
+                display: flex;
+                flex-direction: row;
+                margin-top: 5px;
+
+                .clock-icon {
+                    font-size: large;
+                    margin-right: 10px;
+                }
+
+                .time-text {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                }
+
+                .title-text {
+                    flex-grow: 1;
+                    text-align: end;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .timeframe-action {
+            align-self: flex-end;
+        }
+    }
+}

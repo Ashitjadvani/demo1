@@ -1,0 +1,150 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="/push-notification" class="breadcrumb-item">{{'INSIGHTS_MENU.PUSH_NOTIFICATIONS'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{'Add Push Notification' | translate}}</span> </li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PUSH_NOTIFICATIONS'" [routePath]="'/push-notification'"
+             [title3]="'Add Push Notification'">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'Add Push Notification' | translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addPushNotificationForm" [formGroup]= "addPushNotificationForm"  novalidate
+                    (ngSubmit)="changeRole()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TABLE.Title' | translate}}<span style="color:#EA5455" >*</span></mat-label>
+                                        <input  type="text" formControlName="title" matInput name="title" (keydown)="space($event)" style="text-transform: capitalize;">
+                                        <mat-error *ngIf="addPushNotificationForm.controls.title.errors?.required" >
+                                            {{'Enter your title' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4">
+                        <!--        <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Title (Italian)<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="titleItalian" matInput  name="titleItalian" >
+                                        <mat-error *ngIf="addPushNotificationForm.controls.titleItalian.errors?.required" >
+                                            Enter your title (Italian).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>-->
+                            </div>
+                            <div class="col-xxl-4"></div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TOUCH_POINTS.Site' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="site" multiple>
+                                          <!-- <mat-option disabled>{{'Select Site' | translate}}</mat-option> -->
+                                          <mat-option #allSelected (click)="toggleAllSelection()" value = "all">{{'Procurement_Management.All' | translate}}</mat-option>
+                                          <mat-option *ngFor="let scopes of sitelist" (click)="tosslePerOne(allSelected.id)" value="{{scopes.id}}">{{scopes.name}}
+                                          </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addPushNotificationForm.controls.site.errors?.required">
+                                            {{'Please select site' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!--<div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Tags' | translate}}</mat-label>
+                                        <mat-chip-list #chipList aria-label="Tags selection" class="scroll-style" >
+                                            <mat-chip *ngFor="let tag of Tags" [selectable]="selectable"
+                                                    [removable]="removable" (removed)="remove(tag)" >
+                                            {{tag.name}}
+                                            <mat-icon matChipRemove *ngIf="removable">clear</mat-icon>
+                                            </mat-chip>
+                                            <input placeholder="New Tags..."
+                                                [matChipInputFor]="chipList"
+                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                [matChipInputAddOnBlur]="addOnBlur"
+                                                (matChipInputTokenEnd)="add($event)" formArrayName="tag">
+                                        </mat-chip-list>
+                                      </mat-form-field>
+                                </div>
+                            </div>-->
+                            <div class="col-xxl-4"></div>
+                          <!--  <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Push Notification for' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="moduleName">
+                                            <mat-option>{{'Select Push Notification for' | translate}}</mat-option>
+                                            <mat-option *ngFor="let pushNotifications of pushNotificationList" value="{{pushNotifications.value}}">{{pushNotifications.viewValue | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addPushNotificationForm.controls.moduleName.errors?.required">
+                                            {{'Please select Push Notification for' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Source' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="source">
+                                            <mat-option>{{'Select Source' | translate}}</mat-option>
+                                            <mat-option *ngFor="let sources of sourceList" value="{{sources.value}}">{{sources.viewValue | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addPushNotificationForm.controls.source.errors?.required">
+                                            {{'Please select Source' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>-->
+
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'TABLE.Description' | translate}}</mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text" (keydown)="space($event)"></textarea>
+                                    <mat-error *ngIf="addPushNotificationForm.controls.description.errors?.required">
+                                      {{'Enter your description' | translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+               <!--             <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Description (Italian)</mat-label>
+                                    <textarea formControlName="descriptionItalian" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text"></textarea>
+                                    <mat-error *ngIf="addPushNotificationForm.controls.descriptionItalian.errors?.required">
+                                      Enter your description (Italian).
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/push-notification" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

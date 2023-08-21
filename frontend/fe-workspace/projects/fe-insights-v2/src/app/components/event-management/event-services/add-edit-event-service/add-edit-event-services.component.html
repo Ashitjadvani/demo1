@@ -1,0 +1,149 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.EVENT_MANAGEMENT'" [routePath2]="'/event-management/event-services'" [title2]="'INSIGHTS_MENU.Event_Services'" [title3]="title" [type]="'EVENT_MANAGEMENT.EventService'"></app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{title | translate}} {{'EVENT_MANAGEMENT.EventService' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="eventServicesForm" [formGroup]="eventServicesForm" novalidate #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.EventServiceName' | translate}}<span class="red-label">*</span></mat-label>
+                    <input  formControlName="servicename" type="text"  matInput  name="servicename" >
+                    <mat-error *ngIf="eventServicesForm.controls.servicename.errors?.required" >
+                      {{'EVENT_MANAGEMENT.EnterServiceName'| translate}}
+                    </mat-error>
+                    <mat-error *ngIf="eventServicesForm.controls.servicename.errors?.nameValidator">{{'Special character not allowed' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.SupplierName' | translate}}</mat-label>
+                    <input  formControlName="supplierName" type="text"  matInput  name="supplierName" (keydown)="space($event)">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.ReferenceEmailAddress' | translate}}</mat-label>
+                    <input  formControlName="referenceEmail" type="text"  matInput  name="referenceEmail" (keydown)="space($event)">
+                    <mat-error *ngIf="eventServicesForm.controls.referenceEmail.errors?.pattern" >
+                      {{'FORGOT_PASSWORD.Email_Address_Valid' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-3">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width phone">
+                    <mat-label>{{'EVENT_MANAGEMENT.ReferencePhoneNumber' | translate}}<span class="red-label">*</span></mat-label>
+                    <input (keypress)="numberOnly($event)"  formControlName="phone" type="text"  pattern="[0-9]*" matInput  name="phone" (keydown)="space($event)">
+                    <mat-error *ngIf="eventServicesForm.controls.phone.errors?.required">
+                      {{'EVENT_MANAGEMENT.Please enter valid phone number' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-12 col-xxl-12">
+                <div class="form-field error-message-custom date-picker-style">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'EVENT_MANAGEMENT.Description'| translate}}</mat-label>
+                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-12 col-xxl-12">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width phone">
+                    <mat-label>{{'EVENT_MANAGEMENT.EmailSubject' | translate}}<span class="red-label">*</span></mat-label>
+                    <input  formControlName="subject" type="text"  matInput  name="subject" (keydown)="space($event)">
+                    <mat-error *ngIf="eventServicesForm.controls.subject.errors?.required">
+                      {{'EVENT_MANAGEMENT.EnterSubjectName' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-12 col-xxl-12">
+                <div class="form-field">
+                  <mat-label>{{'EVENT_MANAGEMENT.EmailTemplate' | translate}}</mat-label>
+                      <div class="custom-editor form-field error-message-custom">
+                          <span class="Email_Note">{{'EVENT_MANAGEMENT.Email_Note' | translate}}</span>
+                      <angular-editor [config]="config"  placeholder="{{ 'PEOPLE_MANAGEMENT.Enter text here'| translate}}" formControlName="emailtemplate"></angular-editor>
+                    </div>
+                </div>
+              </div>
+            <div class="view-legenda">
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                     (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{'EVENT_MANAGEMENT.View Legenda' | translate}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="col-xl-12 col-xxl-12">
+                  <div class="legenda">
+                    <h4>{{'EVENT_MANAGEMENT.Legenda' | translate}}</h4>
+                    <div class="led-container">
+                      <ul>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%Supplier_Name%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.Name of supplier for this service' | translate}}
+</span>
+                        </li>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%Event_Name%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.Name of Event' | translate}}</span>
+                        </li>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%Event_Start_Date%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.Start Date of Event' | translate}}</span>
+                        </li>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%Event_End_Date%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.End Date of Event' | translate}}</span>
+                        </li>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%From_Time%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.From time of Event' | translate}}</span>
+                        </li>
+                        <li>
+                          <div class="title">{{'EVENT_MANAGEMENT.%To_Time%' | translate}}</div>
+                          <span>{{'EVENT_MANAGEMENT.To time of Event' | translate}}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit" (click)="onEditConfirmClick()">{{'GENERAL.Save' | translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

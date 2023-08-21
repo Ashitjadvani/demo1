@@ -1,0 +1,183 @@
+<div class="user-param-box">
+    <div class="input-row">
+        <mat-form-field *ngIf="scope.enableBadgeId" class="width-20">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Badge Number' | translate}}" [(ngModel)]="currentEditPerson.badgeId">
+        </mat-form-field>
+        <mat-form-field *ngIf="scope.enableRestaurantCardId" class="width-20">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Restaurant Card Number' | translate}}" [(ngModel)]="currentEditPerson.restaurantCardId">
+        </mat-form-field>
+        <mat-form-field *ngIf="scope.enableDateStart" class="width-20">
+            <input matInput [matDatepicker]="pickerDateStart" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Hire Date' | translate}}"
+                [(ngModel)]="currentEditPerson.dateStart">
+            <mat-datepicker-toggle matSuffix [for]="pickerDateStart">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDateStart></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field *ngIf="scope.enableDateEnd" class="width-20">
+            <input matInput [matDatepicker]="pickerDateEnd" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Resignation Date' | translate}}"
+                [(ngModel)]="currentEditPerson.dateEnd">
+            <mat-datepicker-toggle matSuffix [for]="pickerDateEnd">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDateEnd></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="input-row" *ngIf="scope.enableWorkingHours">
+        <div class="width-15">
+            <mat-form-field class="width-100">
+                <input matInput placeholder="working start" [ngModel]="getWorkingTime(0)" (change)="onWorkingTimeChange(0, $event.target.value)">
+                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime1.open()">
+                    <mat-icon>schedule</mat-icon>
+                </button>
+            </mat-form-field>
+            <ngx-material-timepicker #pickerStartTime1 [format]="24" (timeSet)="setWorkingTime(0, $event)">
+            </ngx-material-timepicker>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-form-field class="width-100">
+                <input matInput placeholder="lunch start" [ngModel]="getWorkingTime(1)" (change)="onWorkingTimeChange(1, $event.target.value)">
+                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime2.open()">
+                    <mat-icon>schedule</mat-icon>
+                </button>
+            </mat-form-field>
+            <ngx-material-timepicker #pickerStartTime2 [format]="24" (timeSet)="setWorkingTime(1, $event)">
+            </ngx-material-timepicker>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-form-field class="width-100">
+                <input matInput placeholder="lunch end" [ngModel]="getWorkingTime(2)" (change)="onWorkingTimeChange(2, $event.target.value)">
+                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime3.open()">
+                    <mat-icon>schedule</mat-icon>
+                </button>
+            </mat-form-field>
+            <ngx-material-timepicker #pickerStartTime3 [format]="24" (timeSet)="setWorkingTime(2, $event)">
+            </ngx-material-timepicker>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-form-field class="width-100">
+                <input matInput placeholder="working end" [ngModel]="getWorkingTime(3)" (change)="onWorkingTimeChange(3, $event.target.value)">
+                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime4.open()">
+                    <mat-icon>schedule</mat-icon>
+                </button>
+            </mat-form-field>
+            <ngx-material-timepicker #pickerStartTime4 [format]="24" (timeSet)="setWorkingTime(3, $event)">
+            </ngx-material-timepicker>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-checkbox class="width-100 lunch-open" [(ngModel)]="currentEditPerson.lunchOpen">
+                {{'INSIGHTS_PEOPLE_PAGE.LunchOpen' | translate}}
+            </mat-checkbox>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-checkbox class="width-100 lunch-open" [(ngModel)]="currentEditPerson.enablePlan">
+                {{'INSIGHTS_PEOPLE_PAGE.EnablePlan' | translate}}
+            </mat-checkbox>
+        </div>
+        <div class="width-5"></div>
+        <div class="width-15">
+            <mat-checkbox class="width-100 lunch-open" [(ngModel)]="currentEditPerson.enableGreenpass">
+                {{'INSIGHTS_PEOPLE_PAGE.EnableGreenpass' | translate}}
+            </mat-checkbox>
+        </div>
+    </div>
+    <div class="input-row" *ngIf="scope.enableTypology || scope.enableArea">
+        <!--mat-form-field class="width-50">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Direction' | translate}}" [(ngModel)]="this.currentEditPerson.direction">
+                <mat-option *ngFor="let dir of this.currentCompany.peopleDirections" value="{{ dir }}">
+                    {{ dir }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field-->
+        <mat-form-field class="width-50" *ngIf="scope.enableTypology">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Typology' | translate}}" [(ngModel)]="this.currentEditPerson.typology">
+                <mat-option value="Personale Diretto">
+                    Personale diretto
+                </mat-option>
+                <mat-option value="Personale Indiretto">
+                    Personale indiretto
+                </mat-option>
+                <mat-option value="Professionisti">
+                    Professionisti
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="width-5" *ngIf="scope.enableTypology"></span>
+        <mat-form-field class="width-50" *ngIf="scope.enableArea">
+            <mat-select *ngIf="scope.areaAlternativeName==''" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Area' | translate}}" [(ngModel)]="this.currentEditPerson.area">
+                <mat-option *ngFor="let aa of sortedAreasAvailable" value="{{ aa.name }}">
+                    {{ aa.name }}
+                </mat-option>
+            </mat-select>
+            <mat-select *ngIf="scope.areaAlternativeName!=''" placeholder="{{scope.areaAlternativeName}}" [(ngModel)]="this.currentEditPerson.area">
+                <mat-option *ngFor="let aa of sortedAreasAvailable" value="{{ aa.name }}">
+                    {{ aa.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="input-row" *ngIf="scope.enableRole || scope.enableJobTitle">
+        <mat-form-field class="width-50" *ngIf="scope.enableRole">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Role' | translate}}" [(ngModel)]="this.currentEditPerson.role">
+                <mat-option *ngFor="let role of sortedRoles" value="{{ role }}">
+                    {{ role }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="width-5" *ngIf="scope.enableRole"></span>
+        <mat-form-field class="width-50" *ngIf="scope.enableJobTitle">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Job Title' | translate}}" [(ngModel)]="this.currentEditPerson.jobTitle">
+                <mat-option *ngFor="let jt of sortedJobTitles" value="{{ jt }}">
+                    {{ jt }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="input-row">
+        <mat-form-field class="width-100">
+            <mat-select placeholder="site" [(ngModel)]="this.currentEditPerson.site">
+                <mat-option *ngFor="let site of this.sites" value="{{ site.id }}">
+                    {{ site.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="input-row" *ngIf="scope.enableIdentificationCode || scope.enablePartTimePercentage">
+        <mat-form-field class="width-50" *ngIf="scope.enableIdentificationCode">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Identification Code' | translate}}" [(ngModel)]="currentEditPerson.identificationCode">
+        </mat-form-field>
+        <span class="width-5"></span>
+        <mat-form-field class="width-50" *ngIf="scope.enablePartTimePercentage">
+            <input matInput type="number" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Part Time Percentage' | translate}}"
+                [(ngModel)]="currentEditPerson.partTimePercentage">
+        </mat-form-field>
+    </div>
+    <div class="input-row" *ngIf="scope.enableManager">
+        <mat-form-field class="width-20">
+            <input matInput placeholder="manager" [ngModel]="getCurrentManager()">
+            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchManager" (click)="searchManager.toggle()">
+                <mat-icon>search</mat-icon>
+            </button>
+            <sat-popover #searchManager forceAlignment hasBackdrop>
+                <div class="people-search-popup">
+                    <app-people-picker [people]="persons" (selectedPerson)="onManagerSelected($event); searchManager.toggle()"></app-people-picker>
+                </div>
+            </sat-popover>    
+        </mat-form-field>
+        <!--span class="width-5"></span>
+        <mat-form-field class="width-50">
+            <input matInput placeholder="functional manager" [ngModel]="getCurrentFunctionalManager()">
+            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchFunctionalManager" (click)="searchFunctionalManager.toggle()">
+                <mat-icon>search</mat-icon>
+            </button>
+            <sat-popover #searchFunctionalManager forceAlignment hasBackdrop>
+                <div class="people-search-popup">
+                    <app-people-picker [people]="persons" (selectedPerson)="onFunctionalManagerSelected($event); searchFunctionalManager.toggle()"></app-people-picker>
+                </div>
+            </sat-popover>    
+        </mat-form-field-->
+    </div>
+</div>

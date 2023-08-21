@@ -1,0 +1,199 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  - <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li> 
+                  <li routerLink="/cms" class="breadcrumb-item">{{'INSIGHTS_MENU.CMS' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{'GENERAL.Edit' | translate}} {{'INSIGHTS_MENU.RECRUITING' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.CMS'" [routePath]="'/cms'" [title3]="'GENERAL.Edit'" [type]="'RECRUITINGTXT.RECRUITING'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="{{'ADMIN DIALOGS.CONTENT' | translate}}" class="mt-5">
+                        <div class="col-md-12">
+                            <div class="table-content box-style">
+                                <div class="table-heading">
+                                    <h3 style="font-weight: 600"><span>{{'GENERAL.Edit' | translate}} {{'ADMIN DIALOGS.CONTENT' | translate}}</span> </h3>
+                                    <div class="search-form-wrapper">
+                                        <div class="buttons-group">
+                                            <!-- <p><span style="color:#EA5455">*</span> Indicates a required field</p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-content-box">
+                                    <form class="w-100" name="addContentForm" [formGroup]= "addContentForm"  novalidate
+                                    #myform="ngForm">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-xxl-4">
+                                                <div class="form-field">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                      <mat-label>{{'TABLE.Title' | translate}} (English)<span class="red-label">*</span></mat-label>
+                                                      <input formControlName="recruiting_titleEN" matInput type="text" name="recruiting_titleEN" (keydown)="space($event)">
+                                                      <mat-error *ngIf="addContentForm.controls.recruiting_titleEN.errors?.required">{{'Quiz/Survey.Enteryourtitle(English)' | translate}} (English)</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-xxl-4">
+                                                <div class="form-field">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                      <mat-label>{{'TABLE.Title' | translate}} (Italian)<span class="red-label">*</span></mat-label>
+                                                      <input formControlName="recruiting_titleIT" matInput type="text" name="recruiting_titleIT" (keydown)="space($event)">
+                                                      <mat-error *ngIf="addContentForm.controls.recruiting_titleIT.errors?.required">{{'Quiz/Survey.Enteryourtitle(Italian)' | translate}}</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-xxl-6">
+                                                <div class="form-field error-message-custom date-picker-style">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                        <mat-label>{{'Quiz/Survey.Subtitle(English)' | translate}} (English)</mat-label>
+                                                        <textarea formControlName="recruiting_subtitleEN" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" (keydown)="space($event)" required type="text"></textarea>
+                                                        <mat-error *ngIf="addContentForm.controls.recruiting_subtitleEN.errors?.required">
+                                                            {{'Quiz/Survey.Enteryoursubtitle(English)' | translate}} (English)
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-xxl-6">
+                                                <div class="form-field error-message-custom date-picker-style">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                        <mat-label>{{'Quiz/Survey.Subtitle(Italian)' | translate}}</mat-label>
+                                                        <textarea formControlName="recruiting_subtitleIT" matInput placeholder="{{'GENERAL.TypeHere' | translate}}"  (keydown)="space($event)"required type="text"></textarea>
+                                                        <mat-error *ngIf="addContentForm.controls.recruiting_subtitleIT.errors?.required">
+                                                            {{'Quiz/Survey.Enteryoursubtitle(Italian)' | translate}}
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-xxl-6">
+                                                <div class="form-field error-message-custom date-picker-style">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                        <mat-label>{{'Quiz/Survey.Description(English)' | translate}}</mat-label>
+                                                        <textarea formControlName="descriptionEN" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" (keydown)="space($event)" required type="text"></textarea>
+                                                        <mat-error *ngIf="addContentForm.controls.descriptionEN.errors?.required">
+                                                            {{'Quiz/Survey.Enteryourdescription(English)' | translate}}
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12 col-xxl-6">
+                                                <div class="form-field error-message-custom date-picker-style">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                        <mat-label>{{'Quiz/Survey.Description(Italian)' | translate}}</mat-label>
+                                                        <textarea formControlName="descriptionIT" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" (keydown)="space($event)" required type="text"></textarea>
+                                                        <mat-error *ngIf="addContentForm.controls.descriptionIT.errors?.required">
+                                                            {{'Quiz/Survey.Enteryourdescription(Italian)' | translate}}
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-footer">
+                                          <!-- <button class="btn-style theme-btn" type="submit" *ngIf="editMode === 'Add'" (click)="addArea()">{{button}}</button> -->
+                                          <button class="btn-style theme-btn" type="submit" (click)="addRecruitingContent()">{{'GENERAL.Save' | translate}}</button>
+                                            <button class="btn-style red-line-btn" routerLink="/cms" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'Upload Default Image' | translate}}" >
+                        <div class="col-md-12">
+                            <div class="table-content box-style">
+                                <div class="table-heading">
+                                    <h3 style="font-weight: 600"><span>{{'Edit Default Image' | translate}}</span></h3>
+                                    <div class="search-form-wrapper">
+                                        <div class="buttons-group">
+                                            <!-- <p><span style="color:#EA5455">*</span> Indicates a required field</p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-content-box">
+                                    <form class="w-100" name="addDefaultImageForm" [formGroup]= "addDefaultImageForm"  novalidate
+                                    #myform="ngForm">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="generate-button">
+                                                  <label>{{'Upload Default Image' | translate}}</label>
+                                                  <button class="btn-style red-btn file-upload-button" type="button">
+                                                    <span class="material-icons">upload</span>
+                                                    {{'EDIT COMPANY.Drag and Drop here' | translate}} <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                                                    <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                                                    <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg" id="file" #documentInput (change)="onFileChanged(documentInput)" id="emp-input-profile"/>
+                                                  </button>
+                                                  <!-- <span class="file-info">{{ this.documentName }}
+                                                    <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                                    </span>
+                                                  </span> -->
+                                                </div>
+                                            </div>
+                                            <div class="defultImage">
+                                                <img *ngIf="imageUrl" [src]="imageUrl" >
+                                                <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-footer">
+                                          <!-- <button class="btn-style theme-btn" type="submit" *ngIf="editMode === 'Add'" (click)="addArea()">{{button}}</button> -->
+                                          <button class="btn-style theme-btn" type="submit" (click)="saveJobDefaultImage()">{{'GENERAL.Save' | translate}}</button>
+                                            <button class="btn-style red-line-btn" routerLink="/cms" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'Candidate Active Period' | translate}}" >
+                        <div class="col-md-12">
+                            <div class="table-content box-style">
+                                <div class="table-heading">
+                                    <h3 style="font-weight: 600"><span>{{'Edit Candidate active period' | translate}}</span></h3>
+                                    <div class="search-form-wrapper">
+                                        <div class="buttons-group">
+                                            <!-- <p><span style="color:#EA5455">*</span> Indicates a required field</p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-content-box">
+                                    <form class="w-100" name="addCandidatePeriodForm" [formGroup]= "addCandidatePeriodForm"  novalidate
+                                    #myform="ngForm">
+                                        <div class="row">
+                                            <div class="col-xl-12 candidate-period">
+                                                <h4>{{'How long the the candidate would be active' | translate}}</h4>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4">
+                                                <div class="form-field">
+                                                    <mat-form-field appearance="outline" class="element-full-width">
+                                                        <mat-label> {{'Candidate Active Period' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                        <mat-select formControlName="candidateActivePeriod">
+                                                            <mat-option>{{'Select Candidate active period' | translate}}</mat-option>
+                                                            <mat-option *ngFor="let activePeriod of activePeriodList" value="{{activePeriod}}">{{activePeriod}} {{'Months' | translate}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error *ngIf="addCandidatePeriodForm.controls.candidateActivePeriod.errors?.required">
+                                                            {{'Please select candidate active period' | translate}}
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-footer">
+                                          <!-- <button class="btn-style theme-btn" type="submit" *ngIf="editMode === 'Add'" (click)="addArea()">{{button}}</button> -->
+                                          <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                                            <button class="btn-style red-line-btn" routerLink="/cms" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

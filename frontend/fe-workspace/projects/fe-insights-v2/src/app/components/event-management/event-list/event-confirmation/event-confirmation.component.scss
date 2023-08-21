@@ -1,0 +1,27 @@
+.decline-event{
+    .emoji {
+        display: flex;
+        max-width: 140px;
+        max-height: 140px;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        border: 5px solid #000000;
+        border-radius: 50%;
+    }
+    h2{
+        font-weight: 600;
+        margin: 20px 0px;
+    }
+    h4 {
+        font-weight: 100;
+        max-width: 540px;
+    }
+}
+
+.webex-page{
+    .element-full-width{
+        max-width:250px;
+        text-align: center
+    }
+}

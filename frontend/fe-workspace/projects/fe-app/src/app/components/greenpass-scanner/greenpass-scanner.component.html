@@ -1,0 +1,9 @@
+<div class="flex-container">
+    <div class="text">
+        {{'QR SCANNER.GREENPASS SCAN'|translate}}
+    </div>
+    <div class="scanner-container">
+        <fco-qr-scanner #scanner (scanSuccess)="onCodeResult($event)" [camera]="currentCamera">
+        </fco-qr-scanner>
+    </div>
+</div>

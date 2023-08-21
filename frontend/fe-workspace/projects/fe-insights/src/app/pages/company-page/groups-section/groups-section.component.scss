@@ -1,0 +1,28 @@
+.groups-container{
+    width: 100%;
+    margin: auto;
+}
+
+:host ::ng-deep .mat-column-ID {
+    max-width: 200px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Name {
+    flex: 0 200px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Description {
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: 0.9em;
+}
+
+.mat-column-Action {
+    width: 250px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    justify-content: center;
+    font-size: 0.9em;
+}

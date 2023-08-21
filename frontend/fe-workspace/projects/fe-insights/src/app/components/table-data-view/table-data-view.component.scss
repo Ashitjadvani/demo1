@@ -1,0 +1,67 @@
+.view-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 90vw;
+    // height: 100%;
+    margin: auto;
+    padding: 20px;
+
+    .action-container {
+        width: 100px;
+        height: auto;
+        text-align: center;
+
+        .action-button {
+            margin-bottom: 20px;
+        }
+    }
+
+    .table-container {
+        width: 100%;
+
+        .filter-container {
+            height: auto;
+            text-align: center;
+
+            .filter-field {
+                min-width: 500px;
+                max-width: 650px;
+            }
+        }
+
+        .main-table {
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+        }
+    }
+}
+.opening-budge-count {
+  position: absolute;
+  top: 4px;
+  left: 22px;
+  border-radius: 15px;
+  text-align: center;
+  float: right;
+  background-color: #f90000;
+  color: #ffffff;
+  padding: 2px 5px;
+  line-height: 1;
+  z-index: 1;
+}
+
+span.red-dot {position: absolute;background-color: red;height: 6px;width: 6px;border-radius: 100%;top: 0;}
+
+:host ::ng-deep mat-cell {
+    padding: 0;
+    padding-left: 12px !important;
+}
+
+:host ::ng-deep mat-header-cell {
+    padding-left: 12px !important;
+}
+
+
+.grow {
+    flex-grow: 0.5;
+}

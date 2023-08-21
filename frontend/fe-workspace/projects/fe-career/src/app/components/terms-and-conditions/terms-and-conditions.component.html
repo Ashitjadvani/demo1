@@ -1,0 +1,17 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+  <div class="container">
+    <!-- <h1>Positions</h1> -->
+    <!-- <h1>{{ "POSITION_PAGE.POSITIONS" | translate }}</h1> -->
+    <h1>{{'GENERAL.DISCLAIMER' | translate}}</h1>
+  </div>
+</div>
+<div class="the-content-wrap">
+  <div class="the-content container" [innerHTML]="privacyData">
+    <!-- {{privacyData | translate}} -->
+  </div>
+</div>
+<div class="copy-right" style="background-color: #1D1D1D;color: #fff; padding: 16px;text-align: center;">
+  {{'GENERAL.CopyRight' | translate}}
+</div>

@@ -1,0 +1,19 @@
+<div class="decline-event">
+    <div class="content-wrapper">
+        <div class="emoji" *ngIf="!oppsError">
+            <img  src="assets/images/sad-icon.svg" alt="">
+        </div>
+        <div *ngIf="oppsError">
+            <img  src="assets/images/Decline.png" alt="">
+        </div>
+        <ng-container *ngIf="oppsError">
+            <h2>{{'Invitation declined' | translate}}</h2>
+            <h4 class="mb-2">{{'You have declined event successfully' | translate}}</h4>
+            <p>{{'You will receive soon an email of confirmation' | translate}}</p>
+        </ng-container>
+        <ng-container *ngIf="!oppsError">
+            <h2>Oops..</h2>
+            <h4>{{errorMessage | translate}}</h4>
+        </ng-container>
+    </div>
+</div>

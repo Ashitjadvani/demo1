@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-12">
+        <nav>
+            <ol class="breadcrumb box-style">
+                <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+                <li  class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.Badges'| translate}}</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-md-12">
+        <div class="common-tabbing">
+            <mat-tab-group animationDuration="0ms" [selectedIndex]="selectedIndex">
+                <mat-tab class="mt-5" label="{{'ACCESS_CONTROL.UserBadge'| translate}}">
+                    <app-access-control-user-badge></app-access-control-user-badge>
+                </mat-tab>
+                <mat-tab class="mt-5" label="{{'ACCESS_CONTROL.ExternalBadge'| translate}}">
+                    <app-access-control-external-badge></app-access-control-external-badge>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

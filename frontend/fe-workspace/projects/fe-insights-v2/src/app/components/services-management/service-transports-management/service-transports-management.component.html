@@ -1,0 +1,102 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li class="breadcrumb-item">Servizi</li>
+                    <li class="breadcrumb-item active" aria-current="page">Getsione trasporti</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <div class="table-content box-style company-info">
+                    <div class="table-heading">
+                        <h3 style="font-weight: 600">Gestione trasporti</h3>
+                        <div class="search-form-wrapper">
+                            <div class="search-form">
+                                <mat-icon matPrefix class="material-icons search">search</mat-icon>
+                                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input
+                                    placeholder="Cerca" />
+                                <mat-icon *ngIf="this.search !== '' " class="material-icons clear">clear</mat-icon>
+                            </div>
+                            <button class="btn-style" routerLink="add-edit-service-multi-transport/0">
+                                <span class="material-icons">add</span>Richiesta trasporto
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper resource-color-table">
+                        <table
+                            [dataSource]="serviceTransports | paginate: {itemsPerPage: this.limit, currentPage: this.page, totalItems: this.totalItems }"
+                            mat-table style="width: 100%">
+                            <ng-container matColumnDef="wheelAction">
+                                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                    {{'TABLE.Action' | translate}}
+                                </th>
+                                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                    <div class="hover-effect-menu two-icons">
+                                        <div class="short-arrow">
+                                            <span class="material-icons">more_horiz</span>
+                                        </div>
+                                        <div class="hover-round-effect">
+                                            <button mat-menu-item (click)="onModifyServiceTransport(element)"
+                                                matTooltip="{{'Edit' | translate}}">
+                                                <span class="material-icons">edit</span>
+                                            </button>
+                                            <button mat-menu-item (click)="onDeleteServiceTransport(element)"
+                                                matTooltip="{{'Delete' | translate}}">
+                                                <span class="material-icons">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <th (click)="changeSorting('date')" *matHeaderCellDef class="short-arrow"
+                                    mat-header-cell style="min-width: 200px;">
+                                    Data <span [ngClass]="sortClass"><img alt=""
+                                            src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{ renderTableColumn(TABLE_COLUMN_REF.DATE, element) }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="requester">
+                                <th (click)="changeSorting('user')" *matHeaderCellDef class="short-arrow"
+                                    mat-header-cell style="min-width: 200px;">
+                                    Richiedente <span [ngClass]="sortClass"><img alt=""
+                                            src="assets/images/up-arrow.svg"></span>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">
+                                    {{ renderTableColumn(TABLE_COLUMN_REF.REQUESTER, element) }}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="serviceTransportsDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let element; columns: serviceTransportsDisplayedColumns"></tr>
+                        </table>
+                    </div>
+                    <div class="paginate-footer">
+                        <div class="page-item">
+                            <h3>Items per page:</h3>
+                            <mat-form-field appearance="fill">
+                                <mat-select (ngModelChange)="changeSelectOption()" [(ngModel)]="limit">
+                                    <mat-option value="5" selected>5</mat-option>
+                                    <mat-option value="10">10</mat-option>
+                                    <mat-option value="15">15</mat-option>
+                                    <mat-option value="20">20</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="table-paginator">
+                            <pagination-controls (pageChange)="pageChanged($event)" responsive="true">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

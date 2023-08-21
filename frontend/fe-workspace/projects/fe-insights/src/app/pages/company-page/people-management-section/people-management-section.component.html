@@ -1,0 +1,133 @@
+<div class="general-container">
+    <div class="first-line">
+        <!--div class="card width-40 height-100">
+            <div class="card-header">
+                <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.DIRECTIONS' | translate}}</div>
+            </div>
+            <div class="card-body">
+                <div class="line">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.DIRECTION NAME' | translate}}" [(ngModel)]="newDirectionName">
+                    </mat-form-field>
+                    <button mat-fab color="primary" class="action-button" color="primary" cdkFocusInitial
+                        (click)="onAddDirectionClick()"><i class="material-icons" [ngStyle]="{'color': 'white'}">add</i></button>
+                </div>
+                <mat-list class="card-list" *ngIf="currentCompany.peopleDirections.length > 0">
+                    <mat-list-item *ngFor="let direction of currentCompany.peopleDirections">
+                        <div class="card-list-item">
+                            <div class="card-list-item-text">{{ direction }}</div>
+                            <div class="card-list-item-action">
+                                <button mat-icon-button (click)="onDeleteDirectionClick(direction)"
+                                    matTooltip="Delete">
+                                    <i class="material-icons" style="color: red">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+                <mat-label class="no-item-label" *ngIf="currentCompany.peopleDirections.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO DIRECTIONS DEFINED' | translate}}</mat-label>
+            </div>
+            <div class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                    (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+            </div>
+        </div>
+
+        <span class="width-15"></span-->
+
+        <div class="card width-40 height-100">
+            <div class="card-header">
+                <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.AREAS' | translate}}</div>
+            </div>
+            <div class="card-body">
+                <mat-list class="card-list" *ngIf="areasSorted.length > 0">
+                    <mat-list-item *ngFor="let area of areasSorted">
+                        <div class="card-list-item">
+                            <div class="card-list-item-text">{{ area.name }}</div>
+                            <div class="card-list-item-action">
+                                <button mat-icon-button (click)="onModifyAreaClick(area)"
+                                    matTooltip="{{'INSIGHTS_PEOPLE_PAGE.Modify Area' | translate}}">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button mat-icon-button (click)="onDeleteAreaClick(area)"
+                                    matTooltip="{{'INSIGHTS_PEOPLE_PAGE.Delete' | translate}}">
+                                    <i class="material-icons" style="color: red">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+                <mat-label class="no-item-label" *ngIf="areasSorted.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO AREA DEFINED' | translate}}</mat-label>
+            </div>
+            <div class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddAreaClick()">{{'INSIGHTS_PEOPLE_PAGE.Add Area'|translate}}</button>
+            </div>
+        </div>
+
+        <span class="width-15"></span>
+
+        <div class="card width-40 height-100">
+            <div class="card-header">
+                <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.ROLES' | translate}}</div>
+            </div>
+            <div class="card-body">
+                <mat-list class="card-list" *ngIf="rolesSorted.length > 0">
+                    <mat-list-item *ngFor="let role of rolesSorted">
+                        <div class="card-list-item">
+                            <div class="card-list-item-text">{{ role }}</div>
+                            <div class="card-list-item-action" *ngIf="(role != 'Area Manager') && (role != 'Director') ">
+                                <button mat-icon-button (click)="onModifyRoleClick(role)"
+                                    matTooltip="{{'INSIGHTS_PEOPLE_PAGE.Modify Role' | translate}}">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button mat-icon-button (click)="onDeleteRoleClick(role)"
+                                    matTooltip="Delete">
+                                    <i class="material-icons" style="color: red">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+                <mat-label class="no-item-label" *ngIf="rolesSorted.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO ROLES DEFINED' | translate}}</mat-label>
+            </div>
+            <div class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddRoleClick()">{{'INSIGHTS_PEOPLE_PAGE.Add Role'|translate}}</button>
+            </div>
+        </div>
+        
+        <span class="width-15"></span>
+
+        <div class="card width-40 height-100">
+            <div class="card-header">
+                <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.JOB TITLES' | translate}}</div>
+            </div>
+            <div class="card-body">
+                <mat-list class="card-list" *ngIf="jobTitlesSorted.length > 0">
+                    <mat-list-item *ngFor="let job of jobTitlesSorted">
+                        <div class="card-list-item">
+                            <div class="card-list-item-text">{{ job }}</div>
+                            <div class="card-list-item-action">
+                                <button mat-icon-button (click)="onModifyJobTitleClick(job)"
+                                    matTooltip="{{'INSIGHTS_PEOPLE_PAGE.Modify JobTitle' | translate}}">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button mat-icon-button (click)="onDeleteJobTitleClick(job)"
+                                    matTooltip="Delete">
+                                    <i class="material-icons" style="color: red">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+                <mat-label class="no-item-label" *ngIf="jobTitlesSorted.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO JOB TITLES DEFINED' | translate}}</mat-label>
+            </div>
+            <div class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddJobTitleClick()">{{'INSIGHTS_PEOPLE_PAGE.Add JobTitle'|translate}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

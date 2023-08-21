@@ -1,0 +1,54 @@
+.times-container {
+    display: flex;
+    justify-content: center;
+    .mat-form-field:nth-child(1) {
+      padding-right: 5px;
+    }
+    .mat-form-field:nth-child(2) {
+      padding-left: 5px;
+    }
+  }
+  
+  .timepicker__header {
+    background-color: #0a4c48 !important;
+  }
+  
+  .clock-face__clock-hand {
+    background-color: #0a4c48 !important;
+  
+    &::after {
+      background-color: #0a4c48 !important;
+    }
+  
+    &::before {
+      border-color: #0a4c48 !important;
+    }
+  }
+  
+  .clock-face__number {
+    > span.active {
+      background-color: #0a4c48 !important;
+    }
+  }
+  
+  
+  .stepper {
+      max-width: 640px;
+  }
+  
+  .filters-container {
+      display: flex;
+      flex-direction: column;
+  }
+  
+  .details-filters-row {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+  }
+  
+  .loader {
+      margin-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+  }

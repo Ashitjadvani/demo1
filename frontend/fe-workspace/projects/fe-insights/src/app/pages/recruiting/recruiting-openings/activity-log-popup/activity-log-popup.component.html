@@ -1,0 +1,31 @@
+<div class="popup-header">
+    <mat-icon class="close-popup"  (click)="onNoClick()">close</mat-icon>
+</div>
+<mat-table class="change-log-table activity-log-popup" #table [dataSource]="dataSource">
+    <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef class="table-head" style="width: 150px;"> {{'INSIGHTS_PEOPLE_PAGE.TIMESTAMP' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="width: 150px;"> {{element.createdAt | date: 'dd/MM/yyyy HH:mm'}}  </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="author">
+        <mat-header-cell *matHeaderCellDef style="width: 150px;"> {{'INSIGHTS_PEOPLE_PAGE.AUTHOR' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="width: 150px;"> {{element.author}}
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.CHANGES' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.description | translate }}
+        </mat-cell>
+    </ng-container>
+    <!-- <ng-container matColumnDef="action" stickyEnd>
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let id=index;">
+            <button mat-icon-button (click)="onModifyHistory(element)"
+                matTooltip="{{'GENERAL.DELETE'|translate}}">
+                <i class="material-icons">edit</i>
+            </button>
+        </mat-cell>
+    </ng-container> -->
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

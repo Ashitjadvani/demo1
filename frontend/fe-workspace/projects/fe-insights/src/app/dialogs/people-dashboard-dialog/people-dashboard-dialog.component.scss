@@ -1,0 +1,14 @@
+h2 {
+    text-transform: uppercase;
+}
+
+.dialog-content {
+    max-height: 470px;
+}
+
+.dialog-container > * {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}

@@ -1,0 +1,66 @@
+<section class="popups">
+  <form [formGroup]="surveyQuestionForm" id="frmSurveyQuestion" (ngSubmit)="submitSurveyQuestion()">
+    <div class="popup-header">
+      <div class="header-content">
+        <h4 *ngIf="!editable">{{data.heading | translate}}</h4>
+        <h4 *ngIf="editable">{{'Quiz/Survey.ViewQuestion' | translate}}</h4>
+        <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+      </div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-content m-auto text-center">
+          <div class="form-field" *ngIf="editMode">
+            <mat-form-field appearance="outline" class="element-full-width {{editable}}">
+              <mat-label> {{'TKLAB.ORDER' | translate}}</mat-label>
+              <input matInput formControlName="order" type="number" name="order" [readonly]="editable">
+              <mat-error *ngIf="surveyQuestionForm.controls.order.errors?.required">
+                {{'Please select order' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field" *ngIf="noEditMode">
+            <mat-form-field appearance="outline" class="element-full-width">
+              <mat-label> {{'TKLAB.ORDER' | translate}}</mat-label>
+              <mat-select formControlName="order" [disabled]="editable">
+                <mat-option *ngFor="let order of orderList" [value]="order">{{order}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="surveyQuestionForm.controls.order.errors?.required">
+                {{'Please select order' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="element-full-width">
+              <mat-label> {{'TKLAB.CODE' | translate}}</mat-label>
+              <mat-select formControlName="code" (selectionChange)="changeCodeQuestion($event)" [disabled]="editable">
+                <mat-option *ngFor="let question of filteredBanks | async" [value]="question.id">{{question.code}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="surveyQuestionForm.controls.code.errors?.required">
+                {{'Please select code' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="element-full-width">
+              <mat-label> {{'TKLAB.QUESTION' | translate}}</mat-label>
+              <mat-select formControlName="question" (selectionChange)="changeCodeQuestion($event)" [disabled]="editable">
+                <!--<mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs | translate}}</mat-option>-->
+                <mat-option *ngFor="let question of filteredBanks | async" [value]="question.id">{{question.question}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="surveyQuestionForm.controls.question.errors?.required">
+                {{'Please select question' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+      </div>
+    </div>
+    <hr>
+    <div class="popup-footer" *ngIf="!editable">
+      <div class="footer-content justify-content-end">
+        <button (click)="onClick(false)" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+        <button *ngIf="!surveyQuestionForm.valid" class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        <button *ngIf="surveyQuestionForm.valid" (click)="onClick(true)"  class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</section>

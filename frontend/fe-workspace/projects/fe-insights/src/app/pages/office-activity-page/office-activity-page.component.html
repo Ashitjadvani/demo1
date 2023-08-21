@@ -1,0 +1,62 @@
+<div class="main-page">
+    <mat-table #table [dataSource]="activities">
+        <ng-container matColumnDef="Id">
+            <mat-header-cell *matHeaderCellDef> {{'GENERAL.ID'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.id }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Name">
+            <mat-header-cell *matHeaderCellDef> {{'GENERAL.NAME'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ safeGetUserName(element) }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Site">
+            <mat-header-cell *matHeaderCellDef> {{'GENERAL.SITE'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.site }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="OfficeIn">
+            <mat-header-cell *matHeaderCellDef> {{'USER PROFILE.OFFICE IN'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.officeInAt | date:'dd/MM/yyyy HH:mm:ss' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="DeskIn">
+            <mat-header-cell *matHeaderCellDef> {{'USER PROFILE.DESK CHECKIN'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.deskCheckInAt | date:'dd/MM/yyyy HH:mm:ss'  }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="DeskOut">
+            <mat-header-cell *matHeaderCellDef> {{'USER PROFILE.DESK CHECKOUT'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.deskCheckOutAt | date:'dd/MM/yyyy HH:mm:ss'  }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="LunchIn">
+            <mat-header-cell *matHeaderCellDef> Lunch Start </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.lunchStartAt | date:'dd/MM/yyyy HH:mm:ss'  }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="LunchOut">
+            <mat-header-cell *matHeaderCellDef> Lunch End </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.lunchStopAt | date:'dd/MM/yyyy HH:mm:ss'  }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="OfficeOut">
+            <mat-header-cell *matHeaderCellDef> {{'USER PROFILE.OFFICE OUT'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.officeOutAt | date:'dd/MM/yyyy HH:mm:ss'  }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="SmartworkingIn">
+            <mat-header-cell *matHeaderCellDef> {{'QUICK PRESENCE.SMARTWORKING IN'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.smartWorkingInAt | date:'dd/MM/yyyy HH:mm:ss' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="SmartworkingOut">
+            <mat-header-cell *matHeaderCellDef> {{'QUICK PRESENCE.SMARTWORKING OUT'|translate}} </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.smartWorkingOutAt | date:'dd/MM/yyyy HH:mm:ss' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Activities">
+            <mat-header-cell *matHeaderCellDef> Activities </mat-header-cell>
+            <mat-cell *matCellDef="let element"> 
+                <div class="activity-log">
+                    <div *ngFor="let act of safeActivities(element)" class="activity-log-item">
+                        {{ act.action }}<br>{{(act.timestamp | date:'dd/MM/yyyy HH:mm:ss') }}
+                    </div>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+</div>

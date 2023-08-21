@@ -1,0 +1,161 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="/alerts" class="breadcrumb-item">{{'INSIGHTS_MENU.ALERTS'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'INSIGHTS_MENU.ALERTS'| translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ALERTS'" [routePath]="'/alerts'"
+                [type]="'INSIGHTS_MENU.ALERTS'" [title3]="title ">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'INSIGHTS_MENU.ALERTS'| translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addAlertForm" [formGroup]= "addAlertForm"  novalidate
+                    (ngSubmit)="changeCategory()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width date-select">
+                                      <mat-label>{{'Publication Date' | translate}}<span class="red-label">*</span></mat-label>
+                                    <!-- <input type="text" matInput [matDatepicker]="picker1" formControlName="publicationDate" [(ngModel)]="currentAlert.publicationDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1" (timeSet)="timeFormater($event)" ></mat-datepicker-toggle> -->
+
+
+                                    <input matInput [matDatepicker]="picker1"  formControlName="publicationDate" [(ngModel)]="currentAlert.publicationDate">
+                                    <mat-datepicker-toggle matSuffix  [for]="picker1" class="full-date-select" (timeSet)="timeFormater($event)"></mat-datepicker-toggle>
+
+
+                                    <mat-datepicker #picker1 (opened)="streamOpened()" ></mat-datepicker>
+
+
+                                    <!-- <mat-datepicker #picker1></mat-datepicker> -->
+                                      <mat-error *ngIf="addAlertForm.controls.publicationDate.errors?.required">{{'Please select publication date' | translate}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-xxl-4"></div>
+                            <div class="col-xl-12 col-xxl-4"></div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ALERTS.Title'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="title" matInput  name="title" (keydown)="space($event)" style="text-transform: capitalize;">
+                                        <mat-error *ngIf="addAlertForm.controls.title.errors?.required" >
+                                            {{'Please enter your title' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                       <!--     <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Title (Italian)*<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="titleItalian" matInput  name="titleItalian" >
+                                        <mat-error *ngIf="addAlertForm.controls.titleItalian.errors?.required" >
+                                            Please Enter your title (Italian).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>-->
+                            <div class="col-xxl-4"></div>
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Content' | translate}}</mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text" (keydown)="space($event)"></textarea>
+                                    <mat-error *ngIf="addAlertForm.controls.description.errors?.required">
+                                      {{'Please enter your content' | translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                           <!-- <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Content (Italian)</mat-label>
+                                    <textarea formControlName="contentItalian" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text"></textarea>
+                                    <mat-error *ngIf="addAlertForm.controls.contentItalian.errors?.required">
+                                      Please enter your content (Italian).
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>-->
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Site' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="distributionSites" multiple>
+<!--                                            <mat-option>Select Site</mat-option>-->
+<!--                                            <mat-option *ngFor="let sites of siteList" value="{{sites}}">{{sites}}</mat-option>-->
+                                          <mat-option *ngFor="let scopes of sitelist" value="{{scopes.id}}">{{scopes.name}}
+                                          </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAlertForm.controls.distributionSites.errors?.required">
+                                            {{'Please select site' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Safety Group' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="distributionGroups" multiple>
+<!--                                            <mat-option>Select Safety Group</mat-option>-->
+<!--                                            <mat-option *ngFor="let safetyGroups of safetyGroupList" value="{{safetyGroups}}">{{safetyGroups}}</mat-option>-->
+                                          <mat-option *ngFor="let scopes of groupList" value="{{scopes.id}}">{{scopes.name}}
+                                          </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAlertForm.controls.distributionGroups.errors?.required">
+                                            {{'Please select safety group' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox formControlName="sendPushNotification">Send Push Notification</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-12">
+                                <div class="generate-button">
+                                  <label>{{'Attach File' | translate}}</label>
+                                  <button class="btn-style red-btn file-upload-button" type="button">
+                                    <span class="material-icons">upload</span>
+                                    {{'EDIT COMPANY.Drag and Drop here' | translate}} <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                                    <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                                    <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg" id="file" #documentInput (change)="onFileChanged(documentInput)" id="emp-input-profile"/>
+                                  </button>
+                                  <span class="file-info">{{ this.documentName }}
+                                    <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                    </span>
+                                  </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/alerts" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

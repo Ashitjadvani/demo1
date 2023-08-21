@@ -1,0 +1,39 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <!-- <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li> -->
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                    <li class="breadcrumb-item" routerLink="/assets-management/resource-management" aria-current="page">Tipologia Risorse</li>
+                    <li class="breadcrumb-item" routerLink="{{ goBackLink() }}" aria-current="page">{{ currentResourceType }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>Edit Meeting Room</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addResourceGroupForm" [formGroup]="addRoomResourceForm" novalidate>
+                        <div class="row">
+                        </div>
+                        <div class="row">
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn">Save</button>
+                            <button class="btn-style red-line-btn" routerLink="{{ goBackLink() }}" type="button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,89 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+                    <li routerLink="/access-control/gates/groups" class="breadcrumb-item">{{'ACCESS_CONTROL.Gates'| translate}}</li>
+                    <li *ngIf="isNew" class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.AddGroup'| translate}}</li>
+                    <li *ngIf="!isNew && group" class="breadcrumb-item active" aria-current="page">{{'ACCESS_CONTROL.EditGroup'| translate}} <b>{{group.name}}</b></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items:center; align-content: center; justify-items: center; gap: 20px">
+                        <h3 style="font-weight: 600;">
+                            <span *ngIf="isNew">{{'ACCESS_CONTROL.AddGroup'| translate}}</span>
+                            <span *ngIf="!isNew">{{'ACCESS_CONTROL.EditGroup'| translate}} <b>{{group.name}}</b></span>
+                        </h3>
+                    </div>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'|translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addGeneralInfoForm" [formGroup]= "addGeneralInfoForm"  novalidate #myform="ngForm" (ngSubmit)="onGroupSubmit()">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.GroupName'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="name" matInput name="name" >
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.name.errors?.required" >
+                                            {{'ACCESS_CONTROL.EnterGroupName'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.AccessControlSystem'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="systemId" [(ngModel)]="addGeneralInfoForm.value.systemId" (selectionChange)="onSystemChange($event)">
+                                            <mat-option *ngFor="let system of systemList" value="{{system.id}}">{{system.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addGeneralInfoForm.controls.systemId.errors?.required">
+                                            {{'ACCESS_CONTROL.SelectAccessControlSystem'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <div class="custom-switch mt-0">
+                                        <mat-checkbox [checked]="group.disableDocuments">{{'ACCESS_CONTROL.DisableDocuments' | translate}}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="gatesList && gatesList.length > 0" class="table-heading m-30" style="margin-bottom: 10px !important">
+                            <p class="m-0" style="color: black; font-size: 20px">{{'ACCESS_CONTROL.SelectGates' | translate}}</p>
+                            </div>
+                        </div>
+                        <div class="row" *ngFor="let site of gatesList">
+                            <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                            </div>
+                            <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                <div class="form-field">
+                                    <div class="custom-switch mt-0">
+                                        <mat-checkbox (change)="gateCheckEvent(gate.id,$event)" [checked]="checkGate(gate.id)">{{gate.name}}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer d-flex justify-content-between">
+                            <button class="btn-style red-line-btn" routerLink="/access-control/gates/groups" type="button"> {{'GENERAL.Cancel'| translate}}</button>
+                            <button class="btn-style theme-btn"  type="submit" >{{'GENERAL.Save&Finish'| translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

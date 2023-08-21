@@ -1,0 +1,109 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+              <ol class="breadcrumb box-style">
+                <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li>
+                <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.ACCOUNTS'| translate}}</li>
+              </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ASSETS_MANAGEMENT'"  [routePath2]="'/assets-management/resource-group'" [title2]="'INSIGHTS_MENU.Resource_Group'" [title3]="'ASSETS_MANAGEMENT.reservation'"  [backPath]="'EVENT_MANAGEMENT.Resources'"
+                            (back)="back()"  ></app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <div class="table-content box-style company-info">
+                    <div class="table-heading">
+                        <h3 style="font-weight: 600">{{'ASSETS_MANAGEMENT.reservation'| translate}}</h3>
+                        <div class="search-form-wrapper">
+                                <mat-form-field appearance="outline" class="element-full-width date-select">
+                                    <mat-label>{{'ASSETS_MANAGEMENT.bookingDate'| translate}} <span style="color:#EA5455">*</span></mat-label>
+                                    <input [(ngModel)]="currentReservationDate"  [matDatepicker]="datePicker" matInput type="text" name="date">
+                                    <mat-datepicker-toggle matSuffix [for]="datePicker" class="full-date-select"></mat-datepicker-toggle>
+                                    <mat-datepicker #datePicker></mat-datepicker>
+                                </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="table-wrapper resource-color-table">
+<!--                        <table #table-->
+<!--                               [dataSource]="resources | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }"-->
+<!--                               mat-table style="width: 100%">-->
+<!--                            <ng-container matColumnDef="select">-->
+<!--                                <th mat-header-cell *matHeaderCellDef class="remember-forgot" style="width: 80px;">-->
+<!--                                    <mat-checkbox (change)="$event ? toggleAllRows() : null"-->
+<!--                                                  [checked]="selection.hasValue() && isAllSelected()"-->
+<!--                                                  [indeterminate]="selection.hasValue() && !isAllSelected()"-->
+<!--                                                  [aria-label]="checkboxLabel()">-->
+<!--                                    </mat-checkbox>-->
+<!--                                </th>-->
+<!--                                <td mat-cell *matCellDef="let row" class="remember-forgot" style="width: 80px;">-->
+<!--                                    <mat-checkbox (click)="$event.stopPropagation()"-->
+<!--                                                  (change)="$event ? selection.toggle(row) : null"-->
+<!--                                                  [checked]="selection.isSelected(row)"-->
+<!--                                                  [aria-label]="checkboxLabel(row)">-->
+<!--                                    </mat-checkbox>-->
+<!--                                </td>-->
+<!--                            </ng-container>-->
+
+<!--                            <ng-container matColumnDef="wheelAction">-->
+<!--                                <th mat-header-cell *matHeaderCellDef style="width: 100px;">-->
+<!--                                    {{'TABLE.Action' | translate}}-->
+<!--                                </th>-->
+<!--                                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">-->
+<!--                                    <app-wheel-action [icons]="'three'" [editOn]="true" [deleteOn]="true"-->
+<!--                                                      [reservationOn]="true" (reservation)="reservation($event)" [element]="element"-->
+<!--                                                      (edit)="edit($event)"-->
+<!--                                                      (delete)="openAccountDeleteDialog($event)"></app-wheel-action>-->
+<!--                                </td>-->
+<!--                            </ng-container>-->
+<!--                            <ng-container matColumnDef="site">-->
+<!--                                <th (click)="changeSorting('site',sortBy)" *matHeaderCellDef class="short-arrow"-->
+<!--                                    mat-header-cell>-->
+<!--                                    Site <span-->
+<!--                                    [ngClass]="{'down': sortKey === 'site' && sortBy === '-1' , 'up': sortKey === 'site' && sortBy === '1'}">-->
+<!--                    <img alt="" src="assets/images/up-arrow.svg"></span></th>-->
+<!--                                <td mat-cell *matCellDef="let element"-->
+<!--                                    style="white-space: break-spaces;">{{siteFormatter(element.site)}}</td>-->
+<!--                            </ng-container>-->
+<!--                            <ng-container matColumnDef="code">-->
+<!--                                <th (click)="changeSorting('code',sortBy)" *matHeaderCellDef class="short-arrow"-->
+<!--                                    mat-header-cell>-->
+<!--                                    Code <span-->
+<!--                                    [ngClass]="{'down': sortKey === 'code' && sortBy === '-1' , 'up': sortKey === 'code' && sortBy === '1'}">-->
+<!--                    <img alt="" src="assets/images/up-arrow.svg"></span></th>-->
+<!--                                <td mat-cell *matCellDef="let element"-->
+<!--                                    style="white-space: break-spaces;">{{element.code ? element.code : '-' }}</td>-->
+<!--                            </ng-container>-->
+<!--                            <ng-container matColumnDef="description">-->
+<!--                                <th (click)="changeSorting('description',sortBy)" *matHeaderCellDef class="short-arrow"-->
+<!--                                    mat-header-cell>-->
+<!--                                    Description <span-->
+<!--                                    [ngClass]="{'down': sortKey === 'description' && sortBy === '-1' , 'up': sortKey === 'description' && sortBy === '1'}">-->
+<!--                    <img alt="" src="assets/images/up-arrow.svg"></span></th>-->
+<!--                                <td mat-cell *matCellDef="let element"-->
+<!--                                    style="white-space: break-spaces;">{{element.description ? element.description : '-' }}</td>-->
+<!--                            </ng-container>-->
+<!--                            <ng-container matColumnDef="enabled">-->
+<!--                                <th (click)="changeSorting('phone',sortBy)" *matHeaderCellDef class="short-arrow"-->
+<!--                                    mat-header-cell>-->
+<!--                                    Enabled </th>-->
+<!--                                <td mat-cell *matCellDef="let element"-->
+<!--                                    style="white-space: nowrap;width: 160px;min-width: 160px;">-->
+<!--                                    <span *ngIf="element.enabled === true" class="green-round"></span><span-->
+<!--                                    *ngIf="element.enabled === false" class="red-round"></span>-->
+<!--                                </td>-->
+<!--                            </ng-container>-->
+<!--                            <tr mat-header-row *matHeaderRowDef="eventServicesDisplayedColumns"></tr>-->
+<!--                            <tr mat-row *matRowDef="let element; columns: eventServicesDisplayedColumns"></tr>-->
+<!--                        </table>-->
+                    </div>
+<!--                    <app-pagination [noRecordFound]="noRecordFound"-->
+<!--                                    [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)"-->
+<!--                                    (changeItem)="changeItemsPerPage($event)"-->
+<!--                                    [totalItems]="totalItems"></app-pagination>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

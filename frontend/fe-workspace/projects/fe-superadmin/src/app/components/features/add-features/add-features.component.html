@@ -1,0 +1,69 @@
+<section class="dashboard-content">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                  <li routerLink="/features" class="breadcrumb-item">Features</li>
+                  <li routerLink="/add-features" class="breadcrumb-item active" aria-current="page">Add Feature</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="account-wrapper">
+        <div class="form-content-box box-style">
+            <form class="w-100" name="featuresForm" [formGroup]= "featuresForm"  novalidate (ngSubmit)="addRec()"
+            #myform="ngForm">
+                <div class="form-main table-content box-heading">
+                    <h3 class="text-black">Add Feature</h3>
+                    <div class="form-row-wrapper">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Feature Name</mat-label>
+                                        <input formControlName="name" maxlength="40" matInput type="text" name="name" >
+                                        <mat-error *ngIf="featuresForm.controls.name.errors?.required" >
+                                          Enter your feature name.
+                                       </mat-error>
+                                      </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Mode</mat-label>
+                                        <mat-select formControlName="mode" name="mode">
+                                            <mat-option *ngFor="let mode of modes" [value]="mode.value">{{mode.viewValue}}</mat-option>
+                                        </mat-select>
+                                      <mat-error *ngIf="featuresForm.controls.mode.errors?.required">
+                                        Please select mode.
+                                     </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Status</mat-label>
+                                        <mat-select formControlName="status_id" name="status_id">
+                                            <mat-option value="1">Active</mat-option>
+                                            <mat-option value="2">Inctive</mat-option>
+                                        </mat-select>
+                                      <mat-error *ngIf="featuresForm.controls.status_id.errors?.required">
+                                        Please select status.
+                                     </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button class="btn-style theme-btn" type="submit">Save</button>
+                        <button class="btn-style red-line-btn" routerLink="/features" type="button">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

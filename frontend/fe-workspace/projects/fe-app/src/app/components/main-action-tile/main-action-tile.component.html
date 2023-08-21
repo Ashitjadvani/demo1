@@ -1,0 +1,22 @@
+<div class="action-tile-container">
+    <div class="action-tile" (click)="onClick()" [ngStyle]="{'background': backgroundColor}">
+        <div class="tile-top-line">
+            <div *ngIf="iconAction != null" class="action-tile-icon">
+                <i class="theme-icon larger action-tile-image-left" [ngClass]="iconAction"></i>
+            </div>
+            <div *ngIf="topText" class="action-tile-top-text" [ngStyle]="{'color': textColor}">
+                {{ topText }}
+            </div>
+            <div class="action-tile-icon">
+                <i class="theme-icon larger action-tile-image-right" [ngClass]="icon"></i>
+                <div class="action-tile-text-desk" [ngStyle]="{'color': textSiteColor}">{{ textDesk }}</div>
+            </div>
+        </div>
+        <div class="tile-text-container">
+            <div class="action-tile-text-action" [ngStyle]="{'color': textActionColor}">{{ textAction }}</div>
+            <div *ngIf="textSite" class="action-tile-text-site" [ngStyle]="{'color': textSiteColor}">{{ textSite }}</div>
+            <div *ngIf="textSizeInfo" class="action-tile-text-site-info" [ngStyle]="{'color': textSiteColor}">{{ textSizeInfo }}</div>
+            <div class="action-tile-text-last-action" [ngStyle]="{'color': textActionColor}">{{ textLastAction }}</div>    
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div >
+    <div class="name-title">
+        <h4>{{'MYACCOUNT.DeleteAccount' | translate}}</h4>
+    </div>
+    <hr>
+    <form class="w-100" name="deleteAccount"  novalidate (ngSubmit)="deleteAccount()"  #myform="ngForm">
+        <div class="form-main">
+            <p>
+                {{'MYACCOUNT.ConfirmDeleteWarning' | translate}}
+            </p>
+            <div class="form-footer mt-30">
+                <button mat-raised-button  type="submit" class="btn-style theme-btn">{{'MYACCOUNT.DeleteAccount' | translate}}</button>
+            </div>
+        </div>
+    </form>
+</div>
+

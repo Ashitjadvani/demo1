@@ -1,0 +1,16 @@
+
+<div class="page-container">
+    <img src="./assets/images/logo.svg" class="logo">
+    <div class="login-container">
+        <mat-form-field class="form-field">
+            <input matInput placeholder="username" color="primary" name="username" [(ngModel)]="username">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+            <input matInput type="password" placeholder="password" color="primary" name="password" [(ngModel)]="password">
+        </mat-form-field>
+        
+        <button *ngIf="!showLoader" mat-flat-button class="login-button no-round" color="primary" (click)="onLogin()">{{'LOGIN PAGE.LOGIN' | translate}}</button>
+        <mat-spinner *ngIf="showLoader" class="loader"></mat-spinner>
+    </div>
+    <div class="version-info">Ver: {{ version }}</div>
+</div>

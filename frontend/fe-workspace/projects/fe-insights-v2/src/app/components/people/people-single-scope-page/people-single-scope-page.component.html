@@ -1,0 +1,192 @@
+<div class="table-content box-style company-info">
+  <div class="table-heading">
+    <h3 style="font-weight: 600">{{scope.name}}</h3>
+    <div class="search-form-wrapper">
+      <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+      <div class="search-form">
+<!--        <input (keyup)="onKeyUp($event)" [(ngModel)]="search" mat-input placeholder="{{'PEOPLE.Search Employee' | translate}}" />-->
+<!--        <mat-icon class="material-icons" matSuffix>search</mat-icon>-->
+        <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+        <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Search' | translate}} {{scope.name}}" />
+        <mat-icon *ngIf="search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+      </div>
+      <button  class="btn-style" routerLink="add-employee">
+        <span class="material-icons">add</span>
+          {{'Add' | translate}} {{scope.name}}
+        <!-- {{'PEOPLE.Add Employee' | translate}} -->
+      </button>
+      <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+        <mat-icon >more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onDownloadUserPresenceReport()">
+          <span>{{'PEOPLE.Download Report' | translate}}</span>
+        </button>
+        <!-- <button mat-menu-item>
+          <span>{{'PEOPLE.Dashboard' | translate}}</span>
+        </button> -->
+        <button mat-menu-item (click)="importPeopleData(scope.name)">
+          <span>{{'PEOPLE.Import People' | translate}}</span>
+        </button>
+        <button mat-menu-item (click)="onExportUser()">
+          <span>{{'PEOPLE.Export People' | translate}}</span>
+        </button>
+        <button mat-menu-item (click)="deleteMultiPeople()">
+          <span>{{'GENERAL.Delete' | translate}}</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="table-wrapper resource-color-table">
+    <table #table [dataSource]="people | paginate: {id: scope.name,itemsPerPage: this.limit, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+      <!-- <ng-container matColumnDef="select">
+        <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+          <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+        </th>
+        <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+          <mat-checkbox [checked]= "element.checked"></mat-checkbox>
+        </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>
+          
+        </th>
+        <td *matCellDef="let element" mat-cell style="padding-left:0px; padding-right: 0px; padding-top:0px; padding-bottom:0px">
+          <span *ngIf="element.relationshipState == 'Active'" title="{{'RelationshipActive' | translate}}" [style.borderLeftColor]="'#00A042'" class="border-types"> </span>
+          <span *ngIf="element.relationshipState == 'IncompleteData'" title="{{'RelationshipIncompleteData' | translate}}" [style.borderLeftColor]="'#FFD12D'" class="border-types"> </span>
+          <span *ngIf="element.relationshipState == 'MissingAccount'" title="{{'RelationshipMissingAccount' | translate}}" [style.borderLeftColor]="'#2D70FF'" class="border-types"> </span>
+          <span *ngIf="element.relationshipState == 'AccountedIncompleteData'" title="{{'RelationshipAccountedIncompleteData' | translate}}" [style.borderLeftColor]="'#FFD12D'" class="border-types"> </span>
+          <span *ngIf="element.relationshipState == 'NearEnd'" title="{{'RelationshipFixedEnd' | translate}}" [style.borderLeftColor]="'#FF732D'" class="border-types"> </span>
+          <span *ngIf="element.relationshipState == 'Terminated'" title="{{'RelationshipTerminated' | translate}}" [style.borderLeftColor]="'#FF0000'" class="border-types"> </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="wheelAction">
+        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+          {{'TABLE.Action' | translate}}
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+          <app-wheel-action [icons]="'five'" [logOn]="true" [editOn]="true" [commentOn]="true" [deleteOn]="true" [planOn]="true" [element]="element"
+            (edit)="edit($event)" (log)="changeLog($event)" (comment)="showUserActivity($event)" (delete)="openDeleteDialog($event)" (plan)="showUserPlan($event)"></app-wheel-action>
+
+        </td>
+      </ng-container>
+      <!-- <ng-container matColumnDef="check">
+        <th  *matHeaderCellDef class="checkbox-style" style="width: 60px;text-align: center;padding-left: 15px;"><mat-checkbox></mat-checkbox></th>
+        <td *matCellDef="let element" class="checkbox-style"  mat-cell style="width: 60px;text-align: center;">
+          <mat-checkbox></mat-checkbox>
+        </td>
+      </ng-container> -->
+      <ng-container matColumnDef="Name">
+        <th  class="short-arrow" (click)="changeSorting('name', sortBy)" *matHeaderCellDef  style="min-width: 120px;">{{'PEOPLE.Name' | translate}}  <span
+          [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+        <td *matCellDef="let element" mat-cell  style="min-width: 120px;text-transform:capitalize;">{{element.name ? element.name : '-'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Surname">
+        <th  class="short-arrow" (click)="changeSorting('surname', sortBy)" *matHeaderCellDef style="min-width: 120px;">{{'PEOPLE.Surname' | translate}}  <span
+             [ngClass]="{'down': sortKey === 'surname' && sortBy === '-1' , 'up': sortKey === 'surname' && sortBy === '1'}"
+        ><img alt="" src="assets/images/up-arrow.svg"></span> </th>
+        <td *matCellDef="let element" mat-cell style="min-width: 120px;text-transform:capitalize;">{{ element.surname ? element.surname : '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Area">
+        <th   class="short-arrow" (click)="changeSorting('area', sortBy)" *matHeaderCellDef  style="min-width: 150px;white-space:nowrap;" >{{'PEOPLE.Area' | translate}}  <span
+          [ngClass]="{'down': sortKey === 'area' && sortBy === '-1' , 'up': sortKey === 'area' && sortBy === '1'}"
+        ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+        <td *matCellDef="let element" mat-cell style="min-width: 150px;white-space:nowrap;text-transform:capitalize;">{{ element.area ? element.area : '-' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="JobTitle">
+        <th   (click)="changeSorting('jobTitle', sortBy)" *matHeaderCellDef class="short-arrow" style="min-width: 150px;">{{'PEOPLE.Job Title' | translate}}  <span
+          [ngClass]="{'down': sortKey === 'jobTitle' && sortBy === '-1' , 'up': sortKey === 'jobTitle' && sortBy === '1'}"
+        ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+        <td *matCellDef="let element" mat-cell style="word-break: keep-all;min-width: 150px;text-transform:capitalize;">{{ element.JobTitle ? element.JobTitle : '-' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="Role">
+        <th  class="short-arrow" (click)="changeSorting('role', sortBy)" *matHeaderCellDef style="min-width: 100px;">{{'PEOPLE.Role' | translate}}  <span
+          [ngClass]="{'down': sortKey === 'role' && sortBy === '-1' , 'up': sortKey === 'role' && sortBy === '1'}"
+        ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+        <td *matCellDef="let element" mat-cell style="white-space: nowrap" style="min-width: 100px;text-transform:capitalize;">{{ element.role ? element.role : '-' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="empStatus">
+        <th  *matHeaderCellDef style="min-width: 120px;">
+          {{'Status' | translate}}<!-- <span><img src="assets/images/up-arrow.svg" alt=""></span> -->
+        </th>
+        <td *matCellDef="let element" mat-cell style="min-width: 120px;">
+          <!-- for status dynamic use this class active , inactive ,under-creation -->
+          <!--<button class="btn-style table-btn sm-btn {{ element.empStatus.split(' ').join('-').toLowerCase()}}" disabled>
+            {{ element.empStatus }}
+          </button>-->
+          <button class="btn-style table-btn sm-btn" disabled>
+            {{ element.empStatus }}
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="viewDetails">
+        <th  *matHeaderCellDef style="min-width: 120px;">
+            {{'TABLE.ViewDetails' | translate}}</th>
+        <td *matCellDef="let element" mat-cell style="min-width: 120px;">
+          <button class="btn-style table-btn theme-line-btn sm-btn"
+                  routerLink="view-job-applications">
+            {{'TABLE.ViewDetails' | translate}}
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th  *matHeaderCellDef style="min-width: 200px;width: 200px;">
+           {{'TABLE.Action' | translate}}
+        </th>
+        <td *matCellDef="let element; let i = index" mat-cell style="min-width: 200px;width: 200px;">
+          <div class="action-icons d-flex switch">
+            <img alt="" src="assets/images/activity-log.svg" (click)="changeLog(element.id)">
+            <img alt="" src="assets/images/edit-action.svg" routerLink="edit-employee" (click)="edit(element.id)">
+            <img alt="" src="assets/images/calender-table.svg" (click)="showUserActivity(element.id)">
+            <img (click)="openDeleteDialog(element.id)" alt="" src="assets/images/delete-action.svg">
+          </div>
+        </td>
+      </ng-container>
+
+
+      <tr *matHeaderRowDef="employeesDisplayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let element; columns: employeesDisplayedColumns" mat-row></tr>
+    </table>
+  </div>
+  <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+  <div *ngIf="noRecordFound"  class="paginate-footer">
+    <div class="page-item">
+      <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+      <mat-form-field appearance="fill">
+        <mat-select  [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+          <mat-option value="5"  >5</mat-option>
+          <mat-option value="10">10</mat-option>
+          <mat-option value="15">15</mat-option>
+          <mat-option value="20">20</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span class="total-record-info">{{(((page - 1) * limit) + 1)}} - {{((limit * page) < totalItems) ? (limit * page) : totalItems}} of {{totalItems}}</span>
+    </div>
+    <div class="table-paginator">
+      <pagination-controls  (pageChange)="pageChanged($event)" id="{{scope.name}}" responsive="true"></pagination-controls>
+    </div>
+  </div> -->
+  <app-pagination [id]="scope.name" [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+</div>

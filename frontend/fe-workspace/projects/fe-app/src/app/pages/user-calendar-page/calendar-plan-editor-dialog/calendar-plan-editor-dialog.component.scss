@@ -1,0 +1,28 @@
+@import "../user-calendar-page.component.scss";
+
+h2 {
+    text-transform: uppercase;
+}
+
+.dialog-container > * {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.label-row {
+    display: flex;
+    flex-direction: row;
+    
+    .label-repeat {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    
+    .input-repeat {
+        margin-left: 5px;
+        margin-right: 5px;
+        text-align: center;
+    }
+}
+

@@ -1,0 +1,73 @@
+<div class="table-content box-style company-info documents-wrapper">
+    <div class="table-heading m-30">
+        <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Documents' | translate}}</h3>
+        <p class="m-0"><span
+            class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+    </div>
+    <form class="form-wrapper" (ngSubmit)="saveDocumentInfo(eventStepper, false)"
+          [formGroup]="documentsInfoForm">
+        <div formArrayName="documents">
+            <div class="row"
+                 *ngFor="let itemrow of documentsInfoForm.get('documents')?.controls; let i=index; last as isLast; first as isFirst"
+                 [formGroupName]="i">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline"
+                                        class="element-full-width field-m-0">
+                            <mat-label> {{'EVENT_MANAGEMENT.DocumentsType' | translate}}</mat-label>
+                            <mat-select formControlName="documentTypeId">
+                                <mat-option>{{'EVENT_MANAGEMENT.Select_Documents_Type' | translate}}</mat-option>
+                                <mat-option *ngFor="let docType of documentTypeList"
+                                            value="{{docType.id}}">{{docType.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <a class="add-center-type d-inline-flex mb-30"
+                           (click)="openDocumentType()">{{'INSIGHTS_MENU.Add_Document_Type' | translate}}</a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="generate-button">
+                        <label>{{'EVENT_MANAGEMENT.Upload_Document' | translate}}</label>
+                        <button class="btn-style red-btn file-upload-button" type="button">
+                            <span class="material-icons">upload</span>
+                            <span> {{'EDIT COMPANY.Drag and Drop here' | translate}} </span>&nbsp;<span>{{'EDIT COMPANY.Or' | translate}}</span>&nbsp;
+                            <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                            <input type="file" #documentInput (change)="onFileChanged(documentInput, i)" id="emp-input-profile"/>
+                        </button>
+                        <span class="file-info">
+                                                    <!--{{ this.documentName[i] }}-->
+                            {{itemrow.value.imageName ? itemrow.value.imageName : ''}}
+                            <span class="material-icons close-icon" (click)="resetDocumentValue(i)">{{ itemrow.value.imageName ? "close" : null }}</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <button *ngIf="!isFirst" class="btn-style red-btn" type="button"
+                            (click)="deleteDocumentRow(i)">
+                        {{'EVENT_MANAGEMENT.Remove' | translate}}
+                    </button>
+                    <button *ngIf="isLast" class="btn-style green-btn" type="button" (click)="addDocumentRow(i)">
+                        <span class="material-icons">add</span>{{'EVENT_MANAGEMENT.Add_Document' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="step-form-bottom">
+            <div>
+                <button (click)="back()" class="btn-style red-line-btn"
+                        type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+            <div class="">
+                <button matStepperPrevious class="btn-style privious-btn" type="button">
+                                            <span
+                                                class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+                </button>
+                <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="saveDocumentInfo(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+                <button class="btn-style theme-btn"
+                        type="submit">{{'GENERAL.Save&Next' | translate}} <span
+                    class="material-icons">arrow_forward</span></button>
+                <button class="btn-style theme-btn" type="button" (click)="saveDocumentInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+            </div>
+        </div>
+    </form>
+</div>

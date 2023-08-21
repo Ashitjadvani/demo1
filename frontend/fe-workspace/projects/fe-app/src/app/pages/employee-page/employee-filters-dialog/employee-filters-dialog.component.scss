@@ -1,0 +1,40 @@
+
+h2 {
+    text-transform: uppercase;
+}
+
+.dialog-container > * {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.checkbox {
+    text-align: middle;
+    vertical-align: middle;
+    
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.width-100 {
+    width:100%;
+}
+.width-90 {
+    width:90%;
+}
+.width-80 {
+    width:80%;
+}
+
+

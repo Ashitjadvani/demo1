@@ -1,0 +1,48 @@
+<div class="book-item" [ngStyle]="{ 'background': isExpired ? 'whitesmoke' : 'white' }">
+    <div class="header" [ngStyle]="{ 'color': isExpired ? 'darkgray' : 'black' }">
+        <mat-icon class="header-event-icon">event</mat-icon>
+        <div class="header-date">{{ displayBookingDate() }}</div>
+        <div *ngIf="isExpired" class="header-expired">{{'COMPONENTS.EXPIRED'|translate}}</div>
+        <div class="header-map-button">
+            <button mat-icon-button matTooltip="Cancella" (click)="onShowResourceMap()" [disabled]="!hasMap()">
+                <i class="material-icons">place</i>
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <app-book-resource-list-item [resourceItem]="bookItem.resource" [displayActions]="false"></app-book-resource-list-item> 
+        <div class="timeframes">
+            <div *ngFor="let tf of getMyTimeframes()" class="timeframe-card">
+                <div class="timeframe-content">
+                    <div class="timeframe-content-title">
+                        {{ tf.extraData.title }}
+                    </div>
+                    <div class="timeframe-content-time">
+                        <i class="material-icons clock-icon">schedule</i>
+                        <div class="time-text">{{ formatTimeframeTime(tf.startTime) }} - {{ formatTimeframeTime(tf.endTime) }}</div>
+                    </div>
+                </div>
+                
+                <button mat-icon-button class="timeframe-action" (click)="onDeleteBookTimeframe(tf)">
+                    <i class="theme-icon medium delete"></i>
+                </button>    
+            </div>
+
+        </div>
+        <!-- <div class="image-container">
+            <img *ngIf="imageUrl" class="resource-image" [src]="imageUrl">
+            <img *ngIf="!imageUrl" class="resource-image" src="./assets/images/image-placeholder.svg">
+        </div>
+        <div class="book-details">
+            <div class="book-reference" [ngStyle]="{ 'color': isExpired ? 'darkgray' : 'black', 'font-weight': isExpired ? 'normal' : 'bold' }">{{ displayRoomOrDeskName() }}</div>
+            <div class="book-name" [ngStyle]="{ 'color': isExpired ? 'darkgray' : 'black', 'font-weight': isExpired ? 'normal' : 'bold' }">{{ displayBookTitle() }} </div>
+            <div class="book-address" [ngStyle]="{ 'color': isExpired ? 'darkgray' : 'black' }">{{ displayBookAddress() }}</div>
+            <div class="book-time" [ngStyle]="{ 'color': isExpired ? 'darkgray' : 'black' }">{{ displayBookTimeframe() }}</div>  
+        </div>
+        <div class="book-actions">
+            <button mat-icon-button class="book-action" (click)="onDeleteBookItem()">
+                <i class="theme-icon medium delete"></i>
+            </button>
+        </div> -->
+    </div>
+</div>

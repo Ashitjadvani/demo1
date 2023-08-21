@@ -1,0 +1,33 @@
+<h2 *ngIf="isNew" mat-dialog-title><b>{{'INSIGHTS_PEOPLE_PAGE.Add Area'|translate}}</b></h2>
+<h2 *ngIf="!isNew" mat-dialog-title><b>{{'INSIGHTS_PEOPLE_PAGE.Modify Area'|translate}}</b></h2>
+
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-form-field>
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Area Name'|translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Area Name'|translate}}" appearance="legacy"
+                [(ngModel)]="area.name">
+        </mat-form-field>
+        <div>
+          <mat-label>{{'INSIGHTS_PEOPLE_PAGE.AREA DESCRIPTION'|translate}}</mat-label>
+          <!--<textarea matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.AREA DESCRIPTION'|translate}}" appearance="legacy"
+                    [(ngModel)]="area.description"></textarea>-->
+          <angular-editor [config]="config" [(ngModel)]="area.description"></angular-editor>
+        </div>
+        <div *ngFor="let scope of currentCompany.scopes">
+            <mat-checkbox [ngModel]="getChecked(scope.name)" (change)="onChangeCheck($event,scope.name)">
+                <div class="checkbox">{{scope.name}}</div>
+            </mat-checkbox>
+        </div>
+    </div>
+</mat-dialog-content>
+  
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+        <button mat-flat-button class="action-button" color="primary" [disabled]="area.name==''"
+            (click)="onSave()">{{'GENERAL.SAVE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

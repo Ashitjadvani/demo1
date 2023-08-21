@@ -1,0 +1,45 @@
+@import "../../../theme/theme.scss";
+
+.info-tile {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 93%;
+    border: 0px solid mat-color($mat-primary, main);
+    border-radius: 15px;
+    background: #e9fbfd;
+    box-shadow: 2px 2px 1px lightgrey;
+}
+.info-tile-caption {
+    flex-grow: 1;
+    color: mat-color($mat-primary, main);
+    contain: content;
+    align-items: center;
+    line-height: 1;
+    margin-left: 15px;
+    font-size: medium;
+    margin-bottom: 5px;
+}
+.info-tile-image {
+    fill: mat-color($mat-primary, main);
+    align-self: flex-end;
+    margin-right: 8px;
+    align-self: flex-end;
+    margin-top: 8px;
+    width:70px;
+    height:70px;
+}
+.info-tile-icon {
+    width:70px;
+    height:70px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.tile-top-line {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}

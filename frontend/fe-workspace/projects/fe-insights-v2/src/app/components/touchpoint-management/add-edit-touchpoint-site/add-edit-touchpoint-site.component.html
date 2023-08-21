@@ -1,0 +1,92 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="../" class="breadcrumb-item">{{'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{'TOUCH_POINTS.AddTouchpointSite'|translate}}</span> </li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'" [routePath]="'../'"
+        [title3]="'TOUCH_POINTS.AddTouchpointSite'">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'TOUCH_POINTS.AddTouchpointSite'|translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'| translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addTouchpointForm" [formGroup]= "addTouchpointForm"  novalidate
+                    (ngSubmit)="addTouchpoint()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TOUCH_POINTS.TouchPointID'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="touchPointID" matInput  name="touchPointID" [(ngModel)]="touchPoint.id" [readonly]="true">
+                                        <mat-error *ngIf="addTouchpointForm.controls.touchPointID.errors?.required" >
+                                          {{'TOUCH_POINTS.EnteryourtouchPointid'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                          <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                              <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label>{{'TOUCH_POINTS.TouchpointSite'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                <mat-select formControlName="touchpointSite" matInput name="touchpointSite" placeholder="{{'TOUCH_POINTS.TouchpointSite'| translate}}" >
+                                  <!-- <mat-option>Select Scope</mat-option> -->
+                                  <mat-option *ngFor="let scopes of sitelist" value="{{scopes.key}}">{{scopes.key}} - {{scopes.name}}
+                                  </mat-option>
+
+<!--                                  <mat-option *ngFor="let site of sitelist" [value]="site">-->
+<!--                                    {{site}}-->
+<!--                                  </mat-option>-->
+                                </mat-select>
+                                <mat-error *ngIf="addTouchpointForm.controls.touchpointSite.errors?.required" >
+                                  {{'TOUCH_POINTS.Enteryourtouchpointsite'| translate}}
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                           <!-- <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TOUCH_POINTS.TouchpointSite'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="touchpointSite" matInput name="touchpointSite" >
+                                        <mat-error *ngIf="addTouchpointForm.controls.touchpointSite.errors?.required" >
+                                          {{'TOUCH_POINTS.Enteryourtouchpointsite'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>-->
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'TOUCH_POINTS.Description'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}"  type="text"></textarea>
+                                    <mat-error *ngIf="addTouchpointForm.controls.description.errors?.required">
+                                      {{'TOUCH_POINTS.Enteryourdescription'| translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save'| translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="../" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

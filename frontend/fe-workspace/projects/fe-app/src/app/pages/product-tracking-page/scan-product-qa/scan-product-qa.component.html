@@ -1,0 +1,10 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="qr-scanner-container">
+            <fco-qr-scanner #scanner (scanSuccess)="onCodeResult($event)" [camera]="currentCamera">
+            </fco-qr-scanner>
+        </div>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

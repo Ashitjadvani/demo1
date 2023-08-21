@@ -1,0 +1,293 @@
+@import "../../../styles.scss";
+
+// login tab css
+
+.login-signup {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    background-color: $offwhite;
+    @media (max-width: $mobile) {
+        background-color: transparent;
+    }
+    .login-box {
+        display: flex;
+        max-width: 1170px;
+        margin: auto;
+        width: 100%;
+        box-shadow: 0px 2px 40px $shadow;
+        @media (max-width: $mobile) {
+            display: block;
+        }
+        .left-part {
+            padding: 100px 50px 35px 50px;
+            display: flex;
+            flex-direction: column;
+            max-width: 471px;
+            background-color: $primary;
+            color: $white;
+            text-align: center;
+            @media (max-width: 1699px) {
+                 padding: 30px;
+                & > img {
+                    width: 100%;
+                    // max-width: 300px;
+                    margin: 0 auto;
+                }
+            }
+            @media (max-width: $mobile) {
+                min-width: initial;
+                width: 100%;
+                max-width: 100% !important;
+            }
+            p {
+                font-size: 14px;
+                line-height: 25px;
+                font-weight: normal;
+                margin: 40px 12px;
+            }
+
+            .legance-logo-container {
+                padding: 30px;
+
+                .legance-logo {
+                    padding: 30px;
+                }
+            }
+        }
+
+        .right-part {
+            width: 100%;
+            max-width: calc(100% - 300px);
+            @media (max-width: $mobile) {
+                max-width: 100%;
+                margin-top: 30px;
+            }
+            .register {
+                height: 100%;
+                background-color: #ffffff;
+                .login-form {
+                    height: 100%;
+                    .input-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        label {
+                            font-size: 16px;
+                            line-height: 18px;
+                            font-weight: 600;
+                            margin-bottom: 13px;
+                            font-family: "ProximaNova";
+                        }
+                        .forgot-password {
+                            margin-top: -10px;
+                            margin-bottom: 40px;
+                            text-align: right;
+                            position: relative;
+                            z-index: 1;
+                            font-size: 16px;
+                            line-height: 20px;
+                            font-weight: 600;
+                            text-decoration: none;
+                            span {
+                                cursor: pointer;
+                                color: $black;
+                                &:hover {
+                                    color: #073faa;
+                                }
+                            }
+                        }
+                    }
+                    .login-with {
+                        margin: 20px 0px 0px 0px;
+                        @media (max-width: 1699px) {
+                            margin-top: 30px;
+                        }
+                        p {
+                            font-size: 14px;
+                            line-height: 17px;
+                            font-weight: 600;
+                            text-align: center;
+                            text-decoration: underline;
+                            margin-bottom: 22px;
+                            position: relative;
+                            font-family: "ProximaNova";
+                            &::after {
+                                content: "";
+                                width: 64px;
+                                height: 1px;
+                                background-color: $grey;
+                                position: absolute;
+                                top: 7px;
+                                right: 130px;
+                                opacity: 0.5;
+                                @media (max-width: 991px) {
+                                    right: 60px;
+                                }
+                                @media (max-width: $mobile) {
+                                    margin-right: -50px;
+                                }
+                            }
+                            &::before {
+                                content: "";
+                                width: 64px;
+                                height: 1px;
+                                background-color: $grey;
+                                position: absolute;
+                                left: 128px;
+                                top: 8px;
+                                opacity: 0.5;
+                                @media (max-width: 991px) {
+                                    left: 60px;
+                                }
+                                @media (max-width: $mobile) {
+                                    margin-left: -50px;
+                                }
+                            }
+                        }
+
+                        .social-btn {
+                            text-align: center;
+                            .linked-in {
+                                background-color: #0a7bba;
+                                margin-right: 10px;
+                                @media (max-width: $mobile) {
+                                    margin: 0px 3px 10px;
+                                }
+                            }
+                            .google {
+                                background-color: $red;
+                            }
+                            button {
+                                color: white;
+                                max-width: 150px;
+                                padding: 10px 40px;
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 500;
+                                font-family: "ProximaNova";
+
+                                img {
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+                    }
+                    .bottom-links {
+                        text-align: center;
+                        margin-top: 40px;
+                        @media (max-width: 1699px) {
+                            margin-top: 30px;
+                        }
+
+                        a {
+                            font-size: 16px;
+                            line-height: 20px;
+                            text-decoration: underline;
+                            color: $primary;
+                            font-weight: 600;
+                            // margin-right: 30px;
+                            font-family: "ProximaNova";
+                        }
+
+                        a:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+
+            // signup extra css
+
+            .name-details {
+                display: flex;
+                flex-direction: row;
+                @media (max-width: $mobile) {
+                    display: block;
+                }
+                .name {
+                    margin-right: 13px;
+                    width: 50%;
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                        margin: 0px;
+                    }
+                    label {
+                        display: inline-block;
+                        margin-bottom: 13px;
+                    }
+                }
+                .name-1 {
+                    margin-left: 13px;
+                    width: 50%;
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                        margin: 0px;
+                    }
+                    label {
+                        display: inline-block;
+                        margin-bottom: 13px;
+                    }
+                }
+            }
+
+            .mat-form-field {
+                margin-bottom: 40px;
+                margin-bottom: 0px;
+                width: 100%;
+            }
+
+            .signup-input {
+                // margin-bottom: 26px;
+            }
+
+            .accept-terms {
+                text-align: left !important;
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 600;
+                margin: -5px 0px 23px !important;
+
+                mat-checkbox {
+                    font-family: "ProximaNova";
+                }
+
+                a {
+                    color: #073faa !important;
+                    font-size: 16px !important;
+                    white-space: nowrap;
+                }
+            }
+
+            .mat-tab-body {
+                min-height: 720px;
+            }
+        }
+    }
+}
+
+.form-field {
+    margin-bottom: 0px;
+}
+.mat-form-field-subscript-wrapper {
+    margin: 0px;
+}
+.eye-icon {
+    position: relative;
+    right: -10px;
+    top: 3px;
+}
+
+.return-home {
+    text-align: center;
+    padding: 20px 0px 0px;
+    button {
+        padding: 12px 25px;
+        font-size: 16px;
+        line-height: 19px;
+        font-family: "ProximaNova";
+        border-radius: 4px;
+        background-color: #002a3a;
+        color: #ffffff;
+        border: none;
+    }
+}

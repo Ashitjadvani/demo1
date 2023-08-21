@@ -1,0 +1,482 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+                    <!--          <li class="breadcrumb-item" routerLink="/procurement-dashboard">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>-->
+                    <li class="breadcrumb-item" routerLink="/manage-supplier">{{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER' | translate}}</li>
+                    <li aria-current="page" class="breadcrumb-item active">{{'Procurement_Management.ViewManageSupplier' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing full-width-tabbing visible-common-tabbing">
+                <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
+                    <mat-tab *ngIf="showCommonDetails" class="mt-5" label="{{'Procurement_Management.PersonalData' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.companyName' | translate}}</p>
+                                        <b>{{supplierDetails?.companyName ? supplierDetails?.companyName : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.CompanyReferenceEmail' | translate}}</p>
+                                        <b>{{supplierDetails?.companyReferenceEmail ? supplierDetails?.companyReferenceEmail : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.CompanyWebsite' | translate}}</p>
+                                        <b>{{supplierDetails?.companyWebsiteURL ? supplierDetails?.companyWebsiteURL : '-'}}</b>
+                                    </div>
+                                    <!-- <div class="detail-box">
+                                      <p>{{'Procurement_Management.FiscalAddress' | translate}}</p>
+                                      <b>{{supplierDetails?.fiscalAddress ? supplierDetails?.fiscalAddress : '-'}}</b>
+                                    </div> -->
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.VATNumber' | translate}}</p>
+                                        <b>{{supplierDetails?.VATCode ? supplierDetails?.VATCode : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.FiscalCode' | translate}}</p>
+                                        <b>{{supplierDetails?.fiscalCode ? ( supplierDetails?.fiscalCode | uppercase): '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.DUNS' | translate}}</p>
+                                        <b>{{supplierDetails?.duns ? supplierDetails?.duns : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.PEC' | translate}}</p>
+                                        <b>{{supplierDetails?.pec ? supplierDetails?.pec : '-'}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box" style="width: 100%">
+                                        <p>{{'Procurement_Management.AtecoCode' | translate}}</p>
+                                        <!--                    <b>{{supplierDetails?.atecoCode ? supplierDetails?.atecoCode : '-'}}</b>-->
+                                        <ul *ngIf="supplierDetails?.atecoCode" class="custom-list">
+                                            <li *ngFor="let element of supplierDetails?.atecoCode"><b>{{element}}</b></li>
+                                        </ul>
+                                        <b *ngIf="!supplierDetails?.atecoCode">-</b>
+                                    </div>
+                                </div>
+                                <div class="details-title mt-30">
+                                    <p>{{'Procurement_Management.FiscalAddress' | translate}}</p>
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Street' | translate}}</p>
+                                        <b>{{supplierDetails?.address ? supplierDetails?.address : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Town' | translate}}</p>
+                                        <b>{{supplierDetails?.city ? supplierDetails?.city : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.zipCode' | translate}}</p>
+                                        <b>{{supplierDetails?.ZipCode ? supplierDetails?.ZipCode : '-'}}</b>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>{{'Province' | translate}}</p>
+                                        <b>{{supplierDetails?.province ? supplierDetails?.province : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Rigion' | translate}}</p>
+                                        <b>{{supplierDetails?.state ? supplierDetails?.state : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Nation' | translate}}</p>
+                                        <b>{{supplierDetails?.nation ? supplierDetails?.nation : '-'}}</b>
+                                    </div>
+                                </div>
+                                <div class="details-title mt-30">
+                                    <p>{{'Procurement_Management.OperationalAddress' | translate}}</p>
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Street' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalAddress ? supplierDetails?.operationalAddress : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Town' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalCity ? supplierDetails?.operationalCity : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.zipCode' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalZipCode ? supplierDetails?.operationalZipCode : '-'}}</b>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>{{'Province' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalProvince ? supplierDetails?.operationalProvince : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Rigion' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalState ? supplierDetails?.operationalState : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.Nation' | translate}}</p>
+                                        <b>{{supplierDetails?.operationalNation ? supplierDetails?.operationalNation : '-'}}</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCommonDetails" label="{{'Procurement_Management.Documentation' | translate}}">
+                        <ng-template mat-tab-label>
+                            <div style="position: relative;">{{'Procurement_Management.Documentation' | translate}}<div *ngIf="supplierDetails.isDurcExpired || supplierDetails.isDurfExpired" class="expired-dot"></div>
+                            </div>
+                        </ng-template>
+                        <div class="box-style company-info simple-tabbing">
+                            <div class="company-details">
+                                <mat-tab-group class="full-100" #childTabs (selectedTabChange)="onTabChange2($event)">
+                                    <mat-tab label="{{'Procurement_Management.DURC' | translate}}">
+                                        <ng-template mat-tab-label>
+                                            <div style="position: relative;">
+                                                <span style="position: relative;padding-right: 8px;">
+                                                    {{'Procurement_Management.DURC' | translate}} <div *ngIf="supplierDetails.isDurcExpired" class="expired-dot"></div>
+                                                </span>
+                                            </div>
+                                        </ng-template>
+                                        <div *ngIf="supplierDetails.DURCFileId && !supplierDetails.declarationDURC" class="more-content doc-preview-title">
+                                            <div class="doc-date">
+                                                {{'Procurement_Management.DURC_Deadline' | translate}}: <b>{{(supplierDetails?.scadenzaDURC) ? (supplierDetails.scadenzaDURC | date: 'dd/MM/yyyy') : '-'}} </b>
+                                                <span *ngIf="supplierDetails.isDurcExpired" style="color: #CE2029;font-weight: 600;">({{'Procurement_Management.Expired' | translate}})</span>
+                                            </div>
+                                            <a *ngIf="supplierDetails.DURCFileId" class="btn-style sm-btn blue-btn download-link" download href="{{downloadUrlDURC}}" target="_blank">{{'Procurement_Management.Download' | translate}} </a>
+                                        </div>
+                                        <div class="company-brochure mb-30" *ngIf="supplierDetails.DURCFileId">
+                                            <pdf-viewer [autoresize]="true" [original-size]="false" [src]="downloadUrlDURC" class="pdf-viewer"></pdf-viewer>
+                                        </div>
+                                        <div class="form-field" *ngIf="supplierDetails.declarationDURC">
+                                          <div class="custom-switch switch">
+                                            <mat-checkbox checked="true" (change)="onDeclarationChange($event)">{{'You declare that you do not have the requirements to submit the DURC' | translate}}</mat-checkbox>
+                                          </div>
+                                        </div>
+                                        <div class="company-brochure mb-30 text-center" *ngIf="!supplierDetails.DURCFileId && !supplierDetails.declarationDURC">
+                                            <!--<strong>{{'Procurement_Management.NoFileAvailable' | translate}}</strong>-->
+                                            <strong>{{'TABLE.No_record_found' | translate}}</strong>
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab label="{{'Procurement_Management.DURF' | translate}}">
+                                        <ng-template mat-tab-label>
+                                            <div style="position: relative;">
+                                                <span style="position: relative;padding-right: 8px;">
+                                                    {{'Procurement_Management.DURF' | translate}}<div *ngIf="supplierDetails.isDurfExpired" class="expired-dot"></div>
+                                                </span>
+                                            </div>
+                                        </ng-template>
+                                        <div *ngIf="supplierDetails.DURFFileId && !supplierDetails.declarationDURF" class="more-content doc-preview-title">
+                                            <div class="doc-date">
+                                                {{'Procurement_Management.DURF_Deadline' | translate}}: <b>{{(supplierDetails?.scadenzaDURF) ? (supplierDetails.scadenzaDURF | date: 'dd/MM/yyyy') : '-'}} </b>
+                                                <span *ngIf="supplierDetails.isDurfExpired" style="color: #CE2029;font-weight: 600;">({{'Procurement_Management.Expired' | translate}})</span>
+                                            </div>
+                                            <a *ngIf="supplierDetails.DURFFileId" class="btn-style sm-btn blue-btn download-link" download href="{{downloadUrlDURF}}" target="_blank">{{'Procurement_Management.Download' | translate}} </a>
+                                        </div>
+                                        <div *ngIf="supplierDetails.DURFFileId" class="company-brochure mb-30">
+                                            <pdf-viewer [autoresize]="true" [original-size]="false" [src]="downloadUrlDURF" class="pdf-viewer"></pdf-viewer>
+                                        </div>
+                                        <div *ngIf="supplierDetails.declarationDURF" class="form-field">
+                                            <div class="custom-switch switch">
+                                              <mat-checkbox checked="true" (change)="onDeclarationChange($event)">{{'You declare that you do not have the requirements to submit the DURF' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="company-brochure mb-30 text-center" *ngIf="!supplierDetails.DURFFileId && !supplierDetails.declarationDURF">
+                                          <!--<strong>{{'Procurement_Management.NoFileAvailable' | translate}}</strong>-->
+                                          <strong>{{'TABLE.No_record_found' | translate}}</strong>
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab label="{{'Procurement_Management.Chamber_of_Commerce_Registration' | translate}}">
+                                        <div *ngIf="supplierDetails.visuraCameraleFileId && !supplierDetails.declarationChamberOfCommerce" class="more-content" style="text-align: right;margin-bottom: 30px;">
+                                            <a class="btn-style sm-btn blue-btn download-link" download href="{{downloadUrlvisuraCamerale}}" target="_blank">{{'Procurement_Management.Download' | translate}} </a>
+                                        </div>
+                                        <div *ngIf="supplierDetails.visuraCameraleFileId" class="company-brochure mb-30">
+                                            <pdf-viewer [autoresize]="true" [original-size]="false" [src]="downloadUrlvisuraCamerale" class="pdf-viewer"></pdf-viewer>
+                                        </div>
+                                        <div *ngIf="supplierDetails.declarationChamberOfCommerce" class="form-field">
+                                          <div class="custom-switch switch">
+                                            <mat-checkbox checked="true" (change)="onDeclarationChange($event)">{{'You declare that you do not have the requirements to present the Chamber of Commerce registration' | translate}}</mat-checkbox>
+                                          </div>
+                                        </div>
+                                        <div class="company-brochure mb-30 text-center" *ngIf="!supplierDetails.visuraCameraleFileId && !supplierDetails.declarationChamberOfCommerce">
+                                          <strong>{{'TABLE.No_record_found' | translate}}</strong>
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab *ngIf="supplierDetails.condizioniFileId" label="{{'Procurement_Management.General_Conditions_of_Performance' | translate}}">
+                                        <div class="more-content" style="text-align: right;margin-bottom: 30px;">
+                                            <a class="btn-style sm-btn blue-btn download-link" download href="{{downloadUrlcondizioni}}" target="_blank">{{'Procurement_Management.Download' | translate}} </a>
+                                        </div>
+                                        <div class="company-brochure mb-30">
+                                            <pdf-viewer [autoresize]="true" [original-size]="false" [src]="downloadUrlcondizioni" class="pdf-viewer"></pdf-viewer>
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab *ngIf="supplierDetails.companyBroucher" label="{{'Procurement_Management.Company Brochure' | translate}}">
+                                        <div class="box-style company-info">
+                                            <div *ngIf="docIsPdf" class="company-brochure mb-30">
+                                                <!--<img src="assets/images/broucher.png" alt="">-->
+                                                <pdf-viewer [autoresize]="true" [original-size]="false" [src]="url" class="pdf-viewer"></pdf-viewer>
+                                            </div>
+                                            <div *ngIf="!docIsPdf" class="company-brochure text-center">
+                                                <strong> {{'TABLE.No_record_found' | translate}}</strong>
+                                            </div>
+                                        </div>
+                                    </mat-tab>
+                                </mat-tab-group>
+                                <!--<hr *ngIf="supplierDetails.DURCFileId || supplierDetails.scadenzaDURC || supplierDetails.DURFFileId || supplierDetails.scadenzaDURF || supplierDetails.visuraCameraleFileId || supplierDetails.condizioniFileId">
+                                 <div class="text-center" *ngIf="!supplierDetails.DURCFileId && !supplierDetails.scadenzaDURC && !supplierDetails.DURFFileId && !supplierDetails.scadenzaDURF && !supplierDetails.visuraCameraleFileId && !supplierDetails.condizioniFileId && !supplierDetails.companyBroucher && !supplierDetails.declarationDURC && !supplierDetails.declarationDURF">
+                                    <strong> {{'TABLE.No_record_found' | translate}}</strong>
+                                 </div>-->
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCommonDetails" label="{{'Procurement_Management.Terms_of_payment' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.IBAN' | translate}}</p>
+                                        <b>{{supplierDetails?.paymentConditionIBAN ? supplierDetails?.paymentConditionIBAN : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.PaymentsDeadline' | translate}}</p>
+                                        <b>{{supplierDetails?.paymentConditionScadenzaPagamenti ? supplierDetails?.paymentConditionScadenzaPagamenti : '-'}}
+                                            <span *ngIf="supplierDetails?.paymentConditionScadenzaPagamenti === 'RD'"> {{'- Rimessa Diretta'}}</span>
+                                            <span *ngIf="supplierDetails?.paymentConditionScadenzaPagamenti !== 'RD'"> {{'gg'| translate}}</span>
+                                        </b>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <!--          <mat-tab class="quiz-tab-content" *ngIf="this.questionListData?.length !== 0 && this.supplierDetails?.status === 1 || this.supplierDetails?.status === 12" label="{{'Procurement_Management.QuizSurvey' | translate}}">-->
+                    <mat-tab *ngIf="showQuizSurvey" class="quiz-tab-content" label="{{'Procurement_Management.QuizSurvey' | translate}}">
+                        <div class="box-style company-info simple-tabbing hover-content-wrap-new">
+                            <mat-tab-group #childTabs (selectedTabChange)="onTabChange2($event)">
+                                <mat-tab label="{{'RECRUITINGTXT.Summary' | translate}}">
+                                    <div *ngFor="let i = index; let elementMetric of summaryData">
+                                        <table mat-table [dataSource]="elementMetric.metrcData" class="mat-elevation-z8 w-100" style="box-shadow: none">
+                                            <ng-container matColumnDef="quiz">
+                                                <th mat-header-cell *matHeaderCellDef width="25%"> {{elementMetric.survey_name}} </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.metric_name ? element.metric_name : '-'}} </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="result">
+                                                <th mat-header-cell *matHeaderCellDef width="25%"> {{'EXTRA_WORD.Result' | translate}} </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.metric_value ? element.metric_value : '-'}} </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="fitIndex">
+                                                <th mat-header-cell *matHeaderCellDef width="25%"> {{'RECRUITING.FitIndex' | translate}} </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.result ? element.result : '-'}} </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="fitIndexValue">
+                                                <th mat-header-cell *matHeaderCellDef width="270px"> {{'RECRUITING.My_Fit_Indexes' | translate}}</th>
+                                                <td mat-cell *matCellDef="let element" width="270px">
+                                                    <div class="hover-content">
+                                                        <span style="display: flex;align-items: center">{{element.scalarResult ? element.scalarResult : '-'}} / {{elementMetric.maxscalarResult ? elementMetric.maxscalarResult : '-'}} <mat-icon style="color: #8E8E8E;font-size: 22px;margin-left: 7px">help</mat-icon></span>
+                                                        <div class="hover-table">
+                                                            <table mat-table [dataSource]="matricsDataSource[i]" class="mat-elevation-z8 " style="max-width: 270px">
+                                                                <ng-container matColumnDef="value">
+                                                                    <th mat-header-cell *matHeaderCellDef>Value</th>
+                                                                    <td mat-cell *matCellDef="let element"> {{element.value ? element.value : '-'}} </td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="textresult">
+                                                                    <th mat-header-cell *matHeaderCellDef>TextResult </th>
+                                                                    <td mat-cell *matCellDef="let element"> {{element.result ? element.result : '-'}} </td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="scalarresult">
+                                                                    <th mat-header-cell *matHeaderCellDef>ScalarResult</th>
+                                                                    <td mat-cell *matCellDef="let element"> {{element.scalarResult ? element.scalarResult : '-'}} </td>
+                                                                </ng-container>
+                                                                <tr mat-header-row *matHeaderRowDef="displayedMatricsColumns"></tr>
+                                                                <tr mat-row *matRowDef="let row; columns: displayedMatricsColumns;"></tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                        </table>
+                                        <br>
+                                        <br>
+                                    </div>
+                                    <div *ngIf="summaryData.length == 0">
+                                        {{'GENERAL.NoDataAvailable' | translate}}
+                                    </div>
+                                </mat-tab>
+                                <mat-tab *ngFor="let element of questionListData; let i = index" label="{{element.surveyName}}">
+                                    <ul class="questions-list">
+                                        <li *ngFor="let queList of element.questionData; let n = index">
+                                            <p *ngFor="let queAns of queList.question;">
+                                                {{queAns.value ? queAns.value : 'No question available'}}
+                                            </p>
+                                            <b *ngFor="let queAns of queList.answer;">
+                                                {{queAns.value ? queAns.value : 'No answer available' }}
+                                            </b>
+                                        </li>
+                                    </ul>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCommonDetails" label="{{'Procurement_Management.GeneralContacts' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div *ngFor="let general of generalContacts;  let i=index;" class="mb-4">
+                                    <div class="details-title">
+                                        <p>{{'INSIGHTS_PEOPLE_PAGE.Contact' | translate}} {{i + 1}}</p>
+                                    </div>
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p> {{'Procurement_Management.Name' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{general.firstName ? general.firstName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Surname' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{general.lastName ? general.lastName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p> {{'Procurement_Management.Email' | translate}}</p>
+                                            <b>{{general.email ? general.email : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p> {{'Procurement_Management.Phone' | translate}}</p>
+                                            <b type="tel">{{general.contactNumber ? general.contactNumber : '-'}}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center" *ngIf="generalContacts.length === 0"> <strong>{{'Procurement_Management.no_contacts_found' | translate}}</strong></div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCommonDetails" label="{{'Procurement_Management.AdministrativeContacts' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div *ngFor="let administrative of administrativeContact; let i=index" class="mb-4">
+                                    <div class="details-title">
+                                        <p>{{'INSIGHTS_PEOPLE_PAGE.Contact' | translate}} {{i+1}}</p>
+                                    </div>
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p> {{'Procurement_Management.Name' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{administrative.firstName ? administrative.firstName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Surname' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{administrative.lastName ? administrative.lastName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Email' | translate}}</p>
+                                            <b>{{administrative.email ? administrative.email : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Phone' | translate}}</p>
+                                            <b>{{administrative.contactNumber ? administrative.contactNumber : '-'}}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center" *ngIf="administrativeContact.length === 0"><strong>{{'Procurement_Management.no_contacts_found' | translate}}</strong></div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCommonDetails" label="{{'Procurement_Management.ContactShipping' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div *ngFor="let contact of contactShipping; let i=index" class="mb-4">
+                                    <div class="details-title">
+                                        <p>{{'INSIGHTS_PEOPLE_PAGE.Contact' | translate}} {{i +1}}</p>
+                                    </div>
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p> {{'Procurement_Management.Name' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{contact.firstName ? contact.firstName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Surname' | translate}}</p>
+                                            <b style="text-transform: capitalize;">{{contact.lastName ? contact.lastName : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Email' | translate}}</p>
+                                            <b>{{contact.email ? contact.email : '-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>{{'Procurement_Management.Phone' | translate}}</p>
+                                            <b>{{contact.contactNumber ? contact.contactNumber : '-'}}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center" *ngIf="contactShipping.length === 0"><strong>{{'Procurement_Management.no_contacts_found' | translate}}</strong></div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showSupplierDetails" label=" {{'Procurement_Management.SupplierDetails' | translate}}">
+                        <div class="box-style company-info">
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.CompanyName' | translate}}</p>
+                                        <b>{{supplierDetails?.companyName ? supplierDetails?.companyName : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.CompanyReferenceEmail' | translate}}</p>
+                                        <b>{{supplierDetails?.companyReferenceEmail ? supplierDetails?.companyReferenceEmail : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.CompanyWebsite' | translate}}</p>
+                                        <b>{{supplierDetails?.companyWebsiteURL ? supplierDetails?.companyWebsiteURL : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box mt-30" style="width: 100%;">
+                                        <p>{{'Procurement_Management.CompanyDescription' | translate}}</p>
+                                        <b>{{supplierDetails?.companyDescription ? supplierDetails?.companyDescription : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box mt-30" style="width: 100%;">
+                                        <p>{{'Procurement_Management.BriefDescription' | translate}}</p>
+                                        <b>{{supplierDetails?.briefDescription ? supplierDetails?.briefDescription : '-'}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>{{'Procurement_Management.ServiceCategory' | translate}}</p>
+                                        <b>{{supplierDetails?.serviceCategory ? supplierDetails?.serviceCategory : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box status-pending">
+                                        <div>
+                                            <p>{{'Procurement_Management.Status' | translate}}</p>
+                                            <b>{{(supplierDetails?.statusName | translate) ? (supplierDetails?.statusName | translate) : '-' }}</b>
+                                        </div>
+                                        <!--                    <div (click)="acceptInvitation()" class="flex-center ml-30">-->
+                                        <!--                      <button  *ngIf="supplierDetails?.status === 4" class="btn-style sm-btn theme-btn">Invite</button>-->
+                                        <!--                    </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab *ngIf="showCompanyBroucher" label="{{'Procurement_Management.Company Brochure' | translate}}">
+                        <div class="box-style company-info">
+                            <div *ngIf="docIsPdf" class="company-brochure mb-30">
+                                <!--<img src="assets/images/broucher.png" alt="">-->
+                                <pdf-viewer [autoresize]="true" [original-size]="false" [src]="url" class="pdf-viewer"></pdf-viewer>
+                            </div>
+                            <div *ngIf="!docIsPdf" class="company-brochure text-center">
+                                <strong> {{'TABLE.No_record_found' | translate}}</strong>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

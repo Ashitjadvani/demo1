@@ -1,0 +1,81 @@
+<div class="table-content box-style company-info ">
+    <div class="table-heading m-30">
+        <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Venues' | translate}}</h3>
+        <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+    </div>
+    <form class="form-wrapper" (ngSubmit)="saveVenuesInfo(eventStepper, false)" [formGroup]="venuesInfoForm">
+        <div class="row">
+            <div *ngIf="finalValueForm.value.type != 'live'" class="col-xl-4 col-xxl-4">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.MeetingLink' | translate}}<span class="red-label" *ngIf="this.finalValueForm.value.type === 'online' || this.finalValueForm.value.type === 'hybrid'">*</span></mat-label>
+                        <input formControlName="meetingLink" matInput type="text" name="meetingLink" (keydown)="space($event)">
+                        <mat-error *ngIf="venuesInfoForm.controls.meetingLink.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterMeetingLink' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div></div>
+            <div *ngIf="finalValueForm.value.type != 'online'" formArrayName="venue">
+                <div class="row" *ngFor="let itemrow of venuesInfoForm.get('venue')?.controls; let i=index; last as isLast; first as isFirst" [formGroupName]="i">
+                    <div class="col-xl-4 col-xxl-4">
+                        <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label> {{'EVENT_MANAGEMENT.Venue' | translate}}<span class="red-label"  *ngIf="this.finalValueForm.value.type === 'live' || this.finalValueForm.value.type === 'hybrid'">*</span></mat-label>
+                                <mat-select formControlName="type" (selectionChange)="changeVenueType($event.value, i)">
+                                    <mat-option>{{'EVENT_MANAGEMENT.SelectVenue' | translate}}</mat-option>
+                                    <mat-option value="internal">{{'EVENT_MANAGEMENT.Internal' | translate}}</mat-option>
+                                    <mat-option value="external">{{'EVENT_MANAGEMENT.External' | translate}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vanueDetailsForm.controls.type.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectVenue' | translate}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-xxl-4" *ngIf="venuesInfoForm.value.venue[i].type === 'internal'">
+                        <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label> {{'EVENT_MANAGEMENT.Site' | translate}}<span class="red-label">*</span></mat-label>
+                                <mat-select formControlName="site">
+                                    <mat-option *ngFor="let venueSite of venueSiteList" value="{{venueSite.name}}">{{venueSite.name | translate}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vanueDetailsForm.controls.site.errors?.required">{{'Please select site' | translate}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-xxl-4" *ngIf="venuesInfoForm.value.venue[i].type === 'external'">
+                        <div class="form-field">
+                            <mat-form-field appearance="outline" class="element-full-width field-m-0">
+                                <mat-label> {{'EVENT_MANAGEMENT.External_venue' | translate}}<span class="red-label">*</span></mat-label>
+                                <mat-select formControlName="site">
+                                    <mat-option *ngFor="let externalVanue of externalVenuesList" value="{{externalVanue.name}}">{{externalVanue.name | translate}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vanueDetailsForm.controls.site.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectExternalVenue' | translate}}</mat-error>
+                            </mat-form-field>
+                            <a class="add-center-type d-flex mb-30" (click)="openExternalVenue()">{{'EVENT_MANAGEMENT.Add_External_Venues' | translate}}</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-xxl-4" *ngIf="venuesInfoForm.value.venue[0].type === 'internal' || venuesInfoForm.value.venue[0].type === 'external'">
+                        <button *ngIf="!isFirst" class="btn-style red-btn mb-30" type="button" (click)="deleteVenueInfoRow(i)">
+                            {{'Delete'| translate}}
+                        </button>
+                        <button *ngIf="isLast" class="btn-style green-btn mb-30" type="button" (click)="addVenueInfoRow(i + 1)">
+                            <span class="material-icons">add</span>{{'EVENT_MANAGEMENT.AddVenue'| translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-form-bottom">
+            <div>
+                <button  (click)="back()"  class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+            <div class="">
+                <button matStepperPrevious class="btn-style privious-btn" type="button">
+                    <span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+                </button>
+                <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="saveVenuesInfo(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                <button class="btn-style theme-btn" type="button" (click)="saveVenuesInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+            </div>
+        </div>
+    </form>
+</div>

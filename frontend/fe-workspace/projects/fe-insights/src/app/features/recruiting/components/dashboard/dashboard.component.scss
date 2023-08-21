@@ -1,0 +1,17 @@
+//@import "../../../../../styles.scss";
+
+.page-container {
+    padding-top: 20px;
+    align-items: baseline;
+    margin-left: 50px;
+    width: 100%;
+}
+
+.dashboard-container {
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-around;
+}

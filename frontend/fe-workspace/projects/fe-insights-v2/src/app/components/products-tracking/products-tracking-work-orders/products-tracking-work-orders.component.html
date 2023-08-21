@@ -1,0 +1,144 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'Tracciamento Produzioni'" [title3]="'Ordini Clienti'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600">
+                        Ordini di Lavorazione
+                        <!--
+                        <span class="refresh-btn" (click)="onRefreshTable()" matTooltip="Refresh">
+                            <mat-icon>autorenew</mat-icon>
+                        </span>
+                        -->
+                    </h3>
+                    <div class="search-form-wrapper">
+                        <div class="search-form">
+                            <mat-icon matPrefix class="material-icons search">search</mat-icon>
+                            <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="Cerca" />
+                            <mat-icon *ngIf="searchBox.value !='' " class="material-icons clear" (click)="resetSearch()">clear</mat-icon>
+                        </div>
+
+                        <button class="btn-style" (click)="onSyncWorkingOrders()">
+                            <span class="material-icons">sync</span>Sync
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper resource-color-table">
+                    <table #table mat-table matSort [dataSource]="listOfWorkingOrders | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" style="width: 100%">
+                        <mat-tab-group>
+                            <ng-container matColumnDef="code">
+                                <th (click)="changeSorting('code',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Codice</span>
+                                        <span class="arrow-sorting" [ngClass]="{'down': sortKey === 'code' && sortBy === '-1' , 'up': sortKey === 'code' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg">
+                                        </span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.code ? element.code : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status">
+                                <th (click)="changeSorting('status',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Stato</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'status' && sortBy === '-1' , 'up': sortKey === 'status' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.status ? element.status : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="req_code">
+                                <th (click)="changeSorting('req_code',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Codice Richiesto</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'req_code' && sortBy === '-1' , 'up': sortKey === 'req_code' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.req_code ? element.req_code : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="measure_unit">
+                                <th (click)="changeSorting('measure_unit',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Unità di Misura</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'measure_unit' && sortBy === '-1' , 'up': sortKey === 'measure_unit' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.measure_unit ? element.measure_unit : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty_ordered">
+                                <th (click)="changeSorting('qty_ordered',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Quantità Ordinata</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'qty_ordered' && sortBy === '-1' , 'up': sortKey === 'qty_ordered' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.qty_ordered ? element.qty_ordered : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty_delivered">
+                                <th (click)="changeSorting('qty_delivered',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Quantità Evasa</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'qty_delivered' && sortBy === '-1' , 'up': sortKey === 'qty_delivered' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.qty_delivered ? element.qty_delivered : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty_residual">
+                                <th (click)="changeSorting('qty_delivered',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Quantità Residua</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'qty_residual' && sortBy === '-1' , 'up': sortKey === 'qty_residual' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.qty_residual ? element.qty_residual : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty_scrap">
+                                <th (click)="changeSorting('qty_scrap',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Quantità Scarto</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'qty_scrap' && sortBy === '-1' , 'up': sortKey === 'qty_scrap' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.qty_scrap ? element.qty_scrap : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="delivery_date">
+                                <th (click)="changeSorting('delivery_date',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Data Consegna</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'delivery_date' && sortBy === '-1' , 'up': sortKey === 'delivery_date' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.delivery_date ? commonService.formatDateTime(element.delivery_date, 'dd/MM/yyyy') : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="start_date">
+                                <th (click)="changeSorting('start_date',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Data Inizio</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'start_date' && sortBy === '-1' , 'up': sortKey === 'start_date' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.start_date ? commonService.formatDateTime(element.start_date, 'dd/MM/yyyy') : '-'}}</td>
+                            </ng-container>
+                        </mat-tab-group>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+                <app-pagination [noRecordFound]="noRecordFound" [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="totalItems"></app-pagination>
+            </div>
+        </div>
+    </div>
+</section>

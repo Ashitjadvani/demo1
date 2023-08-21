@@ -1,0 +1,36 @@
+<div class="main-tab-bar">
+    <div class="main-tab-bar-card">
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button" (click)="onHomeClick()">
+            <i class="material-icons bar-icon blue-color">home</i>
+        </button>
+
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button" (click)="onBackClick()" [disabled]="!ShowBack">
+            <i *ngIf="ShowBack" class="material-icons bar-icon blue-color">arrow_back</i>
+            <i *ngIf="!ShowBack" class="material-icons bar-icon">arrow_back</i>
+        </button>
+
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button-main" (click)="onMainActionClick()">
+            <i class="material-icons bar-icon blue-color">qr_code_2</i>
+        </button>
+
+        <!--
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button" (click)="onQrScanClick()">
+            <i class="material-icons bar-icon blue-color">qr_code_2</i>
+        </button>
+        -->
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button" (click)="onInformationClick()">
+            <i class="material-icons bar-icon blue-color">info_outline</i>
+        </button>
+
+        <span class="span-spacer"></span>
+        <button mat-icon-button class="bar-button" (click)="onMenuClick()" [disabled]="false">
+            <i class="material-icons bar-icon blue-color">menu</i>
+        </button>
+        <span class="span-spacer"></span>
+    </div>
+</div>

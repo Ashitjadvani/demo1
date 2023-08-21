@@ -1,0 +1,31 @@
+
+<div class="header-bg">
+  <mat-toolbar color="primary" class="main-header justify-content-between" >
+      <div class="menu-icon d-flex align-items-center">
+        <div>
+          <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse">
+            <img [src]="toggleIcon" alt="">
+          </button>
+        </div>
+        <div><a class="add-oppo" routerLink="/opportunity/add-opportunity">{{sideListMenuName}}</a></div>
+      </div>
+      <div class="user-menu">
+        <button mat-button [matMenuTriggerFor]="usermenu">
+          <div class="user-profile-info">
+            <div class="user-profile-img"><img [src]="profileIMG" alt=""></div>{{firstName}} {{lastName}}
+             <span class="material-icons">expand_more</span>
+          </div>
+        </button>
+        <mat-menu #usermenu="matMenu" class="profile-dropdown">
+          <button mat-menu-item class="d-flex align-items-center" routerLink="/edit-profile" (click)="sideMenuName()">
+            <mat-icon class="material-icons">settings</mat-icon>Settings
+          </button>
+          <button mat-menu-item class="d-flex align-items-center" (click)="logOUT()">
+            <mat-icon class="material-icons" >logout</mat-icon>Logout
+          </button>
+        </mat-menu>
+      </div>
+  </mat-toolbar>
+</div>
+  
+  

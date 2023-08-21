@@ -1,0 +1,46 @@
+<script src="list-email-template.component.ts"></script>
+<div class="col-md-12" *ngIf="visibleList">
+    <div class="common-tabbing">
+        <div class="table-content box-style company-info">
+            <div class="table-heading">
+                <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.EmailTemplate' | translate}}</h3>
+                <div class="search-form-wrapper">
+                </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+                <table mat-table matSort #table3 [dataSource]="emailTemplateList  | paginate: {itemsPerPage: paginationModel.itemsPerPage, currentPage: paginationModel.page, totalItems:paginationModel.totalItems}" style="width: 100%" >
+                    <ng-container matColumnDef="wheelAction">
+                        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                            <div class="hover-effect-menu ">
+                                <div class="short-arrow" (click)="editEmailTemplate(element)" >
+                                    <span class="material-icons" >edit</span>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Email">
+                        <th mat-header-cell *matHeaderCellDef   style="min-width: 150px;">
+                            <app-sort-table-column [visibleSortingIcon]="false" [sortColumnName]="'title'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('RECRUITING.Type'| translate)"></app-sort-table-column>
+                        </th>
+
+                        <td mat-cell *matCellDef="let element"  style="min-width: 150px;">{{(element.title ? element.title : '-') | translate}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="subject">
+                        <th mat-header-cell *matHeaderCellDef  style="min-width: 150px;">
+                            <app-sort-table-column [visibleSortingIcon]="false" [sortColumnName]="'subject'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey"  [eventManagementName]="('EVENT_MANAGEMENT.EmailSubject'| translate)"></app-sort-table-column>
+                        </th>
+
+                        <td mat-cell *matCellDef="let element"  style="min-width: 150px;">{{(element.subject ? element.subject : '-') | translate}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="emailTemplateColumns"></tr>
+                    <tr mat-row *matRowDef="let element; columns: emailTemplateColumns"></tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

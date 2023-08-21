@@ -1,0 +1,43 @@
+<div class="general-container">
+    <div class="card width-50">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.CompanyWorkSettings' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <div class="param-container">
+                <mat-checkbox [(ngModel)]="currentCompany.lunchQuestEnabledForOffice">
+                    {{'INSIGHTS_PEOPLE_PAGE.LunchQuestEnabledForOffice' | translate}}
+                </mat-checkbox>
+                <span class="v-space"></span>
+                <mat-checkbox [(ngModel)]="currentCompany.lunchQuestEnabledForSmartworking">
+                    {{'INSIGHTS_PEOPLE_PAGE.LunchQuestEnabledForSmartworking' | translate}}
+                </mat-checkbox>
+                <span class="v-space"></span>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.LUNCHCRONDAYS' | translate}}" type="number"
+                        [(ngModel)]="currentCompany.lunchCronDays">
+                </mat-form-field>
+                <mat-checkbox [(ngModel)]="currentCompany.enableLunchUpdaterCron">
+                    {{'INSIGHTS_PEOPLE_PAGE.EnableLunchUpdaterCron' | translate}}
+                </mat-checkbox>
+                <div class="input-row">
+                    <mat-label class="cron-label">{{'INSIGHTS_PEOPLE_PAGE.LunchUpdaterCronDueTime' | translate}}</mat-label>
+                    <div class="width-15">
+                        <mat-form-field class="width-100">
+                            <input matInput placeholder="time" [(ngModel)]="currentCompany.lunchUpdaterCronDueTime">
+                            <button mat-button matSuffix mat-icon-button (click)="pickerStartTime1.open()">
+                                <mat-icon>schedule</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <ngx-material-timepicker #pickerStartTime1 [format]="24"  (timeSet)="setLunchUpdaterCronDueTime($event)">
+                        </ngx-material-timepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+        </div>
+    </div>
+</div>

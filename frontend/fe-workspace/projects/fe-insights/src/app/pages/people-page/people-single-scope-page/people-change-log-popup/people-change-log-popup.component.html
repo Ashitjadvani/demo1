@@ -1,0 +1,28 @@
+<mat-table class="change-log-table" #table [dataSource]="currentPersonHistory">
+    <ng-container matColumnDef="Date">
+        <mat-header-cell *matHeaderCellDef class="table-head"> {{'INSIGHTS_PEOPLE_PAGE.TIMESTAMP' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ getItemDate(element) | date: 'dd/MM/yyyy HH:mm:ss'}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Author">
+        <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.AUTHOR' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.a }}
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Changes">
+        <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.CHANGES' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.cf }}
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Action" stickyEnd>
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let id=index;">
+            <button mat-icon-button (click)="onModifyHistory(element)"
+                matTooltip="{{'GENERAL.DELETE'|translate}}">
+                <i class="material-icons">edit</i>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['Date', 'Author', 'Changes', 'Action']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['Date', 'Author', 'Changes', 'Action'];"></mat-row>
+</mat-table>

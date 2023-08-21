@@ -1,0 +1,20 @@
+<h2 mat-dialog-title><b>{{'ADMIN DIALOGS.GENERATEQRCODE'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <div *ngIf="validQrCode()">
+            <qr-code #qrcode class="qr-code" [value]="customQrCode.qrcode" [level]="qrLevel" [size]="300"></qr-code>
+        </div>
+        
+        <mat-spinner *ngIf="!validQrCode()" class="loader" [diameter]="36"></mat-spinner>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onDownload(qrcode)" [disabled]="!validQrCode()">Download</button>
+            <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CLOSE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

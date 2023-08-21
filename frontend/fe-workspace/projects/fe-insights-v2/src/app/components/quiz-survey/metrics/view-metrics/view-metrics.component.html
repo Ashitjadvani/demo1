@@ -1,0 +1,66 @@
+
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="/quiz-survey/metrics" class="breadcrumb-item">{{'Quiz/Survey.Matrics' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page">{{'Quiz/Survey.ViewMetrics' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Quiz/Survey.Matrics'" [routePath]="'/quiz-survey/metrics'" [title3]="'Quiz/Survey.ViewMetrics'">
+            </app-breadcrumb>
+        </div>
+    </div>
+    <div class="edit-job-applications table-content">
+        <div class="box-style company-info ">
+            <div class="edit-app-header">
+                <div class="table-heading">
+                    <h3>{{'Quiz/Survey.ViewMetrics' | translate}}</h3>
+                </div>
+                <div class="buttons-group">
+                    <button class="btn-style grey-btn" routerLink="../add-edit-metrics" (click)="edit(this.matrixDetails.id)">{{'GENERAL.Edit' | translate}}</button>
+                    <button class="btn-style red-btn" (click)="metricsDeleteDialog(this.matrixDetails.id)">{{'GENERAL.Delete' | translate}}</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="company-details odd-even-false">
+                        <div class="detail-wrapper bg-grey">
+                            <div class="detail-box">
+                                <p>{{'Quiz/Survey.Title(English)' | translate}}</p>
+                                <b style="text-transform: capitalize;">{{matrixDetails.name ? matrixDetails.name : '-'}}</b>
+                            </div>
+                           <!-- <div class="detail-box">
+                                <p>{{'Quiz/Survey.Title(Italian)' | translate}}</p>
+                                <b>{{matrixDetails.name ? matrixDetails.name : '-'}}</b>
+                            </div>-->
+                            <div class="detail-box">
+                                <p>{{'Quiz/Survey.Type' | translate}}</p>
+                                <b>{{matrixDetails.type ? matrixDetails.type : '-'}}</b>
+                            </div>
+                            <div class="detail-box">
+                                <p>{{'Quiz/Survey.AggregationType' | translate}}</p>
+                                <b>{{matrixDetails.aggregation_strategy ? matrixDetails.aggregation_strategy : '-'}}</b>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="detail-wrapper">
+                            <div class="detail-box">
+                                <p>{{'Quiz/Survey.Description(English)' | translate}}</p>
+                                <b>{{matrixDetails.description ? matrixDetails.description : '-'}}</b>
+                            </div>
+                        <!--    <div class="detail-box">
+                                <p>{{'Quiz/Survey.Description(Italian)' | translate}}</p>
+                                <b>{{matrixDetails.description ? matrixDetails.description : '-'}}</b>
+                            </div>-->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

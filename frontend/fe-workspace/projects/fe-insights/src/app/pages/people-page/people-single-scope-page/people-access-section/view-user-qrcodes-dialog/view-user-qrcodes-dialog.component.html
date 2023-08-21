@@ -1,0 +1,131 @@
+<h2 mat-dialog-title><b>QR Code {{user.name}} {{user.surname}}</b></h2>
+
+<mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab *ngFor="let userQrCode of userQrCodes" label="{{getLabel(userQrCode)}}">
+            <div class="dialog-container">
+                <div class="input-first-row">
+                    <mat-form-field class="width-20">
+                        <mat-select placeholder="{{'ACCESS_CONTROL.Type' | translate}}" [disabled]="true" [(ngModel)]="userQrCode.codeData.type">
+                            <mat-option [value]="ACCESS_CONTROL_LEVEL.PASSEPARTOUT">
+                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSEPARTOUT' | translate}}
+                            </mat-option>
+                            <mat-option [value]="ACCESS_CONTROL_LEVEL.GROUP">
+                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS GROUP' | translate}}
+                            </mat-option>
+                            <mat-option [value]="ACCESS_CONTROL_LEVEL.SINGLE_PASSAGES">
+                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSAGES' | translate}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="badge-state-label">
+                        {{'ACCESS_CONTROL.State' | translate}}:
+                    </div>
+                    <div class="badge-state-icon">
+                        <i *ngIf="!userQrCode.blocked && !checkExpired(userQrCode)" matTooltip="{{'ACCESS_CONTROL.Active' | translate}}" class="material-icons green">done</i>
+                        <i *ngIf="!userQrCode.blocked && checkExpired(userQrCode)" matTooltip="{{'ACCESS_CONTROL.Expired' | translate}}" class="material-icons yellow">history</i>
+                        <i *ngIf="userQrCode.blocked" matTooltip="{{''ACCESS_CONTROL.Blocked' | translate}}" class="material-icons red">block</i>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div *ngIf="userQrCode.codeData.type==ACCESS_CONTROL_LEVEL.GROUP" class="section width-32">
+                        <div class="label-title">{{'ACCESS_CONTROL.Desc Group' | translate}}</div>
+                        <div class="check-list">
+                            <ng-container *ngFor="let site of sites">
+                                <mat-checkbox *ngFor="let group of site.accessControlPassageGroups" [disabled]="true" [checked]="checkGroup(group,userQrCode)" [ngModelOptions]="{standalone: true}">
+                                    <div class="checkbox">{{site.name}} - {{group.name}}</div>
+                                </mat-checkbox>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div *ngIf="userQrCode.codeData.type==ACCESS_CONTROL_LEVEL.SINGLE_PASSAGES" class="section width-32">
+                        <div class="label-title">{{'ACCESS_CONTROL.Desc Passages' | translate}}</div>
+                        <div class="check-list">
+                            <ng-container *ngFor="let site of sites">
+                                <mat-checkbox *ngFor="let passage of site.accessControlPassages" [disabled]="true" [checked]="checkPassage(passage,userQrCode)" [ngModelOptions]="{standalone: true}">
+                                    <div class="checkbox">{{site.name}} - {{passage.name}}</div>
+                                </mat-checkbox>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="section width-32">
+                        <div class="label-title">{{'ACCESS_CONTROL.Limits' | translate}}</div>
+                        <mat-form-field class="width-90" style="padding-top:15px; padding-left:15px">
+                            <input matInput [disabled]="true" [matDatepicker]="pickerDate" placeholder="{{'ACCESS_CONTROL.Start Date' | translate}}"
+                                [(ngModel)]="userQrCode.codeData.startDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="width-90" style="padding-left:15px">
+                            <input matInput [disabled]="true" [matDatepicker]="pickerDate2" placeholder="{{'ACCESS_CONTROL.End Date' | translate}}"
+                                [(ngModel)]="userQrCode.codeData.endDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDate2"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDate2></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field class="width-90" style="padding-top:15px; padding-left:15px">
+                            <mat-select placeholder="{{'ACCESS_CONTROL.Uses Number' | translate}}" [disabled]="true" [(ngModel)]="userQrCode.codeData.limitType">
+                                <mat-option value="Infinite">
+                                    {{'ACCESS_CONTROL.Infinite'|translate}}
+                                </mat-option>
+                                <mat-option value="Once">
+                                    {{'ACCESS_CONTROL.Once'|translate}}
+                                </mat-option>
+                                <mat-option value="Number">
+                                    {{'ACCESS_CONTROL.Specify Number'|translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="userQrCode.codeData.limitType=='Number'" class="width-90" style="padding-left:15px">
+                            <input [disabled]="true" placeholder="{{'ACCESS_CONTROL.Specify Number' | translate}}" matInput type="number" [(ngModel)]="userQrCode.codeData.limitNumber" min="0" max="200">
+                        </mat-form-field>
+                    </div> 
+                    <div class="section width-32">
+                        <div class="label-title">{{'ACCESS_CONTROL.Informations' | translate}}</div>
+                        <mat-form-field class="info-field width-90" style="padding-top:15px">
+                            <input matInput [disabled]="true" placeholder="{{'ACCESS_CONTROL.Name'|translate}}" appearance="legacy" 
+                                [(ngModel)]="userQrCode.codeData.name">
+                        </mat-form-field>
+                        <mat-form-field class="info-field width-90">
+                            <input matInput [disabled]="true" placeholder="{{'ACCESS_CONTROL.Surname'|translate}}" appearance="legacy" 
+                                [(ngModel)]="userQrCode.codeData.surname">
+                        </mat-form-field>
+                        <mat-form-field class="info-field width-90">
+                            <input matInput [disabled]="true" placeholder="Email" appearance="legacy" 
+                                [(ngModel)]="userQrCode.codeData.email">
+                        </mat-form-field>
+                        <mat-form-field class="info-field width-90">
+                            <input matInput [disabled]="true" placeholder="{{'ACCESS_CONTROL.Number'|translate}}" appearance="legacy" 
+                                [(ngModel)]="userQrCode.codeData.number">
+                        </mat-form-field>
+                        <mat-form-field class="info-field width-90">
+                            <input matInput [disabled]="true" placeholder="{{'ACCESS_CONTROL.Notes'|translate}}" appearance="legacy" 
+                                [(ngModel)]="userQrCode.codeData.notes">
+                        </mat-form-field>
+                    </div>
+                    <div class="qrcode-view width-32">
+                        <div class="label-title">QR CODE</div>
+                        <div *ngIf="validQrCode(userQrCode)" class="qrcode-section">
+                            <qr-code #qrcode class="qr-code" [value]="userQrCode.qrcode" [level]="qrLevel" [size]="300"></qr-code>
+                            <div class="flex-row">
+                                <button mat-flat-button class="button-download" color="primary"
+                                    (click)="onDownload(qrcode)" [disabled]="!validQrCode(userQrCode)">Download
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="!validQrCode(userQrCode)" class="qrcode-section" >{{'ACCESS_CONTROL.QrCodeNotGenerated'|translate}}</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CLOSE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

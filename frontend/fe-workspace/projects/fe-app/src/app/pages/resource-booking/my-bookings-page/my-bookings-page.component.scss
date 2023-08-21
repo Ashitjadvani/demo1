@@ -1,0 +1,15 @@
+.book-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;    
+    max-width: 640px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+::ng-deep .mat-bottom-sheet-container {
+    min-width: 300px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}

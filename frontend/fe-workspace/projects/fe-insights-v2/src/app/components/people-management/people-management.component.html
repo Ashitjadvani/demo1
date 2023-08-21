@@ -1,0 +1,436 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/people-management" class="breadcrumb-item" aria-current="page">{{'INSIGHTS_MENU.PEOPLE_MANAGEMENT' | translate}}</li>
+                  <li *ngIf="tabIndex == 0" class="breadcrumb-item active" aria-current="page">{{'PEOPLE_MANAGEMENT.Areas' | translate}}</li>
+                  <li *ngIf="tabIndex == 1" class="breadcrumb-item active" aria-current="page">{{'PEOPLE_MANAGEMENT.Roles' | translate}}</li>
+                  <li *ngIf="tabIndex == 2" class="breadcrumb-item active" aria-current="page">{{'PEOPLE_MANAGEMENT.JobTitles' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title2]="'INSIGHTS_MENU.PEOPLE_MANAGEMENT'" [title3]="navTitle" [routePath2]="'/people-management'"></app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group  [selectedIndex]="selectedIndex" (selectedTabChange)="handleMatTabChange($event)" animationDuration="0ms">
+                    <mat-tab  label="{{'PEOPLE_MANAGEMENT.Areas' | translate}}" class="mt-5">
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'PEOPLE_MANAGEMENT.Areas' | translate}}</h3>
+                                <div class="search-form-wrapper">
+                                <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+                                <div class="search-form">
+<!--                                    <input mat-input (keyup)="onKeyUp($event)" [(ngModel)]="searchArea" placeholder="{{'PEOPLE_MANAGEMENT.SearchArea' | translate}}" />-->
+<!--                                    <mat-icon matSuffix class="material-icons">search</mat-icon>-->
+
+                                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="searchArea" mat-input placeholder="{{'PEOPLE_MANAGEMENT.SearchArea' | translate}}" />
+                                  <mat-icon *ngIf="this.searchArea !== '' "  class="material-icons clear" (click) ="resetSearchA()">clear</mat-icon>
+                                </div>
+                                <button  class="btn-style" routerLink="add-edit-areas/0">
+                                    <span class="material-icons">add</span>{{'PEOPLE_MANAGEMENT.AddArea' | translate}}
+                                  </button>
+                                  <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                                    <mat-icon >more_vert</mat-icon>
+                                  </button>
+                                  <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="deleteMultiAreas()">
+                                      <span>{{'GENERAL.Delete' | translate}}</span>
+                                    </button>
+                                  </mat-menu>
+                                </div>
+                            </div>
+                            <div class="table-wrapper resource-color-table">
+                                <table mat-table matSort #table3 [dataSource]="areaList  | paginate: {id: 'firstPagination',itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" style="width: 100%" >
+                                  <!-- <ng-container matColumnDef="select">
+                                    <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                                      <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                                    </th>
+                                    <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                                      <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                                    </td>
+                                  </ng-container> -->
+
+                                  <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                                    [checked]="selection.hasValue() && isAllSelected()"
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                    [aria-label]="checkboxLabel()">
+                                      </mat-checkbox>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selection.toggle(row) : null"
+                                                    [checked]="selection.isSelected(row)"
+                                                    [aria-label]="checkboxLabel(row)">
+                                      </mat-checkbox>
+                                    </td>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="wheelAction">
+                                      <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                        {{'TABLE.Action' | translate}}
+                                      </th>
+                                      <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                        <app-wheel-action [icons]="'three'" [viewOn]="true" [editOn]="true" [deleteOn]="true" [element]="element" (view)="viewDetail($event)"
+                                        (edit)="editArea($event)" (delete)="openAreaDeleteDialog($event)"></app-wheel-action>
+                                        <!-- <div class="hover-effect-menu three-icons">
+                                          <div class="short-arrow">
+                                            <span class="material-icons" >more_horiz</span>
+                                          </div>
+                                          <div class="hover-round-effect">
+                                            <button mat-menu-item routerLink="/people-management/view-area-details"(click)="viewDetail(element.name,element.id)" matTooltip="{{'TABLE.ViewDetails' | translate}}">
+                                              <span class="material-icons">remove_red_eye</span>
+                                            </button>
+                                            <button mat-menu-item (click)="editArea(element.name,element.id)" matTooltip="{{'Edit' | translate}}">
+                                              <span class="material-icons">edit</span>
+                                            </button>
+                                            <button mat-menu-item (click)="openAreaDeleteDialog(element.name)" matTooltip="{{'Delete' | translate}}">
+                                              <span class="material-icons">delete</span>
+                                            </button>
+                                          </div>
+                                        </div> -->
+                                      </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AreaName">
+                                        <th mat-header-cell *matHeaderCellDef (click)="changeSorting('name', sortBy)" class="short-arrow" style="min-width: 150px;">
+                                          {{'PEOPLE_MANAGEMENT.Area Name' | translate}} <span
+                                          [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                        <td mat-cell *matCellDef="let element"  style="min-width: 150px;text-transform: capitalize;">{{element.name ? element.name : '-'}}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Scope">
+                                        <th  (click)="changeSorting('scopes', sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width:200px;">
+                                          {{'PEOPLE_MANAGEMENT.Scope' | translate}} <span
+                                          [ngClass]="{'down': sortKey === 'scopes' && sortBy === '-1' , 'up': sortKey === 'scopes' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                        <td mat-cell *matCellDef="let element" style="min-width:200px;">{{(element.scopes) ? (element.scopes).join(',  ') : '-' }}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Created at" >
+                                      <th  mat-header-cell *matHeaderCellDef style="min-width:200px;" (click)="changeSorting('createdAt', sortBy)" class="short-arrow">
+                                        {{'PEOPLE_MANAGEMENT.createdAt' | translate}} <span
+                                        [ngClass]="{'down': sortKey === 'createdAt' && sortBy === '-1' , 'up': sortKey === 'createdAt' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                      <td mat-cell *matCellDef="let element" style="min-width:200px;">{{element.createdAt ? (element.createdAt | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Updated at">
+                                      <th  mat-header-cell *matHeaderCellDef style="min-width:200px;" (click)="changeSorting('updatedAt', sortBy)" class="short-arrow">
+                                        {{'PEOPLE_MANAGEMENT.updatedAt' | translate}} <span
+                                        [ngClass]="{'down': sortKey === 'updatedAt' && sortBy === '-1' , 'up': sortKey === 'updatedAt' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                      <td mat-cell *matCellDef="let element" style="min-width:200px;">{{element.updatedAt ? (element.updatedAt | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                                    </ng-container>
+
+                                     <ng-container matColumnDef="viewDetails">
+                                      <th  mat-header-cell *matHeaderCellDef>
+                                        {{'TABLE.ViewDetails' | translate}}
+                                      </th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <button class="btn-style table-btn theme-line-btn sm-btn" routerLink="/people-management/view-area-details"(click)="viewDetail(element.name,element.id)">
+                                          {{'TABLE.ViewDetails' | translate}}
+                                        </button>
+                                      </td>
+                                    </ng-container>
+
+                               <!--     <ng-container matColumnDef="AreaDescription">
+                                        <th  mat-header-cell *matHeaderCellDef style="min-width:400px;" (click)="changeSorting('AreaDescription', sortKey)">Area Description <span
+                                          [ngClass]="{'down': sortBy === 'AreaDescription' && sortKey === '-1' , 'up': sortBy === 'AreaDescription' && sortKey === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span> </th>
+                                        <td mat-cell *matCellDef="let element" style="min-width:400px;">
+                                          {{element.AreaDescription ? element.AreaDescription : '-'}}
+                                        </td>
+                                    </ng-container>-->
+
+                                    <!--<ng-container matColumnDef="action">
+                                        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                          {{'TABLE.Action' | translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                            <div class="action-icons d-flex switch">
+                                                <img src="assets/images/edit-action.svg"   class="" alt="" (click)="editArea(element.name,element.id)">
+                                                <img src="assets/images/delete-action.svg" (click)="openAreaDeleteDialog(element.name)" alt="">
+                                            </div>
+                                        </td>
+                                    </ng-container>-->
+                                <tr mat-header-row *matHeaderRowDef="areaDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let element; columns: areaDisplayedColumns"></tr>
+                                </table>
+                            </div>
+                          <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+                          <div *ngIf="noRecordFound" class="paginate-footer">
+                            <div class="page-item">
+                              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                              <mat-form-field appearance="fill">
+                                <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                                  <mat-option value="5">5</mat-option>
+                                  <mat-option value="10">10</mat-option>
+                                  <mat-option value="15">15</mat-option>
+                                  <mat-option value="20">20</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+                                </div>
+                                <div class="table-paginator">
+                                    <pagination-controls  responsive="true" id ="firstPagination"
+                                                          (pageChange)="pageChanged($event)"></pagination-controls>
+                                </div>
+                            </div> -->
+                            <app-pagination [id]="'firstPagination'" [noRecordFound]="noRecordFound"
+                            [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="totalItems"></app-pagination>
+                        </div>
+                    </mat-tab>
+                    <mat-tab  label="{{'PEOPLE_MANAGEMENT.Roles' | translate}}" >
+<!--                      <ng-template mat-tab-label><div (click)="getRole($event)"> Roles </div> </ng-template>-->
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'PEOPLE_MANAGEMENT.Roles' | translate}}</h3>
+                                <div class="search-form-wrapper">
+                                <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+                                <div class="search-form">
+
+                                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                                  <input (keyup)="onKeyUpR($event)" #searchBoxR [(ngModel)]="searchRole" mat-input placeholder="{{'PEOPLE_MANAGEMENT.SearchRole' | translate}}" />
+                                  <mat-icon *ngIf="this.searchRole !== '' "  class="material-icons clear" (click) ="resetSearchR()">clear</mat-icon>
+
+                                </div>
+                                <button  class="btn-style" routerLink="add-edit-roles/0">
+                                    <span class="material-icons">add</span>{{'PEOPLE_MANAGEMENT.AddRole' | translate}}
+                                  </button>
+                                  <button  [matMenuTriggerFor]="menuR" class="btn-style menu-btn">
+                                    <mat-icon >more_vert</mat-icon>
+                                  </button>
+                                  <mat-menu #menuR="matMenu">
+                                    <button mat-menu-item (click)="deleteMultiRole()">
+                                      <span>{{'GENERAL.Delete' | translate}}</span>
+                                    </button>
+                                  </mat-menu>
+                                </div>
+                            </div>
+                            <div class="table-wrapper resource-color-table">
+                                <table mat-table matSort #table  [dataSource]="roleList| paginate: {id:'secondPagination',itemsPerPage: this.itemsPerPageR, currentPage: this.pageR, totalItems: this.totalItemsR }" style="width: 100%" >
+                                  <!-- <ng-container matColumnDef="select">
+                                     <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                                      <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                                    </th>
+                                    <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                                      <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                                    </td>
+                                  </ng-container> -->
+
+                                  <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (change)="$event ? toggleAllRowsR() : null"
+                                                    [checked]="selectionR.hasValue() && isAllSelectedR()"
+                                                    [indeterminate]="selectionR.hasValue() && !isAllSelectedR()"
+                                                    [aria-label]="checkboxLabelR()">
+                                      </mat-checkbox>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selectionR.toggle(row) : null"
+                                                    [checked]="selectionR.isSelected(row)"
+                                                    [aria-label]="checkboxLabelR(row)">
+                                      </mat-checkbox>
+                                    </td>
+                                  </ng-container>
+
+                                    <ng-container matColumnDef="wheelAction">
+                                      <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                        {{'TABLE.Action' | translate}}
+                                      </th>
+                                      <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                        <!-- <div class="hover-effect-menu two-icons">
+                                          <div class="short-arrow">
+                                            <span class="material-icons" >more_horiz</span>
+                                          </div>
+                                          <div class="hover-round-effect">
+                                            <button mat-menu-item (click)="edit(element.name)" matTooltip="{{'Edit' | translate}}">
+                                              <span class="material-icons">edit</span>
+                                            </button>
+                                            <button mat-menu-item (click)="openRoleDeleteDialog(element.name)" matTooltip="{{'Delete' | translate}}">
+                                              <span class="material-icons">delete</span>
+                                            </button>
+                                          </div>
+                                        </div> -->
+                                        <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                                        (edit)="edit($event)" (delete)="openRoleDeleteDialog($event)"></app-wheel-action>
+                                      </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="RoleName">
+                                        <th  (click)="changeSortingR('peopleRoles', sortByR)" *matHeaderCellDef  class="short-arrow" mat-header-cell>
+                                          {{'PEOPLE_MANAGEMENT.RoleName' | translate}} <span
+                                          [ngClass]="{'down': sortKeyR === 'peopleRoles' && sortByR === '-1' , 'up': sortKeyR === 'peopleRoles' && sortByR === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                        <td mat-cell *matCellDef="let element" style="text-transform: capitalize;">{{element.name ? element.name : '-'}}</td>
+                                    </ng-container>
+
+                                    <!--<ng-container matColumnDef="action">
+                                        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                          {{'TABLE.Action' | translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                            <div class="action-icons d-flex switch">
+                                                <img src="assets/images/edit-action.svg"  class="" alt="" (click)="edit(element.name)" >
+                                                <img src="assets/images/delete-action.svg" (click)="openRoleDeleteDialog(element.name)" alt="">
+                                            </div>
+                                        </td>
+                                    </ng-container>-->
+
+                                <tr mat-header-row *matHeaderRowDef="roleDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let element; columns: roleDisplayedColumns"></tr>
+                                </table>
+                            </div>
+                          <!-- <div *ngIf="!noRecordFoundR" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+                          <div *ngIf="noRecordFoundR" class="paginate-footer">
+                            <div class="page-item">
+                              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                              <mat-form-field appearance="fill">
+                                <mat-select [(ngModel)]="itemsPerPageR" (selectionChange)="changeItemsPerPageR()">
+                                  <mat-option value='5'>5</mat-option>
+                                  <mat-option value='10'>10</mat-option>
+                                  <mat-option value='15'>15</mat-option>
+                                  <mat-option value='20'>20</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <span class="total-record-info">{{(((pageR - 1) * itemsPerPageR) + 1)}} - {{((itemsPerPageR * pageR) < totalItemsR) ? (itemsPerPageR * pageR) : totalItemsR}} of {{totalItemsR}}</span>
+                                </div>
+                                <div class="table-paginator">
+                                    <pagination-controls  responsive="true" id="secondPagination"
+
+                                        (pageChange)="pageChangedR($event)"></pagination-controls>
+                                </div>
+                            </div> -->
+                            <app-pagination [id]="'secondPagination'" [noRecordFound]="noRecordFoundR"
+                            [itemsPerPage]="itemsPerPageR" [page]="pageR" (pageChange)="pageChangedR($event)" (changeItem)="changeItemsPerPageR($event)"
+                             [totalItems]="totalItemsR"></app-pagination>
+                        </div>
+                    </mat-tab>
+                    <mat-tab  label="{{'PEOPLE_MANAGEMENT.JobTitles' | translate}}" >
+<!--                      <ng-template mat-tab-label><div (click)="getJob($event)"> Job Titles </div> </ng-template>-->
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'PEOPLE_MANAGEMENT.JobTitles' | translate}}</h3>
+                                <div class="search-form-wrapper">
+                                <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+                                <div class="search-form">
+
+                                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                                  <input (keyup)="onKeyUpJ($event)" #searchBoxj [(ngModel)]="searchJob" mat-input placeholder="{{'PEOPLE_MANAGEMENT.SearchJobTitle' | translate}}" />
+                                  <mat-icon *ngIf="this.searchJob !== '' "  class="material-icons clear" (click) ="resetSearchJ()">clear</mat-icon>
+
+                                </div>
+                                <button  class="btn-style" routerLink="add-edit-job-title/0">
+                                    <span class="material-icons">add</span>{{'PEOPLE_MANAGEMENT.AddJobTitle' | translate}}
+                                  </button>
+                                  <button  [matMenuTriggerFor]="menuJ" class="btn-style menu-btn">
+                                    <mat-icon >more_vert</mat-icon>
+                                  </button>
+                                  <mat-menu #menuJ="matMenu">
+                                    <button mat-menu-item (click)="deleteMultiJobTitles()">
+                                      <span>{{'GENERAL.Delete' | translate}}</span>
+                                    </button>
+                                  </mat-menu>
+                                </div>
+                            </div>
+                            <div class="table-wrapper resource-color-table">
+                                <table mat-table matSort #table2 [dataSource]="jobTitle | paginate: {id : 'thirdPagination',itemsPerPage: this.itemsPerPageJ, currentPage: this.pageJ, totalItems: this.totalItemsJ }" style="width: 100%" >
+                                  <!-- <ng-container matColumnDef="select">
+                                    <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                                      <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                                    </th>
+                                    <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                                      <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                                    </td>
+                                  </ng-container> -->
+
+                                  <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (change)="$event ? toggleAllRowsJ() : null"
+                                                    [checked]="selectionJ.hasValue() && isAllSelectedJ()"
+                                                    [indeterminate]="selectionJ.hasValue() && !isAllSelectedJ()"
+                                                    [aria-label]="checkboxLabelJ()">
+                                      </mat-checkbox>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                                      <mat-checkbox (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selectionJ.toggle(row) : null"
+                                                    [checked]="selectionJ.isSelected(row)"
+                                                    [aria-label]="checkboxLabelJ(row)">
+                                      </mat-checkbox>
+                                    </td>
+                                  </ng-container>
+
+                                    <ng-container matColumnDef="wheelAction">
+                                      <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                        {{'TABLE.Action' | translate}}
+                                      </th>
+                                      <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                        <!-- <div class="hover-effect-menu two-icons">
+                                          <div class="short-arrow">
+                                            <span class="material-icons" >more_horiz</span>
+                                          </div>
+                                          <div class="hover-round-effect">
+                                            <button mat-menu-item routerLink="add-edit-job-title" (click)="editJob(element.name)" matTooltip="{{'Edit' | translate}}">
+                                              <span class="material-icons">edit</span>
+                                            </button>
+                                            <button mat-menu-item (click)="openJobTitleDeleteDialog(element.name)" matTooltip="{{'Delete' | translate}}">
+                                              <span class="material-icons">delete</span>
+                                            </button>
+                                          </div>
+                                        </div> -->
+                                        <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                                        (edit)="editJob($event)" (delete)="openJobTitleDeleteDialog($event)"></app-wheel-action>
+                                      </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="JobTitleName">
+                                        <th  mat-header-cell *matHeaderCellDef (click)="changeSortingJ('name', sortByJ)" class="short-arrow">
+                                          {{'PEOPLE_MANAGEMENT.JobTitleName' | translate}} <span
+                                          [ngClass]="{'down': sortKeyJ === 'name' && sortByJ === '-1' , 'up': sortKeyJ === 'name' && sortByJ === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span></th>
+                                        <td mat-cell *matCellDef="let element" style="text-transform: capitalize;">{{element.name ? element.name : '-'}}</td>
+                                    </ng-container>
+
+                                    <!--<ng-container matColumnDef="action">
+                                        <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                          {{'TABLE.Action' | translate}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                            <div class="action-icons d-flex switch">
+                                                <img src="assets/images/edit-action.svg"  class="" alt="" routerLink="add-edit-job-title" (click)="editJob(element.name)">
+                                                <img src="assets/images/delete-action.svg" (click)="openJobTitleDeleteDialog(element.name)" alt="">
+                                            </div>
+                                        </td>
+                                    </ng-container>-->
+                                <tr mat-header-row *matHeaderRowDef="jobTitleDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let element; columns: jobTitleDisplayedColumns"></tr>
+                                </table>
+                            </div>
+                          <!-- <div *ngIf="!noRecordFoundJ" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+                          <div  *ngIf="noRecordFoundJ" class="paginate-footer">
+                            <div class="page-item">
+                              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                              <mat-form-field appearance="fill">
+                                <mat-select [(ngModel)]="itemsPerPageJ" (selectionChange)="changeItemsPerPageJ()">
+                                  <mat-option value="5">5</mat-option>
+                                  <mat-option value="10">10</mat-option>
+                                  <mat-option value="15">15</mat-option>
+                                  <mat-option value="20">20</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <span class="total-record-info">{{(((pageJ - 1) * itemsPerPageJ) + 1)}} - {{((itemsPerPageJ * pageJ) < totalItemsJ) ? (itemsPerPageJ * pageJ) : totalItemsJ}} of {{totalItemsJ}}</span>
+                                </div>
+                                <div class="table-paginator">
+                                    <pagination-controls  responsive="true" id="thirdPagination"
+                                        (pageChange)="pageChangedJ($event)"></pagination-controls>
+                                </div>
+                            </div> -->
+                            <app-pagination [id]="'thirdPagination'" [noRecordFound]="noRecordFoundJ"
+                            [itemsPerPage]="itemsPerPageJ" [page]="pageJ" (pageChange)="pageChangedJ($event)" (changeItem)="changeItemsPerPageJ($event)"
+                             [totalItems]="totalItemsJ"></app-pagination>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

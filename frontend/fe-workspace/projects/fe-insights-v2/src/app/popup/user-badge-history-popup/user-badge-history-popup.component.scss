@@ -1,0 +1,29 @@
+
+.green {
+    color: rgb(203, 226, 203);
+}
+
+.red {
+    color: rgb(226, 203, 203);
+}
+
+.yellow {
+    color: rgb(226, 218, 203);
+}
+
+.label-icon {
+    padding-left:5px;
+}
+
+.tab-container {
+    padding: 20px;
+    max-height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.mat-tab-body-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+

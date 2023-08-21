@@ -1,0 +1,27 @@
+.general-container {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap:30px;
+}
+
+.command-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:30px;
+}
+
+.full-width {
+    width:100%;
+}
+
+.dialog-actions {
+    display:flex;
+    flex-direction:row;
+    justify-content: flex-end;
+}
+
+.width-250 {
+    width:250px;
+}

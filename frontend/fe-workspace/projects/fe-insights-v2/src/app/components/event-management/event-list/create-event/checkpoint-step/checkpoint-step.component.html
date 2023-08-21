@@ -1,0 +1,519 @@
+<div class="attendee-detail-wrapper inner-tabbing">
+    <div class="box-style company-info p-0 shadow-none simple-tabbing">
+        <mat-tab-group class="group-tab" animationDuration="0ms" fitInkBarToContent>
+            <mat-tab label="{{'EVENT_MANAGEMENT.CheckpointSettings' | translate}}">
+                <div class="attendee-detail-wrapper inner-tabbing">
+                    <div class="box-style company-info simple-tabbing p-0 overflow-hidden">
+                        <form (ngSubmit)="saveCheckpointInfo(eventStepper, false)" [formGroup]="checkpointsInfoForm">
+                            <div class="checkpoint-list">
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.MandatoryCheckInCheckOut' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox [(ngModel)]="mandatoryCheckInOutFlag" formControlName="checkInOut">{{'EVENT_MANAGEMENT.MandatoryCheckInCheckOut' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.OtherCheckParameters' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox [(ngModel)]="otherCheckParamFlag"
+                                                              formControlName="otherCheckParam">{{'EVENT_MANAGEMENT.OtherCheckParameters' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="min-400 col-xl-6 col-xxl-3"
+                                             *ngIf="this.checkpointsInfoForm?.value?.otherCheckParam">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label> {{'EVENT_MANAGEMENT.HowManyChecks' | translate}}</mat-label>
+                                                    <mat-select #checkParamCount formControlName="otherCheckParamCount"
+                                                                (selectionChange)="getotherCheckParamCount(checkParamCount.value)">
+                                                        <mat-option> {{'EVENT_MANAGEMENT.select' | translate}}</mat-option>
+                                                        <mat-option
+                                                            value="none"> {{'ACCESS_CONTROL.None' | translate}}</mat-option>
+                                                        <mat-option value="1">1</mat-option>
+                                                        <mat-option value="2">2</mat-option>
+                                                        <mat-option value="3">3</mat-option>
+                                                        <mat-option value="4">4</mat-option>
+                                                        <mat-option value="5">5</mat-option>
+                                                        <mat-option value="6">6</mat-option>
+                                                        <mat-option value="7">7</mat-option>
+                                                        <mat-option value="8">8</mat-option>
+                                                        <mat-option value="9">9</mat-option>
+                                                        <mat-option value="10">10</mat-option>
+                                                    </mat-select>
+                                                    <mat-error
+                                                        *ngIf="checkpointsInfoForm.controls.otherCheckParamCount.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectChecks' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.EventCredits' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox formControlName="eventCredit"
+                                                              (change)="eventCreditChange($event)">{{'EVENT_MANAGEMENT.EventCredits' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="min-400 col-xl-6 col-xxl-3"
+                                             *ngIf="this.checkpointsInfoForm?.value?.eventCredit">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label> {{'EVENT_MANAGEMENT.NumberOfCredits' | translate}}</mat-label>
+                                                    <input formControlName="eventCreditCount" matInput type="number"
+                                                           name="credits"
+                                                           (input)="eventCreditCountChange($event.target.value)">
+                                                    <mat-error
+                                                        *ngIf="checkpointsInfoForm.controls.eventCreditCount.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterNumberOfCredits' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.SendAttendanceCertificateDocument' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox formControlName="attendanceCertificate"
+                                                              [(ngModel)]="attendanceCertificateChecked"
+                                                              [disabled]="attendanceCertificateDisabled">{{'EVENT_MANAGEMENT.SendAttendanceCertificateDocument' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-xxl-12"
+                                             *ngIf="this.checkpointsInfoForm?.value?.attendanceCertificate">
+                                            <div
+                                                class="custom-editor editor-render-event form-field error-message-custom">
+                                                <angular-editor [config]="config"
+                                                                formControlName="attendeeCertificateData"
+                                                                [(ngModel)]="htmlContent"></angular-editor>
+                                                <ul class="editor-labels">
+                                                    <button type='button' class="dynamic-text"
+                                                            (mousedown)="fnSetPlaceHolder(nameOfAttendee)">{{'EVENT_MANAGEMENT.AttendeeName' | translate}}</button>
+                                                    <button type='button' class="dynamic-text"
+                                                            (mousedown)="fnSetPlaceHolder(nameOfEvent)">{{'EVENT_MANAGEMENT.EventName' | translate}}</button>
+                                                    <button type='button' class="dynamic-text"
+                                                            (mousedown)="fnSetPlaceHolder(dateOfEvent)">{{'ALERTS.Date' | translate}}</button>
+                                                    <!--<button type='button' class="dynamic-text"
+                                                            (mousedown)="fnSetPlaceHolder(nameOfSpeaker)">{{'EVENT_MANAGEMENT.SpeakerName' | translate}}</button>-->
+                                                    <button type='button' class="dynamic-text"
+                                                            (mousedown)="fnSetPlaceHolder(numberOfCreditsOfEvent)">{{'EVENT_MANAGEMENT.EventCredits' | translate}}</button>
+                                                </ul>
+                                                <div class="table-wrapper-main mt-30">
+                                                    <div class="table-heading table-heading-text mb-0">
+                                                        <h3>
+                                                            <span>{{'EVENT_MANAGEMENT.EnableTheUserToSend' | translate}}</span>
+                                                        </h3>
+                                                        <div class="search-form-wrapper">
+                                                            <button class="btn-style mr-15" type="button"
+                                                                    style="padding: 8px 36px;"
+                                                                    (click)="sendAttendeeCertificate()">
+                                                                {{'EVENT_MANAGEMENT.SendCertificate' | translate}}
+                                                            </button>
+                                                            <div class="search-form">
+                                                                <mat-icon matPrefix class="material-icons search">
+                                                                    search
+                                                                </mat-icon>
+                                                                <input (keyup)="searchAttendee($event)"
+                                                                       [(ngModel)]="searchAttendeeTxt" #searchBox
+                                                                       mat-input
+                                                                       placeholder="{{'ACCESS_CONTROL.Search'| translate }}"
+                                                                       name="searchAttendee"
+                                                                       [ngModelOptions]="{standalone: true}"/>
+                                                                <mat-icon *ngIf="this.searchAttendeeTxt"
+                                                                          class="material-icons clear"
+                                                                          (click)="resetSearchAttendee()">clear
+                                                                </mat-icon>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="align-content-center custom-switch d-flex switch">
+                                                        {{'EVENT_MANAGEMENT.ShowCheckpointsCompliedUsers' | translate}}
+                                                        <mat-slide-toggle class="ml-10" [checked]="showCheckpointsUsers"
+                                                                          (change)="showCheckpointsCompliedUsers($event.checked)"></mat-slide-toggle>
+                                                    </div>
+                                                    <div class="table-wrapper p-0">
+                                                        <div class="table-content-box"
+                                                             style="max-height: 660px; overflow: auto;">
+                                                            <table #attendeeListTable [dataSource]="attendeeList"
+                                                                   mat-table style="width: 100%" matSort
+                                                                   (matSortChange)="changeSort($event)">
+                                                                <ng-container matColumnDef="role">
+                                                                    <th class="table-head" mat-header-cell
+                                                                        *matHeaderCellDef
+                                                                        style="min-width: 120px;padding-left: 24px;">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span
+                                                                                mat-sort-header>{{'EVENT_MANAGEMENT.Role' | translate}}</span>
+                                                                            <button [matMenuTriggerFor]="roleCategories"
+                                                                                    class="btn-style menu-btn table-custom-drop"
+                                                                                    type="button">
+                                                                                <mat-icon>expand_more</mat-icon>
+                                                                            </button>
+                                                                        </div>
+                                                                        <mat-menu #roleCategories="matMenu">
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('')">
+                                                                                {{'EVENT_MANAGEMENT.SelectAll' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Owner')">
+                                                                                {{'EVENT_MANAGEMENT.Owner' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Organizer')">
+                                                                                {{'EVENT_MANAGEMENT.Organizer' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Speaker')">
+                                                                                {{'EVENT_MANAGEMENT.Speaker' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Attendee')">
+                                                                                {{'EVENT_MANAGEMENT.Attendee' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Technical Support')">
+                                                                                {{'EVENT_MANAGEMENT.Technical Support' | translate}}
+                                                                            </button>
+                                                                            <button mat-menu-item
+                                                                                    (click)="filterAttendeeList('Assistant')">
+                                                                                {{'EVENT_MANAGEMENT.Assistant' | translate}}
+                                                                            </button>
+                                                                        </mat-menu>
+                                                                    </th>
+                                                                    <td *matCellDef="let element"
+                                                                        mat-cell>{{element.role ? ('EVENT_MANAGEMENT.' + element.role | translate) : '-'}}</td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="type">
+                                                                    <th class="table-head" mat-header-cell
+                                                                        *matHeaderCellDef
+                                                                        mat-sort-header>{{'EVENT_MANAGEMENT.Type' | translate}}</th>
+                                                                    <td *matCellDef="let element" mat-cell
+                                                                        style="text-transform: capitalize;">{{element.type ? ('EVENT_MANAGEMENT.' + element.type | translate) : '-'}}</td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="firstName">
+                                                                    <th class="table-head" mat-header-cell
+                                                                        *matHeaderCellDef
+                                                                        mat-sort-header>{{'EVENT_MANAGEMENT.FirstName' | translate}}</th>
+                                                                    <td *matCellDef="let element"
+                                                                        style="text-transform: capitalize"
+                                                                        mat-cell>{{element.firstName ? element.firstName : '-'}}</td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="surname">
+                                                                    <th class="table-head" mat-header-cell
+                                                                        *matHeaderCellDef
+                                                                        mat-sort-header>{{'EVENT_MANAGEMENT.Surname' | translate}}</th>
+                                                                    <td *matCellDef="let element"
+                                                                        style="text-transform: capitalize"
+                                                                        mat-cell>{{element.surname ? element.surname : '-'}}</td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="sendCertificate">
+                                                                    <th class="table-head"
+                                                                        *matHeaderCellDef>
+                                                                        <div class="align-content-center d-flex">
+                                                                            {{'EVENT_MANAGEMENT.SendCertificate' | translate}}
+                                                                            <span
+                                                                                class="custom-switch switch m-0 ml-10">
+                                                                                    <mat-slide-toggle
+                                                                                        [checked]="selectedAllAttendees"
+                                                                                        (change)="onAllEnableClick($event)"></mat-slide-toggle>
+                                                                                </span>
+                                                                        </div>
+                                                                    </th>
+                                                                    <td *matCellDef="let element;let i = index"
+                                                                        mat-cell>
+                                                                        <div class="custom-switch switch">
+                                                                            <mat-slide-toggle
+                                                                                [checked]="(element.sendCertificate === true) ? true : false"
+                                                                                (change)="onEnableClick(element, i)"></mat-slide-toggle>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr *matHeaderRowDef="attendeeNameDisplayedColumns"
+                                                                    mat-header-row></tr>
+                                                                <tr *matRowDef="let row; columns: attendeeNameDisplayedColumns;"
+                                                                    mat-row></tr>
+                                                            </table>
+                                                            <div class="text-center p-3"
+                                                                 *ngIf="attendeeList?.length === 0">
+                                                                <strong>{{'TABLE.No_record_found' | translate}}</strong>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.EventSettings' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="">
+                                                <button class="btn-style theme-btn m-b-20 same-width-btn" type="button"
+                                                        (click)="sendInvitationAllByEmail()"
+                                                        [disabled]="currentEventStatus || disableInvitationFlow">{{'EVENT_MANAGEMENT.SendInvitationPendingAttendees' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <button class="btn-style theme-btn same-size-button" type="button" (click)="callSendEmailReminder()">{{'EVENT_MANAGEMENT.SendEmailReminder' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox
+                                                    formControlName="sendEmailReminder" [disabled]="disableInvitationFlow">{{'EVENT_MANAGEMENT.SendEmailReminderAutomatically' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="min-400 col-xl-6 col-xxl-3"
+                                             *ngIf="this.checkpointsInfoForm?.value?.sendEmailReminder">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width" >
+                                                    <mat-label> {{'EVENT_MANAGEMENT.Reminder' | translate}}</mat-label>
+                                                    <mat-select formControlName="remainderTime" [disabled]="disableInvitationFlow">
+                                                        <mat-option>{{'EVENT_MANAGEMENT.SelectReminder' | translate}}</mat-option>
+                                                        <mat-option
+                                                            value="Before 15 Mins">{{'EVENT_MANAGEMENT.Before15Mins' | translate}}</mat-option>
+                                                        <mat-option
+                                                            value="Before 30 Mins">{{'EVENT_MANAGEMENT.Before30Mins' | translate}}</mat-option>
+                                                        <mat-option
+                                                            value="Before 1 Hour">{{'EVENT_MANAGEMENT.Before1Hour' | translate}}</mat-option>
+                                                        <mat-option
+                                                            value="Before 2 Hours">{{'EVENT_MANAGEMENT.Before2Hours' | translate}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error
+                                                        *ngIf="checkpointsInfoForm.controls.remainderTime.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectReminder' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <button class="btn-style theme-btn same-width-btn" type="button"
+                                                        (click)="callSendEmailReminder()"
+                                                        [disabled]="currentEventStatus || disableInvitationFlow">{{'EVENT_MANAGEMENT.SendEmailReminder' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <button class="btn-style theme-btn same-width-btn" type="button"
+                                                        (click)="sendPushNotification()"
+                                                        [disabled]="currentEventStatus || disableInvitationFlow" >{{'EVENT_MANAGEMENT.SendPushNotification' | translate}}</button>
+                                                <!--<mat-checkbox
+                                                    formControlName="sendPushNotification">{{'EVENT_MANAGEMENT.SendPushNotification' | translate}}</mat-checkbox>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="check-data row" *ngIf="finalValueForm.value.type != 'live'">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <button class="btn-style theme-btn same-width-btn" type="button"
+                                                        (click)="sendPinAttendees()"
+                                                        [disabled]="currentEventStatus">{{'EVENT_MANAGEMENT.SendPersonalPINCode' | translate}}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="check-data row" *ngIf="finalValueForm.value.type != 'live'">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox
+                                                    formControlName="isMeetingLinkActiveBySecretCode" [(ngModel)]="isMeetingLinkActiveBySecretCode">{{'EVENT_MANAGEMENT.isMeetingLinkActiveBySecretCode' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="custom-switch switch mt-0">
+                                                <mat-checkbox
+                                                    formControlName="addIcsFile" [disabled]="disableInvitationFlow">{{'EVENT_MANAGEMENT.AttachICSFileInEmails' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-form-bottom">
+                                <div>
+                                    <button (click)="back()" class="btn-style red-line-btn"
+                                            type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                </div>
+                                <div class="">
+                                    <button matStepperPrevious class="btn-style privious-btn" type="button">
+                                            <span
+                                                class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+                                    </button>
+                                    <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn"
+                                            (click)="saveCheckpointInfo(eventStepper, true)"
+                                            type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+                                    <button class="btn-style theme-btn"
+                                            type="submit">{{'GENERAL.Save&Finish' | translate}} <span
+                                        class="material-icons">arrow_forward</span></button>
+                                    <button class="btn-style theme-btn" type="button"
+                                            (click)="saveCheckpointInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab [disabled]="isMeetingLinkActiveBySecretCode" class="btn-style" label="{{'EVENT_MANAGEMENT.CheckpointControl' | translate}}">
+                <div class="attendee-detail-wrapper inner-tabbing">
+                    <div class="box-style company-info simple-tabbing p-0 overflow-hidden">
+                        <form (ngSubmit)="saveCheckpointInfo(eventStepper, false)" [formGroup]="checkpointsInfoForm">
+                            <div class="checkpoint-list">
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.Checkpoint' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <!--<button class="btn-style theme-btn m-b-20 same-width-btn" type="button" (click)="enableDisableCheckPoint()">
+                                                {{enableDisableCheckPointFlag ? ('EVENT_MANAGEMENT.DisableCheckpoint' | translate) : ('EVENT_MANAGEMENT.EnableCheckpoint' | translate)}}
+                                            </button>-->
+                                            <div class="custom-switch d-flex mt-0 switch">
+                                                {{'EVENT_MANAGEMENT.OFF' | translate}}<mat-slide-toggle class="ml-15 mr-15" (change)="enableDisableCheckPoint()"
+                                                [checked]="enableDisableCheckPointFlag ? true : false"></mat-slide-toggle>
+                                                {{'EVENT_MANAGEMENT.ON' | translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.DurationSettings' | translate}}</h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'EVENT_MANAGEMENT.Hours' | translate}}</mat-label>
+                                                <mat-select formControlName="hours" [(ngModel)]="defaultHours"
+                                                            (selectionChange)="setCheckpointDuration()">
+                                                    <mat-option>{{'Select Hours' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let hour of hoursSelect" [value]="hour.toString()">
+                                                        {{hour}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'EVENT_MANAGEMENT.Minutes' | translate}}</mat-label>
+                                                <mat-select formControlName="minutes" [(ngModel)]="defaultMinutes"
+                                                            (selectionChange)="setCheckpointDuration()">
+                                                    <mat-option>{{'Select Minutes' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let minute of minutesSelect" [value]="minute.toString()">
+                                                        {{minute}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'EVENT_MANAGEMENT.Seconds' | translate}}</mat-label>
+                                                <mat-select formControlName="seconds" [(ngModel)]="defaultSeconds"
+                                                            (selectionChange)="setCheckpointDuration()">
+                                                    <mat-option>{{'Select Seconds' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let seconds of secondsSelect" [value]="seconds.toString()">
+                                                        {{seconds}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.CheckInPageMonitor' | translate}}</h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <iframe [src]="Webex_CheckIn_URL | safe:'resourceUrl'" width="100%" height="500"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkpoint-single">
+                                    <div class="check-label">
+                                        <h3>{{'EVENT_MANAGEMENT.ActiveCheckType' | translate}}</h3>
+                                    </div>
+                                    <div class="check-data row" *ngIf="otherCheckParamFlag || mandatoryCheckInOutFlag">
+                                        <div class="min-400 col-xl-6 col-xxl-3">
+                                            <div class="align-content-center custom-switch switch">
+                                                <div *ngIf="mandatoryCheckInOutFlag" class="switch-label">
+                                                    <mat-slide-toggle class="ml-10"
+                                                                      (change)="activeCheckType($event.checked,checkIn)"
+                                                                      [checked]="checked === checkIn"></mat-slide-toggle>
+                                                    {{'EVENT_MANAGEMENT.CheckIn' | translate}}
+                                                </div>
+                                                <div *ngFor="let i of otherCheckParam">
+                                                    <div *ngIf="otherCheckParamFlag" class="switch-label">
+                                                        <mat-slide-toggle class="ml-10"
+                                                                          (change)="activeCheckType($event.checked,'check'+i)"
+                                                                          [checked]="checked === 'check'+i"></mat-slide-toggle>
+                                                        {{ 'EVENT_MANAGEMENT.eventCheck' | translate }} {{i}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="mandatoryCheckInOutFlag" class="switch-label">
+                                                    <mat-slide-toggle class="ml-10" [checked]="checked === checkOut"
+                                                                      (change)="activeCheckType($event.checked,checkOut)"></mat-slide-toggle>
+                                                    {{'EVENT_MANAGEMENT.CheckOut' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center;margin-top: 10px;display: block;font-weight:bold"
+                                     *ngIf="!otherCheckParamFlag && !mandatoryCheckInOutFlag">
+                                    <div style="text-align: center;">{{'GENERAL.NoDataAvailable' | translate}}</div>
+                                </div>
+                            </div>
+                            <div class="step-form-bottom">
+                                <div>
+                                    <button (click)="back()" class="btn-style red-line-btn"
+                                            type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                </div>
+                                <div class="">
+                                    <button matStepperPrevious class="btn-style privious-btn" type="button">
+                                            <span
+                                                class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+                                    </button>
+                                    <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn"
+                                            (click)="saveCheckpointInfo(eventStepper, true)"
+                                            type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+                                    <button class="btn-style theme-btn"
+                                            type="submit">{{'GENERAL.Save&Finish' | translate}} <span
+                                        class="material-icons">arrow_forward</span></button>
+                                    <button class="btn-style theme-btn" type="button"
+                                            (click)="saveCheckpointInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+

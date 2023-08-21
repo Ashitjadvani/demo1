@@ -1,0 +1,19 @@
+@import '../../../styles.scss';
+
+@media (max-width :  $mobile){
+  .popup-footer .btn-wrapper {
+    display: block;
+  }
+
+  .popup-footer .btn-wrapper button {
+    min-width: initial;
+    margin: 0px 3px 5px;
+    padding: 10px 25px;
+    height: initial;
+    border-radius: 4px;
+  }
+
+  .popup-content .popup-footer {
+    padding: 15px;
+  }
+}

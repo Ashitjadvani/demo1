@@ -1,0 +1,100 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="space-5"></div>
+        <div *ngIf="!showLoader" class="control-container">
+            <div class="tab-actions">
+                <div class="action">
+                    <button mat-icon-button (click)="onTabSelected(0)">
+                        <i class="material-icons">settings_overscan</i>
+                    </button>
+                </div>
+                <div class="action">
+                    <button mat-icon-button (click)="onTabSelected(1)">
+                        <i class="material-icons">qr_code_2</i>
+                    </button>
+                </div>
+                <div class="action" *ngIf="this.currentCompany.greenpassSettings.abilitation">
+                    <button mat-icon-button (click)="onTabSelected(2)">
+                        <i class="material-icons color-green">qr_code</i>
+                    </button>
+                </div>
+            </div>
+            <mat-tab-group class="group-tab">
+                <mat-tab>
+                    <div class="qr-scanner-container" (swipe)="onSwipe($event)">
+                        <mat-form-field *ngIf="showCameraSelection" class="camera-selection">
+                            <mat-select placeholder="Camera Device" [(ngModel)]="currentCamera"
+                                (selectionChange)="onDeviceSelectChange($event)">
+                                <mat-option *ngFor="let device of availableDevices" [value]="device.type">
+                                    {{ device.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- <zxing-scanner #scanner class="qr-scanner" [(device)]="currentDevice" (permissionResponse)="onHasPermission($event)" (scanSuccess)="onCodeResult($event)"></zxing-scanner> -->
+                        <div class="scanner-view" *ngIf="getScannerView()">
+                            <fco-qr-scanner #scanner (scanSuccess)="onCodeResult($event)" [camera]="currentCamera">
+                            </fco-qr-scanner>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <div class="qr-container">
+                        <qr-code #qrcode class="qr-code" [value]="userQR" [level]="qrLevel" [size]="300"></qr-code>
+                        <button mat-flat-button color="primary" class="save-button no-round"
+                            (click)="onSaveQR(qrcode)">{{'QR SCANNER.SAVE QR'|translate}}</button>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="this.currentCompany.greenpassSettings.abilitation">
+                    <div class="green-pass-container">
+                        <div class="greenpass-fail" *ngIf="userGreenpassIsValid">
+                            <i class="material-icons valid-image">check</i>
+                            <div class="valid-text">
+                                <div *ngIf="validGreenpassName!=''">{{'QR SCANNER.NAME'|translate}}:    {{validGreenpassName}}</div>
+                                <div *ngIf="validGreenpassName!=''">{{'QR SCANNER.DATE OF BIRTH'|translate}}:    {{validGreenpassDateOfBirth}}</div>
+                                <div *ngIf="validGreenpassName==''">{{'QR SCANNER.VALID GREENPASS'|translate}}</div>
+                            </div>
+                            <mat-nav-list class="navigation-list">
+                                <a mat-list-item class="navigation-item" (click)="onUploadAnotherClick()">
+                                <mat-label class="item-text" mat-line>{{'QR SCANNER.REPEAT ACTION'|translate}}</mat-label>
+                                </a>
+                            </mat-nav-list>
+                        </div>
+                        <div class="greenpass-fail" *ngIf="!userGreenpassIsValid && userGreenpassInvalidReason=='NOT_FOUND'">
+                            <input id="upload-btn" #imageInput
+                            type="file"
+                            accept="image/*"
+                            (change)="onFileChosen($event)">
+                            {{'QR SCANNER.UPLOAD GREENPASS'|translate}}
+                            <div class="upload-button-container">
+                                <i class="material-icons qrcode-image">qr_code_2</i>
+                            </div>
+                            <div class="action-container">
+                                <label class="action-btn" (click)="onScan()">
+                                    <i class="material-icons size-50">photo_camera</i>
+                                </label>
+                                <label for="upload-btn" class="action-btn">
+                                    <i class="material-icons size-50">file_upload</i>
+                                </label>
+                            </div>
+                            <div class="description-txt">
+                                {{'QR SCANNER.GREENPASS DESCRIPTION'|translate}}
+                            </div>
+                        </div>
+                        <div class="greenpass-fail" *ngIf="!userGreenpassIsValid && userGreenpassInvalidReason=='NOT_VALID'">
+                            <i class="material-icons invalid-image">close</i>
+                            <div class="notvalid-text">{{'QR SCANNER.GREENPASS NOT VALID TODAY'|translate}}</div>
+                            <mat-nav-list class="navigation-list">
+                                <a mat-list-item class="navigation-item" (click)="onUploadAnotherClick()">
+                                    <mat-label class="item-text" mat-line>{{'QR SCANNER.REPEAT ACTION'|translate}}</mat-label>
+                                </a>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <mat-spinner *ngIf="showLoader" class="loader"></mat-spinner>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

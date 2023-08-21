@@ -1,0 +1,141 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+            <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.PUSH_NOTIFICATIONS'| translate}}</li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title]="'INSIGHTS_MENU.PUSH_NOTIFICATIONS'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'INSIGHTS_MENU.PUSH_NOTIFICATIONS'| translate}}</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+<!--                  <input (keyup)="onKeyUp($event)" [(ngModel)]="search" mat-input placeholder="Search Push Notification" />-->
+<!--                  <mat-icon matSuffix class="material-icons">search</mat-icon>-->
+
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Search Push Notification' | translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click)="resetSearch()">clear</mat-icon>
+                </div>
+                <button  class="btn-style" routerLink="add-edit-push-notification">
+                  <span class="material-icons">add</span>{{'Add Push Notification' | translate}}
+                </button>
+                <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                  <mat-icon >more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="deleteMultiPushNotifications()">
+                    <span>{{'GENERAL.Delete' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table #table [dataSource]="pushNotificationList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <!-- <ng-container matColumnDef="select">
+                  <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                    <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                  </th>
+                  <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                    <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                  </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;min-width:80px;max-width: 80px;">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;min-width:80px;max-width: 80px;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)"
+                                  [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <mat-tab-group>
+                  <ng-container matColumnDef="dateTime">
+                    <th (click)="changeSorting('createdAt', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width:200px;max-width: 200px;">
+                      {{'RECRUITING.DateandTime'| translate}} <span [ngClass]="{'down': sortKey === 'createdAt' && sortBy === '-1' , 'up': sortKey === 'createdAt' && sortBy === '1'}"><img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width:200px;max-width: 200px;">{{element.createdAt ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}</td>
+                  </ng-container>
+
+               <!--   <ng-container matColumnDef="type">
+                    <th (click)="changeSorting('type', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 200px;min-width:200px;">
+                        Type <span [ngClass]="{'down': sortBy === 'type' && sortKey === '-1' , 'up': sortBy === 'type' && sortKey === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 200px;min-width:200px;">
+                      {{element.type ? element.type: '-'}}
+                    </td>
+                  </ng-container>-->
+
+                  <ng-container matColumnDef="title">
+                    <th (click)="changeSorting('title', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width:200px;max-width: 300px;">
+                        {{'TABLE.Title' | translate}} <span [ngClass]="{'down': sortKey === 'title' && sortBy === '-1' , 'up': sortKey === 'title' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width:200px;max-width: 300px;text-transform: capitalize;">{{element.title ? element.title: '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="description">
+                    <th (click)="changeSorting('description', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 400px;min-width:400px;max-width: 400px;">
+                        {{'TABLE.Description' | translate}} <span [ngClass]="{'down': sortKey === 'description' && sortBy === '-1' , 'up': sortKey === 'description' && sortBy === '1'}" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 400px;min-width:400px;max-width: 400px;">{{element.description ? element.description : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;max-width: 100px;text-align: center">
+                      {{'TABLE.Action' | translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;max-width: 100px;">
+                      <div class="action-icons d-flex switch">
+                        <img src="assets/images/delete-action.svg" (click)="openAccountDeleteDialog(element.id, i, $event)" alt="">
+                      </div>
+                    </td>
+                  </ng-container>
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="pushNotificationDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: pushNotificationDisplayedColumns"></tr>
+              </table>
+            </div>
+            <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+            <div *ngIf="noRecordFound" class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value="5" selected >5</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="15">15</mat-option>
+                    <mat-option value="20">20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div> -->
+            <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

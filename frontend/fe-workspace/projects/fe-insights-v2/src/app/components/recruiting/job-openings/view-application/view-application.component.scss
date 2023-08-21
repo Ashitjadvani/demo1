@@ -1,0 +1,31 @@
+
+@import '../../../../../theme-color.scss';
+
+.job-image{
+    img{
+        max-width: 123px;
+    }
+}
+.qr-image{
+    max-width: 126px;
+    span{
+        display: block;
+        text-align: center;
+        color: $theme-color;
+        text-decoration: underline;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+}
+:host ::ng-deep .job-disc{
+    ul{
+        padding-left: 2rem !important;
+        li{
+            list-style: initial !important;
+        }
+    }
+}
+
+.details-listing.disabled-details {
+    opacity: 0.2;
+}

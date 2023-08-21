@@ -1,0 +1,44 @@
+<div class="main-container" [ngStyle]="{ 'background-color': backgroundColor }">
+    <mat-toolbar color="primary" (click)="onCameraClick()">
+        <app-header-bar class="main-header-bar"></app-header-bar>
+    </mat-toolbar>
+    <div class="page-container">
+        <div *ngIf="!showStatusBar" class="code-container">
+            <span class="spacer"></span>
+            <div *ngIf="showSplash" class="splash-info">
+                <h1 class="splash-info-text">NuNow Irina</h1>
+                <h1 class="splash-info-text">{{ welcomeMessage }}</h1>
+                <h1 class="splash-info-text">{{ actionMessage }}</h1>
+                <h1 class="splash-info-text">{{ dateTimeMessage }}</h1>
+                <h1 class="splash-info-text">{{ finalMessage }}</h1>
+            </div>
+            <div class="qr-container">
+                <qr-code [value]="siteQR" [level]="qrLevel" [size]="260"></qr-code>
+            </div>
+            <span class="spacer"></span>
+            <div class="site-info-container">
+                <img class="site-image" src="../../../../assets/images/domain.svg">
+                <div class="site-text">{{ siteText }}</div>
+                <div class="site-clock">{{ siteClock }}</div>
+                <div class="site-date">{{ siteDate }}</div>
+            </div>
+            <span class="spacer"></span>
+            <div class="scanner-container">
+                <mat-label *ngIf="showCameraSelection"> DeviceID: {{ this.deviceId }}</mat-label>
+                <mat-form-field *ngIf="showCameraSelection" class="camera-selection">
+                    <mat-select placeholder="Camera Device" [(ngModel)]="currentCamera" (selectionChange)="onDeviceSelectChange($event)">
+                        <mat-option *ngFor="let device of availableDevices" [value]="device.type">
+                            {{ device.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- <zxing-scanner #scanner class="qr-scanner" [(device)]="currentDevice"
+                    (permissionResponse)="onHasPermission($event)" (camerasFound)="onCamerasFoundHandler($event)"
+                    (scanSuccess)="onCodeResult($event)" (deviceChange)="onDeviceChange($event)"></zxing-scanner> -->
+                <fco-qr-scanner #scanner (scanSuccess)="onCodeResult($event)" [camera]="currentCamera"></fco-qr-scanner>
+            </div>
+            <span class="spacer"></span>
+        </div>
+        <div *ngIf="showStatusBar" class="site-status">{{ statusBarMessage }}</div>
+    </div>
+</div>

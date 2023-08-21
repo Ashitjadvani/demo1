@@ -1,0 +1,238 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="/quiz-survey/survey" class="breadcrumb-item">{{'Quiz/Survey.Survey' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page">{{'Quiz/Survey.SurveyDetails' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Quiz/Survey.Survey'" [routePath]="'/quiz-survey/survey'" [title3]="'Quiz/Survey.SurveyDetails'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="{{'Quiz/Survey.SurveyDetails' | translate}}" class="mt-5">
+                        <div class="box-style company-info">
+                            <div class="buttons-group">
+                                <button class="btn-style grey-btn" (click)="surveyEdit()">{{'GENERAL.Edit' | translate}}</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete' | translate}}</button>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box" style="width: 50%;">
+                                        <p>{{'Quiz/Survey.Title(English)' | translate}}</p>
+                                        <b style="text-transform: capitalize;">{{surveyDetails.title ? surveyDetails.title : '-'}}</b>
+                                    </div>
+                                    <!-- <div class="detail-box">
+                                        <p>{{'Quiz/Survey.Title(Italian)' | translate}}</p>
+                                        <b>{{surveyDetails.title ? surveyDetails.title : '-'}}</b>
+                                    </div> -->
+                                    <div class="detail-box" style="width: 50%;">
+                                        <p>{{'Quiz/Survey.Subtitle(English)' | translate}}</p>
+                                        <b style="text-transform: capitalize;">{{surveyDetails.subTitle ? surveyDetails.subTitle : '-'}}</b>
+                                    </div>
+                                    <!-- <div class="detail-box">
+                                        <p>{{'Quiz/Survey.Subtitle(Italian)' | translate}}</p>
+                                        <b>{{surveyDetails.subTitle ? surveyDetails.subTitle : '-'}}</b>
+                                    </div> -->
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <!-- <div class="detail-box">
+                                        <p>{{'Quiz/Survey.Category' | translate}}</p>
+                                        <b>{{surveyDetails.title ? surveyDetails.title : '-'}}</b>
+                                    </div> -->
+                                    <div class="detail-box" style="width: 50%;">
+                                      <p>{{'Quiz/Survey.Disclaimer' | translate}}</p>
+                                      <b>{{surveyDetails.disclaimer ? surveyDetails.disclaimer : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box" style="width: 50%;">
+                                      <p>{{'RECRUITING.Scope' | translate}}</p>
+                                      <b *ngIf="surveyDetails.scope === 'procurement'">{{'Quiz/Survey.Procurement' | translate}}</b>
+                                      <b *ngIf="surveyDetails.scope === 'recruitmentquiz'">{{'Quiz/Survey.RecruitmentQuiz' | translate}}</b>
+                                      <b *ngIf="surveyDetails.scope === 'recruitmentcustomfields'">{{'Quiz/Survey.RecruitmentCustomFields' | translate}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper bg-grey">
+                                  <div class="detail-box" style="width: 50%;">
+                                    <p>{{'Quiz/Survey.OnCompletion' | translate}}</p>
+                                    <b>{{surveyDetails.onCompletion ? surveyDetails.onCompletion : '-'}}</b>
+                                  </div>
+                                  <div class="detail-box" style="width: 50%;">
+                                    <p>{{'Quiz/Survey.Random Sequence' | translate}}</p>
+                                    <b>{{surveyDetails.random_sequence ? 'Yes' : 'No'}}</b>
+                                  </div>
+                                </div>
+
+                                <div class="detail-wrapper " >
+                                  <div class="detail-box" style="width: 50%;">
+                                    <p>{{'Quiz/Survey.StartDate' | translate}}</p>
+                                    <b>{{surveyDetails.start ? (surveyDetails.start |  date:'dd/MM/yyyy') : '-'}}</b>
+                                  </div>
+                                  <div class="detail-box" style="width: 50%;">
+                                      <p>{{'Quiz/Survey.EndDate' | translate}}</p>
+                                      <b>{{surveyDetails.end ? (surveyDetails.end |  date:'dd/MM/yyyy') : '-'}}</b>
+                                  </div>
+
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                  <div class="detail-box" style="width: 50%;">
+                                    <p>{{'Quiz/Survey.Privacy' | translate}}</p>
+                                    <ul *ngIf="surveyDetails?.privacy">
+                                      <li *ngFor="let privacyDetails of surveyDetails?.privacy"><b>{{privacyDetails ? (privacyDetails | translate) : '-'}}</b></li>
+
+                                    </ul>
+                                    <b *ngIf="surveyDetails?.privacy === null">-</b>
+                                  </div>
+                                </div>
+
+                                <!-- <div class="detail-wrapper">
+                                    <div class="detail-box job-image">
+                                        <p>{{'Quiz/Survey.AttachmentImage' | translate}}</p>
+                                        <img src="assets/images/view-survey.png" alt="uploaded image">
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </mat-tab>
+                  <mat-tab label="{{'Questions' | translate}}" *ngIf="questionData.length > 0">
+                    <div class="box-style company-info">
+<!--                      <div class="details-listing custom-field">-->
+
+<!--                        <button class="btn-style grey-btn" >{{'GENERAL.Edit'| translate}}</button>-->
+<!--                        <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>-->
+<!--                      </div>-->
+
+                      <div class="details-listing"*ngFor="let item of questionData;">
+                        <div class="number-tag" >
+                          <div class="question" >
+                            <h4>{{item.order}}</h4>
+                            <!--<span>{{item.question}}</span>-->
+                            <span>{{item.question_label}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                    <mat-tab label="{{'Quiz/Survey.Fit-Index Calc Management' | translate}}">
+                        <div class="table-content box-style company-info">
+                          <div class="table-heading">
+                            <h3 style="font-weight: 600">{{'Quiz/Survey.Fit-Index Calc Management' | translate}}</h3>
+                            <div class="search-form-wrapper">
+                              <div class="search-form">
+                                <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Quiz/Survey.SearchFit-Index' | translate}}" />
+                                <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                              </div>
+                              <!-- <button  class="btn-style" routerLink="add-edit-fit-index/0">
+                                <span class="material-icons">add</span>{{'Quiz/Survey.AddFit-Index' | translate}}
+                              </button> -->
+                            </div>
+                          </div>
+                          <div class="table-wrapper resource-color-table">
+                            <table [dataSource]="metricsData | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >>
+                              <mat-tab-group>
+                                <ng-container matColumnDef="metric">
+                                  <th  (click)="changeSorting('metrics_name', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                      {{'EXTRA_WORD.Matrics'| translate}}  <span
+                                      [ngClass]="{'down': sortBy === 'metrics_name' && sortKey === '-1' , 'up': sortBy === 'metrics_name' && sortKey === '1'}" >
+                                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                                       <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                                  </th>
+                                  <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                    {{element.metrics_name ? element.metrics_name : '-'}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="operator">
+                                  <th  *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                    {{'EXTRA_WORD.Operator'| translate}}
+                                      <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                                  </th>
+                                  <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                    {{element.operator ? element.operator : '-'}}
+                                  </td>
+                                </ng-container>
+                                <ng-container matColumnDef="value">
+                                  <th (click)="changeSorting('value', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                    {{'EXTRA_WORD.Value'| translate}}
+                                    <span
+                                    [ngClass]="{'down': sortBy === 'value' && sortKey === '-1' , 'up': sortBy === 'value' && sortKey === '1'}" >
+                                    <img alt="" src="assets/images/up-arrow.svg"></span>
+                                      <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                                  </th>
+                                  <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                    {{element.value ? element.value : '-'}}
+                                  </td>
+                                </ng-container>
+                                <ng-container matColumnDef="textResult">
+                                  <th (click)="changeSorting('result', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                    {{'EXTRA_WORD.TextResult'| translate}}
+                                    <span
+                                    [ngClass]="{'down': sortBy === 'result' && sortKey === '-1' , 'up': sortBy === 'result' && sortKey === '1'}" >
+                                    <img alt="" src="assets/images/up-arrow.svg"></span>
+                                      <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                                  </th>
+                                  <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                    {{element.result ? element.result : '-'}}
+                                  </td>
+                                </ng-container>
+                                <ng-container matColumnDef="scalarResult">
+                                  <th (click)="changeSorting('scalarResult', sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                    {{'EXTRA_WORD.ScalarResult'| translate}}
+                                    <span
+                                    [ngClass]="{'down': sortBy === 'scalarResult' && sortKey === '-1' , 'up': sortBy === 'scalarResult' && sortKey === '1'}" >
+                                    <img alt="" src="assets/images/up-arrow.svg"></span>
+                                      <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                                  </th>
+                                  <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                    {{element.scalarResult ? element.scalarResult : '-'}}
+                                  </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action">
+                                  <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                    {{'TABLE.Action'| translate}}
+                                  </th>
+                                  <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                    <div class="action-icons d-flex switch">
+                                      <img src="assets/images/edit-action.svg"  class="" alt="" (click)="editFitIndex(element.id)">
+                                      <img src="assets/images/delete-action.svg" (click)="fitIndexDeleteDialog(element.id)" alt="">
+                                    </div>
+                                  </td>
+                                </ng-container>
+                              </mat-tab-group>
+
+                              <tr mat-header-row *matHeaderRowDef="fitIndexDisplayedColumns"></tr>
+                              <tr mat-row *matRowDef="let element; columns: fitIndexDisplayedColumns"></tr>
+                            </table>
+                          </div>
+                          <div *ngIf="0 >= metricsData.length" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                          <div *ngIf="metricsData.length > 0 "  class="paginate-footer">
+                            <div class="page-item">
+                              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                              <mat-form-field appearance="fill">
+                                <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                                  <mat-option value='5'>5</mat-option>
+                                  <mat-option value='10'>10</mat-option>
+                                  <mat-option value='15'>15</mat-option>
+                                  <mat-option value='20'>20</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+                            </div>
+                            <div class="table-paginator">
+                              <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+                            </div>
+                          </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

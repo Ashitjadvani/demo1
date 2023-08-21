@@ -1,0 +1,18 @@
+<div class="full-page-container">
+    <div *ngIf="docIsPdf" class="pdf-viewer-container">
+        <pdf-viewer class="pdf-viewer" [src]="url" [original-size]="false" [autoresize]="true"></pdf-viewer>
+    </div>
+    <div *ngIf="docIsImage" class="pdf-viewer-container">
+        <div class="filename">{{currentTitle}}</div>
+        <img [src]='trustedUrl'>
+    </div>
+    <div *ngIf="docIsAudio" class="pdf-viewer-container">
+        <div class="filename">{{currentTitle}}</div>
+        <audio class="audio-player" [src]='trustedUrl' controls autoplay></audio>
+    </div>
+    <div *ngIf="docIsVideo" class="pdf-viewer-container">
+        <div class="filename">{{currentTitle}}</div>
+        <video class="video-player" [src]='trustedUrl' type='video/mp4' controls autoplay></video>
+    </div>
+
+</div>

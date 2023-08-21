@@ -1,0 +1,68 @@
+<div class="input-row">
+    <mat-form-field class="label-field">
+        <mat-label>{{'ADMIN DIALOGS.LABEL'|translate}}</mat-label>
+        <input matInput autocomplete="off" [(ngModel)]="currentTimeslot.name">
+    </mat-form-field>
+    <mat-form-field class="time-field">
+        <mat-label>{{'ADMIN DIALOGS.START TIME'|translate}}</mat-label>
+        <input matInput [ngxTimepicker]="pickerStartTime" autocomplete="off" [format]="24" [disableClick]="false"
+            [ngModel]="getTimeslotTime(true)" readonly>
+        <ngx-material-timepicker #pickerStartTime (timeSet)="setTimeslotTime(true, $event)"></ngx-material-timepicker>
+    </mat-form-field>
+    <mat-form-field class="time-field">
+        <mat-label>{{'ADMIN DIALOGS.END TIME'|translate}}</mat-label>
+        <input matInput [ngxTimepicker]="pickerEndTime" autocomplete="off" [format]="24" [disableClick]="false"
+            [ngModel]="getTimeslotTime(false)" readonly>
+        <ngx-material-timepicker #pickerEndTime (timeSet)="setTimeslotTime(false, $event)"></ngx-material-timepicker>
+    </mat-form-field>
+    <mat-form-field class="count-field">
+        <mat-label>{{'ADMIN DIALOGS.MAXPARALLELCHARGER'|translate}}</mat-label>
+        <input matInput [(ngModel)]="currentTimeslot.maxCount">
+    </mat-form-field>
+    <button mat-icon-button (click)="onAddTimeslot()" matTooltip="Add Timeslot" [disabled]="!isAddTimeslotEnabled()">
+        <i class="material-icons">
+            add_circle
+        </i>
+    </button>
+</div>
+
+<div class="timeslot-table-container">
+    <mat-table #table [dataSource]="Timeslots">
+        <ng-container matColumnDef="Label">
+            <mat-header-cell *matHeaderCellDef> {{'ADMIN DIALOGS.LABEL'|translate}}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="StartTime">
+            <mat-header-cell *matHeaderCellDef> {{'ADMIN DIALOGS.START TIME'|translate}}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.startTime | date:'HH:mm' }}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="EndTime">
+            <mat-header-cell *matHeaderCellDef> {{'ADMIN DIALOGS.END TIME'|translate}}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.endTime | date:'HH:mm' }}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="MaxCount">
+            <mat-header-cell *matHeaderCellDef> {{'ADMIN DIALOGS.MAXPARALLELCHARGER'|translate}}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.maxCount }}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Action" stickyEnd>
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index">
+                <button mat-icon-button (click)="onDeleteTimeslot(i, element)"
+                    matTooltip="{{'GENERAL.DELETE'|translate}}">
+                    <i class="material-icons" style="color: red">delete</i>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['Label', 'StartTime', 'EndTime', 'MaxCount', 'Action']; sticky: true">
+        </mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['Label', 'StartTime', 'EndTime', 'MaxCount', 'Action'];"></mat-row>
+    </mat-table>
+</div>

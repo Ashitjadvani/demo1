@@ -1,0 +1,120 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'ACCESS_CONTROL.Filter' | translate}}</h4>
+            <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterEventName' | translate}}</mat-label>
+                            <input type="text" autocomplete="off" formControlName="name" matInput name="name">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4" *ngIf="scopeId === null">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterEventScope' | translate}}</mat-label>
+                            <mat-select formControlName="scope" (selectionChange)="onSelectChangeUpdateText($event, 'scopeName')" >
+                                <mat-option *ngFor="let scope of scopes" [value]="scope.id">
+                                    {{ scope.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterCostCentre' | translate}}</mat-label>
+                            <mat-select formControlName="costCenter" (selectionChange)="onSelectChangeUpdateText($event, 'costCenterName')" >
+                                <mat-option *ngFor="let cost of costCenter" [value]="cost.id">
+                                    {{ cost.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                       <mat-form-field appearance="outline" class="element-full-width date-select">
+                          <mat-label>{{'EVENT_MANAGEMENT.FilterStartDate' | translate}}</mat-label>
+                          <input [(ngModel)]="startDate" formControlName="startDate" format='dd/MM/yyyy' [matDatepicker] [matDatepicker]="picker_1" matInput type="text" (dateChange)="startDateFn($event)"  >
+                          <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select"></mat-datepicker-toggle>
+                          <mat-datepicker #picker_1 (opened)="streamOpened()"></mat-datepicker>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                       <mat-form-field appearance="outline" class="element-full-width date-select">
+                          <mat-label>{{'EVENT_MANAGEMENT.FilterEndDate' | translate}}</mat-label>
+                          <input [(ngModel)]="endDate" formControlName="endDate" format='dd/MM/yyyy' [min]="this.filterListOfEventForm.get('startDate').value || today" [matDatepicker] [matDatepicker]="picker_2" matInput type="text" (dateChange)="endDateFn($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker_2" class="full-date-select"></mat-datepicker-toggle>
+                          <mat-datepicker #picker_2 (opened)="streamOpened()"></mat-datepicker>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label>{{'EVENT_MANAGEMENT.Mandatory_Check_in' | translate}}</mat-label>
+                          <mat-select >
+                             <mat-option  value="yes">{{'GENERAL.Yes' | translate}}</mat-option>
+                             <mat-option  value="no">{{'GENERAL.No' | translate}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label> {{'EVENT_MANAGEMENT.Type' | translate}}</mat-label>
+                          <mat-select formControlName="type">
+                             <mat-option>{{'Select Type' | translate}}</mat-option>
+                             <mat-option value="live">{{'EVENT_MANAGEMENT.Live' | translate}}</mat-option>
+                             <mat-option value="online">{{'EVENT_MANAGEMENT.Online' | translate}}</mat-option>
+                             <mat-option value="hybrid">{{'EVENT_MANAGEMENT.Hybrid' | translate}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterListOfEventForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label> {{'RECRUITING.Area' | translate}}</mat-label>
+                          <mat-select formControlName="area">
+                             <mat-option>{{'Select Area' | translate}}</mat-option>
+                             <mat-option *ngFor="let area of areaList" value="{{area.name}}">{{area.name | translate}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onClick(false)" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true)" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,99 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+            <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.LOG_AUDIT'| translate}}</li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title3]="'INSIGHTS_MENU.LOG_AUDIT'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'INSIGHTS_MENU.LOG_AUDIT'| translate}}</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Search Log Audits' | translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                </div>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table [dataSource]="logAuditList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+                  <ng-container matColumnDef="alertDate">
+                    <th (click)="changeSorting('timestamp', sortBy)"*matHeaderCellDef class="short-arrow"  mat-header-cell>
+<!--                        {{'ALERTS.Date'| translate}} -->
+                       {{'RECRUITING.DateandTime' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'timestamp' && sortBy === '-1' , 'up': sortKey === 'timestamp' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;">{{ element.timestamp ? (element.timestamp | date : 'dd/MM/yyyy HH:mm') : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="title">
+                    <th (click)="changeSorting('level', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+<!--                      {{'ALERTS.Title'| translate}}-->
+                      {{'INSIGHTS_PEOPLE_PAGE.Level' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'level' && sortBy === '-1' , 'up': sortKey === 'level' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 260px;min-width: 260px;">{{element.level ? element.level : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="publicationDate">
+                    <th (click)="changeSorting('user', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell >
+<!--                      {{'ALERTS.PublicationDate'| translate}} -->
+                      {{'User' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'user' && sortBy === '-1' , 'up': sortKey === 'user' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;width: 160px;min-width: 160px;">{{ element.user ? element.user  : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="view">
+                    <th (click)="changeSorting('message', sortBy)"*matHeaderCellDef class="short-arrow"  mat-header-cell  style="min-width: 300px;">
+<!--                      {{'ALERTS.View'| translate}} -->
+                      {{'Message' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'message' && sortBy === '-1' , 'up': sortKey === 'message' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: pre-line;min-width: 300px;">{{element.message  ? element.message : '-'}}</td>
+                  </ng-container>
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="alertsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: alertsDisplayedColumns"></tr>
+              </table>
+            </div>
+            <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div> -->
+            <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,102 @@
+<div class="table-content box-style company-info resource-wrapper">
+    <div class="table-heading m-30">
+        <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Resources' | translate}}</h3>
+        <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+    </div>
+    <div class="resources-content" *ngIf="this.resourcesInfoForm.value?.resources?.length == 0">
+        <h3>{{'EVENT_MANAGEMENT.YouHaventAddedResourceOverHere' | translate}}</h3>
+        <p>{{'EVENT_MANAGEMENT.SoPleaseAddTheResource' | translate}}</p>
+        <button class="btn-style green-btn" [matMenuTriggerFor]="newResources">{{'EVENT_MANAGEMENT.AddNewResource' | translate}}<mat-icon >more_vert</mat-icon></button>
+        <mat-menu #newResources="matMenu">
+            <button mat-menu-item (click)="addResourcesFields(0, 'fromAssets')">
+                <span class="resource-btn">{{'EVENT_MANAGEMENT.AddFromAssets' | translate}}</span>
+            </button>
+            <button mat-menu-item (click)="addResourcesFields(0,'customResource')">
+                <span class="resource-btn">{{'EVENT_MANAGEMENT.AddCustomResource' | translate}}</span>
+            </button>
+        </mat-menu>
+    </div>
+    <div class="step-form-bottom" *ngIf="this.resourcesInfoForm.value?.resources?.length == 0">
+        <div>
+            <button  routerLink="../../" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+        </div>
+        <div class="">
+            <button matStepperPrevious class="btn-style privious-btn" type="button">
+                <span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+            </button>
+            <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="checkResource(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+            <button class="btn-style theme-btn" (click)="checkResource(eventStepper, false)">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+            <button class="btn-style theme-btn" type="button" (click)="checkResource(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+        </div>
+    </div>
+    <form *ngIf="this.resourcesInfoForm.value?.resources?.length > 0" class="form-wrapper" (ngSubmit)="saveResourcesInfo(eventStepper, false)" [formGroup]="resourcesInfoForm">
+      <div formArrayName="resources">
+         <div class="row" *ngFor="let element of resourcesInfoForm.get('resources')?.controls; let i=index; last as isLast; first as isFirst" [formGroupName]="i">
+            <div *ngIf="element.value.assetType !==  null" class="col-xl-6 col-xxl-4">
+               <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                     <mat-label> {{'EVENT_MANAGEMENT.AssetType' | translate}}</mat-label>
+                     <mat-select formControlName="assetType" (selectionChange)="getResourceByAssetType(i, $event.value)">
+                        <mat-option>{{'EVENT_MANAGEMENT.SelectAssetType' | translate}}</mat-option>
+                        <mat-option *ngFor="let asset of assetTypeList" value="{{asset.type}}">{{asset.type}}</mat-option>
+                     </mat-select>
+                      <!--<mat-error *ngIf="resourcesInfoForm.controls[i]?.assetType.errors?.required">{{'EVENT_MANAGEMENT.PleaseSelectAssetType' | translate}}</mat-error>-->
+                      <mat-error class="class-error">{{'EVENT_MANAGEMENT.PleaseSelectAssetType' | translate}}</mat-error>
+                  </mat-form-field>
+               </div>
+            </div>
+            <div *ngIf="element.value.resourceName !==  null" class="col-xl-6 col-xxl-4">
+               <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                     <mat-label> {{'EVENT_MANAGEMENT.AddResource' | translate}}</mat-label>
+                     <mat-select formControlName="resourceName">
+                        <mat-option>{{'EVENT_MANAGEMENT.SelectResource' | translate}}</mat-option>
+                        <mat-option *ngFor="let resource of resourceByAssetType[i]" value="{{resource.code + '- '+ resource.description}}">{{resource.code}} {{'- ' + resource.description}}</mat-option>
+                     </mat-select>
+                      <mat-error class="class-error">{{'EVENT_MANAGEMENT.PleaseSelectResource' | translate}}</mat-error>
+                  </mat-form-field>
+               </div>
+            </div>
+            <div *ngIf="element.value.custome !==  null" class="col-xl-6 col-xxl-6">
+               <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                     <mat-label>{{'EVENT_MANAGEMENT.CustomResource' | translate}}</mat-label>
+                     <input formControlName="custome" matInput type="text" name="custome" (keydown)="space($event)">
+                     <mat-error class="class-error">{{'EVENT_MANAGEMENT.PleaseEnterCustomResource' | translate}}</mat-error>
+                  </mat-form-field>
+               </div>
+            </div>
+            <div class="col-xl-6 col-xxl-4">
+               <button class="btn-style red-btn mb-30" type="button" (click)="deleteResourcesInfoRow(i)">
+                  {{'Delete'| translate}}
+               </button>
+               <!--<button *ngIf="isLast" class="btn-style green-btn" type="button" (click)="addResourcesInfoRow(i + 1)" [matMenuTriggerFor]="newAddResources">-->
+               <button *ngIf="isLast" class="btn-style green-btn mb-30" type="button" [matMenuTriggerFor]="newAddResources">
+                  <span class="material-icons">add</span>{{'EVENT_MANAGEMENT.AddNewResource'| translate}}
+               </button>
+               <mat-menu #newAddResources="matMenu">
+                  <button mat-menu-item (click)="addResourcesFields(i + 1, 'fromAssets')">
+                     <span class="resource-btn">{{'EVENT_MANAGEMENT.AddFromAssets' | translate}}</span>
+                  </button>
+                  <button mat-menu-item (click)="addResourcesFields(i + 1, 'customResource')">
+                     <span class="resource-btn">{{'EVENT_MANAGEMENT.AddCustomResource' | translate}}</span>
+                  </button>
+               </mat-menu>
+            </div>
+         </div>
+      </div>
+      <div class="step-form-bottom">
+         <div>
+            <button  (click)="back()" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+         </div>
+         <div class="">
+            <button matStepperPrevious class="btn-style privious-btn" type="button">
+               <span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+            </button>
+             <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="saveResourcesInfo(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+             <button class="btn-style theme-btn" type="button" (click)="saveResourcesInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+         </div>
+      </div>
+   </form>
+</div>

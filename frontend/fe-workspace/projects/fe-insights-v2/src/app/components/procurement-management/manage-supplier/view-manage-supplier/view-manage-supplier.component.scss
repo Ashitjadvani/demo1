@@ -1,0 +1,41 @@
+.pdf-viewer {
+  height: 500px;
+  width: 100%;
+}
+.company-info .company-details .detail-wrapper .detail-box{
+  display: block;
+  padding-left: 15px;
+}
+.doc-preview-title {display: flex;align-items: center;justify-content: space-between;    margin-bottom: 30px;}
+
+.hover-content{
+  display: inline-block;
+  position: relative;
+  &:hover{
+    .hover-table{
+      display: block;
+    }
+  }
+}
+.hover-table{
+  position: absolute;
+  // left: 100%;top: 0px;
+  display: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  @media (max-width:1400px) {
+    top: initial;
+    left: -50%;
+    bottom: 30px;
+  }
+}
+.quiz-tab-content{
+  overflow-x: visible ;
+}
+.hover-content-wrap-new{
+  min-height: calc(100vh - 350px);
+  @media (max-width:1400px) {
+    overflow: visible;
+  }
+}

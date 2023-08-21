@@ -1,0 +1,74 @@
+<form class="user-param-box" name="insertSurveyForm" [formGroup]="insertSurveyForm" novalidate
+  (ngSubmit)="onSaveInsertedData()" #myform="ngForm">
+  <div class="input-row">
+    <span class="vspan-5"></span>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>Question</mat-label>
+      <input formControlName="question" name="question" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.question.errors?.required">
+        Question is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>SubTitle</mat-label>
+      <input formControlName="subtitle" name="subtitle" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.subtitle.errors?.required">
+        SubTitle is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+  </mat-form-field>
+    <mat-form-field appearance="outline" class="element-full-width">
+      <mat-label>Privacy</mat-label>
+      <mat-select name="privacy" formControlName="privacy" required>
+        <mat-option *ngFor="let privacyTypes of surveyPrivacy" [value]="privacyTypes.value">
+          {{ privacyTypes.valueName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="element-full-width">
+      <mat-label>Type</mat-label>
+      <mat-select name="questionType" formControlName="questionType" required>
+        <mat-option *ngFor="let queTypes of questionTypes" [value]="questionTypes.value">
+          {{ queTypes.valueName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+<!-- <section class="input-row">
+  <div>
+    <div>
+      <table mat-table  style="width: 100%">
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef>Order</th>
+          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+            {{ element.order}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="question">
+          <th mat-header-cell *matHeaderCellDef>Question</th>
+          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+            {{ element.question}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef style="width: 130px; min-width: 130px; max-width: 130px">
+           action
+          </th>
+          <td mat-cell *matCellDef="let element" style="
+              white-space: nowrap;
+              width: 130px;
+              min-width: 130px;
+              max-width: 130px;
+            ">
+            <button class="btn-style light-red-btn sm-btn">Action</button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: userColumns"></tr>
+      </table>
+    </div>
+  </div>
+</section> -->

@@ -1,0 +1,119 @@
+@import "../../../../../styles.scss";
+
+.group-tab {
+  margin-top: -48px;
+  height: calc(100% + 48px);
+}
+
+.general-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 40px;
+}
+/*:host ::ng-deep .mat-column-ID {
+  flex: 1 1 100px;
+  font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Name {
+  flex: 1 1 80px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Surname {
+  flex: 1 1 80px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Profile {
+  max-width: 100px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Area {
+  flex: 1 1 110px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Role {
+  flex: 1 1 110px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Safety {
+  flex: 1 1 80px;
+  font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Action {
+  flex: 1 1 80px;
+  font-size: 0.9em;
+}
+
+
+:host ::ng-deep .mat-tab-body {
+  height: 100% !important;
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+  height: 100% !important;
+}
+
+:host ::ng-deep .mat-tab-body-content {
+  height: 100% !important;
+}
+
+:host ::ng-deep .timepicker .timepicker__header {
+  background: #4b6ba2;
+}*/
+
+::ng-deep .timepicker {
+  .timepicker__header {
+    background-color: #4b6ba2 !important;
+  }
+
+  .clock-face__clock-hand {
+    background-color: #4b6ba2 !important;
+
+    &::after {
+      background-color: #4b6ba2 !important;
+    }
+
+    &::before {
+      border-color: #4b6ba2 !important;
+    }
+  }
+
+  .clock-face__number {
+    > span.active {
+      background-color: #4b6ba2 !important;
+    }
+  }
+
+  button:not(.timepicker-dial__item) {
+    color: #4b6ba2 !important;
+  }
+}
+
+.people-card {
+  width: 90%;
+  height: 600px
+}
+
+.form-row{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+
+  .mat-form-field{
+    margin-right: 10px;
+    flex: 1 1 20%;
+  }
+}
+
+
+.tb_applications{
+  td{
+    border: 1px solid #CCCCCC;
+  }
+}
+
+table.mat-table {
+  display: table;
+  width:100%;
+}

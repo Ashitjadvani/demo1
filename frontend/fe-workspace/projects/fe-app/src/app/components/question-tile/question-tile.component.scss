@@ -1,0 +1,59 @@
+@import "../../../theme/theme.scss";
+
+.action-tile-container {
+    height: auto;
+    // padding: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    .action-tile {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        border: 0px solid mat-color($mat-primary, main);
+        border-radius: 15px;
+        background-color: #c4e8b4;
+        box-shadow: 2px 2px 1px lightgrey;
+
+        .tile-top-line {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+
+            .image-container {
+                padding: 15px;
+
+                .image {
+                    font-size: 64px;
+                    background-size: 64px 64px;
+                    height: 64px;
+                    width: 64px;
+                }
+            }
+
+            .gauge-container {
+                flex-grow: 1;
+                display: flex;
+            }
+
+            .question-label {
+                width: 100%;
+                font-size: larger;
+                padding: 20px;
+            }
+        }
+
+        .tile-bottom-line {
+            display: flex;
+            flex-direction: row;
+            padding: 10px;
+            align-self: flex-end;
+
+            .tile-button {
+                
+            }
+        }
+    }
+}

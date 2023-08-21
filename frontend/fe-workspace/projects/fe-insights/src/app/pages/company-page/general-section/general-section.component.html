@@ -1,0 +1,28 @@
+<div class="general-container">
+    <div class="card width-50">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.COMPANY' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.NAME' | translate}}" [(ngModel)]="currentCompany.name">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.ADDRESS' | translate}}" [(ngModel)]="currentCompany.address">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.CITY' | translate}}" [(ngModel)]="currentCompany.city">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.CAP' | translate}}" [(ngModel)]="currentCompany.cap">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.VAT' | translate}}" [(ngModel)]="currentCompany.vatNumber">
+            </mat-form-field>
+        </div>
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+        </div>
+    </div>
+</div>

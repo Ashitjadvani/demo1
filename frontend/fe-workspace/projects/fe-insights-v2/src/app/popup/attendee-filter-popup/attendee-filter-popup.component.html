@@ -1,0 +1,88 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'ACCESS_CONTROL.Filter' | translate}}</h4>
+                <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center" style="min-height: 400px;">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterScope' | translate}}</mat-label>
+                            <mat-select formControlName="scope" multiple (selectionChange)="onSelectChangeUpdateText($event, 'scopeName')">
+                                <mat-option *ngFor="let item of scopeList" [value]="item.name">{{item.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterTypology' | translate}}</mat-label>
+                            <mat-select formControlName="typology" multiple (selectionChange)="onSelectChangeUpdateText($event, 'typologyName')">
+                                <mat-option *ngFor="let item of typologyList" [value]="item.value">{{item.viewValue}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'EVENT_MANAGEMENT.FilterArea' | translate}}</mat-label>
+                            <mat-select formControlName="area" multiple (selectionChange)="onSelectChangeUpdateText($event, 'areaName')">
+                                <mat-option *ngFor="let item of areaList" [value]="item.name">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label>{{'EVENT_MANAGEMENT.FilterRole' | translate}}</mat-label>
+                          <mat-select formControlName="role" multiple (selectionChange)="onSelectChangeUpdateText($event, 'roleName')">
+                             <mat-option *ngFor="let item of roleList"  [value]="item">{{item}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label> {{'EVENT_MANAGEMENT.FilterJobTitle' | translate}}</mat-label>
+                          <mat-select formControlName="jobTitle" multiple (selectionChange)="onSelectChangeUpdateText($event, 'jobTitleName')">
+                             <mat-option *ngFor="let item of jobTitleList" [value]="item">{{item}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterForm">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                          <mat-label> {{'EVENT_MANAGEMENT.FilterSite' | translate}}</mat-label>
+                          <mat-select formControlName="site" multiple (selectionChange)="onSelectChangeUpdateText($event, 'siteName')">
+                             <mat-option *ngFor="let item of siteList" [value]="item.id">{{item.name}}</mat-option>
+                          </mat-select>
+                       </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onClick(false)" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true)" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</section>

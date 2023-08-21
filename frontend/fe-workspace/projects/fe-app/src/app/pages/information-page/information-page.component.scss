@@ -1,0 +1,138 @@
+
+:host ::ng-deep.mat-tab-header {
+    display: none;
+}
+
+.padding-tile {
+    visibility: hidden;
+}
+
+.padding-tile {
+    visibility: hidden;
+}
+
+::ng-deep.mat-tab-body-wrapper {
+    height: 100% !important;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 1px lightgrey;
+    border: 1px solid lightgray;
+
+    .info-header {
+        padding: 20px;
+        border-radius: 15px 15px 0px 0px;    
+    }
+
+    .info-date {
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .info-title {
+        margin-top: 20px;
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .info-description {
+        padding: 20px;
+        // flex-grow: 1;
+    }
+
+    .info-attach {
+        display: flex;
+        flex-grow: 1;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 20px;
+    }
+
+    .info-commands {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .confirm-button {
+        margin-top: 20px;
+    }
+
+
+    .download-text {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 10px;
+    }
+}
+
+.info-empty {
+    margin-top: 30px;
+    text-align: center;
+    font-size: x-large;
+}
+
+.categories-tab-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+audio {
+    margin-top:10px;
+    width:100%;
+}
+video {
+    margin-top:10px;
+    width:100%;
+}
+
+.info-tile-container {
+    height: 160px;
+    flex-basis: 50%;
+    color: green;
+    cursor: pointer;
+}
+.info-tab-group {
+    height: 100% !important;
+}
+
+.filename {
+    width:100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.categoryname {
+    width:100%;
+    padding-top: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.pdf-viewer-container {
+    height: 100%;
+    display: block; 
+
+    .pdf-viewer {
+        height: 100%;
+    }
+}
+

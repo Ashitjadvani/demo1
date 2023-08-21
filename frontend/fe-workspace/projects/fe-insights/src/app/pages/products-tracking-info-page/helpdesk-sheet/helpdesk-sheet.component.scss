@@ -1,0 +1,44 @@
+.navigation-list {
+    width: 100%;
+    max-width: 250px;
+    height: 50vh;
+
+    .navigation-item {
+        border-radius: 10px;
+        margin-top: 10px;
+        height: 80px;
+
+        .item-text {
+            height: 40px;
+            line-height: 40px;
+            font-weight: 500;
+            white-space: normal !important;
+            text-overflow: unset !important;
+        }
+    }
+
+    .info-tile {
+        margin-bottom: 20px;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .white-text {
+        color: white;
+    }
+
+    .info-text {
+        padding: 10px;
+        font-weight: 500;
+        color: #0640A9;
+    }
+
+    .info-background {
+        background-color: #EBEBEB;
+    }
+
+    .gray-background {
+        background-color: #FF0000;
+    }
+}

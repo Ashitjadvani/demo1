@@ -1,0 +1,207 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+        <app-table-data-view [tableDataSet]="justifications" [columnTemplates]="tableColumnTemplates"
+            [rowActions]="tableRowActions" [mainActions]="tableMainActions" [filterFunction]="filterCallback">
+        </app-table-data-view>
+    </mat-tab>
+    <mat-tab>
+        <div *ngIf="currentJustification" class="general-container"> 
+            <div class="card width-50 height-750">
+                <div class="card-header">
+                    <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.Add justification' | translate}}</div>
+                </div>
+                <div class="card-body">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.NAME' | translate}} *"
+                            [(ngModel)]="currentJustification.name">
+                    </mat-form-field>
+
+                    <div class="input-row">
+                        <mat-checkbox [(ngModel)]="this.currentJustification.enable" [ngModelOptions]="{standalone: true}">
+                            <div class="name-abilitation">{{'INSIGHTS_PEOPLE_PAGE.Enable' | translate}}</div>
+                        </mat-checkbox>
+                    </div> 
+
+                    <hr *ngIf="this.currentJustification.enable">
+                    <div class="input-row" *ngIf="this.currentJustification.enable">
+                        <mat-form-field>
+                            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Event Type' | translate}}" [(ngModel)]="this.currentJustification.eventType">
+                                <mat-option value="NoWorking">
+                                    {{'INSIGHTS_PEOPLE_PAGE.No Working' | translate}}
+                                </mat-option>
+                                <mat-option value="ExtraWorking">
+                                    {{'INSIGHTS_PEOPLE_PAGE.Extra Working' | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="input-row" *ngIf="this.currentJustification.enable">
+                        <mat-checkbox [(ngModel)]="this.currentJustification.scheduleAbilitation" [ngModelOptions]="{standalone: true}">
+                            <div class="name-abilitation">{{'INSIGHTS_PEOPLE_PAGE.Scheduling Abilitation' | translate}}</div>
+                        </mat-checkbox>
+                    </div> 
+
+                    <div class="input-row" *ngIf="this.currentJustification.enable">
+                        <mat-checkbox [(ngModel)]="this.currentJustification.sendEmail" [ngModelOptions]="{standalone: true}">
+                            <div class="name-abilitation">{{'INSIGHTS_PEOPLE_PAGE.Send Email' | translate}}</div>
+                        </mat-checkbox>
+                    </div> 
+
+                    <div class="input-row-abilitation" *ngIf="this.currentJustification.enable">
+                        <div class="name-silence-assent-time">{{'INSIGHTS_PEOPLE_PAGE.Days For Request' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-50px">
+                            <input matInput type="number" [(ngModel)]="this.currentJustification.daysToRequest" min="0" max="60">
+                        </mat-form-field>
+                    </div> 
+
+                    <div class="input-row" *ngIf="this.currentJustification.enable">
+                        <mat-checkbox [(ngModel)]="this.currentJustification.approvationAbilitation" [ngModelOptions]="{standalone: true}">
+                            <div class="name-abilitation">{{'INSIGHTS_PEOPLE_PAGE.Approvation Abilitation' | translate}}</div>
+                        </mat-checkbox>
+                    </div> 
+
+                    <hr *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+
+                    <div class="input-row" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                        <mat-checkbox [(ngModel)]="this.currentJustification.silenceAssentAbilitation" [ngModelOptions]="{standalone: true}">
+                            <div class="name-abilitation">{{'INSIGHTS_PEOPLE_PAGE.Silence Assent' | translate}}</div>
+                        </mat-checkbox>
+                    </div> 
+
+                    <!--div class="input-row-abilitation" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.silenceAssentAbilitation">
+                        <div class="name-silence-assent-time">{{'INSIGHTS_PEOPLE_PAGE.Silence Assent Time' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-50px">
+                            <input matInput type="number" [(ngModel)]="this.currentJustification.silenceAssentTimeHours" min="0" max="480">
+                        </mat-form-field>
+                    </div--> 
+
+                    <hr *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+
+                                        
+                    <div class="input-row" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                        <div class="names">{{'INSIGHTS_PEOPLE_PAGE.Responsable' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30">
+                            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Responsable' | translate}}" (selectionChange)="onFigureChange($event, APPROVAL_TYPE.RESPONSABLE)"
+                            [(ngModel)]="selectedRespFigure">
+                                <mat-option *ngFor="let figure of this.allFigures" value="{{ figure }}">
+                                    {{ figure }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30" *ngIf="selectedRespFigure=='User'">
+                            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Responsable' | translate}}"  [ngModel]="getCurrentPerson(APPROVAL_TYPE.RESPONSABLE)">
+                            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchResponsable" (click)="searchResponsable.toggle()">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <sat-popover #searchResponsable forceAlignment hasBackdrop>
+                                <div class="people-search-popup">
+                                    <app-people-picker [people]="allPeople" (selectedPerson)="onPersonSelected(APPROVAL_TYPE.RESPONSABLE, $event); searchResponsable.toggle()"></app-people-picker>
+                                </div>
+                            </sat-popover>    
+                        </mat-form-field>
+                        <mat-form-field class="width-30" *ngIf="selectedRespFigure=='Email'">
+                            <input matInput placeholder="{{'GENERAL.EMAIL' | translate}}" [(ngModel)]="currentJustification.approvalResponsable.email">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="input-row" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                        <div class="names">{{'INSIGHTS_PEOPLE_PAGE.Accountable' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30">
+                            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Accountable' | translate}}" (selectionChange)="onFigureChange($event, APPROVAL_TYPE.ACCOUNTABLE)"
+                            [(ngModel)]="selectedAccFigure">
+                                <mat-option *ngFor="let figure of this.allFigures" value="{{ figure }}">
+                                    {{ figure }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30" *ngIf="selectedAccFigure=='User'">
+                            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Accountable' | translate}}"  [ngModel]="getCurrentPerson(APPROVAL_TYPE.ACCOUNTABLE)">
+                            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchAccountable" (click)="searchAccountable.toggle()">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <sat-popover #searchAccountable forceAlignment hasBackdrop>
+                                <div class="people-search-popup">
+                                    <app-people-picker [people]="allPeople" (selectedPerson)="onPersonSelected(APPROVAL_TYPE.ACCOUNTABLE, $event); searchAccountable.toggle()"></app-people-picker>
+                                </div>
+                            </sat-popover>    
+                        </mat-form-field>
+                        <mat-form-field class="width-30" *ngIf="selectedAccFigure=='Email'">
+                            <input matInput placeholder="{{'GENERAL.EMAIL' | translate}}" [(ngModel)]="currentJustification.approvalAccountable.email">
+                        </mat-form-field>
+                    </div>
+
+ 
+                    <div class="input-row" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                        <div class="names">{{'INSIGHTS_PEOPLE_PAGE.Consulted' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30">
+                            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Consulted' | translate}}" (selectionChange)="onFigureChange($event, APPROVAL_TYPE.CONSULTED)"
+                            [(ngModel)]="selectedConsFigure">
+                                <mat-option *ngFor="let figure of this.allFigures" value="{{ figure }}">
+                                    {{ figure }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30" *ngIf="selectedConsFigure=='User'">
+                            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Consulted' | translate}}"  [ngModel]="getCurrentPerson(APPROVAL_TYPE.CONSULTED)">
+                            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchConsulted" (click)="searchConsulted.toggle()">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <sat-popover #searchConsulted forceAlignment hasBackdrop>
+                                <div class="people-search-popup">
+                                    <app-people-picker [people]="allPeople" (selectedPerson)="onPersonSelected(APPROVAL_TYPE.CONSULTED, $event); searchConsulted.toggle()"></app-people-picker>
+                                </div>
+                            </sat-popover>    
+                        </mat-form-field>
+                        <mat-form-field class="width-30" *ngIf="selectedConsFigure=='Email'">
+                            <input matInput placeholder="{{'GENERAL.EMAIL' | translate}}" [(ngModel)]="currentJustification.approvalConsulted.email">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="input-row" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                        <div class="names">{{'INSIGHTS_PEOPLE_PAGE.Informed' | translate}}:</div>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30">
+                            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.Informed' | translate}}" (selectionChange)="onFigureChange($event, APPROVAL_TYPE.INFORMED)"
+                            [(ngModel)]="selectedInfoFigure">
+                                <mat-option *ngFor="let figure of this.allFigures" value="{{ figure }}">
+                                    {{ figure }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="width-5"></span>
+                        <mat-form-field class="width-30" *ngIf="selectedInfoFigure=='User'">
+                            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Informed' | translate}}"  [ngModel]="getCurrentPerson(APPROVAL_TYPE.INFORMED)">
+                            <button mat-button matSuffix mat-icon-button [satPopoverAnchor]="searchInformed" (click)="searchInformed.toggle()">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                            <sat-popover #searchInformed forceAlignment hasBackdrop>
+                                <div class="people-search-popup">
+                                    <app-people-picker [people]="allPeople" (selectedPerson)="onPersonSelected(APPROVAL_TYPE.INFORMED, $event); searchInformed.toggle()"></app-people-picker>
+                                </div>
+                            </sat-popover>    
+                        </mat-form-field>
+                        <mat-form-field class="width-30" *ngIf="selectedInfoFigure=='Email'">
+                            <input matInput placeholder="{{'GENERAL.EMAIL' | translate}}" [(ngModel)]="currentJustification.approvalInformed.email">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

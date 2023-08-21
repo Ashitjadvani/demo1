@@ -1,0 +1,50 @@
+<div class="main-bar">
+    <div class="main-bar-card">
+        <img src="./assets/images/logo-nunow.svg" class="logo" (click)="onLogoClick()">
+
+        <div class="label-container" (click)="onLogoutClick()">
+            <div class="label blue-color">Ciao</div>
+            <div class="label blue-color">{{ loggedUserName }}</div>
+        </div>
+    
+        <!--
+        <button mat-icon-button class="logout-button" (click)="onLogoutClick()">
+            <i class="material-icons logout-icon blue-color">logout</i>
+        </button>
+        -->
+        <button mat-icon-button class="profile-button" (click)="onProfileClick()">
+            <i class="material-icons bar-icon blue-color profile-icon">person</i>
+        </button>
+    </div>
+</div>
+
+<!--
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <button mat-icon-button (click)="onHomeClick()">
+            <i class="theme-icon large home-circle"></i>
+        </button>
+        <button [ngStyle]="{ 'visibility': ShowBack ? 'visible' : 'hidden' }" mat-icon-button (click)="onBackClick()">
+            <i class="theme-icon large back"></i>
+        </button>
+
+        <span class="span-spacer"></span>
+        
+        <img src="./assets/images/logo-white.svg" class="agos-logo" (click)="onLogoClick()">
+        <span class="span-spacer"></span>
+        
+        <button mat-icon-button (click)="onQrScanClick()">
+            <i class="theme-icon large qrcode-scan-white"></i>
+        </button>
+        
+        <button mat-icon-button (click)="onLogoutClick()">
+            <i class="theme-icon large logout"></i>
+        </button>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row class="main-header">
+        <div class="main-header-title">{{ loggedUserName }}</div>
+    </mat-toolbar-row>
+    
+</mat-toolbar>
+-->

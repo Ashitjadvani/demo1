@@ -1,0 +1,62 @@
+<div class="user-param-box">
+    <div class="input-first-row">
+        <mat-form-field class="width-30">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.SELECT ACCESS LEVEL' | translate}}" [(ngModel)]="currentEditPerson.accessControlLevel">
+                <mat-option [value]="ACCESS_CONTROL_LEVEL.NONE">
+                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS NONE' | translate}}
+                </mat-option>
+                <mat-option [value]="ACCESS_CONTROL_LEVEL.PASSEPARTOUT">
+                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSEPARTOUT' | translate}}
+                </mat-option>
+                <mat-option [value]="ACCESS_CONTROL_LEVEL.GROUP">
+                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS GROUP' | translate}}
+                </mat-option>
+                <mat-option [value]="ACCESS_CONTROL_LEVEL.SINGLE_PASSAGES">
+                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSAGES' | translate}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button  mat-fab class="action-button" matTooltip="{{'ACCESS_CONTROL.ViewUserQrCodes' | translate}}" (click)="onViewCodes()">
+            <i class="material-icons font-size">manage_search</i>
+        </button>
+        <button  mat-fab class="action-button" matTooltip="{{'ACCESS_CONTROL.RegenerateQrCode' | translate}}" (click)="onRegenerateCode()">
+            <i class="material-icons font-size">replay_circle_filled</i>
+        </button>
+    </div>
+    <div class="input-row">
+        <div *ngIf="currentEditPerson.accessControlLevel==ACCESS_CONTROL_LEVEL.NONE" class="Label">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS NONE' | translate}}</div>
+        <div *ngIf="currentEditPerson.accessControlLevel==ACCESS_CONTROL_LEVEL.PASSEPARTOUT" class="Label">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS PASSEPARTOUT' | translate}}</div>
+        <div *ngIf="currentEditPerson.accessControlLevel==ACCESS_CONTROL_LEVEL.SINGLE_PASSAGES" class="passages-flex">
+            <ng-container *ngFor="let siteF of sites">
+                <div class="select-passages" *ngIf="siteF.accessControlEnable">
+                    <div class="label-passages">{{siteF.name}}</div>
+                    <div class="check-list">
+                        <mat-checkbox *ngFor="let passage of siteF.accessControlPassages" [checked]="checkPassage(passage)" (change)="checkChanged($event, passage)" [ngModelOptions]="{standalone: true}">
+                            <div class="checkbox">{{passage.name}}</div>
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </ng-container>
+            <!--div class="div1">div1</div>
+            <div class="div2">div2</div-->
+        </div> 
+        <div *ngIf="currentEditPerson.accessControlLevel==ACCESS_CONTROL_LEVEL.GROUP" class="passages-flex">
+            <!--div class="label-passages">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS GROUP' | translate}}</div>
+            <div class="check-list">
+                <mat-checkbox *ngFor="let group of site.accessControlPassageGroups" [checked]="checkGroup(group)" (change)="checkGroupChanged($event, group)" [ngModelOptions]="{standalone: true}">
+                    <div class="checkbox">{{group.name}}</div>
+                </mat-checkbox>
+            </div-->
+            <ng-container *ngFor="let siteF of sites">
+                <div class="select-passages" *ngIf="siteF.accessControlEnable">
+                    <div class="label-passages">{{siteF.name}}</div>
+                    <div class="check-list">
+                        <mat-checkbox *ngFor="let group of siteF.accessControlPassageGroups" [checked]="checkGroup(group)" (change)="checkGroupChanged($event, group)" [ngModelOptions]="{standalone: true}">
+                            <div class="checkbox">{{group.name}}</div>
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

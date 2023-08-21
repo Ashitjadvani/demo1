@@ -1,0 +1,46 @@
+<h2 mat-dialog-title><b>{{ currentData.isModify ? ('ADMIN DIALOGS.MODIFYACCOUNT' | translate) : ('ADMIN DIALOGS.ADDACCOUNT' |
+    translate) }}</b></h2>
+
+<mat-dialog-content>
+<div class="dialog-container">
+    <mat-form-field class="full-width">
+        <input matInput placeholder="person" [formControl]="peopleFC" [(ngModel)]="selectedPerson" [matAutocomplete]="autoPerson">
+        <mat-autocomplete #autoPerson="matAutocomplete" [displayWith]="displaySelectedUser">
+            <mat-option *ngFor="let person of people | async" [value]="person">
+                <span>{{ person.name }} {{ person.surname }}</span>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput placeholder="userId" [(ngModel)]="currentData.userAccount.userId">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-select placeholder="authentication method" [(ngModel)]="selectedAuthMethod" [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let ap of availableAuthProviders" [value]="ap">{{ ap.name }}</mat-option>
+        </mat-select>        
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput [type]="!showPassword ? 'password' : ''" placeholder="password" [(ngModel)]="currentData.userAccount.password" [disabled]="!needPassword()">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onToggleShowPassword()">
+            <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput [type]="!showPassword ? 'password' : ''" placeholder="confirm password" [(ngModel)]="confirmPassword" [disabled]="!needPassword()">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onToggleShowPassword()">
+            <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+    </mat-form-field>
+
+</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+<button mat-flat-button class="action-button" color="primary"
+    (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+<button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()" cdkFocusInitial
+    (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+</mat-dialog-actions>

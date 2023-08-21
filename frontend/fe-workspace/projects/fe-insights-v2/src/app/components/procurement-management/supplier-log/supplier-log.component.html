@@ -1,0 +1,212 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+          <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.Supplier_log' | translate}}</li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [title3]="'INSIGHTS_MENU.Supplier_log'">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="common-tabbing manage-supplier-tab">
+        <div class="table-content box-style company-info">
+          <div class="table-heading">
+            <h3 style="font-weight: 600">
+              {{'INSIGHTS_MENU.Supplier_log' | translate}}
+            </h3>
+            <div class="search-form-wrapper">
+              <div class="search-form">
+                <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Procurement_Management.SearchSupplier' | translate}}" />
+                <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrapper resource-color-table">
+            <table class="table custom-table">
+              <tr class="header-row">
+                <th class="header" (click)="changeSorting('serviceCategory')">
+                  {{'Procurement_Management.ServiceCategory' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('companyName')">
+                  {{'Procurement_Management.CompanyName' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('createdAt')">
+                  {{'Procurement_Management.CreatedOn' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('updatedAt')">
+                  {{'Procurement_Management.UpdatedOn' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header">{{'Procurement_Management.Status' | translate}}</th>
+              </tr>
+              <tbody *ngFor="let element of serviceList; let i = index">
+                <tr class="table-row-not-expanded">
+                  <td class="cell" (click)="element.isExpanded = !element.isExpanded">
+                    <div>{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</div>
+                  </td>
+                  <td (click)="element.isExpanded = !element.isExpanded">
+                    {{element.companyName ? element.companyName : '-'}}
+                  </td>
+                  <td (click)="element.isExpanded = !element.isExpanded">
+                    {{ (element.createdAt | date : 'dd/MM/yyyy HH:mm') ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                  </td>
+                  <td (click)="element.isExpanded = !element.isExpanded">
+                    {{ (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') ? (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                  </td>
+                  <td (click)="element.isExpanded = !element.isExpanded">
+                    <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageEng' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                           disabled>
+                      {{ element.statusName}}
+                    </label>
+                    <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageIT' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                           disabled>
+                      {{ element.statusItalyName }}
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="custom-table-content">
+                    <div *ngIf="element.isExpanded" class="expanded-panel">
+                      <div class="table-container">
+                        <table class="table">
+                          <tr class="header-row">
+                            <th class="header">header 1</th>
+                            <th class="header">header 2</th>
+                            <th class="header">header 3</th>
+                          </tr>
+                          <tr class="table-row">
+                            <td class="cell">1</td>
+                            <td class="cell">2</td>
+                            <td class="cell">3</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngIf="noRecordFound" class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select (selectionChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                    <mat-option [value]=5>5</mat-option>
+                    <mat-option [value]=10>10</mat-option>
+                    <mat-option [value]=15>15</mat-option>
+                    <mat-option [value]=20>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrapper resource-color-table" style="display: none">
+            <table
+              [dataSource]="serviceList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }"
+              mat-table style="width: 100%">
+              <ng-container matColumnDef="ServiceCategory">
+                <th (click)="changeSorting('serviceCategory')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                  {{'Procurement_Management.ServiceCategory' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell class="p-0" *matCellDef="let element" style="max-width: 300px;min-width: 200px" >
+                  <span *ngIf="!element.isExpired && !element.willExpired" [style.borderLeftColor]="'transparent'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="!element.isExpired && element.willExpired" [style.borderLeftColor]="'#F8A14F'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="element.isExpired && !element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="element.isExpired && element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="CompanyName">
+                <th (click)="changeSorting('companyName')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                  {{'Procurement_Management.CompanyName' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td *matCellDef="let  element" mat-cell style="white-space: nowrap;">
+                  {{element.companyName ? element.companyName : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdAt">-->
+                <th (click)="changeSorting('createdAt')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                  {{'Procurement_Management.CreatedOn' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                  {{ (element.createdAt | date : 'dd/MM/yyyy HH:mm') ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="updatedAt">
+                <th (click)="changeSorting('updatedAt')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                  {{'Procurement_Management.UpdatedOn' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                  {{ (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') ? (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Status">
+                <th *matHeaderCellDef mat-header-cell>{{'Procurement_Management.Status' | translate}}</th>
+                <td mat-cell *matCellDef="let element">
+                  <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageEng' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                         disabled>
+                    {{ element.statusName}}
+                  </label>
+                  <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageIT' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                         disabled>
+                    {{ element.statusItalyName }}
+                  </label>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ActiveInactiveSupplier">
+                <th *matHeaderCellDef mat-header-cell> {{'Procurement_Management.Active_Inactive_Supplier' | translate}}</th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element.status === 1 || element.status === 2">
+                    <mat-slide-toggle [checked]="element.status === 1 ? true : false" class="custom-switch-style"></mat-slide-toggle>
+                  </ng-container>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ViewDetails">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                  {{'TABLE.ViewDetails' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                  <button class="btn-style table-btn theme-line-btn sm-btn"
+                          routerLink="view-manage-supplier/{{element.id}}">
+                    {{'TABLE.ViewDetails' | translate}}
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns"></tr>
+            </table>
+            <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+          </div>
+          <!--<div *ngIf="noRecordFound" class="paginate-footer">
+            <div class="page-item">
+              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+              <mat-form-field appearance="fill">
+                <mat-select (selectionChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                  <mat-option [value]=5>5</mat-option>
+                  <mat-option [value]=10>10</mat-option>
+                  <mat-option [value]=15>15</mat-option>
+                  <mat-option [value]=20>20</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="table-paginator">
+              <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

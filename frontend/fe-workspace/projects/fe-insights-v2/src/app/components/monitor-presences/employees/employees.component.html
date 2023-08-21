@@ -1,0 +1,288 @@
+<div class="recruiting-dashboard">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="client-chart">
+        <div style="display:flex; flex-direction:row; justify-content: space-between">
+          <h3 class="mb-30 mt-0">{{'MONITOR_PRESENCES.QEmployees' | translate}} <span class="refresh-btn" (click)="getData()" matTooltip="Refresh"><mat-icon>autorenew</mat-icon></span></h3>
+          <button class="btn-style theme-btn" style="margin-top:-8px;margin-bottom:22px" type="button" (click)="onSettingsClick()">
+            <span class="material-icons" style="margin-right: 10px">settings</span>{{'MONITOR_PRESENCES.Settings' | translate}}
+          </button>
+        </div>
+        <div class="row">
+          <div *ngIf="periodType=='Monthly'" class="col">
+            <p style="margin-top:-20px; font-size:25px; font-weight:600; padding-bottom:15px">{{getSelectedMonthYear()}}</p>
+          </div>
+          <div *ngIf="periodType=='Daily'" class="col">
+            <p style="margin-top:-20px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedDate | date:'dd/MM/yyyy'}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngIf="selectedCity!='' && selectedSiteId==''" class="col">
+            <p style="margin-top:-35px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedCity}}</p>
+          </div>
+          <div *ngIf="selectedCity!='' && selectedSiteId!=''" class="col">
+            <p style="margin-top:-35px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedSiteName}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col statistics-vertical" style="padding-top:20px; max-width: 600px;" *ngIf="isFunctionAvailable('MonitorPresences/EmployeesAttendance')">
+            <div class="chart-group-wrapper procurement" style="height:100%">
+              <div class="chart-box box-style " >
+                <div class="chart-header" style="padding: 0px 0px 30px 0px !important; height:86px !important">
+                  <h4>{{'EmployeeAttendance' | translate}}
+                    <ng-container *ngIf="selectedSiteId!=''"> {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedCity!='' && selectedSiteId==''"> {{selectedCity}}</ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'"> {{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </h4>
+                </div>
+                <div *ngIf="periodType=='Monthly'" class="chart-header">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Day' | translate}}</mat-label>
+                    <mat-select [(ngModel)]="totals">
+                      <mat-option *ngFor="let total of monthlyTotals" [value]="total.totals">
+                        <ng-container *ngIf="total.label">{{total.label | translate}}</ng-container>
+                        <ng-container *ngIf="total.labelDate">{{common.getDayOfWeekTranslatedFromDate(total.labelDate) | translate}} {{total.labelDate | date:'dd/MM/yyyy'}}</ng-container>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="statistics-box">
+                  <div *ngFor="let total of totals" class="statistic-content row">
+                    <div class="manage-content col" style="cursor:auto !important; min-width:300px; width:300px">
+                      <div class="statistic-info">
+                        <div style="font-size: 26px">{{total.label | translate}}</div>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;">
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{total.value}}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col statistics-vertical" style="padding-top:20px; width:800px" *ngIf="isFunctionAvailable('MonitorPresences/EmployeesCharts')">
+            <div class="chart-group-wrapper" style="height:100%;">
+              <div class="chart-box box-style" style="padding-top: 30px !important; padding-bottom: 30px !important; border-radius: 20px !important;"> 
+                <div class="chart-header" style="padding: 0px 0px 30px 0px !important">
+                  <h4>{{'Charts' | translate}}
+                    <ng-container *ngIf="selectedSiteId!=''"> {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedCity!='' && selectedSiteId==''"> {{selectedCity}}</ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'"> {{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </h4>
+                  <!--button class="btn-style theme-btn" style="max-width:60px; min-width:60px;" (click)="downloadChartsPdf()">
+                    <span class="material-icons" style="margin-right:0px">file_download</span>
+                  </button-->
+                </div>
+                <div *ngIf="periodType=='Monthly'" class="chart-header">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Day' | translate}}</mat-label>
+                    <mat-select [(ngModel)]="selectedChart">
+                      <mat-option *ngFor="let chart of charts" [value]="chart">
+                        <ng-container *ngIf="chart.chartName">{{chart.chartName | translate}}</ng-container>
+                        <ng-container *ngIf="chart.chartNameDate">{{common.getDayOfWeekTranslatedFromDate(chart.chartNameDate) | translate}} {{ chart.chartNameDate | date:'dd/MM/yyyy'}}</ng-container>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div id="chartsPdf" #chartsPdf>
+                  <div class="chart-header">
+                    <ul *ngIf="selectedChart" class="chart-details">
+                      <li *ngFor="let chartData of selectedChart.chartData" style="margin-bottom:0px">{{chartData.label | translate}}</li>
+                    </ul>
+                    <!--div *ngIf="periodType=='Monthly'" class="chart-tools">
+                      <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onChartTabChanged($event)">
+                        <mat-tab label="{{'Hourly' | translate}}"></mat-tab>
+                        <mat-tab label="{{'Daily' | translate}}"></mat-tab>
+                      </mat-tab-group>
+                    </div-->
+                  </div>
+                  <div *ngIf="selectedChart" class="table-wrapper resource-color-table" style="padding-top:30px; padding-bottom:30px; max-width: 1000px;">
+                    <canvas id="totalChart" baseChart class="chart"
+                      [datasets]="selectedChart.chartData"
+                      [labels]="selectedChart.chartLabels"
+                      [options]="chartOptions"
+                      [legend]="chartLegend"
+                      [plugins]="chartPlugins"
+                      [colors]="chartColors"
+                      [chartType]="chartType">
+                    </canvas>
+                  </div>
+                  <div style="font-size:20px">
+                    <ng-container *ngIf="selectedChart">
+                      <ng-container *ngIf="selectedChart.chartName=='Totale'">Dipendenti - </ng-container>
+                      <ng-container *ngIf="selectedChart.chartName && selectedChart.chartName!='Totale'">{{selectedChart.chartName | translate}} - </ng-container>
+                      <ng-container *ngIf="selectedChart.chartNameDate">{{common.getDayOfWeekTranslatedFromDate(selectedChart.chartNameDate) | translate}} {{ selectedChart.chartNameDate | date:'dd/MM/yyyy'}} - </ng-container>
+                      <ng-container *ngIf="selectedSiteId!=''">{{selectedSiteName}} - </ng-container>
+                      <ng-container *ngIf="selectedCity!='' && selectedSiteId==''">{{selectedCity}} - </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'">{{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="isFunctionAvailable('MonitorPresences/EmployeesReport')">
+          <div class="col statistics-vertical" style="padding-top:20px;">
+            <div class="chart-group-wrapper" style="height:100%;">
+              <div class="chart-box box-style" style="padding-top: 30px !important; padding-bottom: 30px !important; border-radius: 20px !important;"> 
+                <div class="row">
+                  <div class="col-9">
+                    <div class="common-tabbing-popup">
+                      <mat-tab-group mat-stretch-tabs (selectedTabChange)="onTabChange($event)" [selectedIndex]="tabIndex">
+                        <mat-tab label="{{'OfficeWorking' | translate}}"></mat-tab>
+                        <mat-tab label="{{'SmartWorking' | translate}}"></mat-tab>
+                        <mat-tab label="{{'NoWorking' | translate}}"></mat-tab>
+                      </mat-tab-group>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="search-form-wrapper">
+                      <div class="search-form">
+                        <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                        <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'ACCESS_CONTROL.SearchBadge'| translate}}" />
+                        <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="periodType=='Monthly'" class="row">
+                  <div class="col">
+                    <div class="common-tabbing-popup">
+                      <mat-tab-group mat-stretch-tabs (selectedTabChange)="onDayTabChange($event)" [selectedIndex]="tabDayIndex">
+                        <mat-tab *ngFor="let day of officeWorkingList" label="{{common.getDayOfWeekTranslatedFromDate(day.day) + ' ' + day.dayNum}}"></mat-tab>
+                      </mat-tab-group>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="table-wrapper resource-color-table">
+                      <table *ngIf="tableDataFiltered.length > 0" class="table custom-table" >
+                        <tr class="header-row">
+                          <th style="max-width: 10px;"></th>
+                          <th *ngIf="tabIndex == 2" (click)="changeSorting('info',sortKey)" class="header">
+                            Info <span [ngClass]="{'down': sortBy === 'info' && sortKey === '-1' , 'up': sortBy === 'info' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'info'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'info'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th *ngIf="tabIndex == 0" (click)="changeSorting('site',sortKey)" class="header">
+                            {{'Site' | translate}} <span [ngClass]="{'down': sortBy === 'site' && sortKey === '-1' , 'up': sortBy === 'site' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'site'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'site'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th (click)="changeSorting('name', sortBy)" class="header" style="min-width:260px">
+                            {{'Name' | translate}} <span [ngClass]="{'down': sortBy === 'name' && sortKey === '-1' , 'up': sortBy === 'name' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'name'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'name'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th (click)="changeSorting('start', sortBy)" class="header">
+                            <ng-container *ngIf="tabIndex != 2">{{'StartWorkTime' | translate}} </ng-container><ng-container *ngIf="tabIndex == 2">{{'StartTime' | translate}} </ng-container>
+                            <span [ngClass]="{'down': sortBy === 'start' && sortKey === '-1' , 'up': sortBy === 'start' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'start'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'start'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th *ngIf="tabIndex != 2" (click)="changeSorting('lunchStart', sortBy)" class="header">
+                            {{'StartLunch' | translate}} <span [ngClass]="{'down': sortBy === 'lunchStart' && sortKey === '-1' , 'up': sortBy === 'lunchStart' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'lunchStart'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'lunchStart'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th *ngIf="tabIndex != 2" (click)="changeSorting('lunchEnd', sortBy)" class="header">
+                            {{'EndLunch' | translate}} <span [ngClass]="{'down': sortBy === 'lunchEnd' && sortKey === '-1' , 'up': sortBy === 'lunchEnd' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'lunchEnd'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'lunchEnd'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th (click)="changeSorting('end', sortBy)" class="header">
+                            <ng-container *ngIf="tabIndex != 2">{{'EndWorkTime' | translate}} </ng-container><ng-container *ngIf="tabIndex == 2">{{'EndTime' | translate}} </ng-container>
+                            <span [ngClass]="{'down': sortBy === 'end' && sortKey === '-1' , 'up': sortBy === 'end' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'end'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'end'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th (click)="changeSorting('duration', sortBy)" class="header">
+                            <ng-container *ngIf="tabIndex != 2">{{'WorkDuration' | translate}} </ng-container><ng-container *ngIf="tabIndex == 2">{{'Duration' | translate}} </ng-container>
+                            <span [ngClass]="{'down': sortBy === 'duration' && sortKey === '-1' , 'up': sortBy === 'duration' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'duration'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'duration'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th *ngIf="tabIndex != 2" (click)="changeSorting('userHours', sortBy)" class="header">
+                            {{'ContractHours' | translate}} <span [ngClass]="{'down': sortBy === 'userHours' && sortKey === '-1' , 'up': sortBy === 'userHours' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'userHours'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'userHours'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                          <th *ngIf="tabIndex != 2" (click)="changeSorting('minutesDifference', sortBy)" class="header">
+                            {{'MinutesDifference' | translate}} <span [ngClass]="{'down': sortBy === 'minutesDifference' && sortKey === '-1' , 'up': sortBy === 'minutesDifference' && sortKey === '1'}" >
+                              <img *ngIf="sortBy == 'minutesDifference'" alt="" src="assets/images/up-arrow.svg">
+                              <img *ngIf="sortBy != 'minutesDifference'" alt="" src="assets/images/up-arrow-grey.svg">
+                            </span>
+                          </th>
+                        </tr>
+                        <tbody *ngFor="let element of tableDataPaginated | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }; let i = index">
+                          <tr>
+                            <td class="p-0" style="max-width: 10px;height:75px">
+                              <span *ngIf="checkValidWork(element.minutesDifference)" [style.borderLeftColor]="'#00A042'" class="border-types" style="white-space: nowrap;"></span>
+                              <span *ngIf="!checkValidWork(element.minutesDifference)" [style.borderLeftColor]="'#FF0000'" class="border-types" style="white-space: nowrap;"></span>                       
+                            </td>
+                            <td *ngIf="tabIndex == 2">{{element.detail ? element.detail : '-'}}</td>
+                            <td *ngIf="tabIndex == 0">{{element.siteName ? element.siteName : '-'}}</td>
+                            <td>{{ element.userName ? element.userName : '-' }}</td>
+                            <td>{{ element.start ? (element.start | date:'dd/MM/yyyy HH:mm:ss'):'-'}}</td>
+                            <td *ngIf="tabIndex != 2">{{ element.lunchStart ? (element.lunchStart | date:'dd/MM/yyyy HH:mm:ss'):'-'}}</td>
+                            <td *ngIf="tabIndex != 2">{{ element.lunchEnd ? (element.lunchEnd | date:'dd/MM/yyyy HH:mm:ss'):'-'}}</td>
+                            <td>{{ element.end ? (element.end | date:'dd/MM/yyyy HH:mm:ss'):'-'}}</td>
+                            <td>{{ element.duration ? element.duration : '-' }}</td>
+                            <td *ngIf="tabIndex != 2">{{ element.userHours ? '0' + element.userHours + ':00' : '-' }}</td>
+                            <td *ngIf="tabIndex != 2">{{ element.minutesDifference ? element.minutesDifference : '-' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="tableDataFiltered.length == 0" style="width:100%; text-align:center">{{'NoResult' | translate}}</div>
+                    </div>
+                    <ng-container *ngIf="tableDataFiltered">
+                      <div *ngIf="tableDataFiltered.length > 0" class="paginate-footer">
+                        <div class="page-item">
+                          <!--h3>{{'TABLE.Items_per_page' | translate}}</h3-->
+                          <mat-form-field appearance="fill">
+                            <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                              <mat-option value='5'>5</mat-option>
+                              <mat-option value='10'>10</mat-option>
+                              <mat-option value='15'>15</mat-option>
+                              <mat-option value='20'>20</mat-option>
+                              <mat-option value='30'>30</mat-option>
+                              <mat-option value='40'>40</mat-option>
+                              <mat-option value='50'>50</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+                        </div>
+                        <div class="table-paginator">
+                          <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

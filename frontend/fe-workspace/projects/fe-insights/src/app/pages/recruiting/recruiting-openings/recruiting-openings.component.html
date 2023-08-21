@@ -1,0 +1,366 @@
+<mat-tab-group #tabgroup class="group-tab">
+  <mat-tab [label]="'RECRUITING.JOB_OPENINGS' | translate">
+    <!--[tableDataSet]="this.elements$ | async" (onFilterUpdate)="this.getFilteredElements($event)"-->
+    <app-table-data-view [tableDataSet]="jobsTableData" [columnTemplates]="tableColumnTemplates"
+      [rowActions]="tableRowActions" [mainActions]="tableMainActions" [filteredValue]="filteredValueTxt"
+      [filteredValueShow]="true">
+
+    </app-table-data-view>
+  </mat-tab>
+  <mat-tab [label]="'RECRUITING.JOB_OPENING_DETAIL' | translate" *ngIf="showDetail">
+    <form id="frmDetail" [formGroup]="frmDetail" (ngSubmit)="onSubmit($event)">
+      <mat-tab-group #tabgroup class="group-tab">
+        <mat-tab [label]="'RECRUITING.JOB_OPENING_DETAIL' | translate">
+          <div class="general-container">
+            <mat-card class="detail-card card">
+              <mat-card-header class="card-header url-header">
+                <div>{{titleCard}}<span *ngIf="frmDetail.value.description">: {{frmDetail.value.description}}</span>
+                </div>
+                <div class="copy-url" *ngIf="JOB_URL">
+                  <div [cdkCopyToClipboard]="JOB_URL" (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}
+                  </div>
+                </div>
+              </mat-card-header>
+              <mat-card-content class="card-body">
+                <div class="form-row">
+                  <div>
+                    <mat-label>{{'RECRUITINGTXT.UploadJobImage' | translate}}</mat-label>
+                    <div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
+                    <div><img style="width: 200px" [src]="url" *ngIf="url"></div>
+                    <p>
+                      <input type="file" accept="image/jpg ,image/svg ,image/png , image/jpeg"
+                        (change)="selectFile($event)" [disabled]="viewMode">
+                    </p>
+                  </div>
+
+                </div>
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label>{{'RECRUITINGTXT.Scope' | translate}}</mat-label>
+                    <mat-select formControlName="scope" name="scope" matInput (ngModelChange)="onChangeScope($event)"
+                      type="text" maxlength="150" required>
+                      <mat-option *ngFor="let opt of peopleScopes" [value]="opt.name">{{opt.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="frmDetail.controls.scope.errors?.required">
+                      {{'RECRUITINGTXT.ScopeIsRequired' | translate}} Scope
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>{{'RECRUITINGTXT.Area' | translate}}</mat-label>
+                    <mat-select formControlName="area" name="area" matInput type="text" maxlength="150" required>
+                      <mat-option *ngFor="let opt of peopleAreas" [value]="opt.id">{{opt.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="frmDetail.controls.area.errors?.required">
+                      {{'RECRUITINGTXT.AreaIsRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field [style.width.%]="50">
+                    <mat-label>{{'RECRUITINGTXT.JobTitle' | translate}}</mat-label>
+                    <input matInput placeholder="{{'JOB_OPENING.JobTitle' | translate}}" formControlName="description"
+                      name="description" type="text" maxlength="150" autocomplete="off" required />
+                    <mat-error *ngIf="frmDetail.controls.description.errors?.required">
+                      {{'RECRUITINGTXT.TitleRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-row">
+                  <p>{{'JOB_OPENING.DESCRIPTION' | translate}}</p>
+                  <!--                    <ckeditor [editor]="Editor" data="" formControlName="longDescription"></ckeditor>-->
+                  <angular-editor [config]="config" formControlName="longDescription"></angular-editor>
+                  <!--<mat-form-field class="width-100">
+                    <mat-label>Description</mat-label>
+                    &lt;!&ndash;<textarea matInput matTextareaAutosize placeholder="description" appearance="legacy" maxRows="15"
+                              matAutosizeMaxRows="15" matAutosizeMinRows="15"
+                              formControlName="longDescription" name="description" type="text" maxlength="150"
+                              required></textarea>&ndash;&gt;
+                    <ckeditor [editor]="Editor" data="" formControlName="longDescription" ></ckeditor>
+                    <mat-error *ngIf="frmDetail.controls.longDescription.errors?.required">
+                      description is required!
+                    </mat-error>
+                  </mat-form-field>-->
+                </div>
+                <div class="form-row">
+                  <div class="form-row">
+                    <p>{{'RECRUITINGTXT.MessageShowComplete' | translate}}</p>
+                    <!-- <ckeditor [editor]="Editor" data="" formControlName="successMessage"></ckeditor> -->
+                    <angular-editor [config]="config" formControlName="successMessage"></angular-editor>
+                  </div>
+                  <!--<mat-form-field class="width-100">
+                    <mat-label>{{'RECRUITINGTXT.MessageShowComplete' | translate}}</mat-label>
+                    <textarea matInput matTextareaAutosize placeholder="successMessage" appearance="legacy" maxRows="15"
+                              matAutosizeMaxRows="15" matAutosizeMinRows="15"
+                              formControlName="successMessage" name="message" matInput type="text" maxlength="150"
+                              required></textarea>
+                    <mat-error *ngIf="frmDetail.controls.successMessage.errors?.required">
+                      message is required!
+                    </mat-error>
+                  </mat-form-field>-->
+                </div>
+                <div class="form-row">
+                  <mat-form-field class="date-select">
+                    <mat-label>{{'JOB_OPENING.START'|translate}}</mat-label>
+                    <input matInput [max]="this.frmDetail.get('end').value" [matDatepicker]="start_date"
+                      placeholder="{{'JOB_OPENING.START' | translate}}" appearance="legacy" formControlName="start"
+                      name="start" matInput type="text" readonly maxlength="150" required>
+                    <mat-error *ngIf="frmDetail.controls.start.errors?.required">
+                      {{'RECRUITINGTXT.StartDateRequired' | translate}}
+                    </mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                    <mat-datepicker #start_date></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field class="date-select">
+                    <mat-label>{{'JOB_OPENING.END'|translate}}</mat-label>
+                    <input matInput [min]="this.frmDetail.get('start').value" [matDatepicker]="end_date"
+                      placeholder="{{'JOB_OPENING.END' | translate}}" appearance="legacy" formControlName="end"
+                      name="end" matInput type="text" maxlength="150">
+                    <mat-error *ngIf="frmDetail.controls.end.errors?.required">
+                      {{'RECRUITINGTXT.EndDateRequired' | translate}}
+                    </mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+                    <mat-datepicker #end_date></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>{{'JOB_OPENING.STATUS'|translate}}</mat-label>
+                    <mat-select formControlName="status" name="status" matInput type="text" maxlength="150" required>
+                      <mat-option *ngFor="let opt of jobOpeningStatus" [value]="opt.id">{{'EXTRA_WORD.' + opt.name |
+                        translate}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="frmDetail.controls.status.errors?.required">
+                      {{'RECRUITINGTXT.StatusRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>{{'JOB_OPENING.SITE'|translate}}</mat-label>
+
+                    <mat-select formControlName="site" name="site" matInput type="text" maxlength="150"
+                      (ngModelChange)="changeSiteName($event)" multiple>
+                      <mat-option *ngFor="let opt of sites" [value]="opt">{{opt}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="frmDetail.controls.site.errors?.required">
+                      {{'RECRUITINGTXT.SiteRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label>{{'JOB_OPENING.TYPE'|translate}}</mat-label>
+                    <mat-select formControlName="type">
+                      <mat-option *ngFor="let opt of jobOpeningType" [value]="opt.id">{{'EXTRA_WORD.' + opt.name |
+                        translate}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="frmDetail.controls.type.errors?.required">
+                      {{'RECRUITINGTXT.TypeRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field [style.width.%]="35">
+                    <mat-label>{{'RECRUITINGTXT.Address' | translate}}</mat-label>
+                    <input matInput placeholder="{{'RECRUITINGTXT.Address' | translate}}" autocomplete="off"
+                      formControlName="address" name="address" type="text" maxlength="150" />
+                    <mat-error *ngIf="frmDetail.controls.address.errors?.required">
+                      {{'RECRUITINGTXT.AddressRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field [style.width.%]="35">
+                    <mat-label>{{'RECRUITINGTXT.City' | translate}}</mat-label>
+                    <input matInput placeholder="{{'RECRUITINGTXT.City' | translate}}" autocomplete="off"
+                      formControlName="city" name="city" type="text" maxlength="150" />
+                    <mat-error *ngIf="frmDetail.controls.city.errors?.required">
+                      {{'RECRUITINGTXT.CityRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-row">
+                  <mat-form-field>
+                    <mat-label> {{'RECRUITINGTXT.NoOfOpening' | translate}}</mat-label>
+                    <input matInput placeholder="{{'EXTRA_WORD.noOfOpening' | translate}}" formControlName="noOfOpening"
+                      name="noOfOpening" type="text" autocomplete="off" maxlength="150" />
+                    <mat-error *ngIf="frmDetail.controls.noOfOpening.errors?.required">
+                      {{'RECRUITINGTXT.NoOfOpeningRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field [style.width.%]="50">
+                    <mat-label> {{'RECRUITINGTXT.TotalExperience' | translate}}</mat-label>
+                    <input matInput placeholder="{{'EXTRA_WORD.totalExperience' | translate}}"
+                      formControlName="totalExperience" name="total experience" autocomplete="off" type="text"
+                      maxlength="150" />
+                    <mat-error *ngIf="frmDetail.controls.totalExperience.errors?.required">
+                      {{'RECRUITINGTXT.TotalExperienceRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="quiz-options">
+                  <span class="quiz-tag">{{'RECRUITINGTXT.QUIZVISIBLE' | translate}} </span>
+                  <mat-radio-group aria-label="Select an option" formControlName="isCandidateRead">
+                    <mat-radio-button value="yes">{{'GENERAL.YES' | translate}}</mat-radio-button>
+                    <mat-radio-button value="no">{{'GENERAL.NO' | translate}}</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmDetail.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'JOB_OPENING.MANDATORY_FIELDS' | translate">
+          <div class="general-container">
+            <mat-card class="detail-card card">
+              <mat-card-header class="card-header">
+                {{titleCard}} <span *ngIf="frmDetail.value.description">: {{frmDetail.value.description}}</span>
+              </mat-card-header>
+              <mat-card-content class="card-body">
+                <div class="form-row" formArrayName="mandatoryFields">
+                  <ng-container class="width-25" *ngFor="let item of mandatoryFields.controls; let i = index"
+                    [formGroupName]="i">
+                    <mat-checkbox class="width-25" formControlName="checked" name="mandatoryFields" matInput type="text"
+                      maxlength="150">
+                      {{'EXTRA_WORD.' + jobOpeningMandatory[i].name | translate}}
+                    </mat-checkbox>
+                  </ng-container>
+                </div>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmDetail.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'JOB_OPENING.CUSTOM_FIELDS' | translate">
+          <div class="general-container">
+            <mat-card class="detail-card card">
+              <mat-card-header class="card-header" style="display: initial">
+                <span style="float: left">{{titleCard}}<span *ngIf="frmDetail.value.description">:
+                    {{frmDetail.value.description}}</span></span>
+                <!-- <span *ngIf="!viewMode" style="float: right; cursor: pointer;" (click)="addCustomFields(null,'Add', 'custom', -1)">{{'EXTRA_WORD.AddCustomFields' | translate}}</span> -->
+              </mat-card-header>
+              <mat-card-content class="card-body">
+                <mat-list class="card-list">
+                  <mat-list-item *ngFor="let item of customFieldsData; let i = index ">
+                    <div class="card-list-item">
+                      <div class="card-list-item-text">
+                        <mat-checkbox [(ngModel)]="item.checked" [value]="item.id"
+                          (change)="customFieldCheckChange($event, i)" [ngModelOptions]="{standalone: true}"
+                          name="customFields" [disabled]="viewMode">
+                          {{item.title}}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmDetail.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'JOB_OPENING.VIDEO_QUESTION' | translate">
+          <div class="general-container">
+            <mat-card class="detail-card card">
+              <mat-card-header class="card-header" style="display: initial">
+                <span style="float: left">{{titleCard}}<span *ngIf="frmDetail.value.description">:
+                    {{frmDetail.value.description}}</span></span> <span *ngIf="!viewMode"
+                  style="float: right; cursor: pointer;"
+                  (click)="addCustomFields(null,'Add', 'video', -1)">{{'COMPANYTXT.AddVideoQuestion' |
+                  translate}}</span>
+              </mat-card-header>
+              <mat-card-content class="card-body">
+                <mat-list class="card-list">
+                  <mat-list-item *ngFor="let item of videoAssessment; let i = index ">
+                    <div class="card-list-item">
+                      <div class="card-list-item-text">
+                        <mat-checkbox [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}"
+                          name="customFields" [disabled]="viewMode">
+                          {{item.question}}
+                        </mat-checkbox>
+                      </div>
+                      <div class="card-list-item-action">
+                        <button type="button" mat-icon-button (click)="addCustomFields(item, 'Edit', 'video', i)"
+                          matTooltip="{{'COMPANYTXT.EditVideoQuestion' | translate}}" [disabled]="viewMode">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button" mat-icon-button (click)="deleteVideoAssessment(item.id, i)"
+                          matTooltip="{{'COMPANYTXT.DeleteVideoQuestion' | translate}}" [disabled]="viewMode">
+                          <i class="material-icons delete-color">delete</i>
+                        </button>
+                      </div>
+                    </div>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmDetail.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'JOB_OPENING.QUIZ' | translate">
+          <div class="general-container">
+            <mat-card class="detail-card card">
+              <mat-card-header class="card-header">
+                {{titleCard}}<span *ngIf="frmDetail.value.description">: {{frmDetail.value.description}}</span>
+              </mat-card-header>
+              <!--<mat-card-content class="card-body">
+              <ul formArrayName="quizFields">
+                <li *ngFor="let item of quizFields.controls; let i = index;" [formGroupName]="i">
+                  <mat-checkbox formControlName="id" name="quizFields">
+                    {{this.quizTableData[i].title}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+            </mat-card-content>-->
+              <mat-card-content class="card-body">
+                <ul *ngIf="!quizSequence.length > 0" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                  <li *ngFor="let item of quizTableData; let i = index;" cdkDrag cdkDragLockAxis="y">
+                    <mat-icon>open_with</mat-icon><mat-checkbox #ref [checked]="selected.includes(item.id)" [value]="item.id"
+                      (change)="quizChange($event, item.id,i)" name="quizFields" [disabled]="viewMode">
+                      {{item.title}}
+                    </mat-checkbox>
+                  </li>
+                </ul>
+                <ul *ngIf="quizSequence.length !== 0" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                  <li *ngFor="let item of quizSequence; let i = index;" cdkDrag cdkDragLockAxis="y">
+                    <mat-icon>open_with</mat-icon><mat-checkbox #ref [checked]="selected.includes(item.id)" [value]="item.id"
+                                                                (change)="quizChange($event, item.id,i)" name="quizFields" [disabled]="viewMode">
+                    {{item.title}}
+                  </mat-checkbox>
+                  </li>
+                </ul>
+              </mat-card-content>
+              <mat-card-footer class="card-footer">
+                <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                <span class="width-5"></span>
+                <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmDetail.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </mat-tab>
+</mat-tab-group>

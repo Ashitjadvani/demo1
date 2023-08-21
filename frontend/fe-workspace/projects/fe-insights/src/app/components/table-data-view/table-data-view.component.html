@@ -1,0 +1,63 @@
+<div class="view-container">
+    <div *ngIf="mainActions && mainActions.length > 0" class="action-container">
+        <button *ngFor="let act of mainActions" mat-fab color="primary" class="action-button"
+            matTooltip="{{ act.tooltip }}" (click)="onMainAction(act)">
+            <i *ngIf="act.icon" class="material-icons" [ngStyle]="{'color': act.color}">{{ act.icon }}</i>
+            <img *ngIf="act.image" src="{{ act.image }}">
+        </button>
+    </div>
+
+    <div class="table-container">
+        <div class='filter-container' *ngIf="!filteredValueShow">
+            <mat-form-field class="filter-field">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{ 'GENERAL.Filter' | translate }}">
+            </mat-form-field>
+        </div>
+        <div style="margin:20px;" *ngIf="filteredValueShow">
+
+          <mat-chip-list>
+            <mat-chip [removable]="true" (removed)="onChipRemove(item)" *ngFor="let item of this.activeFilters">{{item.columnCaption}}: {{item.filterValue}}
+              <mat-icon  matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+
+        <div class="main-table">
+            <mat-table #table matSort mat-table [dataSource]="tableDataSource">
+                <ng-container *ngFor="let ct of columnTemplates" matColumnDef="{{ ct.columnName }}">
+                    <mat-header-cell *matHeaderCellDef [ngStyle]="{'background': headerColor ? headerColor : 'white','justify-content': ct.isCenter ? 'center' : '' , 'flex-grow': ct.grow ? ct.grow : '1', 'width':'100%','max-width': ct.isCenter ? '100px' : '' }" mat-sort-header="{{ct.columnDataField}}">
+                      {{ ct.columnCaption }} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" [ngStyle] = "{'max-width': ct.isCenter ? '80px' : ''}" >
+                        <ng-container *ngIf="ct.columnRenderer == null">
+                            <div matTooltip="{{ getElementTooltip(element, ct) }}" [ngStyle]="{'text-align': ct.isCenter ? 'center' : '' , 'width':'100%','max-width': ct.isCenter ? '80px' : '' }" > {{ getElementValue(element, ct) | translate}}</div>
+                        </ng-container>
+                        <ng-container *ngIf="ct.columnRenderer != null">
+                            <div matTooltip="{{ getElementTooltip(element, ct) }}" [innerHTML]="renderCell(element, ct)"></div>
+                        </ng-container>
+                    </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="Action">
+                    <mat-header-cell *matHeaderCellDef [ngStyle]="{'background': headerColor ? headerColor : 'white'}">
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" >
+                        <button *ngFor="let act of rowActions" mat-icon-button matTooltip="{{ act.tooltip }}"
+                            (click)="onRowAction(element, act)">
+                            <i *ngIf="act.icon" class="material-icons" [ngStyle]="{'color': act.color}">{{ act.icon
+                                }} <span *ngIf="act.dots && element.isReadCandidate || act.dots && element.isReadJob" class="red-dot"></span></i>
+                            <span class="opening-budge-count" *ngIf="act.icon === 'manage_search' && element.unreadCount > 0"> {{element.unreadCount}}</span>
+                            <img *ngIf="act.image" src="{{ act.image }}">
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns">
+                </mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns">
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

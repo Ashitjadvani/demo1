@@ -1,0 +1,29 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading | translate}}</h4>
+            <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <form class="form-field" [formGroup]="addDisputeForm" (ngSubmit)="onClick(true,this.addDisputeForm.value)">
+                <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{data.placeholder | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="description" matInput  name="description" (keydown)="space($event)" #inputDisabled style="text-transform:capitalize;">
+                    <mat-error *ngIf="addDisputeForm.controls.description.errors?.required" >
+                        {{data.validation | translate}}
+                    </mat-error>
+                </mat-form-field>
+                <hr>
+                <div class="popup-footer">
+                    <div class="footer-content justify-content-end">
+                        <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+                        <button type="submit"   class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,22 @@
+<div class="activity-container">
+    <ng-container *ngIf="userActionLog.length == 0">
+        <div class="no-activity-label">
+            Nessuna Attività
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="userActionLog.length > 0">
+        <div *ngFor="let act of userActionLog" class="activity-card">
+            <div class="header">
+                <mat-icon class="head-icon">schedule</mat-icon>
+                <div class="width-15">{{ act.timestamp | date: 'HH:mm'}}</div>
+                <span class="head-span"></span>
+                <mat-icon class="head-icon">calendar_today</mat-icon>
+                <div>{{ act.timestamp | date: 'dd/MM/yyyy'}}</div>
+            </div>
+            <div class="activity-label">
+                {{ getActivityItemLabel(act) }}
+            </div>
+        </div>
+    </ng-container>
+</div>

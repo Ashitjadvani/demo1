@@ -1,0 +1,8 @@
+tr{
+  &.draft, &.inviata{
+    cursor: pointer;
+  }
+}
+.table-content-wrapper{
+  overflow: auto;
+}

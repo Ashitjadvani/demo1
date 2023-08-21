@@ -1,0 +1,44 @@
+<!--mat-nav-list class="navigation-list">
+    <a mat-list-item class="navigation-item"
+        [ngStyle]="getActionStyle(0)" (click)="onScan()">
+        <mat-label class="item-text white-text" mat-line>{{greenpassAction[0].Caption}}</mat-label>
+        <i class="material-icons white-text">{{greenpassAction[0].Icon}}</i>
+    </a>
+    <label for="upload-btn" mat-list-item class="navigation-item"
+        [ngStyle]="getActionStyle(1)" >
+        <mat-label class="item-text white-text" mat-line>{{greenpassAction[1].Caption}}</mat-label>
+        <i class="material-icons white-text">{{greenpassAction[1].Icon}}</i>
+    </label>
+    <input id="upload-btn" #imageInput
+    type="file"
+    accept="image/*"
+    (change)="onUpload($event)">
+</mat-nav-list-->
+
+<div class="general-container">
+    <label class="button-1" (click)="onScan()">
+        <mat-label class="item-text white-text" mat-line>{{greenpassAction[0].Caption}}</mat-label>
+        <i class="material-icons white-text">{{greenpassAction[0].Icon}}</i>
+    </label>
+    <label class="button-2" for="upload-btn">
+        <mat-label class="item-text white-text" mat-line>{{greenpassAction[1].Caption}}</mat-label>
+        <i class="material-icons white-text">{{greenpassAction[1].Icon}}</i>
+    </label>        
+</div>
+<input id="upload-btn" #imageInput
+type="file"
+accept="image/*"
+(change)="onUpload($event)">
+
+<!--image-cropper
+[imageChangedEvent]="imageChangedEvent"
+[maintainAspectRatio]="true"
+[aspectRatio]="1 / 1"
+format="jpeg"
+(imageCropped)="imageCropped($event)"
+></image-cropper-->
+
+<!--input style="display: none" #imageInput
+type="file"
+accept="image/*"
+(change)="onUploadFile()"-->

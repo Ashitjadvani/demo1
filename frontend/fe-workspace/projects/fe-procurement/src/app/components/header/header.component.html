@@ -1,0 +1,40 @@
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="nav-brand">
+                <a href="javascript:;" (click)="redirectPage()" ><img src="assets/images/legance-white.svg" alt=" lagacy Logo"></a>
+            </div>
+            <div class="nav-menu">
+              <div class="language-menu-new">
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="userLanguageSelect" name='language' (selectionChange)='onLanguageChange($event)'>
+                    <mat-select-trigger>
+                      <span >
+                        <img [src]="(userLanguageSelect === 'en') ? flagEng : italianFlag" alt=""> {{(userLanguageSelect === 'en') ? 'ENGLISH (EN)' : 'ITALIANO (ITA)' }}
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option value="it" ><img [src]="italianFlag" alt="">{{ 'HEADER.ita' | translate}} </mat-option>
+                    <mat-option value="en" ><img [src]="flagEng" alt="">{{ 'HEADER.en' | translate}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!-- <button  mat-raised-button routerLink="/login" class="btn-submit">{{'HEADER.Login' | translate }}</button> -->
+              <button  class="btn-submit my-account-btn" mat-raised-button [matMenuTriggerFor]="menu" routerLink="my-account/edit-profile" (click)="openMenuBox()">
+<!--                <span *ngIf="getSupplierAgreement?.isDurcExpired" class="red-dot"></span>-->
+                <span *ngIf="getSupplierAgreement?.isDurcExpired" class="red-dot"></span>
+                <span class="material-icons">person_outline</span>
+                <span class="user-name">{{getSupplierAgreement.companyName}}</span>
+                  <span class="material-icons">keyboard_arrow_down</span></button>
+
+                <mat-menu #menu="matMenu" class="menu-list">
+                  <button mat-menu-item routerLink="/my-application" (click)="closeMenuBox()"><span class="material-icons">person_outline</span>{{'HEADER.MyAccount' | translate}}</button>
+                  <button mat-menu-item (click)="logout()"><span class="material-icons">logout</span>{{'GENERAL.Logout' | translate}}</button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+    <hr>
+</header>
+
+
+

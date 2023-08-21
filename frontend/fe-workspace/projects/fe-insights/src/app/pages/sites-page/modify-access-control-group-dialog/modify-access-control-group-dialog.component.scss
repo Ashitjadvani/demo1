@@ -1,0 +1,12 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    height:500px;
+    
+}
+
+.label {
+    font-weight: bold;
+}

@@ -1,0 +1,16 @@
+.main-page {
+    padding: 10px;
+    height: 100%;
+    overflow-y: auto;
+
+    font-size: small;
+}
+
+.activity-log {
+    display: flex;
+    flex-direction: column;
+
+    .activity-log-item {
+        padding: 5px;
+    }
+}

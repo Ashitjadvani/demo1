@@ -1,0 +1,52 @@
+<div >
+    <div class="name-title">
+        <h4>{{'MYACCOUNT.MyQuotes' | translate}}</h4>
+    </div>
+    <hr>
+      <!-- Application table start here -->
+    <div class="table-content-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="w-100 table-style">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.ID' | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+          </ng-container>
+          <ng-container matColumnDef="titoloCitazione">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.TitleQuote' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{element.titoloCitazione}} </td>
+          </ng-container>
+          <ng-container matColumnDef="priorita">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Priority' | translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.priorita}} </td> 
+          </ng-container>
+          <ng-container matColumnDef="scadenza">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Deadline' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{element.scadenza}} </td>
+          </ng-container>
+          <ng-container matColumnDef="bilancio">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.Balance' | translate}}</th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">{{element.bilancio}} </td>
+          </ng-container>
+          <ng-container matColumnDef="tuoPrezzo">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.YourPrice' | translate}}</th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+              <span [matTooltip]="element.historyNotes">{{element.tuoPrezzo}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="dataPresentazione" >
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.SubmissionDate' | translate}}</th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                {{element.dataPresentazione}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="stato">
+            <th mat-header-cell *matHeaderCellDef>{{'MYACCOUNT.State' | translate}}</th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap;">{{element.stato}}  </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="redirectJobApp(row.opening_id, row.status)" class="inviata"></tr>
+        </table>
+    </div>
+    <div *ngIf="dataSource && dataSource.length == 0" style="margin-top: 10px;">
+        <div style="text-align: center;">{{'GENERAL.NoDataAvailable' | translate}}</div>
+    </div>
+</div>

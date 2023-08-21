@@ -1,0 +1,19 @@
+<div class="text">
+    {{'QR SCANNER.GREENPASS CROP'|translate}}
+</div>
+
+<!--div #cropContainer style="display: block; width: 350px"-->
+    <image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="1 / 1"
+    format="jpeg"
+    (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+<!--/div-->
+
+<mat-nav-list class="navigation-list">
+    <a [ngStyle]="getActionStyle()" mat-list-item class="navigation-item" (click)="onConfirmClick()">
+    <mat-label class="item-text white-text" mat-line>{{'QR SCANNER.CONFIRM'|translate}}</mat-label>
+    </a>
+</mat-nav-list>

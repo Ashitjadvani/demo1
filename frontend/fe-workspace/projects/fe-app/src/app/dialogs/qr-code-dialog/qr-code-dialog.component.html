@@ -1,0 +1,6 @@
+<h2 mat-dialog-title class="title"><b>{{'DIALOG.USER QR'|translate}}</b></h2>
+
+<div class="custom-dialog-container">
+    <qr-code #qrcode class="qr-code" [value]="userQR" [level]="qrLevel" [size]="200"></qr-code>
+    <button mat-flat-button color="primary" class="print-button round" (click)="onSaveQR(qrcode)">{{'QR SCANNER.SAVE QR'|translate}}</button>
+</div>

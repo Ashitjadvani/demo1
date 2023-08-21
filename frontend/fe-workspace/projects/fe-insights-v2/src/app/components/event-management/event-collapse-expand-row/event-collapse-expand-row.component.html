@@ -1,0 +1,18 @@
+<div class="table-content-box max-height-scroll">
+    <table class="table custom-table">
+        <tr class="header-row">
+            <th class="header table-head">{{'RECRUITING.DateandTime' | translate}}</th>
+            <th class="header table-head">{{'EVENT_MANAGEMENT.User_Name' | translate}}</th>
+            <th class="header table-head">{{'Message' | translate}}</th>
+        </tr>
+        <tr class="table-row" *ngFor="let element of activityLog">
+            <td class="cell">{{ element.createdAt ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}</td>
+            <td class="cell" style="text-transform: capitalize">{{element.authorId ? element.author : '-'}}</td>
+            <td class="cell first-letter-capital">
+                <div class="p-0" *ngIf="element.activityIt != 'declined' && element.activityIt != 'accepted' && element.activityIt != 'checkInOut'">{{(element.activity ? (element.activity) : '-').toString() | translate}}</div>
+                <div class="p-0" *ngIf="element.activityIt == 'declined' || element.activityIt == 'accepted' || element.activityIt == 'checkInOut'">{{element.activity ? (element.author + (element.activity | translate)) : '-'}}</div>
+            </td>
+        </tr>
+    </table>
+    <div class="no-record-found mt-3 mb-2" *ngIf="activityLog?.length == 0"><strong>{{'TABLE.No_record_found' | translate}}</strong></div>
+</div>

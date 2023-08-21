@@ -1,0 +1,210 @@
+<section class="client-management new-event-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="(scopeId === null) ? 'INSIGHTS_MENU.EVENT_MANAGEMENT' : 'INSIGHTS_MENU.Training'" [title3]="'INSIGHTS_MENU.Event_list'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <div class="table-content box-style company-info">
+                    <div class="table-heading">
+                        <h3 style="font-weight: 600">{{'INSIGHTS_MENU.Event_list'| translate}}
+                            <span class="refresh-btn" (click)="onRefreshTable()" matTooltip="Refresh">
+                                <mat-icon>autorenew</mat-icon>
+                            </span>
+                        </h3>
+                        <div class="search-form-wrapper">
+                            <div class="search-form">
+                                <mat-icon matPrefix class="material-icons search">search</mat-icon>
+                                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'EVENT_MANAGEMENT.Search_Event'| translate }}" />
+                                <mat-icon *ngIf="searchBox.value" class="material-icons clear" (click)="resetSearch()">clear</mat-icon>
+                            </div>
+                            <div class="form-field form-field-space search-form-dropdown" style="margin-right: 20px;">
+                                <mat-form-field appearance="outline" class="element-full-width date-width m-0 p-0" placeholder="Select Option">
+                                    <mat-select [ngModel]="selectedDate" (selectionChange)="selectByDate($event)">
+                                        <mat-option *ngFor="let drpval of eventDurationDrpValue" value="{{drpval.value}}">
+                                            {{drpval.duration | translate}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <app-list-action-menu [scopeId]="scopeId" [createEventText]="'EVENT_MANAGEMENT.CreateNewEvent'| translate" [deleteText]="'GENERAL.Delete' | translate" (onFilter)="onFilterListOfEvent()" (deleteMultiple)="deleteMultipleListOfEvent()"></app-list-action-menu>
+                        </div>
+                    </div>
+                    <div *ngIf="activeFilters?.length > 0" class="table-heading" style="height: 60px; overflow-x:auto; overflow-y: hidden;">
+                        <div>
+                            <mat-chip-list>
+                                <mat-chip *ngIf="activeFilters.length > 0" [removable]="true" (removed)="onChipRemoveAll()">{{'EVENT_MANAGEMENT.RemoveAll' | translate}}
+                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                </mat-chip>
+
+                                <mat-chip [removable]="true" (removed)="onChipRemove(item)" *ngFor="let item of activeFilters">{{('EVENT_MANAGEMENT.'+ item.columnCaption) | translate}}: {{item.filterValue}}
+                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                </mat-chip>
+                            </mat-chip-list>
+                        </div>
+                    </div>
+                    <div class="table-wrapper resource-color-table">
+                        <table #table [dataSource]="listOfEventList | paginate: {itemsPerPage: paginationModel.itemsPerPage, currentPage: paginationModel.page, totalItems: paginationModel.totalItems }" mat-table multiTemplateDataRows style="width: 100%">
+                            <ng-container matColumnDef="select">
+                                <th mat-header-cell *matHeaderCellDef class="remember-forgot" style="width: 80px;">
+                                    <mat-checkbox (change)="$event ? toggleAllRows() : null" sssss [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                                    </mat-checkbox>
+                                </th>
+                                <td mat-cell *matCellDef="let row" class="remember-forgot" style="width: 80px; padding: 0">
+                                    <span [style.borderLeftColor]="row.color" class="border-types" style="white-space: pre-line;padding: 20px 15px 20px 15px; justify-content: center">
+                                        <mat-checkbox *ngIf="!((this.scopeId === null ? (superUserDeleteEvent === false  && (row.status === concludedEvent || row.status === currentEvent)) : (superUserTrainingDeleteEvent === false  && (row.status === concludedEvent || row.status === currentEvent))))" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection?.isSelected(row)">
+                                        </mat-checkbox>
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="wheelAction">
+                                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                    {{'TABLE.Action' | translate}}
+                                </th>
+
+                                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                    <app-wheel-action *ngIf="compareDates(element.startDate,element.status,'startDateGreaterCurrent')" [icons]="'five'" [editOn]="true" [cancelOn]="true" [deleteOn]="true" [viewOn]="true" [element]="element" (edit)="edit($event)" [editCreditOn]="true" (editCredit)="openEditEventCredit($event)" (delete)="openDeleteListOfEvent($event)" (cancel)="cancelEvent($event)" (view)="viewDetail($event)"></app-wheel-action>
+                                    <app-wheel-action *ngIf="element.status === cancelledEvent" [icons]="'four'" [activeOn]="true" [deleteOn]="true" [viewOn]="true" [element]="element" (active)="reActivateEvent($event)" (delete)="openDeleteListOfEvent($event)" (view)="viewDetail($event)" [editCreditOn]="true" (editCredit)="openEditEventCredit($event)"></app-wheel-action>
+                                    <app-wheel-action *ngIf="compareDates(element.startDate,element.status,'startDateLessOrEqualCurrent')" [icons]="(this.scopeId === null ? (superUserDeleteEvent === false  && (element.status === concludedEvent || element.status === currentEvent)) : (superUserTrainingDeleteEvent === false  && (element.status === concludedEvent || element.status === currentEvent))) ? 'three' : 'four'" [editOn]="true" [deleteOn]="(this.scopeId === null ? (superUserDeleteEvent === false  && (element.status === concludedEvent || element.status === currentEvent)) : (superUserTrainingDeleteEvent === false  && (element.status === concludedEvent || element.status === currentEvent))) ? false : true" [viewOn]="true" [element]="element" (edit)="edit($event)" [editCreditOn]="true" (editCredit)="openEditEventCredit($event)" (delete)="openDeleteListOfEvent($event)" (view)="viewDetail($event)"></app-wheel-action>
+                                </td>
+
+                            </ng-container>
+                            <ng-container matColumnDef="nameOfEvent">
+                                {{('EVENT_MANAGEMENT.Name_of_Event'| translate)}}
+
+                                <th (click)="changeSorting('name',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 180px;">
+                                    <app-sort-table-column [sortColumnName]="'name'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Name_of_Event'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.name ? element.name : '-' }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Area">
+                                <th (click)="changeSorting('area',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 180px;">
+                                    <app-sort-table-column [sortColumnName]="'area'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('JOB_OPENING.AREA'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.area.length >0 ? element.area: '-' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="Scope">
+                                <th (click)="changeSorting('scopes.name',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 120px;">
+                                    <app-sort-table-column [sortColumnName]="'scopes.name'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.SCOPE'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.scopeName ? (element.scopeName): '-' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="costCenterType">
+                                <th *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 250px;">
+                                    <div class="table-title">
+                                        {{'INSIGHTS_MENU.Cost_Center_Type'| translate}}
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">
+                                    <span *ngFor="let cost of element.costCenters ; let i=index;let isLast=last">{{cost}}<span *ngIf="!isLast">, </span>
+                                    </span>
+                                    <span *ngIf="!element.costCenters.length >0">-</span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="type">
+                                <th (click)="changeSorting('type',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 120px;">
+                                    <app-sort-table-column [sortColumnName]="'type'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Type'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{(element.type ? element.type : '-') | translate}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="startDate">
+                                <th (click)="changeSorting('startDate',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 120px;">
+                                    <app-sort-table-column [sortColumnName]="'startDate'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Start_Date'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.startDate ? (element.startDate | date: 'dd/MM/yyyy'): '-' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="endDate">
+                                <th (click)="changeSorting('endDate',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 120px;">
+                                    <app-sort-table-column [sortColumnName]="'endDate'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.End_Date'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.endDate ? (element.endDate | date: 'dd/MM/yyyy'): '-' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="From">
+                                <th (click)="changeSorting('from',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 90px;">
+                                    <app-sort-table-column [sortColumnName]="'from'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.From'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.from ? (element.from ): '00:00' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="to">
+                                <th (click)="changeSorting('to',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 90px;">
+                                    <app-sort-table-column [sortColumnName]="'to'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.To'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize;cursor: pointer" (click)="expandedElement = expandedElement === element ? null : element; activityLogFunction(element, element.id, i)">{{ element.to ? (element.to): '00:00' }}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalNumberOfInvitations">
+                                <th (click)="changeSorting('numberOfInvitation',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 240px;">
+                                    <app-sort-table-column [sortColumnName]="'numberOfInvitation'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Total_number_of_invitations'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id,element.name,null,'', element.pending,element.status)" *ngIf="element.numberOfInvitation > 0">{{ element.numberOfInvitation ? (element.numberOfInvitation): '0' }}</span><span class="table-center-label" *ngIf="element.numberOfInvitation == 0">0</span></td>
+                            </ng-container>
+                            <ng-container matColumnDef="pending">
+                                <th (click)="changeSorting('pending',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 110px;">
+                                    <app-sort-table-column [sortColumnName]="'pending'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Pending'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id,element.name,'pending','', element.pending,element.status)" *ngIf="element.pending > 0">{{ element.pending ? (element.pending): '0' }}</span><span class="table-center-label" *ngIf="element.pending == 0">0</span></td>
+                            </ng-container>
+                            <ng-container matColumnDef="confirmed">
+                                <th (click)="changeSorting('confirmInvitation',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 110px;">
+                                    <app-sort-table-column [sortColumnName]="'confirmInvitation'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Confirmed'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id,element.name,'accepted','', element.pending,element.status)" *ngIf="element.confirmInvitation > 0">{{ element.confirmInvitation ? (element.confirmInvitation): '0' }}</span><span class="table-center-label" *ngIf="element.confirmInvitation == 0">0</span></td>
+                            </ng-container>
+                            <ng-container matColumnDef="declined">
+                                <th (click)="changeSorting('decline',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 150px;">
+                                    <app-sort-table-column [sortColumnName]="'decline'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Declined'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id,element.name,'declined','', element.pending,element.status)" *ngIf="element.decline > 0">{{ element.decline ? (element.decline): '0' }}</span><span class="table-center-label" *ngIf="element.decline == 0">0</span></td>
+                            </ng-container>
+                            <!--<ng-container matColumnDef="totalCheckIn">
+                <th (click)="changeSorting('checkInCount',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 150px;">
+                  <app-sort-table-column [sortColumnName]="'checkInCount'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Total_Check_in'| translate)"></app-sort-table-column>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id, element.name,'checkIn', element.checkInData, element.pending)"  *ngIf="element.checkInCount > 0">{{ element.checkInCount ? (element.checkInCount): '0' }}</span><span class="table-center-label" *ngIf="element.checkInCount == 0">0</span></td>
+              </ng-container>
+              <ng-container matColumnDef="TotalCheckOut">
+                <th (click)="changeSorting('checkOutCount',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 180px;">
+                  <app-sort-table-column [sortColumnName]="'checkOutCount'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Total_Check_out'| translate)"></app-sort-table-column>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer"><span class="table-center-label link-count" (click)="openListOfCount(element.id, element.name,'checkOut', element.checkOutData, element.pending)"  *ngIf="element.checkOutCount > 0">{{ element.checkOutCount ? (element.checkOutCount): '0' }}</span><span class="table-center-label" *ngIf="element.checkOutCount == 0">0</span></td>
+              </ng-container>-->
+                            <ng-container matColumnDef="totalChecks">
+                                <th (click)="changeSorting('checkInCount',sortBy)" *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 150px;">
+                                    <app-sort-table-column [sortColumnName]="'checkInCount'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey" [eventManagementName]="('EVENT_MANAGEMENT.Total_Checks'| translate)"></app-sort-table-column>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;text-transform:capitalize; text-align: center;cursor: pointer">
+                                    <span class="table-center-label link-count" (click)="openListOfCount(element.id, element.name,'checksInOut', element.checkInOutTypes, element.pending,element.status)" *ngIf="element.checkInOutTypes.length > 0">{{ element.checkInOutTypes ? (element.checkInOutTypes.length): '0' }}</span>
+                                    <span class="table-center-label" *ngIf="element.checkInOutTypes == 0">0</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let element" [attr.colspan]="degreeDisplayedColumns.length">
+                                    <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                        <app-event-collapse-expand-row [activityLog]="activityLog" style="width: 100%;"></app-event-collapse-expand-row>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                    {{'TABLE.Action'| translate}}
+                                </th>
+                                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="degreeDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let element; columns: degreeDisplayedColumns;" class="event-element-row" [class.example-expanded-row]="expandedElement === element">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                        </table>
+                    </div>
+                    <app-pagination [noRecordFound]="noRecordFound" [itemsPerPage]="paginationModel?.itemsPerPage.toString()" [page]="paginationModel.page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="paginationModel.totalItems"></app-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

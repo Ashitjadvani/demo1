@@ -1,0 +1,196 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+          <li routerLink="/client-management" class="breadcrumb-item active" aria-current="page">Client Management</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600">Client Management</h3>
+          <div class="search-form-wrapper">
+            <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+            <div class="search-form">
+              <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+              <input mat-input (keyup)="onKeyUp($event)" #searchBox placeholder="Search Client" />
+              <mat-icon *ngIf="searchBox.value !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+            </div>
+            <button  class="btn-style" routerLink="add-edit-client/0">
+              <span class="material-icons">add</span>Add Client
+            </button>
+          <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+              <mat-icon >more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="deleteMultiClients()">
+                  <span>Delete</span>
+              </button>
+          </mat-menu>
+          </div>
+        </div>
+        <div class="table-wrapper resource-color-table">
+          <!-- <table mat-table matSort [dataSource]="dataSource | paginate: { itemsPerPage: 7, currentPage: page }" style="width: 100%" > -->
+          <table mat-table matSort (matSortChange)="sortData($event)"
+                 [dataSource]="clientData | paginate: { itemsPerPage: this.itemsPerPage, currentPage: this.page,  totalItems: this.totalItems  }" style="width: 100%" >
+              <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;padding: 0px;">
+                      <span class="border-types" style="white-space: nowrap;border-left-color: #ff0000;" [style.borderColor]="row.brand_color">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      (change)="$event ? selection.toggle(row) : null"
+                                      [checked]="selection.isSelected(row)"
+                                      [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </span>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="wheelAction">
+                  <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      Action
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <app-wheel-action [icons]="'four'" [editOn]="true" [viewOn]="true" [deleteOn]="true" [changePassword]="true" [element]="element"
+                                        (edit)="onEdit(element.id)" (delete)="openDeleteDialog(element.id, i, $event)" (callChangePassword)="openChangePasswordDialog(element.id)"
+                                        (view)="viewDetail(element.id)"></app-wheel-action>
+                     <!-- <img src="assets/images/key-round-icon.svg"  alt="" (click)="openChangePasswordDialog(element.id)">
+                      <img src="assets/images/edit-action.svg"  alt="" (click)="onEdit(element.id)">
+                      <img src="assets/images/delete-action.svg" (click)="openDeleteDialog(element.id, i, $event)" alt="">-->
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="logo">
+                <th mat-header-cell *matHeaderCellDef >Logo</th>
+                <td mat-cell *matCellDef="let element" class="p-0">
+                        <img [src]="base64Image" alt="">
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="clientName">
+                <th (click)="changeSorting('company_name', sortBy)" *matHeaderCellDef mat-header-cell class="short-arrow">
+                  Client Name
+                  <span [ngClass]="{'down': sortKey === 'company_name' && sortBy === '-1' , 'up': sortKey === 'company_name' && sortBy === '1'}" >
+                    <img alt="" src="assets/images/up-arrow.svg">
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.company_name ? element.company_name : '-' }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="contactPerson">
+                <th  mat-header-cell *matHeaderCellDef>Contact Person Name</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.contact_info.contact_name ? element.contact_info.contact_name : '-' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email Address</th>
+                <td mat-cell *matCellDef="let element" style="word-break: keep-all;">
+                  {{ element.contact_info.email ? element.contact_info.email : '-' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                  {{ element.contact_info.phone_no ? element.contact_info.phone_no : '-' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="tenantType">
+                <th (click)="changeSorting('tenant_type', sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow">
+                  Tenant Type
+                  <span [ngClass]="{'down': sortKey === 'tenant_type' && sortBy === '-1' , 'up': sortKey === 'tenant_type' && sortBy === '1'}" >
+                    <img alt="" src="assets/images/up-arrow.svg">
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                  {{ element.tenant_type ? element.tenant_type : '-' }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="clientStatus">
+                <th (click)="changeSorting('status_id', sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow">
+                  Status
+                  <span [ngClass]="{'down': sortKey === 'status_id' && sortBy === '-1' , 'up': sortKey === 'status_id' && sortBy === '1'}" >
+                    <img alt="" src="assets/images/up-arrow.svg">
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- for status dynamic use this class active , inactive ,under-creation -->
+                  <button #clientStatus *ngIf="element.status_id === '1' "  class="active btn-style table-btn sm-btn {{ element.status_id.split(' ').join('-').toLowerCase()}}">
+                    Active
+                  </button>
+                  <button #clientStatus  *ngIf="element.status_id === '2' "  class="inactive btn-style table-btn sm-btn {{ element.status_id.split(' ').join('-').toLowerCase()}}">
+                    Inactive
+                  </button>
+                  <button #clientStatus  *ngIf="element.status_id === '3' "  class="under-creation btn-style table-btn sm-btn {{ element.status_id.split(' ').join('-').toLowerCase()}}">
+                    under-creation
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="view-dashboard">
+                <th mat-header-cell *matHeaderCellDef>
+                  View Dashboard
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn-style purpal-btn table-btn sm-btn" (click)="viewDashboard(element.id)" >View Dashboard</button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="view-details">
+                <th mat-header-cell *matHeaderCellDef>
+                  View Details
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <button class="btn-style table-btn theme-line-btn sm-btn"
+                          routerLink="view-client-details" (click)="viewDetail(element.id)">
+                    View Details
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <div class="action-icons d-flex switch">
+                    <mat-slide-toggle [checked]="element.status_id === '1' ? true : false" (change)="changeClientStatus(element.id, $event.checked)"></mat-slide-toggle>
+                    <!--<mat-slide-toggle *ngIf="element.status_id === '1' "  [checked]="true"></mat-slide-toggle>
+                    <mat-slide-toggle *ngIf="element.status_id === '2' "  [checked]="false"></mat-slide-toggle>-->
+                    <!--<img src="assets/images/key-round-icon.svg"  alt="" (click)="openChangePasswordDialog(element.id)">
+                    <img src="assets/images/edit-action.svg"  alt="" (click)="onEdit(element.id)">
+                    <img src="assets/images/delete-action.svg" (click)="openDeleteDialog(element.id, i, $event)" alt="">-->
+                  </div>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+          </table>
+        </div>
+        <div *ngIf="clientData.length == 0" class="no-record-found">No record found</div>
+        <div class="paginate-footer" *ngIf="clientData.length != 0">
+          <div class="page-item">
+            <h3>Items per page:</h3>
+            <mat-form-field appearance="fill">
+              <mat-select  [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()" >
+                <mat-option value='5'>5</mat-option>
+                <mat-option value='10'>10</mat-option>
+                <mat-option value='15'>15</mat-option>
+                <mat-option value='20'>20</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="table-paginator">
+            <pagination-controls  responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

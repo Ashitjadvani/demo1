@@ -1,0 +1,158 @@
+<div class="popover-anchor" [satPopoverAnchor]="bookUserPopover"></div>
+
+<mat-tab-group #tabgroup class="group-tab">
+    <input type="file" #file style="display: none" (change)="onUploadFile()" />
+
+    <mat-tab>
+
+        <app-table-data-view [title]="tableTitle" [tableDataSet]="resources" [columnTemplates]="tableColumnTemplates"
+            [(page)]="showPageIndex" [rowActions]="tableRowActions"
+            [mainActions]="tableMainActions" [filterFunction]="filterCallback">
+        </app-table-data-view>
+
+        <ng-template #customFilterSite>
+            <button mat-flat-button class="custom-filter-button" color="primary" cdkFocusInitial
+                (click)="onFilterSite(null)">{{'GENERAL.ALL'|translate}}</button>
+            <button *ngFor="let site of customFilterSites" mat-flat-button class="custom-filter-button" color="primary"
+                cdkFocusInitial (click)="onFilterSite(site)">{{ site.name }}</button>
+        </ng-template>
+
+        <sat-popover #bookUserPopover verticalAign="center" hasBackdrop>
+            <div class="book-calendar-popup">
+                <div class="calendar-title">
+                    Book Resource
+                </div>
+
+                <mat-form-field class="form-field">
+                    <input matInput placeholder="Book for" [(ngModel)]="bookEmployee" [formControl]="ownerFC"
+                        [matAutocomplete]="autoBookEmployee">
+
+                    <mat-autocomplete #autoBookEmployee="matAutocomplete" [displayWith]="displayUser">
+                        <mat-option *ngFor="let user of users | async" [value]="user">
+                            <span>{{ user.name }} {{ user.surname }}</span>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                <div class="calendar-actions">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onBookCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                        (click)="onBookConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+
+                </div>
+            </div>
+        </sat-popover>
+
+    </mat-tab>
+    <mat-tab>
+        <div *ngIf="detailMode == DETAIL_MODE.dmEdit" class="general-container">
+            <div class="card width-60">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <mat-tab-group class="card-group-tab" #tabgroupeditor>
+                        <mat-tab label="{{ 'ADMIN DIALOGS.GENERAL' | translate }}">
+                            <div class="card-body">
+                                <div class="input-row">
+                                    <mat-form-field class="width-20">
+                                        <input matInput placeholder="Codice" [(ngModel)]="currentResource.code"
+                                            [disabled]="isModify">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-30">
+                                        <input matInput placeholder="Desciption"
+                                            [(ngModel)]="currentResource.description">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-20">
+                                        <input matInput placeholder="Site" [(ngModel)]="currentResource.site"
+                                            [formControl]="siteFC" [matAutocomplete]="autoSite">
+
+                                        <mat-autocomplete #autoSite="matAutocomplete"
+                                            [displayWith]="displaySiteCallback">
+                                            <mat-option *ngFor="let site of sites | async" [value]="site.key">
+                                                <span>{{ site.name }}</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <div class="check-box width-20">
+                                        <mat-checkbox [(ngModel)]="currentResource.enabled">
+                                            {{'ADMIN COMPONENTS.ENABLED'|translate}}
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <app-timeslot-table-editor [(Timeslots)]="currentResource.availabilityTimeslots">
+                                </app-timeslot-table-editor>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Mappa">
+                            <div class="map-container">
+                                <div class="control-container">
+                                    <button mat-icon-button matTooltip="Aggiungi Immagine Mappa"
+                                        (click)="onImportResourceMapImage()">
+                                        <i class="material-icons">cloud_upload</i>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Cancella Mappa" (click)="onRemoveMapImage()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div class="image-container">
+                                    <img *ngIf="mapImageURL" class="map-image" [src]="mapImageURL">
+                                    <div *ngIf="!mapImageURL" class="no-image-text">
+                                        Nessuna mappa caricata
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="detailMode == DETAIL_MODE.dmReservation" class="general-container">
+            <div class="card width-60">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="input-row center-justify">
+                            <mat-form-field class="width-60">
+                                <input matInput placeholder="Data Prenotazione" [matDatepicker]="pickerFrom"
+                                    [(ngModel)]="currentReservationDate" (dateChange)="onReservationDateChange($event)">
+                                <button matSuffix mat-icon-button>
+                                    <mat-icon>calendar</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerFrom></mat-datepicker>
+                        </div>
+                        <div class="reservation-table-container">
+                            <app-table-data-view [title]="" [filteredValueShow]="false"
+                                [tableDataSet]="resourceReservationTimeslots"
+                                [columnTemplates]="tableReservationColumnTemplates" [(page)]="showPageIndex"
+                                [rowActions]="tableReservationRowActions">
+                            </app-table-data-view>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CLOSE'|translate}}</button>
+                    <span class="width-5"></span>
+                </div>
+            </div>
+        </div>
+
+    </mat-tab>
+</mat-tab-group>

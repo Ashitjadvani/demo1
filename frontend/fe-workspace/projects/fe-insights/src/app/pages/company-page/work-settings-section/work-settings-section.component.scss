@@ -1,0 +1,23 @@
+@import "../company-page.component.scss";
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .param-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;        
+
+        .v-space {
+            height: 10px;
+        }
+
+        .cron-label {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    }
+}

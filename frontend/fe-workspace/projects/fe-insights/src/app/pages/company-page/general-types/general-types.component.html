@@ -1,0 +1,71 @@
+<div class="general-container">
+    <div class="card width-50">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.DISPUTE TYPES' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <div class="line">
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.DISPUTE NAME' | translate}}" [(ngModel)]="newDisputeType">
+                </mat-form-field>
+                <button mat-fab color="primary" class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddDisputeTypeClick()"><i class="material-icons"
+                        [ngStyle]="{'color': 'white'}">add</i></button>
+            </div>
+            <!--mat-list class="card-list" *ngIf="currentCompany.peopleDispute.length > 0"-->
+            <mat-list class="card-list" *ngIf="currentCompany.peopleDispute">
+                <mat-list-item *ngFor="let dt of currentCompany.peopleDispute">
+                    <div class="card-list-item">
+                        <div class="card-list-item-text">{{ dt }}</div>
+                        <div class="card-list-item-action">
+                            <button mat-icon-button (click)="onDeleteDisputeTypeClick(dt)" matTooltip="Delete">
+                                <i class="material-icons" style="color: red">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+            <!--mat-label class="no-item-label" *ngIf="currentCompany.peopleDispute.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO DISPUTE TYPES' | translate}}</mat-label-->
+            <mat-label class="no-item-label" *ngIf="!currentCompany.peopleDispute">{{'INSIGHTS_PEOPLE_PAGE.NO DISPUTE TYPES' | translate}}</mat-label>
+        </div>
+        
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+        </div>
+    </div>
+
+    <!--div class="card width-40">
+        <div class="card-header">
+            <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.VACATION TYPES' | translate}}</div>
+        </div>
+        <div class="card-body">
+            <div class="line">
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.VACATION NAME' | translate}}" [(ngModel)]="newVacationType">
+                </mat-form-field>
+                <button mat-fab color="primary" class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddVacationTypeClick()"><i class="material-icons"
+                        [ngStyle]="{'color': 'white'}">add</i></button>
+            </div>
+            <mat-list class="card-list" *ngIf="currentCompany.peopleVacationTypes.length > 0">
+                <mat-list-item *ngFor="let vt of currentCompany.peopleVacationTypes">
+                    <div class="card-list-item">
+                        <div class="card-list-item-text">{{ vt }}</div>
+                        <div class="card-list-item-action">
+                            <button mat-icon-button (click)="onDeleteVacationTypeClick(vt)" matTooltip="{{'INSIGHTS_PEOPLE_PAGE.Delete' | translate}}">
+                                <i class="material-icons" style="color: red">delete</i>
+                            </button>
+                        </div>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+            <mat-label class="no-item-label" *ngIf="currentCompany.peopleVacationTypes.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO VACATIONE TYPES' | translate}}
+                {{'INSIGHTS_PEOPLE_PAGE.DEFINED' | translate}}</mat-label>
+        </div>
+        <div class="card-footer">
+            <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                (click)="onUpdateClick()">{{'HOMEPAGE.UPDATE'|translate}}</button>
+        </div>
+    </div-->
+</div>

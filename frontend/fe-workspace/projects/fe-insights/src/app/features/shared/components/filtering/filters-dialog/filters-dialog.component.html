@@ -1,0 +1,51 @@
+<mat-card class="mat-elevation-z10 card">
+  <mat-card-header class="card-header">
+    {{'RECRUITING.FILTERS' | translate}}
+  </mat-card-header>
+  <mat-card-content class="card-body">
+
+    <form [formGroup]="this._filterForm" id="filterForm" (keydown.enter)="this.dialogRef.close(this._filterForm.getRawValue())">
+
+        <div class="form-row" *ngFor="let item of this.availableFilters">
+          <mat-form-field *ngIf="!item.filterWidget?.widget">
+            <mat-label>{{item.columnCaption}}</mat-label>
+            <input matInput [formControlName]="item.columnDataField"/>
+          </mat-form-field>
+
+          <ng-container *ngIf="item.filterWidget?.widget=='select'">
+            <mat-form-field>
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <mat-select [formControlName]="item.columnDataField">
+                <mat-option *ngFor="let opt of item.filterWidget.options() | async" [value]="opt[item.filterWidget.value_field]">
+                  {{opt[item.filterWidget.label_field]}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="item.filterConfiguration?.filterWidget?.widget == 'slider'">
+            <mat-label>{{item.columnCaption}}</mat-label> {{this._filterForm.getRawValue()[item.columnDataField]}}
+            <!--<input matInput [formControlName]="item.columnDataField"/>-->
+
+            <mat-slider
+              thumbLabel
+              [min]="item.filterConfiguration.min"
+              [max]="item.filterConfiguration.max"
+              [formControlName]="item.columnDataField"
+            ></mat-slider>
+
+          </ng-container>
+        </div>
+
+    </form>
+    <pre *ngIf="false">
+        {{this._filterForm.getRawValue() | json}}
+      </pre>
+
+  </mat-card-content>
+  <mat-card-actions class="card-footer">
+    <button mat-button [mat-dialog-close]="false"><mat-icon>close</mat-icon></button>
+    <button mat-button [mat-dialog-close]="this._filterForm.getRawValue()" ><mat-icon>filter_alt</mat-icon></button>
+  </mat-card-actions>
+</mat-card>
+

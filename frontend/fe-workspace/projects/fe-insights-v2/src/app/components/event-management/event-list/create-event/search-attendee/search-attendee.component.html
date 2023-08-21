@@ -1,0 +1,35 @@
+<div class="table-heading mb-0">
+    <h3 style="font-weight: 600"><span>{{headerText}}</span></h3>
+    <div class="search-form-wrapper">
+        <div class="form-field error-message-custom">
+            <div class="custom-switch switch custom-switch-selected">
+                {{'INSIGHTS_PEOPLE_PAGE.SHOW SELECTED ONLY'| translate}}
+                <mat-slide-toggle [checked]="showSelectedOnly"
+                                  (change)="onChangeShowSelected($event)"></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="search-form">
+            <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+            <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'EVENT_MANAGEMENT.SearchInternalPeople'| translate }}" />
+            <mat-icon *ngIf="this.search"  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+        </div>
+        <!--<app-list-action-menu (onFilter)="onFilterListOfEvent()" ></app-list-action-menu>-->
+        <button class="btn-style" (click)="onFilterListOfEvent()"><span class="material-icons m-0">filter_alt</span></button>
+    </div>
+</div>
+<div class="table-heading-info">
+    <p><span>{{ selectedInternalPeopleCount }}</span> Selected of <span>{{totalCount}}</span> of total internal people</p>
+</div>
+<div *ngIf="activeFilters.length > 0" class="table-heading" style="height: 60px; overflow-x:auto; overflow-y: hidden;">
+    <div>
+        <mat-chip-list>
+            <mat-chip *ngIf="activeFilters.length > 0" [removable]="true" (removed)="onChipRemoveAll()">{{'EVENT_MANAGEMENT.RemoveAll' | translate}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <mat-chip [removable]="true" (removed)="onChipRemove(item)" *ngFor="let item of activeFilters">{{('EVENT_MANAGEMENT.'+ item.columnCaption) | translate}}: {{item.filterValue}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+    </div>
+</div>

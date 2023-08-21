@@ -1,0 +1,646 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+         <li routerLink="/recruiting-dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+          <li class="breadcrumb-item">{{'INSIGHTS_MENU.RECRUITING' | translate}}</li>
+          <li routerLink="/recruiting/job-openings" class="breadcrumb-item">{{'JOB_OPENING.title' | translate}}</li>
+          <li *ngIf="!id" class="breadcrumb-item active" aria-current="page">{{'RECRUITING.AddJobOpening' | translate}}</li>
+          <li *ngIf="id" class="breadcrumb-item active" aria-current="page">{{'Edit' | translate}} {{'JOB_OPENING.title' | translate}}</li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'INSIGHTS_MENU.RECRUITING'" [title2]="'JOB_OPENING.title'" [routePath2]="'/recruiting/job-openings'"
+      [type]="id ? 'JOB_OPENING.title' : '' " [title3]="id ? 'Edit' : 'RECRUITING.AddJobOpening' ">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="common-stepper add-edit-job-stepper">
+        <mat-horizontal-stepper labelPosition="bottom" #stepper (selectionChange)="submited = true">
+          <!-- <mat-horizontal-stepper labelPosition="bottom" #stepper="matHorizontalStepper"> -->
+
+          <mat-step [stepControl]="generalInformationForm">
+              <ng-template matStepLabel>
+              <img src="assets/images/Job Openings Details.svg" />
+              <p>{{'RECRUITING.JOB_OPENING_DETAIL' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'RECRUITING.JOB_OPENING_DETAIL' | translate}}</h3>
+                <p class="m-0"><span class="red-label">*</span>{{'RECRUITINGTXT.Required_Fields' | translate}}</p>
+              </div>
+              <form id="generalInformationForm" class="form-wrapper" [formGroup]="generalInformationForm"
+                (ngSubmit)="onSubmit(1,$event)" #myform1="ngForm">
+                <div class="row">
+                  <!-- <div hidden formControlName="id" name="id"></div> -->
+                  <div class="col-md-12">
+                    <div class="generate-button">
+                      <label>{{'Upload Job Image' | translate}}</label>
+                      <div [innerHtml]='msg' *ngIf="msg" style="color: red;"></div>
+                      <!-- <div><img style="width: 200px" [src]="url" *ngIf="url"></div> -->
+                      <button class="btn-style red-btn file-upload-button" type="button">
+                        <span class="material-icons">upload</span>
+                        {{'EDIT COMPANY.Drag and Drop here' | translate}} <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                        <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                        <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg" id="file"
+                          #documentInput (change)="onFileChanged(documentInput)" id="emp-input-profile" />
+                      </button>
+                      <!-- <span class="file-info">{{ this.documentName }}
+                        <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ?
+                          "close" : null }}
+                        </span>
+                      </span> -->
+                    </div>
+                    <div class="defultImage">
+                      <img *ngIf="url" [src]="url">
+                      <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close"
+                        : null }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.Scope' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <mat-select formControlName="scope" (ngModelChange)="onChangeScope($event)" style="text-transform: capitalize;">
+                          <!-- <mat-option>Select Scope</mat-option> -->
+                          <mat-option *ngFor="let scopes of scopeList" value="{{scopes.name}}" style="text-transform: capitalize;">{{scopes.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="generalInformationForm.controls.scope.errors?.required">
+                          {{'RECRUITINGTXT.ScopeIsRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.Area' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <mat-select formControlName="area" name="area" style="text-transform: capitalize;">
+                          <!-- <mat-option>Select Area</mat-option> -->
+                          <mat-option *ngFor="let areas of areaList" value="{{areas.id}}" style="text-transform: capitalize;">{{areas.name}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="generalInformationForm.controls.area.errors?.required">
+                          {{'RECRUITINGTXT.AreaIsRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-6 col-xl-4"></div> -->
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.JobTitle' | translate}}<span class="red-label">*</span></mat-label>
+                        <input formControlName="description" matInput type="text" name="description" style="text-transform: capitalize;">
+                        <mat-error *ngIf="generalInformationForm.controls.description.errors?.required">
+                          {{'RECRUITINGTXT.TitleRequired' | translate}}</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-12">
+                    <div class="custom-editor mb-30">
+                      <mat-label>{{'JOB_OPENING.DESCRIPTION' | translate}}<span style="color:#EA5455">*</span>
+                      </mat-label>
+                      <div class="form-field error-message-custom">
+                        <angular-editor [config]="config" formControlName="longDescription" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                      </div>
+                      <mat-error *ngIf="generalInformationForm.controls.longDescription.errors?.required && submited" >{{'ThisFieldIsRequired' | translate}}</mat-error>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-12">
+                    <div class="custom-editor mb-30">
+                      <mat-label>{{'RECRUITINGTXT.MessageShowComplete' | translate}}<span style="color:#EA5455">*</span>
+                      </mat-label>
+                      <div class="form-field error-message-custom">
+                        <angular-editor [config]="config" formControlName="successMessage" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                      </div>
+                      <mat-error *ngIf="generalInformationForm.controls.successMessage.errors?.required && submited" >{{'ThisFieldIsRequired' | translate}}</mat-error>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'JOB_OPENING.START'|translate}}<span class="red-label">*</span></mat-label>
+                        <input [matDatepicker]="start_date" [max]="this.generalInformationForm.get('end').value"
+                          formControlName="start" readonly matInput type="text" name="start"
+                          (click)="start_date.open()">
+                        <mat-error *ngIf="generalInformationForm.controls.start.errors?.required">
+                          {{'RECRUITINGTXT.StartDateRequired' | translate}}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                        <mat-datepicker #start_date (opened)="streamOpened()"></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'JOB_OPENING.END'| translate}}</mat-label>
+                        <input [matDatepicker]="end_date" [min]="this.generalInformationForm.get('start').value"
+                          formControlName="end" readonly matInput type="text" name="end" (click)="end_date.open()">
+                        <mat-error *ngIf="generalInformationForm.controls.end.errors?.required">
+                          {{'RECRUITINGTXT.EndDateRequired' | translate}}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+                        <mat-datepicker #end_date (opened)="streamOpened()"></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'JOB_OPENING.STATUS' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <mat-select formControlName="status">
+                          <!-- <mat-option>Select Area</mat-option> -->
+                          <mat-option *ngFor="let status of statusList" value="{{status.id}}">{{status.name | translate}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="generalInformationForm.controls.status.errors?.required">
+                          {{'RECRUITINGTXT.StatusRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'JOB_OPENING.SITE' | translate}}</mat-label>
+                        <mat-select formControlName="site" (ngModelChange)="changeSiteName($event)" multiple>
+                          <!-- <mat-option>Select Site</mat-option> -->
+                          <mat-option *ngFor="let site of siteList" [value]="site">
+                            {{site}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="generalInformationForm.controls.site.errors?.required">
+                          {{'RECRUITINGTXT.SiteRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'JOB_OPENING.TYPE' | translate}}</mat-label>
+                        <mat-select formControlName="type">
+                          <!-- <mat-option>Select Type</mat-option> -->
+                          <mat-option *ngFor="let types of typeList" value="{{types.id}}">{{types.viewValue  | translate}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="generalInformationForm.controls.type.errors?.required">
+                          {{'RECRUITINGTXT.TypeRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-xxl-4"></div>
+                  <div class="col-xl-12">
+                    <div class="form-field error-message-custom date-picker-style">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.Address' | translate}}</mat-label>
+                        <textarea formControlName="address" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                        <mat-error *ngIf="generalInformationForm.controls.address.errors?.required">
+                          {{'RECRUITINGTXT.AddressRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.City' | translate}}</mat-label>
+                        <input formControlName="city" matInput type="text" name="city" style="text-transform: capitalize;">
+                        <mat-error *ngIf="generalInformationForm.controls.city.errors?.required">
+                          {{'RECRUITINGTXT.CityRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.NoOfOpening' | translate}}
+                        </mat-label>
+                        <input min="1" formControlName="noOfOpening" matInput type="number" name="noOfOpening">
+                        <mat-error *ngIf="generalInformationForm.controls.noOfOpening.errors?.required">
+                          {{'RECRUITINGTXT.NoOfOpeningRequired' | translate}}</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xl-4">
+                    <div class="form-field">
+                      <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'RECRUITINGTXT.TotalExperience' | translate}}
+                        </mat-label>
+                        <input formControlName="totalExperience" matInput type="text" name="totalExperience">
+                        <mat-error *ngIf="generalInformationForm.controls.totalExperience.errors?.required">
+                          {{'RECRUITINGTXT.TotalExperienceRequired' | translate}}</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-12 col-xl-12">
+                    <div class="form-field">
+                      <div class="quiz-options">
+
+                        <mat-label>{{'RECRUITINGTXT.QUIZVISIBLE' | translate}}
+                        </mat-label>
+                        <mat-radio-group aria-label="Select an option" formControlName="isCandidateRead">
+                          <mat-radio-button value="yes">{{'GENERAL.Yes' | translate}}</mat-radio-button>
+                          <mat-radio-button value="no">{{'GENERAL.No' | translate}}</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="step-form-bottom">
+                  <div>
+                    <button routerLink="../../" *ngIf="id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                    <button routerLink="/recruiting/job-openings" *ngIf="!id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                  </div>
+                  <div class="">
+                    <!-- <button [disabled]="!generalInformationForm.valid" matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next'|translate}}
+                      <span class="material-icons">arrow_forward</span></button> -->
+                      <button  *ngIf="!generalInformationForm.valid" class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next'|translate}}
+                        <span class="material-icons">arrow_forward</span></button>
+                      <button *ngIf="generalInformationForm.valid" matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next'|translate}}
+                        <span class="material-icons">arrow_forward</span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="mandatoryFieldsForm">
+            <ng-template matStepLabel>
+              <img src="assets/images/Mandatory Fields.svg" />
+              <p>{{'JOB_OPENING.MANDATORY_FIELDS' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'JOB_OPENING.MANDATORY_FIELDS' | translate}}</h3>
+                <p class="m-0"><span class="red-label">*</span>{{'RECRUITINGTXT.Required_Fields' | translate}}</p>
+              </div>
+              <form class="form-wrapper" (ngSubmit)="onSubmit(2, $event)" [formGroup]="mandatoryFieldsForm">
+                <div class="row">
+                  <div class="search-form-wrapper">
+                    <div class="feature-contents">
+                      <!-- <div hidden formControlName="id" name="id"></div> -->
+                      <div class="custom-switch-group" formArrayName="mandatoryFields">
+                        <div class="form-field error-message-custom"
+                          *ngFor="let item of mandatoryFields.controls; let i = index" [formGroupName]="i">
+                          <div class="custom-switch">
+                            <mat-checkbox class="width-25" formControlName="checked" name="mandatoryFields" matInput
+                              type="text" maxlength="150">
+                              {{'EXTRA_WORD.' + jobOpeningMandatory[i].name | translate}}
+                            </mat-checkbox>
+                            <!-- <mat-checkbox formControlName="checked" [value]="jobOpeningMandatory[i].id" [name]="mandatoryFields" type="text">{{jobOpeningMandatory[i].name}}</mat-checkbox> -->
+                          </div>
+                        </div>
+                        <!-- <div class="form-field error-message-custom">
+                          <div class="custom-switch">
+                            <mat-checkbox formControlName="name">Name</mat-checkbox>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="step-form-bottom">
+                  <div>
+                    <button routerLink="../../" *ngIf="id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                    <button routerLink="/recruiting/job-openings" *ngIf="!id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                  </div>
+                  <div class="btn-wrapper">
+                    <button matStepperPrevious class="btn-style privious-btn" type="button"><span
+                        class="material-icons">arrow_backward</span> {{"GENERAL.Previous" | translate}}</button>
+                    <button [disabled]="!generalInformationForm.valid" matStepperNext class="btn-style theme-btn"
+                      type="submit">{{'GENERAL.Save&Next' | translate}}<span
+                        class="material-icons">arrow_forward</span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="customefieldForm">
+            <ng-template matStepLabel>
+              <img src="assets/images/Custom Fields.svg" />
+              <p>{{'JOB_OPENING.CUSTOM_FIELDS' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'JOB_OPENING.CUSTOM_FIELDS' | translate}}</h3>
+                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+              </div>
+              <form class="form-wrapper" [formGroup]="customefieldForm" (ngSubmit)="onSubmit(3, $event)">
+                <div class="custom-switch">
+                  <!-- <mat-list> -->
+                  <mat-list-item *ngFor="let item of customFieldsData; let i = index ">
+                    <!-- <div class="card-list-item">
+                          <div class="card-list-item-text"> -->
+                    <mat-checkbox #ref [(ngModel)]="item.checked" [value]="item.id"
+                      (change)="customFieldCheckChange($event, i)" [ngModelOptions]="{standalone: true}"
+                      name="customFields" [disabled]="viewMode">
+                      {{item.title}}
+                    </mat-checkbox>
+                    <!-- </div>
+                      </div> -->
+                  </mat-list-item>
+                  <!-- </mat-list> -->
+                </div>
+                <!-- <div class="row">
+                  <div class="search-form-wrapper">
+                    <div class="add">
+
+
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <div class="table-wrapper resource-color-table" style="height: 300px;">
+                  <table [dataSource]="customFieldsData" mat-table style="width: 100%">
+                    <mat-tab-group>
+                      <ng-container matColumnDef="custome_Fields">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          <mat-label>Custome Fields</mat-label>
+                        </th>
+
+                        <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap">
+                          <mat-checkbox  [value]="element.id"
+                          (change)="customFieldCheckChange($event, i)" [ngModelOptions]="{standalone: true}"
+                          name="customFields" [disabled]="viewMode">
+                          {{element.title}}
+                        </mat-checkbox>
+                        </td>
+                      </ng-container>
+
+                    </mat-tab-group>
+
+                    <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns1"></tr>
+                    <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns1"></tr>
+                  </table>
+                </div> -->
+                <div class="step-form-bottom">
+                  <div>
+                    <button routerLink="../../" *ngIf="id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                    <button routerLink="/recruiting/job-openings" *ngIf="!id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                  </div>
+                  <div class="btn-wrapper">
+                    <button matStepperPrevious class="btn-style privious-btn" type="button"><span
+                        class="material-icons">arrow_backward</span> {{"GENERAL.Previous" | translate}}</button>
+                    <button [disabled]="!generalInformationForm.valid" matStepperNext class="btn-style theme-btn"
+                      type="submit">{{'GENERAL.Save&Next'| translate}}<span
+                        class="material-icons">arrow_forward</span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="videoForm">
+            <ng-template matStepLabel>
+              <img src="assets/images/Video Assessment.svg" />
+              <p>{{'JOB_OPENING.VIDEO_QUESTION' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'JOB_OPENING.VIDEO_QUESTION' | translate}}</h3>
+                <!-- <p class="m-0"><span class="red-label">*</span>{{'RECRUITINGTXT.Required_Fields' | translate}}</p> -->
+              </div>
+              <form id="videoForm" class="form-wrapper" (ngSubmit)="onSubmit(4, $event)">
+                <div class="row">
+                  <div class="search-form-wrapper">
+                    <div class="add-video">
+                      <ul class="video-assesment">
+                        <li *ngFor="let item of videoAssessment; let i = index">
+                          <div class="form-field error-message-custom">
+                            <div class="custom-switch">
+                              <!-- <mat-checkbox>{{questions.question}}</mat-checkbox> -->
+                              <mat-checkbox [value]="item.id" [(ngModel)]="item.checked"
+                                [ngModelOptions]="{standalone: true}" name="videoAssessment" [disabled]="viewMode">
+                                {{item.question}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                          <div class="actions">
+                            <img src="assets/images/edit-action.svg" alt=""
+                              (click)="addVideoAssesment(item, 'Edit', 'video', i)">
+                            <img src="assets/images/delete-action.svg" (click)="jobOpeningsDeleteDialog(item.id, i)"
+                              alt="">
+                          </div>
+                        </li>
+                      </ul>
+                      <div>
+                        <button class="btn-style green-btn" type="button"
+                          (click)="addVideoAssesment(null,'Add', 'video', -1)"><span
+                            class="material-icons">add</span>{{'COMPANYTXT.AddVideoQuestion' | translate}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="step-form-bottom">
+                  <div>
+                      <button routerLink="../../" *ngIf="id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                        translate}}</button>
+                      <button routerLink="/recruiting/job-openings" *ngIf="!id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                        translate}}</button>
+                  </div>
+                  <div class="btn-wrapper">
+                    <button matStepperPrevious class="btn-style privious-btn" type="button"><span
+                        class="material-icons">arrow_backward</span> {{"GENERAL.Previous" | translate}}</button>
+                    <button [disabled]="!generalInformationForm.valid" matStepperNext form="videoForm" class="btn-style theme-btn"
+                      type="submit">{{'GENERAL.Save&Next'|translate}}<span
+                        class="material-icons">arrow_forward</span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="quizForm">
+            <ng-template matStepLabel>
+              <img src="assets/images/Quiz.svg" />
+              <p>{{'JOB_OPENING.QUIZ' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'JOB_OPENING.QUIZ' | translate}}</h3>
+                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+              </div>
+              <form class="form-wrapper" [formGroup]="quizForm" (ngSubmit)="onSubmit(5,$event)">
+                <div *ngIf="!(quizSequence.length > 0)" class="table-wrapper resource-color-table"
+                  style="height: 300px;">
+                  <table [dataSource]="quizTableData" #dataTable mat-table style="width: 100%" cdkDropList
+                    (cdkDropListDropped)="drop($event)">
+                    <mat-tab-group>
+                      <!-- <ng-container matColumnDef="quiz" cdkDropList (cdkDropListDropped)="drop($event)"> -->
+                      <ng-container matColumnDef="quiz">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          <!-- <th  (click)="changeSorting('quiz')" *matHeaderCellDef class="short-arrow" mat-header-cell> -->
+                          <mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
+                            (change)="toggleAllSelection()">{{'JOB_OPENING.QUIZ' | translate}}</mat-checkbox>
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+
+                        <!-- <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap" cdkDrag cdkDragLockAxis="y" > -->
+                        <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap">
+                          <mat-icon style="margin-right: 10px; cursor: grabbing;">drag_indicator</mat-icon>
+                          <mat-checkbox #ref [checked]="selected.includes(element.id)" [value]="element.id"
+                            (change)="quizChange($event, element.id,i)" name="quizFields">{{element.title}}
+                          </mat-checkbox>
+                        </td>
+                        <!-- <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.title}}
+                        </td> -->
+                      </ng-container>
+
+                      <ng-container matColumnDef="totalQuestions">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          {{'JOB_OPENING.TOTAL_NO_QUESTIONS' | translate}}
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.questionCount}}
+                        </td>
+
+                      </ng-container>
+
+                      <ng-container matColumnDef="timeRequired">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          {{'JOB_OPENING.TOTAL_TIME_REQUIRED' | translate}}
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.questionsMinute + ' min'}}
+                        </td>
+                      </ng-container>
+
+
+                    </mat-tab-group>
+
+                    <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns" cdkDrag></tr>
+                    <div *cdkDragPlaceholder></div>
+                  </table>
+                  <!-- </table> -->
+                </div>
+
+                <div *ngIf="quizSequence.length !== 0" class="table-wrapper resource-color-table"
+                  style="height: 300px;">
+                  <!-- <table *ngIf="!(quizSequence.length > 0)" [dataSource]="quizTableData" #dataTable mat-table style="width: 100%" cdkDropList
+                    (cdkDropListDropped)="drop($event)"> -->
+                  <table [dataSource]="quizSequence" #dataTable mat-table style="width: 100%" cdkDropList
+                    (cdkDropListDropped)="drop($event)">
+                    <mat-tab-group>
+                      <!-- <ng-container matColumnDef="quiz" cdkDropList (cdkDropListDropped)="drop($event)"> -->
+                      <ng-container matColumnDef="quiz">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          <!-- <th  (click)="changeSorting('quiz')" *matHeaderCellDef class="short-arrow" mat-header-cell> -->
+                          <mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
+                            (change)="toggleAllSelection()">{{'JOB_OPENING.QUIZ' | translate}}</mat-checkbox>
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+
+                        <!-- <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap" cdkDrag cdkDragLockAxis="y" > -->
+                        <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap">
+                          <mat-icon style="margin-right: 10px; cursor: grabbing;">drag_indicator</mat-icon>
+                          <mat-checkbox #ref [checked]="selected.includes(element.id)" [value]="element.id"
+                            (change)="quizChange($event, element.id,i)" name="quizFields">{{element.title}}
+                          </mat-checkbox>
+                        </td>
+                        <!-- <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.title}}
+                        </td> -->
+                      </ng-container>
+
+                      <ng-container matColumnDef="totalQuestions">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          {{'JOB_OPENING.TOTAL_NO_QUESTIONS' | translate}}
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.questionCount}}
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="timeRequired">
+                        <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                          {{'JOB_OPENING.TOTAL_TIME_REQUIRED' | translate}}
+                          <!-- <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span> -->
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                          {{element.questionsMinute + ' min'}}
+                        </td>
+                      </ng-container>
+
+
+                    </mat-tab-group>
+
+                    <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns" cdkDrag></tr>
+                    <div *cdkDragPlaceholder></div>
+                  </table>
+                  <!-- </table> -->
+                </div>
+
+                <div class="step-form-bottom">
+                  <div>
+                    <button routerLink="../../" *ngIf="id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                    <button routerLink="/recruiting/job-openings" *ngIf="!id" class="btn-style red-line-btn" type="button">{{"GENERAL.Cancel" |
+                      translate}}</button>
+                  </div>
+                  <div class="btn-wrapper">
+                    <button matStepperPrevious class="btn-style privious-btn" type="button"><span
+                        class="material-icons">arrow_backward</span> {{"GENERAL.Previous" | translate}}</button>
+                    <button [disabled]="!generalInformationForm.valid" matStepperNext class="btn-style theme-btn" type="submit">{{"GENERAL.Save&Next" |
+                      translate}}<span class="material-icons">arrow_forward</span></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="finishForm" style="pointer-events: none;">
+            <ng-template matStepLabel>
+              <img src="assets/images/Finish.svg" />
+              <p>{{'JOB_OPENING.FINISH' | translate}}</p>
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading m-30">
+                <h3 style="font-weight: 600">{{'JOB_OPENING.FINISH' | translate}}</h3>
+                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+              </div>
+              <div class="finish-step">
+                <div class="download-qr">
+                  <img *ngIf="!qrCodeURL" src="assets/images/qr-img.svg" alt="">
+                  <img *ngIf="qrCodeURL" src="{{qrCodeURL}}" alt="">
+                  <!-- <span>Download</span> -->
+                  <a href="{{qrCodeURL}}" download="image">{{'JOB_OPENING.DOWNLOAD' | translate}}</a>
+                  <h3>{{'JOB_OPENING.Congratulation' | translate}}</h3>
+                  <div *ngIf="id">
+                    <h4>{{'JOB_OPENING.EDIT_JOB_SUCC' | translate}}</h4>
+                  </div>
+                  <div *ngIf="!id">
+                    <h4>{{'JOB_OPENING.ADD_JOB_SUCC' | translate}}</h4>
+                  </div>
+                  <div class="button-group">
+                    <button class="btn-style green-btn" type="button" [cdkCopyToClipboard]="copyURL"
+                      (click)="copyBoardURL()">{{'EXTRA_WORD.Copy_URL' | translate}}</button>
+                    <button class="btn-style theme-btn" type="button" *ngIf="id"
+                      routerLink="../../">{{'EXTRA_WORD.BACK_TO_JOBOPENING' | translate}} </button>
+                    <button class="btn-style theme-btn" type="button" *ngIf="!id"
+                      routerLink="/recruiting/job-openings">{{'EXTRA_WORD.BACK_TO_JOBOPENING' | translate}} </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </div>
+</section>

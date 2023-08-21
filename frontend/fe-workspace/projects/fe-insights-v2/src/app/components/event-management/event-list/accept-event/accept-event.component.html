@@ -1,0 +1,34 @@
+<div class="accept-event">
+    <div class="finish-step">
+        <div class="download-qr download-qr-generated" *ngIf="!oppsError">
+            <ng-container *ngIf="qrImage">
+                <img [src]="downloadLink" alt="" class="qrcode-img" >
+                <a href="{{downloadLink}}" download="image" class="link-btn">{{'JOB_OPENING.DOWNLOAD' | translate}}</a>
+            </ng-container>
+            <ng-container *ngIf="successImage">
+                <img src="assets/images/Acceptance.png" alt="" class="qrcode-img mb-30" >
+            </ng-container>
+            <h3>{{'JOB_OPENING.Congratulation' | translate}}</h3>
+            <div>
+                <h4 class="mb-2">{{'EVENT_MANAGEMENT.Invitation has been accepted successfully' | translate}}</h4>
+                <p>{{'You will receive soon an email of confirmation' | translate}}</p>
+            </div>
+            <div class="button-group">
+                <button class="btn-style theme-btn" type="button" style="background-color: #49ab12;" (click)="downloadICSFile()">
+                    {{'EVENT_MANAGEMENT.DownloadICSFile' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="opps-error" *ngIf="oppsError">
+            <div class="decline-event">
+                <div class="content-wrapper">
+                    <div class="emoji">
+                        <img src="assets/images/sad-icon.svg" alt="">
+                    </div>
+                    <h2>Oops..</h2>
+                    <h4>{{errorMessage | translate}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

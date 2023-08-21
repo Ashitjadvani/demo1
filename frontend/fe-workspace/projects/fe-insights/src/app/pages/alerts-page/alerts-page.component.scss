@@ -1,0 +1,52 @@
+.group-tab {
+    margin-top: -48px;
+}
+
+.card-height-600 {
+    height: 600px;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .main-input-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-top: 10px;
+    
+        .date-field {
+            width: auto;
+        }
+    
+        .title-field {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+    }
+
+    .attachment-container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+    
+        .attach-image {
+            
+        }
+    
+        .attach-file {
+            line-height: 1;
+            flex-grow: 1;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    
+        .attach-button {
+    
+        }
+    }
+
+}

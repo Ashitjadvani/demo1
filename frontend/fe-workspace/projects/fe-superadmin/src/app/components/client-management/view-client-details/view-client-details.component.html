@@ -1,0 +1,205 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                  <li routerLink="/client-management" class="breadcrumb-item">Client Management</li>
+                  <li routerLink="/view-client-details" class="breadcrumb-item active" aria-current="page">View Client Details</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="Company Information" class="mt-5">
+                        <div class="box-style company-info">
+                            <div class="buttons-group">
+                                <button class="btn-style purpal-btn" (click)="openMarkDialog()">Mark as Important</button>
+                                <button class="btn-style grey-btn" (click)="onEdit(viewClientdetails?.id)">Edit</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">Delete</button>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>Client Name</p>
+                                        <b>{{viewClientdetails?.company_name ? viewClientdetails?.company_name: '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Address</p>
+                                        <b>{{viewClientdetails?.company_address ? viewClientdetails?.company_address:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>City</p>
+                                        <b>{{viewClientdetails?.city ? viewClientdetails?.city:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Cap</p>
+                                        <b>{{viewClientdetails?.cap ? viewClientdetails?.cap:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Vat</p>
+                                        <b>{{viewClientdetails?.vat ? viewClientdetails?.vat:'-'}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                        <p>Brand Color</p>
+                                        <b>{{viewClientdetails?.brand_color ? viewClientdetails?.brand_color:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Tenant Type</p>
+                                        <b>{{viewClientdetails?.tenant_type ? viewClientdetails?.tenant_type:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>TVA</p>
+                                        <b>{{viewClientdetails?.tva ? viewClientdetails?.tva:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Company Website</p>
+                                        <b>{{viewClientdetails?.company_website ? viewClientdetails?.company_website:'-'}}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                        <p>Logo</p>
+                                        <div class="company-logo">
+                                            <img [src]="base64Image" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Contact Information">
+                        <div class="box-style company-info">
+                            <div class="buttons-group">
+                                <button class="btn-style purpal-btn" (click)="openMarkDialog()">Mark as Important</button>
+                                <button class="btn-style grey-btn" (click)="onEdit(viewClientdetails?.id)">Edit</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">Delete</button>
+                            </div>
+                            <div class="company-details contact-details">
+                                <div class="detail-wrapper odd-even"*ngFor="let contact of viewClientdetails?.contact_info;let i = index">
+                                    <h3>Contact {{i+1}}</h3>
+                                    <div class="detail-box" >
+                                        <p>Contact Type</p>
+                                        <b>{{contact.contact_type ? contact.contact_type:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Name</p>
+                                        <b>{{contact.contact_name ? contact.contact_name:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Phone No.</p>
+                                        <b>{{contact.phone_no ? contact.phone_no:'-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                        <p>Email</p>
+                                        <b>{{contact.email ? contact.email:'-'}}</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Domain Configuration">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <button class="btn-style purpal-btn" (click)="openMarkDialog()">Mark as Important</button>
+                                    <button class="btn-style grey-btn" (click)="onEdit(viewClientdetails?.id)">Edit</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">Delete</button>
+                                </div>
+                                <div class="company-details contact-details">
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p>MCP</p>
+                                            <b>{{viewClientdetails?.domain_configuration.mcp ? viewClientdetails?.domain_configuration.mcp:'-'}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="detail-wrapper">
+                                        <div class="detail-box">
+                                            <p>User Landing Page</p>
+                                            <b>{{viewClientdetails?.domain_configuration.landing_page ? viewClientdetails?.domain_configuration.landing_page:'-'}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p>Touchpoints</p>
+                                            <b>{{viewClientdetails?.domain_configuration.touchpoint ? viewClientdetails?.domain_configuration.touchpoint:'-'}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="detail-wrapper ">
+                                        <div class="detail-box">
+                                            <p>Companion App</p>
+                                            <b>{{viewClientdetails?.domain_configuration.companion_app ? viewClientdetails?.domain_configuration.companion_app:'-'}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p>Modulo Recruiting</p>
+                                            <b>{{viewClientdetails?.domain_configuration.moduloRecruiting ? viewClientdetails?.domain_configuration.moduloRecruiting:'-'}}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Features">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <button class="btn-style purpal-btn" (click)="openMarkDialog()">Mark as Important</button>
+                                    <button class="btn-style grey-btn" (click)="onEdit(viewClientdetails?.id)">Edit</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">Delete</button>
+                                </div>
+                                <div class="company-details">
+                                    <div class="detail-wrapper feature-info">
+                                        <div class="detail-box" *ngFor="let element of featureList">
+                                            <div class="features-switch switch">
+                                                <mat-slide-toggle [(ngModel)]="element.status" disabled>{{element.name}}</mat-slide-toggle>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Admin Login">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                                <div class="buttons-group">
+                                    <button class="btn-style purpal-btn" (click)="openMarkDialog()">Mark as Important</button>
+                                    <button class="btn-style grey-btn" (click)="onEdit(viewClientdetails?.id)">Edit</button>
+                                    <button class="btn-style red-btn" (click)="openDialog()">Delete</button>
+                                </div>
+                                <div class="company-details contact-details">
+                                    <div class="detail-wrapper bg-grey">
+                                        <div class="detail-box">
+                                            <p>Admin Name</p>
+                                            <b>{{viewClientdetails?.company_admin.name? viewClientdetails?.company_admin.name:'-'}}</b>
+                                        </div>
+                                        <div class="detail-box">
+                                            <p>Username</p>
+                                            <b>{{viewClientdetails?.company_admin.username? viewClientdetails?.company_admin.username:'-'}}</b>
+                                        </div>
+                                       <!-- <div class="detail-box">
+                                            <p>Password</p>
+                                            <b>*******</b>
+                                        </div>-->
+                                        <div class="detail-box large-details">
+                                            <p>Force user to reset password for the first time?</p>
+                                            <b *ngIf="viewClientdetails?.company_admin.force_to_reset_password === true">Yes</b>
+                                          <b *ngIf="viewClientdetails?.company_admin.force_to_reset_password === false">No</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,59 @@
+<div class="table-content box-style company-info">
+    <div class="table-heading m-30">
+        <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Services' | translate}}</h3>
+        <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+    </div>
+   <form class="form-wrapper" (ngSubmit)="saveServicesInfo(eventStepper, false)" [formGroup]="servicesInfoForm">
+       <div formArrayName="services">
+           <div class="row" *ngFor="let itemrow of servicesInfoForm.get('services')?.controls; let i=index; last as isLast; first as isFirst" [formGroupName]="i">
+               <div class="col-xl-6 col-xxl-3">
+                   <div class="form-field">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                           <mat-label> {{'EVENT_MANAGEMENT.Add Service' | translate}}</mat-label>
+                           <mat-select formControlName="serviceId">
+                               <mat-option>{{'EVENT_MANAGEMENT.Add Service' | translate}}</mat-option>
+                               <mat-option *ngFor="let eventService of eventServiceList" value="{{eventService.id}}">{{eventService.name}}</mat-option>
+                           </mat-select>
+                       </mat-form-field>
+                   </div>
+               </div>
+               <div class="col-xl-6 col-xxl-3">
+                   <div class="form-field">
+                       <mat-form-field appearance="outline" class="element-full-width">
+                           <mat-label>{{'EVENT_MANAGEMENT.Notes' | translate}}</mat-label>
+                           <input formControlName="note" matInput type="text" name="note" (keydown)="space($event)">
+                       </mat-form-field>
+                   </div>
+               </div>
+               <div class="col-xl-6 col-xxl-3">
+                   <div class="form-field">
+                       <div class="custom-switch switch mt-0">
+                           <mat-checkbox formControlName="sendMail">{{'EVENT_MANAGEMENT.Send Email to Supplier' | translate}}</mat-checkbox>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-xl-6 col-xxl-3" style="min-width: 355px;">
+                   <button *ngIf="!isFirst" class="btn-style red-btn mb-30" type="button" (click)="deleteServicesInfoRow(i)">
+                       {{'Delete'| translate}}
+                   </button>
+                   <button *ngIf="isLast" class="btn-style green-btn mb-30" type="button" (click)="addServicesInfoRow(i)">
+                       <span class="material-icons">add</span>{{'EVENT_MANAGEMENT.Add Service' | translate}}
+                   </button>
+               </div>
+           </div>
+       </div>
+      <div class="step-form-bottom">
+         <div>
+            <button  (click)="back()" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+         </div>
+         <div class="">
+            <button matStepperPrevious class="btn-style privious-btn" type="button">
+               <span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}
+            </button>
+             <button *ngIf="createTimeId !== '0'" class="btn-style theme-btn" (click)="saveServicesInfo(eventStepper, true)" type="button">{{'EVENT_MANAGEMENT.BackToListOfEvents'| translate}}</button>
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+             <button class="btn-style theme-btn" type="button" (click)="saveServicesInfo(eventStepper, true)">{{'GENERAL.Save&Exit'| translate}}</button>
+         </div>
+      </div>
+   </form>
+</div>

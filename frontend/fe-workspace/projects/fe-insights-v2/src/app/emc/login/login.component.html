@@ -1,0 +1,67 @@
+<section class="login">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-lg-7 d-flex align-item-center">
+                    <div class="banner-img">
+                        <img src="../../../assets/images/login-img.svg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-content">
+                        <div class="logo">
+                            <img src="../../../assets/images/legance-color.svg" routerLink="" alt="">
+                        </div>
+                        <form name="loginForm" [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="onSubmit(true)">
+                            <div class="form-wrapper">
+                                <div class="input-wrapper">
+                                    <div class="form-title">
+                                        <h3>{{'GENERAL.Login' | translate}}</h3>
+                                        <p>{{'LOGIN.AccessAccount' | translate}}</p>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label> {{'GENERAL.Username' | translate}}</mat-label>
+                                            <input matInput formControlName="username"  type="text" id="username" name="username" maxlength="50" autocomplete="off">
+                                            <mat-error *ngIf="loginForm.controls.username.errors?.required"> {{'LOGIN.UsernameRequired' | translate}}</mat-error>
+                                            <mat-error *ngIf="loginForm.controls.username.errors?.username">{{'LOGIN.InvalidUsername' | translate}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'GENERAL.Password' | translate}} </mat-label>
+                                            <input matInput formControlName="password"  name="password"  [type]="hide ? 'password' : 'text'" autocomplete="new-password">
+                                            <mat-error *ngIf="loginForm.controls.password.errors?.required" >{{'LOGIN.PasswordRequired' | translate}}</mat-error>
+                                            <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label> {{'EDIT COMPANY.SecretCode' | translate}}</mat-label>
+                                            <input matInput formControlName="secretcode"  type="text" name="secretcode" maxlength="50" autocomplete="off">
+                                            <mat-error *ngIf="loginForm.controls.secretcode.errors?.required"> {{'EDIT COMPANY.EnterSecretCode' | translate}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="remember-forgot">
+                                        <mat-checkbox class="remember-check" formControlName="isRemberMeChecked">{{'LOGIN.RememberPassword' | translate}} </mat-checkbox>
+                                        <a routerLink="/emc/forgot-password" class="forgot-link">{{'LOGIN.ForgotPassword' | translate}}</a>
+                                    </div>
+                                </div>
+                                <div class="form-btn">
+                                    <button mat-button  type="submit" class="full-btn">{{'GENERAL.Login' | translate}}</button>
+                                </div>
+                                <div class="login-footer text-center">
+                                    <img src="../../../assets/images/nunow-footer.png" routerLink="" alt="">
+                                    <p>{{'GENERAL.copyRight' | translate}}</p>
+                                    <div class="label-version" style="font-size: 15px;color: #5B5B5B;">Ver: {{ version }} (App)</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

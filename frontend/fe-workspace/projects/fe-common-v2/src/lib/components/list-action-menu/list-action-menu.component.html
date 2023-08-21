@@ -1,0 +1,14 @@
+<button  class="btn-style" [routerLink]="(scopeId === null) ? ['/event-management/event-list/create-event/0'] : ['/training/event-list/create-event/0/' + scopeId]" >
+    <span class="material-icons">add</span>{{createEventText}}
+  </button>
+  <button class="btn-style" (click)="onFilterListOfEvent()">
+    <span class="material-icons">filter_alt</span>
+  </button>
+  <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+    <mat-icon >more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="deleteMultipleListOfEvent()">
+      <span>{{deleteText}}</span>
+    </button>
+  </mat-menu>

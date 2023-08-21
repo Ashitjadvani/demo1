@@ -1,0 +1,85 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-toolbar>
+    <div class="page-content height-100">
+        <mat-accordion class="profile-accordion">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{'GENERAL.PROFILE'|translate}}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="user-profile-content-container">
+                    <mat-table #table class="table-data" [dataSource]="userFields">
+                        <ng-container matColumnDef="Field">
+                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{ element.Field }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Value">
+                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{ element.Value }}</mat-cell>
+                        </ng-container>
+                        <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <!--
+            <button mat-flat-button color="primary" class="print-button no-round"
+                (click)="onPrintQR()">Print QR</button>
+            -->
+                    <div class="info-app-version">{{'USER PROFILE.COPYRIGHT'|translate}} {{ appVersion }}</div>
+                </div>
+
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{'USER PROFILE.ACTIVITIES'|translate}}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="user-profile-content-container">
+                    <mat-table #table class="table-user-activity" [dataSource]="activitiesFields">
+                        <ng-container matColumnDef="Field">
+                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{ element.Field }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Value">
+                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{ element.Value }}</mat-cell>
+                        </ng-container>
+                        <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{'USER PROFILE.QR CODE'|translate}}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="user-profile-content-container">
+                    <qr-code #qrcode class="qr-code" [canvas]="false" [value]="userQR" [level]="qrLevel" [size]="300"
+                        (click)="onSaveQR(qrcode)"></qr-code>
+                </div>
+
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{'GENERAL.LOCALIZATION'|translate}}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <h4>{{'LANGUAGES.SELECT LANGUAGE'|translate}}</h4>
+                <mat-form-field class="lang-field">
+                    <mat-label>{{'LANGUAGES.LANGUAGES'|translate}}</mat-label>
+                    <mat-select [(ngModel)]="userLanguageSelect" name='language' matNativeControl required
+                        (selectionChange)='onLanguageChange($event)'>
+                        <mat-option value="en">{{'LANGUAGES.ENGLISH'|translate}}</mat-option>
+                        <mat-option value="es">{{'LANGUAGES.SPANISH'|translate}}</mat-option>
+                        <mat-option value="it">{{'LANGUAGES.ITALIAN'|translate}}</mat-option>
+                        <mat-option value="fr">{{'LANGUAGES.FRENCH'|translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

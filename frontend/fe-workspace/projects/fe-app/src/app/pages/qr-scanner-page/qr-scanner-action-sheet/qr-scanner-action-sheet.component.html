@@ -1,0 +1,37 @@
+<mat-nav-list class="qr-action-sheet">
+    <app-book-resource-list-item class="info-card" [resourceItem]="currentResourceInteraction.resource" [displayActions]="false">
+    </app-book-resource-list-item>
+
+    <app-book-item-timeframes [bookItem]="currentResourceInteraction.resourceBook"></app-book-item-timeframes>    
+
+    <a *ngIf="isActionAvailable(ResourceAction.InstantBook)" mat-list-item class="action-item" [ngStyle]="getActionStyle(ResourceAction.InstantBook)"
+        (click)="onUserAction(ResourceAction.InstantBook)">
+        <mat-label class="item-text white-text" mat-line>Instant Book</mat-label>
+        <i class="material-icons white-text">task_alt</i>
+    </a>
+
+    <a *ngIf="isActionAvailable(ResourceAction.CheckIn)" mat-list-item class="action-item" [ngStyle]="getActionStyle(ResourceAction.CheckIn)"
+        (click)="onUserAction(ResourceAction.CheckIn)">
+        <mat-label class="item-text white-text" mat-line>Check in</mat-label>
+        <i class="material-icons white-text">login</i>
+    </a>
+
+    <a *ngIf="isActionAvailable(ResourceAction.CheckOut)" mat-list-item class="action-item" [ngStyle]="getActionStyle(ResourceAction.CheckOut)"
+        (click)="onUserAction(ResourceAction.CheckOut)">
+        <mat-label class="item-text white-text" mat-line>Check out</mat-label>
+        <i class="material-icons white-text">logout</i>
+    </a>
+
+    <a *ngIf="isActionAvailable(ResourceAction.ExtendBook)" mat-list-item class="action-item" [ngStyle]="getActionStyle(ResourceAction.ExtendBook)"
+        (click)="onUserAction(ResourceAction.ExtendBook)">
+        <mat-label class="item-text white-text" mat-line>Extend book</mat-label>
+        <i class="material-icons white-text">forward_10</i>
+    </a>
+
+    <div class="spacer"></div>
+
+    <a mat-list-item class="action-item" [ngStyle]="getActionStyle(ResourceAction.None)" (click)="onCloseDrawer()">
+        <mat-label class="item-text white-text" mat-line>Close</mat-label>
+        <i class="material-icons white-text">directions_run</i>
+    </a>
+</mat-nav-list>

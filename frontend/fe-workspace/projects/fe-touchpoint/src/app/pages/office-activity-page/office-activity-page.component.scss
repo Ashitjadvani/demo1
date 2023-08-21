@@ -1,0 +1,97 @@
+.main-header-bar {
+    width: 100%;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    height: calc(100vh - 64px);
+}
+
+.code-container {
+    margin-top: 100px;
+    width: 100%;
+    height: calc(100% - 128px);
+    display: flex;
+    flex-direction: row;
+
+    .splash-info {
+        background-color: white;
+        width: 500px;
+        height: 300px;
+        position: absolute;
+        z-index: 100;
+        top: calc((100vh - 400px) * 0.5);
+        left: calc((100vw - 500px) * 0.5);
+        border-radius: 30px;
+        border: 5px #14aab9 solid;
+        display: flex;
+        flex-direction: column;
+
+        .splash-info-text {
+            text-align: center;
+        }
+    }
+
+    .spacer {
+        flex-grow: 1;
+    }
+
+    .qr-container {
+        width: 350px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .site-info-container {
+        width: 300px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+
+        .site-image {
+            width: 100%;
+        }
+
+        .site-text {
+            font-size: large;
+            color: white;
+        }
+
+        .site-clock {
+            margin-top: 60px;
+            font-size: xx-large;
+            font-weight: bold;
+            color: white;
+        }
+
+        .site-date {
+            margin-top: 15px;
+            font-size: xx-large;
+            font-weight: bold;
+            color: white;
+        }
+    }
+
+    .scanner-container {
+        width: 350px;
+        height: 260px;
+        text-align: center;
+
+        .qr-scanner {
+            height: 260px !important;
+        }
+    }
+}
+
+.site-status {
+    width: 100%;
+    font-size: xx-large;
+    font-weight: bold;
+    color: red;
+    background-color: white;
+    vertical-align: middle;
+    text-align: center;
+}

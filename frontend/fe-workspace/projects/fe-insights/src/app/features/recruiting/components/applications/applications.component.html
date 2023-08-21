@@ -1,0 +1,165 @@
+<mat-tab-group #tabgroup class="group-tab">
+  <mat-tab [label]="(this.currentOpening$ | async)?.short_description || ('JOB_APPLICATION.DEFAULT_TAB' | translate)">
+    <app-table-data-view
+      [tableDataService]="this.service$ | async"
+      [columnTemplates]="tableColumnTemplates"
+      [rowActions]="tableRowActions"
+      [mainActions]="tableMainActions"
+      [externalFilter]="this.forcedFilters">
+      <!-- (onFilterUpdate)="this.getFilteredElements($event)" -->
+
+    </app-table-data-view>
+  </mat-tab>
+  <mat-tab [label]="'JOB_APPLICATION.DETAIL' | translate" *ngIf="this.showDetail">
+
+    <div class="general-container">
+      <mat-card class="detail-card card" *ngIf="this.currentElement$ | async as current_element">
+        <mat-card-header class="card-header">
+          {{titleCard}} : {{current_element.person.nome}} {{current_element.person.cognome}}
+        </mat-card-header>
+        <mat-card-content class="card-body">
+          <h2 *ngIf="this.currentOpening$  | async as current_opening">
+            [{{current_opening.code}}] {{current_opening.description}}
+          </h2><br>
+
+          <div class="person-row" fxFlex="auto" fxLayout="column">
+            <div fxLayout="row wrap" fxLayoutGap="40px grid">
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"CANDIDATE.email" | translate}}</div>
+                {{current_element.person.email}}
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"CANDIDATE.telefono" | translate}}</div>
+                {{current_element.person.telefono}}
+              </div>
+
+              <div fxFlex="50" fxLayout="row">
+                <div class="field-caption">&nbsp;</div>
+                <mat-icon>location_on</mat-icon>
+                {{current_element.person.indirizzo}}
+                <ng-container *ngIf="current_element.person.sesso=='M'">
+                  <mat-icon>male</mat-icon>
+                  {{"INSIGHTS_PEOPLE_PAGE.Male" | translate}}
+                </ng-container>
+
+                <ng-container *ngIf="current_element.person.sesso=='F'">
+                  <mat-icon>female</mat-icon>
+                  {{"INSIGHTS_PEOPLE_PAGE.Female" | translate}}
+                </ng-container>
+
+                {{current_element.person.age}} {{"GENERAL.AGE_YO" | translate}}
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"CANDIDATE.social" | translate}}</div>
+                <div>...</div>
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"CANDIDATE.univ" | translate}}</div>
+                <div>{{currentElement.person.univ.description}}</div>
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"CANDIDATE.azienda" | translate}}</div>
+                <div>{{currentElement.person.azienda}}</div>
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"JOB_OPENING.title" | translate}}</div>
+                <div>{{currentElement.opening.short_description}}</div>
+              </div>
+
+              <div fxFlex="50" fxLayout="column">
+                <div class="field-caption">{{"JOB_APPLICATION.COMPLETION_DATE" | translate}}</div>
+                <div>{{currentElement.data_completamento | date}}</div>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="auto" fxLayout="row" fxLayoutGap="10px">
+            <div fxLayout="column" fxFlex="2 2 70%" style="max-height: 80px; overflow: auto; border-radius: 10px; border: 1px solid #CCCCCC; padding: 5px;">
+              <table mat-table *ngIf="currentElement" [dataSource]="currentElement.history">
+
+                <ng-container matColumnDef="updated_at">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element">{{element.updated_at | date:'dd/MM/yyyy h:mm'}}</td>
+                  <td mat-footer-cell *matFooterCellDef="let element"></td>
+                </ng-container>
+
+                <ng-container matColumnDef="to_state">
+                  <th mat-header-cell *matHeaderCellDef> {{'JOB_APPLICATION.TO_STATE' | translate}} </th>
+                  <td mat-cell *matCellDef="let element">{{element.to_state?.description}}</td>
+                  <td mat-footer-cell *matFooterCellDef="let element"></td>
+                </ng-container>
+
+                <ng-container matColumnDef="notes">
+                  <th mat-header-cell *matHeaderCellDef> {{'JOB_APPLICATION.NOTES' | translate}} </th>
+                  <td mat-cell *matCellDef="let element">{{element.notes}}</td>
+                  <td mat-footer-cell *matFooterCellDef="let element"></td>
+                </ng-container>
+
+                <ng-container matColumnDef="by">
+                  <th mat-header-cell *matHeaderCellDef> {{'JOB_APPLICATION.CHANGED_BY' | translate}} </th>
+                  <td mat-cell *matCellDef="let element">
+                    <!--{{element.notes}}-->
+                    #TODO
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef="let element"></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="historyDisplayedColumns; "></tr>
+                <tr mat-row *matRowDef="let row; columns: historyDisplayedColumns;"></tr>
+                <!--<tr mat-footer-row *matFooterRowDef="this.historyDisplayedColumns"></tr>-->
+              </table>
+
+            </div>
+            <div fxFlex="1 1 30%" style="margin-top:20px;">
+
+              <form fxLayout="column" [formGroup]="this.frmChangeStatus" id="frmDetail"
+                    (ngSubmit)="this.onSubmit($event)">
+
+                <mat-form-field>
+                  <mat-label>{{'JOB_APPLICATION.STATUS'|translate}}</mat-label>
+                  <mat-select [formControlName]="'status_id'">
+                    <mat-option *ngFor="let opt of (this.choices$ | async)['application_status']"
+                                [value]="opt.id" [disabled]="!isStatusEnabled(opt)">{{opt.label}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>{{'JOB_APPLICATION.NOTES' | translate}}</mat-label>
+                  <textarea matInput formControlName="notes" rows="5"></textarea>
+                  <mat-error *ngFor="let error of this.frmChangeStatus.get(['notes']).errors | keyvalue; let i=index">
+                        <span *ngIf="error.key=== 'required' ">
+                          {{ 'JOB_APPLICATION.NOTES_REQUIRED' | translate}}
+                        </span>
+                  </mat-error>
+                </mat-form-field>
+
+
+                <pre *ngIf="false" style="height:200px; overflow: auto">
+                    {{this.currentElement$ | async | json}}
+                  </pre>
+
+                <pre *ngIf="false" style="height:200px; overflow: auto">
+                    {{this.frmChangeStatus.getRawValue() | json}}
+                  </pre>
+
+              </form>
+            </div>
+          </div>
+
+        </mat-card-content>
+        <mat-card-footer class="card-footer">
+          <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+          <span class="width-5"></span>
+          <button mat-flat-button class="action-button" color="primary" [disabled]="!this.frmChangeStatus.valid"
+                  type="submit" form="frmDetail">{{'GENERAL.SAVE'|translate}}</button>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </mat-tab>
+</mat-tab-group>

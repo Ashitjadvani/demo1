@@ -1,0 +1,89 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{ person ? person.name + ' ' + person.surname : '' }}</h4>
+            <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div class="row">
+                <mat-form-field appearance="outline" class="element-full-width date-select">
+                    <mat-label>{{'ACCESS_CONTROL.Date' | translate}}</mat-label>
+                    <input [(ngModel)]="date" [matDatepicker] [matDatepicker]="picker_1" (ngModelChange)="onDateChange()" matInput type="text">
+                    <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select"></mat-datepicker-toggle>
+                    <mat-datepicker #picker_1></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-xxl-3">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>Time</mat-label>
+                        <input [ngModel]="getTimestamp()" (change)="setTimestamp($event.target.value)" readonly (click)="pickerTS.open()" matInput>
+                        <mat-icon matSuffix (click)="pickerTS.open()">schedule</mat-icon>
+                        <ngx-material-timepicker #pickerTS [format]="24" (timeSet)="setTimestamp($event)">
+                        </ngx-material-timepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-xxl-4">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> {{'Site' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="currentLogActivity.site">
+                            <mat-option *ngFor="let sites of siteList" value="{{sites.key}}" style="text-transform:capitalize;">{{sites.name | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-3 col-xxl-3">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label> Activity </mat-label>
+                        <mat-select [(ngModel)]="currentLogActivity.action">
+                            <mat-option *ngFor="let act of activityTypes" value="{{ act }}" style="text-transform:capitalize;">{{ act }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-2 col-xxl-2">
+                    <button (click)="onUpdateActionLog()" class="btn-style theme-btn" style="margin-top: 8px">
+                        <mat-icon >save</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <table mat-table matSort [dataSource]="userDailyActivity.actionLog">
+                    <ng-container matColumnDef="Time">
+                        <mat-header-cell *matHeaderCellDef class="table-head"> Timestamp </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="white-space: nowrap"> {{ (element.timestamp ? element.timestamp : '-') | date: 'HH:mm'}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Site">
+                        <mat-header-cell *matHeaderCellDef> Site </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.site ? element.site : '-' }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Activity">
+                        <mat-header-cell *matHeaderCellDef> Activity </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.action }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Action" stickyEnd>
+                        <mat-header-cell *matHeaderCellDef>
+                            {{'TABLE.Action' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element; let id=index;">
+                            <button mat-icon-button (click)="onDeleteActivityLog(id)" matTooltip="{{'Edit'|translate}}">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="['Time', 'Site', 'Activity', 'Action']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['Time', 'Site', 'Activity', 'Action'];"></mat-row>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onSave()" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+            <button (click)="onClose()" class="btn-style inactive">{{'DOCUMENTS.Close' | translate}}</button>
+        </div>
+    </div>
+</section>

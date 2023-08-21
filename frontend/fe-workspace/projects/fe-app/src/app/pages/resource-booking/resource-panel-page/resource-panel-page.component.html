@@ -1,0 +1,62 @@
+<div class="main-panel-container">
+    <div class="panel-head">
+        <div class="head-logo-container">
+            <div class="span"></div>
+            <div class="header-logo>"><img src="./assets/images/logo.svg" class="header-logo"></div>
+            <div class="span"></div>
+        </div>
+        <div class="head-title">{{ safeNameDisplay() }}</div>
+        <div class="head-subtitle">{{ safeAddressDisplay() }} </div>
+        <div class="span"></div>
+        <div class="panel-resource-status" [ngStyle]="{ 'background': getStatusColor() }">
+            <mat-label class="status-text">{{ getStatusText() }}</mat-label>
+        </div>
+        <div class="span"></div>
+        <div class="panel-resource-qr">
+            <div class="qr-spacer"></div>
+            <qr-code #qrcode class="qr-code" [canvas]="false" [value]="resourceQR" [level]="qrLevel" [size]="280">
+            </qr-code>
+        </div>
+        <div class="span"></div>
+        <div class="panel-resource-services" (click)="onServiceClick()">
+            <mat-label class="status-text">SERVICES</mat-label>
+        </div>
+        <div class="span"></div>
+    </div>
+
+    <div class="panel-scheduler">
+        <div class="panel-scheduler-header">
+            {{ currentDateTime | date:'dd/MM/yyyy HH:mm:ss' }}
+        </div>
+        <div class="panel-scheduler-container">
+            <div class="panel-scheduler-timeframes">
+                <ng-container *ngIf="this.resourceReservation.timeframeReservations.length > 0">
+                    <div class="schedule-title">Room Schedule</div>
+                    <div *ngFor="let tf of getMyTimeframes()" class="timeframe-card"
+                        [ngStyle]="{ 'background-color': isInProgress(tf) ? '#00ff0022' : '#eeeeee' }">
+                        <div class="timeframe-content">
+                            <div class="timeframe-content-time">
+                                <i class="material-icons clock-icon">schedule</i>
+                                <div class="time-text">{{ formatTimeframeTime(tf.startTime) }} - {{
+                                    formatTimeframeTime(tf.endTime) }}
+                                </div>
+
+                                <div class="title-text">{{ getTimeframeCaption(tf) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="this.resourceReservation.timeframeReservations.length == 0">
+                    <div class="timeframe-card">
+                        <div class="timeframe-content">
+                            <div class="timeframe-no-event">No events</div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="panel-scheduler-footer">
+
+        </div>
+    </div>
+</div>

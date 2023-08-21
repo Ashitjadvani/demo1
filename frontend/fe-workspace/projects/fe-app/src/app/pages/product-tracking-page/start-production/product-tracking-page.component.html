@@ -1,0 +1,97 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="control-container">
+            <mat-tab-group class="group-tab">
+                <mat-tab>
+                    <div class="main-action-container">
+                        <mat-nav-list class="action-list">
+                            <div *ngIf="currentActionState == ACTION_STATE.asOrderActive" class="order-summary-card">
+                                <div class="main-container">
+                                    <div class="header">
+                                        Situazione Ordine
+                                    </div>
+                                    <div class="bullet-container">
+                                        <div class="indicator-container">
+                                            <div class="bullet-text total-quantity" matTooltip="Quantity">
+                                                {{ getOrderItemQuantity() }}</div>
+                                            <div class="bullet-info-text">Quantità</div>
+                                        </div>
+                                        <div class="indicator-container">
+                                            <div class="bullet-text total-quantity" matTooltip="Done">
+                                                {{ getOrderItemActive() }}</div>
+                                            <div class="bullet-info-text">Attivati</div>
+                                        </div>
+                                        <div class="indicator-container">
+                                            <div class="bullet-text total-quantity" matTooltip="Scarp">
+                                                {{ getOrderItemScrap() }}</div>
+                                            <div class="bullet-info-text">Scrap</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ng-container *ngIf="currentActionState == ACTION_STATE.asStartOrder">
+                                <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                                    (click)="onStartOrder()">
+                                    <mat-label class="item-text white-text" mat-line>Avvia Lavorazione Ordine</mat-label>
+                                    <i class="material-icons white-text button-icon">beenhere</i>
+                                </a>
+                            </ng-container>
+
+                            <ng-container *ngIf="currentActionState == ACTION_STATE.asOrderActive">
+                                <a *ngFor="let cmd of productActivationCommands" mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                                    (click)="onStartProduct(cmd.productCode)">
+                                    <div class="activate-button">
+                                        <mat-label class="item-text white-text" mat-line>Attiva {{ cmd.productDescr }}</mat-label>
+                                        <span class="spacer"></span>
+                                        <mat-label class="item-text white-text" mat-line>{{ cmd.done }}/{{ cmd.quantity }}</mat-label>    
+                                    </div>
+                                    <i class="material-icons white-text button-icon">view_in_ar</i>
+                                </a>
+
+                                <a *ngIf="productActivationCommands.length == 0" mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                                    (click)="onCloseOrder(false)">
+                                    <mat-label class="item-text white-text" mat-line>Chiudi Ordine</mat-label>
+                                    <i class="material-icons white-text button-icon">thumb_up</i>
+                                </a>
+
+                                <div class="spacer"></div>
+                                
+                                <a mat-list-item class="action-item" [ngStyle]="getActionStyle(true)" (click)="onCloseOrder(true)">
+                                    <mat-label class="item-text white-text" mat-line>Abbandona lavorazione ordine</mat-label>
+                                    <i class="material-icons white-text">directions_run</i>
+                                </a>
+                            </ng-container>
+
+                            <ng-container *ngIf="currentActionState == ACTION_STATE.asCloseOrder">
+                                <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                                    (click)="onCloseOrder(false)">
+                                    <mat-label class="item-text white-text" mat-line>Close Order</mat-label>
+                                    <i class="material-icons white-text button-icon">sports_score</i>
+                                </a>
+                            </ng-container>
+
+                            <ng-container *ngIf="currentActionState == ACTION_STATE.asOrderDead">
+                                <div class="spacer"></div>
+                                
+                                <a mat-list-item class="action-item" [ngStyle]="getActionStyle(true)" (click)="onCloseOrder(true)">
+                                    <mat-label class="item-text white-text" mat-line>Abbandona lavorazione ordine</mat-label>
+                                    <i class="material-icons white-text">directions_run</i>
+                                </a>
+                            </ng-container>
+
+                        </mat-nav-list>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <div class="qr-scanner-container">
+                        <fco-qr-scanner #scanner (scanSuccess)="onCodeResult($event)" [camera]="currentCamera">
+                        </fco-qr-scanner>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

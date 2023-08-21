@@ -1,0 +1,71 @@
+.dialog-head {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+
+    .title {
+        font-size: x-large;
+        margin-top: auto;
+        margin-bottom: auto;
+        
+    }
+
+    .spacer {
+        flex-grow: 1;
+    }
+
+    .help-button {
+        
+    }
+}
+
+.popover-help {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    justify-content: center;
+    padding: 15px;
+
+    .help-title {
+        font-size: x-large;
+        margin-bottom: 5px;
+    }
+
+    .help-row {
+        display: flex;
+        flex-direction: row;
+
+        .help-row-name {
+            font-weight: bold;
+            min-width: 200px;
+        }
+
+        .help-row-value {
+
+        }
+    }
+}
+
+.html-editor {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    .head-param {
+        display: flex;
+        flex-direction: row;
+
+        .spacer {
+            width: 10px;
+        }
+    }
+    
+    .full-width {
+        width: 100%;
+    }
+}

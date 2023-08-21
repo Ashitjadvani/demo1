@@ -1,0 +1,42 @@
+@import "../../../../theme-color.scss";
+
+$breakpoint-desktop: 1500px;
+$breakpoint-tablet: 1199px;
+$breakpoint-tablet-sm: 991px;
+$breakpoint-mobile: 767px;
+.header-bg{
+  background-color: $theme_color;color: $black;position: fixed;left: 322px;right: 0px;width: initial;top: 0;z-index: 999;transition: all 0.3s ease;height: 91px;
+  .main-header{
+    background: $white;border-radius: 40px 0px 0px 0px;
+    box-shadow: 0px 0px 6px rgb(0 0 0 / 16%);
+    height: 100%;
+    transition: all 0.3s ease;
+    @media (max-width: $breakpoint-desktop){
+      left: 250px;
+    }
+    a{
+      text-decoration: none;color: $black;
+      &.add-oppo{
+        padding: 2px 15px 2px 15px;
+        &:hover{
+          color: $theme_color;
+        }
+      }
+    }
+    .menu-icon {
+      margin-left: 22px;
+  }
+}
+  .navigation-items{
+    list-style-type: none;padding: 0;margin: 0;
+  }
+  .user-menu {
+    display: flex;float: right;
+    .user-profile-img {
+      width: 45px;height: 45px;margin-right: 10px;border-radius: 100%;overflow: hidden;background-color: #e7e7e7;
+    }
+    .user-profile-info {
+      display: flex;align-items: center;font-size: 20px;font-family: 'Proxima-Nova';font-weight: 600;
+    }
+  }
+}

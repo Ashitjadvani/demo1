@@ -1,0 +1,32 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+          <h4>{{mode | translate}} {{'COMPANYTXT.VideoQuestion'| translate}}</h4>
+            <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <form [formGroup]="addVideoAssesmentForm" (ngSubmit)="submit();">
+    <div class="popup-body" *ngIf="customField">
+        <div class="popup-content m-auto text-center" >
+            <div hidden><input type="text" formControlName="id" name="id"></div>
+            <div class="form-field">
+                <mat-form-field appearance="outline" class="element-full-width">
+                  <mat-label>{{mode | translate}} {{'COMPANYTXT.VideoQuestion'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <!-- <label>Video Assessment Question<span style="color:#EA5455">*</span></label> -->
+                    <input  type="text" formControlName="question" matInput  name="question" >
+                    <mat-error *ngIf="addVideoAssesmentForm.controls.question.errors?.required" >
+                        {{'Please enter video question' | translate}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onClick(false)" type="button" class="btn-style inactive">{{'GENERAL.Cancel'|translate}}</button>
+            <button [disabled]='addVideoAssesmentForm.invalid' [ngClass]="{'mat-button-disabled': addVideoAssesmentForm.invalid}" class="btn-style theme-btn">{{'GENERAL.Save'|translate}}</button>
+        </div>
+    </div>
+</form>
+</section>

@@ -1,0 +1,193 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="/accounts" class="breadcrumb-item">{{'INSIGHTS_MENU.ACCOUNTS'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'ACCOUNTS.ACCOUNT'| translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ACCOUNTS'"  [routePath]="'/accounts'"
+            [type]="'ACCOUNTS.ACCOUNT'" [title3]="title ">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'ACCOUNTS.ACCOUNT'| translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'| translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addAccountForm" [formGroup]= "addAccountForm"  novalidate
+                    (ngSubmit)="addAccount()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'ACCOUNTS.Person'| translate}}</mat-label>
+                                      <input matInput type="text" [formControl]="peopleFC" [(ngModel)]="selectedPerson" [matAutocomplete]="autoPerson" required style="text-transform: capitalize;">
+                                      <mat-autocomplete #autoPerson="matAutocomplete" [displayWith]="displaySelectedUser">
+                                        <mat-option *ngFor="let person of people | async" [value]="person">
+                                          <span style="text-transform: capitalize;">{{ person.name }} {{ person.surname }}</span>
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                        <mat-error *ngIf="addAccountForm.controls.peopleFC.errors?.required" >
+                                          {{'ACCOUNTS.Enteryourperson'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'ACCOUNTS.UserID'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="userId" matInput  name="userId" [readonly]="this.title == 'Edit'">
+                                        <mat-error *ngIf="addAccountForm.controls.userId.errors?.required" >
+                                          {{'ACCOUNTS.Enteryouruserid'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCOUNTS.AuthenticationMethod'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="authProvider" (selectionChange)="authenticationChange($event.value)" >
+                                            <!--<mat-option>{{'ACCOUNTS.SelectAuthenticationMethod'| translate}}</mat-option>-->
+                                            <mat-option *ngFor="let authentication of authenticationMethod" [value]="authentication.value">{{authentication.viewValue | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.authProvider.errors?.required">
+                                          {{'ACCOUNTS.Pleaseselectauthenticationmethod'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'GENERAL.Password'| translate}}</mat-label>
+                                        <input matInput  formControlName="password" minlength="6" [type]="hide ? 'password' : 'text'" id="password" name="password" maxlength="50" [readonly]="isDisable" onkeypress="return event.charCode != 32" [value]="password">
+                                        <mat-error *ngIf="addAccountForm.controls.password.errors?.required" >{{'Please enter password'| translate}}</mat-error>
+                                        <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                     </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.ConfirmPassword'|translate}}</mat-label>
+                                        <input matInput formControlName="confirmPassword" minlength="6"  name="confirmPassword"  [type]="hide1 ? 'password' : 'text'" [readonly]="isDisable" onkeypress="return event.charCode != 32" [value]="confirmPassword">
+                                        <mat-error *ngIf="addAccountForm.controls.confirmPassword.errors?.required" >{{'RESET_PASSWORD.Pleaseenterconfirmpassword'|translate}}</mat-error>
+                                        <mat-error *ngIf="addAccountForm.controls.confirmPassword.errors?.confirmedValidator" style="white-space: nowrap;">{{'RESET_PASSWORD.ConfirmPasswordMatch' | translate}}</mat-error>
+                                        <button mat-icon-button type="button" matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" >
+                                          <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.PasswordValidity'|translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="passwordValid" [disabled]="isDisable" [(ngModel)]="passwordValidValue">
+                                            <!--<mat-option>{{'RESET_PASSWORD.SelectPasswordValidity'|translate}}</mat-option>-->
+                                            <mat-option *ngFor="let validity of passwordValidity" [value]="validity.id">{{validity.name | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.passwordValid.errors?.required" >
+                                          {{'RESET_PASSWORD.PleaseSelectpasswordvalidity'|translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.PasswordMin'|translate}}</mat-label>
+                                        <mat-select formControlName="passwordMin" #passwordMin [disabled]="isDisable">
+                                            <!--<mat-option>{{'RESET_PASSWORD.SelectPasswordMin'|translate}}</mat-option>-->
+                                            <mat-option *ngFor="let minPassword of passwordMinMaxList" value="{{minPassword.value}}">{{minPassword.viewValue}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.passwordMin.errors?.required" >
+                                          {{'RESET_PASSWORD.PleaseSelectpasswordmin'|translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.PasswordMax'|translate}}</mat-label>
+                                        <mat-select formControlName="passwordMax" #passwordMax [disabled]="isDisable">
+                                            <!--<mat-option>{{'RESET_PASSWORD.SelectPasswordMax'|translate}}</mat-option>-->
+                                            <mat-option *ngFor="let maxPassword of passwordMinMaxList" value="{{maxPassword.value}}">{{maxPassword.viewValue}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.passwordMax.errors?.required" >
+                                          {{'RESET_PASSWORD.PleaseSelectpasswordmax'|translate}}
+                                        </mat-error>
+                                      <mat-error *ngIf="passwordMin.value > passwordMax.value" >
+                                        {{'Maximum password characters should be greater then minimum characters' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.PasswordPattern'|translate}}</mat-label>
+                                        <mat-select formControlName="passwordPattern" [disabled]="isDisable">
+                                            <!--<mat-option>{{'RESET_PASSWORD.SelectPasswordPattern'|translate}}</mat-option>-->
+                                            <mat-option *ngFor="let passwordPatter of passwordPatternList" [value]="passwordPatter.value">{{passwordPatter.name | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.passwordPattern.errors?.required" >
+                                          {{'RESET_PASSWORD.Pleaseselectpasswordpattern'|translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'RESET_PASSWORD.AllowedPreviousPassword'|translate}}</mat-label>
+                                        <mat-select formControlName="allowedPreviousPassword" [disabled]="isDisable" (selectionChange)="durationPrevPassChange($event.value)" [(ngModel)]="selectedPrevPassword">
+                                            <!--<mat-option>{{'RESET_PASSWORD.SelectAllowedPreviousPassword'|translate}}</mat-option>-->
+                                            <mat-option *ngFor="let PreviousPassword of allowedPreviousPassword" [value]="PreviousPassword.value">{{PreviousPassword.viewValue | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addAccountForm.controls.allowedPreviousPassword.errors?.required" >
+                                          {{'RESET_PASSWORD.Pleaseallowedpreviouspassword'|translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4" *ngIf="showPreviousDuration">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                  <mat-label>{{'Duration for previous password' | translate}}</mat-label>
+                                  <mat-select formControlName="passwordDuration" [disabled]="isDisable">
+                                    <!--<mat-option>Select duration for previous password</mat-option>-->
+                                    <mat-option *ngFor="let prevPassword of passwordDuration" [value]="prevPassword.value">{{prevPassword.name | translate}}</mat-option>
+                                  </mat-select>
+                                  <mat-error *ngIf="addAccountForm.controls.passwordDuration.errors?.required" >
+                                    {{'Please select duration for previous password' | translate}}
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save'|translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/accounts" type="button">{{'GENERAL.Cancel'|translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

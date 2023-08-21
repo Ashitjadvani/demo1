@@ -1,0 +1,123 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+<!--                  <li class="breadcrumb-item" routerLink="/dashboard">{{'EDIT COMPANY.Dashboard' | translate}}</li>-->
+                  <li aria-current="page" class="breadcrumb-item active"><span>{{'EDIT COMPANY.Edit Company' | translate}}</span></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'EDIT COMPANY.Edit Company' | translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'EDIT COMPANY.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form #myform="ngForm" (ngSubmit)="onUpdate()" [formGroup]= "companyInformationForm"  class="w-100" name="companyInformationForm" novalidate>
+                        <div class="row">
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'EDIT COMPANY.Name' | translate}}</mat-label>
+                                      <input formControlName="name" matInput name="name" required type="text" style="text-transform: capitalize;">
+                                      <mat-error *ngIf="companyInformationForm.controls.name.errors?.required">
+                                        {{'EDIT COMPANY.Please enter your name' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'EDIT COMPANY.Address' | translate}}</mat-label>
+                                      <input formControlName="address" matInput name="address" required type="text">
+                                      <mat-error *ngIf="companyInformationForm.controls.address.errors?.required">
+                                        {{'EDIT COMPANY.Please enter your address' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'EDIT COMPANY.City' | translate}}</mat-label>
+                                      <input formControlName="city" matInput name="city" required type="text" style="text-transform: capitalize;">
+                                      <mat-error *ngIf="companyInformationForm.controls.city.errors?.required">
+                                        {{'EDIT COMPANY.Please enter your city' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'EDIT COMPANY.Cap' | translate}}</mat-label>
+                                      <input formControlName="cap" matInput name="cap" required type="text">
+                                      <mat-error *ngIf="companyInformationForm.controls.cap.errors?.required">
+                                        {{'EDIT COMPANY.Please enter your cap' | translate}}
+                                      </mat-error>
+                                      <mat-error *ngIf="companyInformationForm.controls.cap.errors?.pattern">
+                                        {{'Please enter only number' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'EDIT COMPANY.Vat' | translate}}</mat-label>
+                                      <input formControlName="vatNumber" matInput name="vatNumber" required type="text">
+                                      <mat-error *ngIf="companyInformationForm.controls.vatNumber.errors?.required">
+                                        {{'EDIT COMPANY.Please enter your vat' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-field color-picker">
+                                  <mat-form-field appearance="outline" class="element-full-width" >
+                                      <mat-label>{{'EDIT COMPANY.Brand Color' | translate}}</mat-label>
+                                      <input formControlName="brandColor" matInput type="color" name="brandColor" [(ngModel)]="primaryColor">
+                                      {{'EDIT COMPANY.Hex' | translate}}: {{primaryColor}}
+                                      <mat-error *ngIf="companyInformationForm.controls.brandColor.errors?.required">
+                                        {{'EDIT COMPANY.Please choose color' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="generate-button">
+                              <label>{{'EDIT COMPANY.Upload Logo' | translate}}</label>
+                              <button class="btn-style red-btn file-upload-button" type="button">
+                                <span class="material-icons">upload</span>
+                                {{'EDIT COMPANY.Drag and Drop here' | translate}} <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                                <span class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                                <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg" id="file" #documentInput (change)="onFileChanged(documentInput)" id="emp-input-profile"/>
+                              </button>
+                              <!-- <span class="file-info">{{fileName}}
+                                <span class="material-icons close-icon" (click)="resetCoverValue()">{{ fileName ? "close" : null }}
+                                </span>
+                              </span> -->
+                              <span class="file-info">{{ this.documentName }}
+                                <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                </span>
+                              </span>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button [disabled]="!companyInformationForm.valid"  class="btn-style theme-btn" type="submit" (click)="changeTheme(primaryColor)">{{'EDIT COMPANY.Update' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/dashboard" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

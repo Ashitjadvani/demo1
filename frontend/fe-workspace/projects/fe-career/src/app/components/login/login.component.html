@@ -1,0 +1,163 @@
+<section class="login-signup">
+  <div class="login-box">
+    <div class="left-part">
+      <span routerLink="/" style="cursor: pointer;">
+        <img src="assets/image/logo-white.svg" class="legance-logo" alt=" lagacy Logo">
+      </span>
+      <p>{{'HOMEPAGE.BannerTitle' | translate}}</p>
+      <div class="banner-image">
+        <img [src]="loginImg" alt="">
+      </div>
+    </div>
+    <div class="right-part">
+      <div class="register">
+        <mat-tab-group animationDuration="0ms">
+          <mat-tab label="Login">
+            <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+              <div class="login-form">
+                <div class="input-wrapper">
+                  <div class="form-field">
+                    <label>{{'LOGINPAGE.EmailAddress' | translate}}</label>
+                    <mat-form-field appearance="outline">
+                      <input matInput id="email" formControlName="email" name="email" type="email"
+                             placeholder="{{'LOGINPAGE.EmailAddress' | translate}}" maxlength="50">
+                      <mat-error *ngIf="loginForm.controls.email.errors?.required">
+                        {{'LOGINPAGE.Email_Address_Required' | translate}}
+                      </mat-error>
+                      <mat-error *ngIf="loginForm.controls.email.errors?.email">
+                        {{'LOGINPAGE.Email_Address_Valid' | translate}}</mat-error>
+                      <mat-error *ngIf="signup.controls.email.errors?.pattern">{{'SIGNUPPAGE.EmailAddressValid' | translate}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="form-field">
+                    <label>Password</label>
+                    <mat-form-field appearance="outline">
+                      <input matInput id="password" formControlName="password" name="password" onkeypress="return event.charCode != 32"
+
+                             [type]="hide ? 'password' : 'text'" placeholder="{{'GENERAL.Password' | translate}}" (keydown)="space($event)">
+                      <mat-error *ngIf="loginForm.controls.password.errors?.required">
+                        {{'LOGINPAGE.PasswordRequired' | translate}}
+                      </mat-error>
+                      <button class="eye-icon" type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                              [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                  <div class="forgot-password"><span routerLink="/forgot-password">{{'LOGINPAGE.ForgotPassword' | translate}}?</span></div>
+                  <div class="login-btn">
+                    <button mat-raised-button type="submit" class="btn-submit"
+                            style="background-color: #002A3A;color: #fff;height: 100%;width: 100%;">{{'GENERAL.Login' | translate}}
+                    </button>
+                  </div>
+                </div>
+                <div class="bottom-links">{{'By Signing up or Login, you agree to the' | translate}}
+                  <a href="" routerLink="/privacy-policy" target="_blank">{{'GENERAL.PrivatePolicy' | translate}}</a>
+                </div>
+                <div class="login-with">
+                  <p>{{'LOGINPAGE.LoginWith' | translate}}</p>
+                  <div class="social-btn">
+                    <button mat-raised-button class="btn-submit linked-in" type="button" (click)="signInWithLinkedIN()"><img [src]="linkdinIcon" alt=""> LinkedIn
+                    </button>
+                    <button mat-raised-button class="btn-submit google" type="button" (click)="signInWithGoogle()"><img [src]="googleIcon" alt=""> Google</button>
+                  </div>
+                  <div class="return-home">
+                    <button routerLink="/">{{'LOGINPAGE.ReturnToHome' | translate}}</button>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </mat-tab>
+          <mat-tab label="{{'GENERAL.SignUp' | translate}}" class="signup-tab">
+            <form name="signup" [formGroup]="signup" novalidate (ngSubmit)="onSignupSubmit()">
+              <div class="login-form">
+                <div class="input-wrapper">
+                  <div class="name-details">
+                    <div class="name form-field">
+                      <label>{{'SIGNUPPAGE.FirstName' | translate}}</label>
+                      <mat-form-field appearance="outline" class="signup-input">
+                        <input matInput id="firstName" formControlName="nome" name="nome" type="text"
+                               placeholder="{{'SIGNUPPAGE.FirstName' | translate}}">
+                        <mat-error *ngIf="signup.controls.nome.errors?.required">
+                          {{'SIGNUPPAGE.FirstNameRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="name-1 form-field">
+                      <label>{{'SIGNUPPAGE.LastName' | translate}}</label>
+                      <mat-form-field appearance="outline" class="signup-input">
+                        <input matInput id="lastName" formControlName="cognome" name="cognome" type="text"
+                               placeholder="{{'SIGNUPPAGE.LastName' | translate}}">
+                        <mat-error *ngIf="signup.controls.cognome.errors?.required">
+                          {{'SIGNUPPAGE.LastNameRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label>{{'SIGNUPPAGE.EmailAddress' | translate}}</label>
+                    <mat-form-field appearance="outline" class="signup-input">
+                      <input matInput id="email_1" type="email" formControlName="email" name="email"
+                             placeholder="{{'SIGNUPPAGE.EmailAddress' | translate}}">
+                      <mat-error *ngIf="signup.controls.email.errors?.required">{{'SIGNUPPAGE.EmailAddressRequire' | translate}}</mat-error>
+<!--                      <mat-error *ngIf="signup.controls.email.errors?.email">{{'SIGNUPPAGE.EmailAddressValid' | translate}}</mat-error>-->
+                      <mat-error *ngIf="signup.controls.email.errors?.pattern">{{'SIGNUPPAGE.EmailAddressValid' | translate}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="name-details">
+                    <div class="name form-field">
+                      <label>{{'GENERAL.Password' | translate}}</label>
+                      <mat-form-field appearance="outline" class="signup-input">
+                        <input matInput id="password_1" type="password" formControlName="password" name="password" onkeypress="return event.charCode != 32"
+                               placeholder="{{'GENERAL.Password' | translate}}" (keydown)="space($event)">
+                        <mat-error *ngIf="signup.controls.password.errors?.required">
+                          {{'LOGINPAGE.PasswordRequired' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="name-1 form-field">
+                      <label>{{'SIGNUPPAGE.ConfirmPassword' | translate}}</label>
+                      <mat-form-field appearance="outline" class="signup-input">
+                        <input matInput id="password_2" type="password" formControlName="confirmPassword" onkeypress="return event.charCode != 32"
+                               name="confirmPassword" placeholder="{{'SIGNUPPAGE.ConfirmPassword' | translate}}">
+                        <mat-error *ngIf="signup.controls.confirmPassword.errors?.required">
+                          {{'SIGNUPPAGE.ConfirmPasswordRequired' | translate}}
+                        </mat-error>
+
+                        <mat-error *ngIf="signup.controls.confirmPassword.errors?.confirmedValidator">
+                          {{'SIGNUPPAGE.PasswordDoesnotMatch' | translate}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="forgot-password accept-terms">
+                    <mat-checkbox class="example-margin" [(ngModel)]="checkBoxVerify" [ngModelOptions]="{standalone: true}">
+                      {{'SIGNUPPAGE.iAccept' | translate}}
+<!--                      <a href="javascript:;" routerLink="/terms-and-conditions" target="_blank">{{'GENERAL.TermsCondition' | translate}}</a> {{'SIGNUPPAGE.and' | translate}}-->
+                      <a href="javascript:;" routerLink="/privacy-policy" target="_blank">{{'GENERAL.PrivatePolicy' | translate}}</a>
+                    </mat-checkbox>
+                  </div>
+                  <div class="login-btn">
+                    <button mat-raised-button type="submit" class="btn-submit"
+                            style="background-color: #002A3A;color: #fff;height: 100%;width: 100%;" >{{'GENERAL.SignUp' | translate}}
+                    </button>
+                  </div>
+                </div>
+                <div class="login-with">
+                  <p>{{'LOGINPAGE.SignUpWith' | translate}}</p>
+                  <div class="social-btn">
+                    <button mat-raised-button class="btn-submit linked-in" type="button" (click)="checkBoxVerify ? signInWithLinkedIN() : agreeWithCondition() "><img [src]="linkdinIcon" alt=""> LinkedIn
+                    </button>
+                    <!-- <button mat-raised-button class="btn-submit google" type="button" (click)="signInWithGoogle()"><img [src]="googleIcon" alt=""> Google</button> -->
+                    <button mat-raised-button class="btn-submit google" type="button" (click)="checkBoxVerify ? signInWithGoogle() : agreeWithCondition() "><img [src]="googleIcon" alt=""> Google</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</section>

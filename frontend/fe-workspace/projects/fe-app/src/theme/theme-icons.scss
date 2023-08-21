@@ -1,0 +1,281 @@
+.theme-icon {
+    &::after {
+        content: " ";
+        display: block;
+        margin: auto;
+    }
+    &.small::after {
+        background-size: 15px 15px;
+        height: 15px;
+        width: 15px;
+    }
+    &.medium::after {
+        background-size: 24px 24px;
+        height: 24px;
+        width: 24px;
+    }
+    &.large::after {
+        background-size: 35px 35px;
+        height: 35px;
+        width: 35px;
+    }
+    &.larger::after {
+        background-size: 64px 64px;
+        height: 64px;
+        width: 64px;
+    }
+
+    &.display-touch::after {
+        background-image: url("../assets/images/touch.svg");
+    }
+    &.valarea::after {
+        background-image: url("../assets/images/landscape.svg");
+    }
+    &.audio::after {
+        background-image: url("../assets/images/audio.svg");
+    }
+    &.voip::after {
+        background-image: url("../assets/images/voip.svg");
+    }
+    &.telepresence::after {
+        background-image: url("../assets/images/mic.svg");
+    }
+    &.mirroring::after {
+        background-image: url("../assets/images/mirroring.svg");
+    }
+    &.meeting::after {
+        background-image: url("../assets/images/meeting.svg");
+    }
+    &.room-placeholder::after {
+        background-image: url("../assets/images/room-placeholder.svg");
+    }
+    &.meeting-white::after {
+        background-image: url("../assets/images/meeting-white.svg");
+    }
+    &.room-placeholder-white::after {
+        background-image: url("../assets/images/room-placeholder-white.svg");
+    }
+    &.notebook-multiple::after {
+        background-image: url("../assets/images/notebook-multiple.svg");
+    }
+    &.bookmark-plus::after {
+        background-image: url("../assets/images/bookmark-plus.svg");
+    }
+    &.qrcode-scan::after {
+        background-image: url("../assets/images/qrcode-scan.svg");
+    }
+    &.location-enter::after {
+        background-image: url("../assets/images/location-enter.svg");
+    }
+    &.location-exit::after {
+        background-image: url("../assets/images/location-exit.svg");
+    }
+    &.update::after {
+        background-image: url("../assets/images/update.svg");
+    }
+    &.settings::after {
+        background-image: url("../assets/images/settings.svg");
+    }
+    &.chart-areaspline::after {
+        background-image: url("../assets/images/chart-areaspline.svg");
+    }
+    &.bus-checkin::after {
+        background-image: url("../assets/images/bus.svg");
+    }
+    &.delete::after {
+        background-image: url("../assets/images/delete.svg");
+    }
+    &.arrow-right-box::after {
+        background-image: url("../assets/images/arrow-right-box.svg");
+    }
+    &.home-circle::after {
+        background-image: url("../assets/images/home-circle.svg");
+    }
+    &.account-circle::after {
+        background-image: url("../assets/images/account-circle.svg");
+    }
+    &.logout::after {
+        background-image: url("../assets/images/logout.svg");
+    }
+    &.taxi::after {
+        background-image: url("../assets/images/taxi.svg");
+    }
+    &.coffee::after {
+        background-image: url("../assets/images/coffee.svg");
+    }
+    &.tech-help::after {
+        background-image: url("../assets/images/help-network.svg");
+    }
+    &.help-desk::after {
+        background-image: url("../assets/images/bottle-tonic-plus.svg");
+    }
+    &.close::after {
+        background-image: url("../assets/images/close.svg");
+    }
+    &.food::after {
+        background-image: url("../assets/images/food.svg");
+    }
+    &.desk::after {
+        background-image: url("../assets/images/desk.svg");
+    }
+    &.office-building::after {
+        background-image: url("../assets/images/office-building.svg");
+    }
+    &.news::after {
+        background-image: url("../assets/images/newspaper.svg");
+    }
+    &.map-marker::after {
+        background-image: url("../assets/images/map-marker.svg");
+    }
+    &.star-circle::after {
+        background-image: url("../assets/images/star-circle.svg");
+    }
+    &.map-marker-green::after {
+        background-image: url("../assets/images/map-marker-green.svg");
+    }
+    &.star-circle-green::after {
+        background-image: url("../assets/images/star-circle-green.svg");
+    }
+    &.news-green::after {
+        background-image: url("../assets/images/newspaper-green.svg");
+    }
+    &.back::after {
+        background-image: url("../assets/images/arrow-left-circle.svg");
+    }
+
+    &.domain::after {
+        background-image: url("../assets/images/domain.svg");
+    }
+    &.domain-green::after {
+        background-image: url("../assets/images/domain-green.svg");
+    }
+    &.qrcode-scan-white::after {
+        background-image: url("../assets/images/qrcode-scan-white.svg");
+    }
+    &.my-plan::after {
+        background-image: url("../assets/images/tile-my-working-plan.svg");
+    }
+    &.my-bookings::after {
+        background-image: url("../assets/images/tile-my-bookings.svg");
+    }
+    &.my-bookings-list::after {
+        background-image: url("../assets/images/tile-my-book-list.svg");
+    }
+    &.tile-book-room::after {
+        background-image: url("../assets/images/tile-book-a-room.svg");
+    }
+    &.tile-book-desk::after {
+        background-image: url("../assets/images/tile-book-a-desk.svg");
+    }
+    &.tile-extend-book::after {
+        background-image: url("../assets/images/tile-extend-booking.svg");
+    }
+    &.tile-information::after {
+        background-image: url("../assets/images/information-outline-white.svg");
+    }
+    &.tile-user-profile::after {
+        background-image: url("../assets/images/user-details-white.svg");
+    }
+    &.tile-main-site-smartworking::after {
+        background-image: url("../assets/images/tile-main-site-smartworking.svg");
+    }
+    &.tile-main-site-smartworking-green::after {
+        background-image: url("../assets/images/tile-main-site-smartworking-green.svg");
+    }
+    &.tile-check-in::after {
+        background-image: url("../assets/images/tile-check-in.svg");
+    }
+    &.tile-check-out::after {
+        background-image: url("../assets/images/tile-check-out.svg");
+    }
+    &.tile-check-in-green::after {
+        background-image: url("../assets/images/tile-check-in-green.svg");
+    }
+    &.tile-check-out-green::after {
+        background-image: url("../assets/images/tile-check-out-green.svg");
+    }
+    &.tile-main-site-desk::after {
+        background-image: url("../assets/images/tile-main-site-desk.svg");
+    }
+    &.tile-main-site-desk-green::after {
+        background-image: url("../assets/images/tile-main-site-desk-green.svg");
+    }
+    &.tile-admin::after {
+        background-image: url("../assets/images/tile-admin.svg");
+    }
+    &.news-unread::after {
+        background-image: url("../assets/images/news-unread.svg");
+    }
+    &.news-read::after {
+        background-image: url("../assets/images/news-read.svg");
+    }
+    &.news-confirmed::after {
+        background-image: url("../assets/images/news-confirmed.svg");
+    }
+    &.tile-account::after {
+        background-image: url("../assets/images/account-white.svg");
+    }
+    &.tile-safety::after {
+        background-image: url("../assets/images/shield-red.svg");
+    }
+    &.tile-stats::after {
+        background-image: url("../assets/images/analytics-icon.svg");
+    }
+    &.magnify::after {
+        background-image: url("../assets/images/magnify.svg");
+    }
+    &.tile-pandemic::after {
+        background-image: url("../assets/images/tile-pandemic-measures.svg");
+    }
+    &.bd-icon::after {
+        background-image: url("../assets/images/bd-icon.svg");
+    }
+    &.radioactive::after {
+        background-image: url("../assets/images/radioactive.svg");
+    }
+    &.people-caring::after {
+        background-image: url("../assets/images/people-caring.svg");
+    }
+    &.injections::after {
+        background-image: url("../assets/images/injections.svg");
+    }
+    &.like::after {
+        background-image: url("../assets/images/like-white.svg");
+    }
+    &.unlike::after {
+        background-image: url("../assets/images/unlike-white.svg");
+    }
+    &.tile-community::after {
+        background-image: url("../assets/images/bullhorn-outline.svg");
+    }
+    &.tile-survey::after {
+        background-image: url("../assets/images/survey-white.svg");
+    }
+    &.tile-sustainability::after {
+        background-image: url("../assets/images/leaf-white.svg");
+    }
+    &.tile-sust-my-habit::after {
+        background-image: url("../assets/images/train-car-white.svg");
+    }
+    &.tile-sust-my-exception::after {
+        background-image: url("../assets/images/travel-exception.svg");
+    }
+    &.tile-sust-my-impact::after {
+        background-image: url("../assets/images/molecule-co2.svg");
+    }
+    &.tile-employee::after {
+        background-image: url("../assets/images/account-group-white.svg");
+    }
+    &.account-plus::after {
+      background-image: url("../assets/images/account-plus.svg");
+    }
+    &.start-flag::after {
+        background-image: url("../assets/images/flag_black_24dp.svg");
+    }
+    &.target::after {
+        background-image: url("../assets/images/location_searching_black_24dp.svg");
+    }
+    &.returnal::after {
+        background-image: url("../assets/images/assignment_returned_white_24dp.svg");
+    }
+}

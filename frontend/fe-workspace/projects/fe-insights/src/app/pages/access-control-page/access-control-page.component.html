@@ -1,0 +1,24 @@
+<div class="access-control-page-container">
+    <mat-tab-group class="group-tab">
+        <mat-tab *ngIf="AccessListFunctionAvailable()" label="{{'ACCESS_CONTROL.AccessList'|translate}}">
+            <app-table-data-view [tableDataSet]="accessListTableData" [columnTemplates]="accessListTableColumnTemplates"
+                [rowActions]="accessListTableRowActions" [mainActions]="accessListTableMainActions">
+            </app-table-data-view>
+        </mat-tab>
+        <mat-tab *ngIf="ExternalBadgeFunctionAvailable()" label="{{'ACCESS_CONTROL.ExternalBadge'|translate}}">
+            <app-table-data-view [tableDataSet]="qrCodesTableDataTransformed" [columnTemplates]="qrCodesTableColumnTemplates"
+                [rowActions]="qrCodesTableRowActions" [mainActions]="qrCodesTableMainActions">
+            </app-table-data-view>
+        </mat-tab>
+        <mat-tab *ngIf="UserBadgeFunctionAvailable()" label="{{'ACCESS_CONTROL.UserBadge'|translate}}">
+            <app-table-data-view [tableDataSet]="qrCodesUserTableDataTransformed" [columnTemplates]="qrCodesUserTableColumnTemplates"
+                [rowActions]="qrCodesUserTableRowActions" [mainActions]="qrCodesUserTableMainActions">
+            </app-table-data-view>
+        </mat-tab>
+        <mat-tab *ngIf="GatesFunctionAvailable()" label="{{'ACCESS_CONTROL.OpenGates'|translate}}">
+            <app-table-data-view [tableDataSet]="gatesTableData" [columnTemplates]="gatesTableColumnTemplates"
+                [rowActions]="gatesTableRowActions" [mainActions]="gatesTableMainActions">
+            </app-table-data-view>
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,0 +1,290 @@
+<div class="recruiting-dashboard">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.RECRUITING' | translate}}</li>
+                    <li class="breadcrumb-item active">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.RECRUITING'"
+             [title3]="'INSIGHTS_MENU.DASHBOARD'">
+      </app-breadcrumb>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="chart-group-wrapper">
+                            <div class="chart-header">
+                                <h4>{{'INSIGHTS_MENU.RECRUITING' | translate}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="chart-group-wrapper">
+                            <div class="chart-box box-style">
+                                <div *ngIf="showChartFilter" class="chart-header">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.DEPARTMENTS' | translate}}</mat-label>
+                                        <mat-select (selectionChange)="onSelectChangeFilterArea($event)">
+                                            <mat-option [value]="null">{{'GENERAL.ALL' | translate}}</mat-option>
+                                            <mat-option *ngFor="let area of areas" [value]="area.id">
+                                                {{ area.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="chart-header">
+                                    <ul class="chart-details">
+                                        <li>{{'INSIGHTS_MENU.RECRUITING_JOB_OPENING' | translate}}</li>
+                                        <li>{{'INSIGHTS_MENU.RECRUITING_CANDIDATES' | translate}}</li>
+                                        <li class="purple-line">{{'INSIGHTS_MENU.RECRUITING_JOB_APPLICATIONS' | translate}}</li>
+                                        <li class="green-line">{{'Hired Applications' | translate}}</li>
+                                        <li class="red-line">{{'Rejected Applications' | translate}}</li>
+                                    </ul>
+                                    <div class="chart-tools">
+                                        <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onTabChanged($event);">
+                                            <mat-tab label="{{'This Week' | translate}}"></mat-tab>
+                                            <mat-tab label="{{'This Month' | translate}}"></mat-tab>
+                                            <mat-tab label="{{'This Year' | translate}}"></mat-tab>
+                                        </mat-tab-group>
+                                    </div>
+                                </div>
+                                <div class="chart-body">
+                                    <ng-container *ngIf="(recruitingRejectedApplicationData.length !== 0) || (recruitingHiredApplicationData.length !== 0) || (recruitingApplicationData.length !== 0) || (recruitingCandidateData.length !== 0) || (recruitingOpeningData.length !== 0)">
+                                        <canvas id="recruitingMainChart" baseChart [datasets]="recruitingChartData" [labels]="recruitingChartLabels" [options]="recruitingChartOptions" [legend]="recruitingChartLegend" [plugins]="recruitingChartPlugins" [colors]="recruitingChartColors" [chartType]="recruitingChartType">
+                                        </canvas>
+                                    </ng-container>
+                                    <div class="noDataAvail" *ngIf="(recruitingRejectedApplicationData.length == 0) && (recruitingHiredApplicationData.length == 0) && (recruitingApplicationData.length == 0) && (recruitingCandidateData.length == 0) && (recruitingOpeningData.length == 0)">
+                                        <span>{{'No Data Available' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="statistics-vertical" style="height: 100%">
+                          <div class="chart-group-wrapper">
+                            <div class="chart-box box-style">
+                                <div class="chart-header">
+                                    <h4>{{"RECRUITING_DASHBOARD.Statistics" | translate}}</h4>
+                                </div>
+                                <div class="statistics-box">
+                                    <div class="statistic-content">
+                                        <div class="navigate-img">
+                                            <img class="short-arrow" routerLink="/recruiting/job-openings" src="assets/images/job-openings.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 class="short-arrow" routerLink="/recruiting/job-openings">{{dashboardStatisticsData.getJobOpeningData}}</h5>
+                                            <p class="short-arrow" routerLink="/recruiting/job-openings">{{'INSIGHTS_MENU.RECRUITING_JOB_OPENING' | translate}}</p>
+                                            <span class="short-arrow" routerLink="/recruiting/job-openings" [queryParams]="{ value : 'openingThisWeek'}">{{dashboardStatisticsData.jobOpeningCurrantWeekCount ? dashboardStatisticsData.jobOpeningCurrantWeekCount : '0'}} {{"RECRUITING_DASHBOARD.JobOpeningsThisWeek" | translate}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <div class="navigate-img">
+                                            <img class="short-arrow" routerLink="/recruiting/candidates" src="assets/images/candidates.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 class="short-arrow" routerLink="/recruiting/candidates">{{dashboardStatisticsData.getCandidateCount}}</h5>
+                                            <p class="short-arrow" routerLink="/recruiting/candidates">{{'INSIGHTS_MENU.RECRUITING_CANDIDATES' | translate}}</p>
+                                            <span class="short-arrow" routerLink="/recruiting/candidates" [queryParams]="{ value : 'candidateThisWeek'}" style="border-bottom: 1px solid rgb(0 0 0 / 6%);padding-bottom: 7px;">
+                                              {{dashboardStatisticsData.getCandidateCountCurrantWeek ? dashboardStatisticsData.getCandidateCountCurrantWeek : '0'}}
+                                              {{"RECRUITING_DASHBOARD.CandidatesThisWeek" | translate}}
+                                            </span>
+                                            <span class="short-arrow" routerLink="/recruiting/candidates" [queryParams]="{ value : 'appliedJobs'}" style="margin-top: 10px;">
+                                              {{dashboardStatisticsData.getCandidateCountByApplication ? dashboardStatisticsData.getCandidateCountByApplication : '0'}}
+                                              {{"Candidates Applied For Jobs" | translate}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <div class="navigate-img">
+                                            <img class="short-arrow" routerLink="/recruiting/job-applications" src="assets/images/job-applications.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 class="short-arrow" routerLink="/recruiting/job-applications">{{dashboardStatisticsData.getJobApplicationCount}}</h5>
+                                            <p class="short-arrow" routerLink="/recruiting/job-applications">{{'INSIGHTS_MENU.RECRUITING_JOB_APPLICATIONS' | translate}}</p>
+                                            <span class="short-arrow" routerLink="/recruiting/job-applications" [queryParams]="{ value : 'applicationThisWeek'}">{{dashboardStatisticsData.jobApplicationCountCurrantWeek ? dashboardStatisticsData.jobApplicationCountCurrantWeek : '0'}} {{"RECRUITING_DASHBOARD.JobApplicationsThisWeek" | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobOpeningByScope" | translate}}</h4>
+                        <div class="col-md-12">
+                            <ul class="chart-details">
+                                <li *ngFor="let scopeName of scopeChartLabels">{{scopeName}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <div class="client-type" *ngIf="getScopeChartData.length != 0">
+                            <canvas baseChart height="200px" [data]="scopeChartData" [labels]="scopeChartLabels" [options]="scopeChartOptions" [legend]="scopeChartLegend" [chartType]="scopeChartType" [colors]="scopeChartColors"></canvas>
+                        </div>
+                        <div class="noDataAvail" *ngIf="getScopeChartData.length == 0">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobOpeningAndApplicationBySite" | translate}}</h4>
+                        <div class="col-md-12">
+                            <ul class="chart-details" *ngIf="(getBySiteAppChartData.length != 0) || (getBySiteOpeChartData.length != 0)">
+                                <li>{{'INSIGHTS_MENU.RECRUITING_JOB_OPENING' | translate}}</li>
+                                <li>{{'INSIGHTS_MENU.RECRUITING_JOB_APPLICATIONS' | translate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <canvas baseChart height="200px" *ngIf="(getBySiteAppChartData.length != 0) || (getBySiteOpeChartData.length != 0)" [datasets]="bySiteChartData" [labels]="bySiteChartLabels" [options]="bySiteChartOptions" [legend]="bySiteChartLegend" [colors]="bySiteChartColors" [chartType]="bySiteChartType">
+                        </canvas>
+                        <div class="noDataAvail" *ngIf="(getBySiteAppChartData.length == 0) && (getBySiteOpeChartData.length == 0)">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobOpeningAndApplicationByArea" | translate}}</h4>
+                        <div class="col-md-12">
+                            <ul class="chart-details">
+                                <li>{{'INSIGHTS_MENU.RECRUITING_JOB_OPENING' | translate}}</li>
+                                <li>{{'INSIGHTS_MENU.RECRUITING_JOB_APPLICATIONS' | translate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <canvas baseChart height="100px" *ngIf="(getOpeningAreaChartData.length != 0) || (getApplicationAreaChartData.length != 0)" [datasets]="areaChartData" [labels]="areaChartLabels" [options]="areaChartOptions" [legend]="areaChartLegend" [colors]="areaChartColors" [chartType]="areaChartType">
+                        </canvas>
+                        <div class="noDataAvail" *ngIf="(getOpeningAreaChartData.length == 0) && (getApplicationAreaChartData.length == 0)">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobApplicationByStatus" | translate}}</h4>
+                        <div class="col-md-12">
+                            <div class="vertical-chart">
+                                <ul class="chart-details">
+                                    <li *ngFor="let statusName of jobAppStatusLabels; let i = index">
+                                      <span [ngStyle]="{'background-color': jobAppStatusColors[0].backgroundColor[i]}" class="list-dot"></span>
+                                      {{statusName | translate}}
+                                    </li>
+                                </ul>
+                                <!--<div class="chart-tools">
+                                    <div class="date-select">
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="startDate2"
+                                                placeholder="Start date">
+                                            <mat-datepicker-toggle  [for]="startDate2" class="full-date-select">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #startDate2></mat-datepicker>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline">
+                                            <input matInput [matDatepicker]="endDate2"
+                                                placeholder="End date">
+                                            <mat-datepicker-toggle  [for]="endDate2" class="full-date-select">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #endDate2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <canvas baseChart height="100px" *ngIf="getStatusChartData.length != 0" [datasets]="jobAppStatusData" [labels]="jobAppStatusLabels" [options]="jobAppStatusOptions" [legend]="jobAppStatusLegend" [colors]="jobAppStatusColors" [chartType]="jobAppStatusType">
+                        </canvas>
+                        <div class="noDataAvail" *ngIf="getStatusChartData.length == 0">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobApplicationByGender" | translate}}</h4>
+                        <div class="col-md-12">
+                            <ul class="chart-details" *ngIf="genderChartValue">
+                                <li *ngFor="let genderName of genderChartLabels">{{genderName | translate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <div class="client-type">
+                            <canvas baseChart height="200px" *ngIf="genderChartValue" [data]="genderChartData" [labels]="genderChartLabels" [legend]="genderChartLegend" [chartType]="genderChartType" [colors]="genderChartColors"></canvas>
+                        </div>
+                        <div class="noDataAvail" *ngIf="!genderChartValue">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobApplicationByAge" | translate}}</h4>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <canvas baseChart height="200px" *ngIf="getAgeChartData.length != 0" [datasets]="ageChartData" [labels]="ageChartLabels" [options]="ageChartOptions" [legend]="ageChartLegend" [colors]="ageChartColors" [chartType]="ageChartType">
+                        </canvas>
+                        <div class="noDataAvail" *ngIf="getAgeChartData.length == 0">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>{{"RECRUITING_DASHBOARD.JobApplicationByDegreeMark" | translate}}</h4>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <canvas baseChart height="100px" *ngIf="getDegreeMarkChartData.length != 0" [datasets]="degreeMarkChartData" [labels]="degreeMarkChartLabels" [options]="degreeMarkChartOptions" [legend]="degreeMarkChartLegend" [colors]="degreeMarkChartColors" [chartType]="degreeMarkChartType">
+                        </canvas>
+                        <div class="noDataAvail" *ngIf="getDegreeMarkChartData.length == 0">
+                            <span>{{'No Data Available' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

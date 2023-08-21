@@ -1,0 +1,11 @@
+.alternative-name {
+    display: flex;
+    justify-content: space-between;
+    p{
+        margin: 0;
+    }
+}
+.common-stepper .mat-stepper-label-position-bottom .mat-checkbox-inner-container {
+    margin: 0 10px 0 0;
+    top: 3px;
+}

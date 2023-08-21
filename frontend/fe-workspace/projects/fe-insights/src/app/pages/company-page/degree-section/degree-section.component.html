@@ -1,0 +1,33 @@
+<div class="general-container">
+  <div class="first-line">
+      <div class="card width-40 height-100">
+          <div class="card-header">
+              <div class="card-title">{{'COMPANYTXT.Degrees' | translate}}</div>
+          </div>
+          <div class="card-body">
+              <mat-list class="card-list">
+                  <mat-list-item *ngFor="let degree of degreeListData">
+                      <div class="card-list-item">
+                          <div class="card-list-item-text">{{degree.description}}</div>
+                          <div class="card-list-item-action">
+                              <button mat-icon-button (click)="editDegree(degree, 'Edit')"
+                                  matTooltip="{{'COMPANYTXT.EditDegree' | translate}}">
+                                  <i class="material-icons">edit</i>
+                              </button>
+                              <button mat-icon-button (click)="deleteDegree(degree.id)"
+                                  matTooltip="Delete Degree">
+                                  <i class="material-icons" style="color: red">delete</i>
+                              </button>
+                          </div>
+                      </div>
+                  </mat-list-item>
+              </mat-list>
+              <!-- <mat-label class="no-item-label" *ngIf="areasSorted.length == 0">{{'INSIGHTS_PEOPLE_PAGE.NO AREA DEFINED' | translate}}</mat-label> -->
+          </div>
+          <div class="card-footer">
+              <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                  (click)="editDegree({description: null}, 'Add')">{{'COMPANYTXT.AddDegree' | translate}}</button>
+          </div>
+      </div>
+  </div>
+</div>

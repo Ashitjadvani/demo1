@@ -1,0 +1,13 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="book-list" *ngIf="(!!myBookings) && (myBookings.length > 0); else noresults">
+            <app-book-list-item *ngFor="let bookItem of myBookings" [bookItem]="bookItem"
+                (deleteBookItemEvent)="onDeleteBookItem($event)" (showResourceMapEvent)="onShowResourceMap($event)"></app-book-list-item>
+        </div>
+        <ng-template #noresults>
+            <p class="no-results-msg">{{'BOOK SEARCH RESULTS.NO RESULTS'|translate}}</p>
+        </ng-template>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true"></app-main-tab-bar>
+</div>

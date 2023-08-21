@@ -1,0 +1,81 @@
+<mat-tab-group #tabgroup class="group-tab">
+  <mat-tab>
+      <app-table-data-view [tableDataSet]="people" [columnTemplates]="tableColumnTemplates"
+          [satPopoverAnchor]="changeLogPopover" [rowActions]="tableRowActions" [mainActions]="tableMainActions"
+          [filterFunction]="filterCallback">
+      </app-table-data-view>
+
+      <sat-popover #changeLogPopover forceAlignment hasBackdrop>
+          <div class="change-log-popup">
+              <app-people-change-log-popup [currentPersonHistory]="currentPersonHistory"
+                  (RestoreData)="onRestorePreson($event)"></app-people-change-log-popup>
+          </div>
+      </sat-popover>
+
+
+  </mat-tab>
+  <mat-tab>
+      <div class="general-container">
+          <div *ngIf="showCard" class="card people-card">
+              <div class="card-header">
+                  <div class="card-title">{{ titleCard }}</div>
+              </div>
+              <div class="card-body">
+                  <div class="user-editor-tab">
+                      <div class="data-area">
+                          <mat-tab-group #tabgroupeditor>
+                              <mat-tab label=" 'AddSurvey' ">
+                                <app-insert-survey [currentEditPerson]="currentEditPerson"></app-insert-survey>
+                              </mat-tab>
+
+                              <!-- <mat-tab label="'AddQuestion' ">
+                                <app-add-questions [currentEditPerson]="currentEditPerson"></app-add-questions>
+                              </mat-tab> -->
+                              <!-- <mat-tab label="'Add Question' | translate }}">
+                                <app-add-questions ></app-add-questions>
+                              </mat-tab> -->
+<!-- <mat-tab *ngIf="scope==PERSON_SCOPE.EMPLOYEE" label="{{ 'ADMIN DIALOGS.SETTINGS' | translate }}">
+                                <ng-container *ngIf="people">
+                                    <app-people-settings-section [currentEditPerson]="currentEditPerson"
+                                        [currentCompany]="currentCompany" [sites]="sites" [persons]="people">
+                                    </app-people-settings-section>
+                                </ng-container>
+                              </mat-tab>
+                              <mat-tab *ngIf="scope==PERSON_SCOPE.EMPLOYEE && disputeAvailable"
+                                  label="{{ 'INSIGHTS_PEOPLE_PAGE.Dispute' | translate }}">
+                                  <app-people-dispute-section [currentEditPerson]="currentEditPerson"
+                                      [currentCompany]="currentCompany"></app-people-dispute-section>
+                              </mat-tab>
+                              <mat-tab *ngIf="scope==PERSON_SCOPE.EMPLOYEE && economicsAvailable"
+                                  label="{{ 'INSIGHTS_PEOPLE_PAGE.Economics' | translate }}">
+                                  <app-people-economics-section [currentEditPerson]="currentEditPerson">
+                                  </app-people-economics-section>
+                              </mat-tab> -->
+                          </mat-tab-group>
+
+                      </div>
+                  </div>
+              </div>
+              <div class="card-footer">
+                  <button mat-flat-button class="action-button" color="primary"
+                      (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                  <span class="width-5"></span>
+                  <button mat-flat-button class="action-button" color="primary"
+                      cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+              </div>
+          </div>
+
+          <div *ngIf="!showCard" class="card dashboard-card">
+              <div class="card-body">
+                  <iframe width="100%" height="100%"
+                      src="https://datastudio.google.com/embed/reporting/44ea2c64-f321-4564-ad22-b3e554a043f5/page/p_hbekue65mc"
+                      frameborder="0" style="border:0" allowfullscreen></iframe>
+              </div>
+              <div class="card-footer">
+                  <button mat-flat-button class="action-button" color="primary"
+                      (click)="onEditCancelClick()">{{'GENERAL.BACK'|translate}}</button>
+              </div>
+          </div>
+      </div>
+  </mat-tab>
+</mat-tab-group>

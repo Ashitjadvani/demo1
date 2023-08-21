@@ -1,0 +1,24 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{fileName}}</h4>
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div *ngIf="docIsPdf" class="pdf-viewer-container">
+                <pdf-viewer [autoresize]="true" [original-size]="false" width="100%" [src]="url" *ngIf="url" class="pdf-viewer"></pdf-viewer>
+                <!--pdf-viewer class="pdf-viewer" [src]="url" [original-size]="false" [autoresize]="true"></pdf-viewer-->
+            </div>
+            <div *ngIf="docIsImage" class="viewer-container">
+                <img [src]='trustedUrl' class="image">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onCloseClick()"  class="btn-style inactive">{{'DOCUMENTS.Close' | translate}}</button>
+        </div>
+    </div>
+</section>

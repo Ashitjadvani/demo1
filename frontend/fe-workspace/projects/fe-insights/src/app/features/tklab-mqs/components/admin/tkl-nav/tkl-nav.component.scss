@@ -1,0 +1,20 @@
+.list-container{
+
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  margin: auto;
+  padding: 20px;
+}
+.action-button-list {
+  display: flex;
+  flex-direction: column;
+
+  .action-button {
+    margin-bottom: 20px;
+  }
+}
+
+.filter-white {
+  filter: invert(100%) sepia(98%) saturate(9%) hue-rotate(157deg) brightness(93%) contrast(102%);
+}

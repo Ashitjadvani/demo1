@@ -1,0 +1,136 @@
+<!--<div class="dashboard-container" fxLayout="row" *ngIf="this.dashboard$ | async as dashboard">
+  <app-overview-card *ngFor="let oc of overviewDataCards" class="overview-item" [image]="oc.image" [id]="oc.id"
+                     [title]="oc.title" [data]="getData(oc.id)" [mainColor]="oc.mainColor" [footerColor]="oc.footerColor"
+                     [footerText]="oc.footerText" (onFooterClick)="onViewAll($event)"></app-overview-card>
+                     </div>-->
+<div class="dashboard-container" fxLayout="row" *ngIf="dashboardTableData">
+  <ng-container *ngFor="let oc of overviewDataCards">
+    <mat-card class="overview-card">
+      <div class="main-container" [ngStyle]="{'background': oc.mainColor }">
+        <div class="image filter-black">
+          <span *ngIf="oc.count && dashboardTableData[oc.budgeCountKey] > 0 ">{{dashboardTableData[oc.budgeCountKey]}}</span>
+          <i class="theme-icon larger " [ngClass]="oc.image"></i>
+        </div>
+        <div class="info">
+          <div class="title">
+            {{ oc.title | translate}}
+          </div>
+          <div class="data">
+            {{dashboardTableData[oc.totalCount]}}
+          </div>
+        </div>
+      </div>
+      <div class="footer-container" [ngStyle]="{'background': oc.footerColor }">
+        <button mat-flat-button class="footer-button" (click)="onViewAll(oc.id)">{{ oc.footerText }}</button>
+      </div>
+    </mat-card>
+  </ng-container>
+</div>
+
+<div class="dashboard-container new-cards" fxLayout="row">
+  <ng-container *ngFor="let oc of candidateDataFilter">
+    <div class="card-wrapper" style="width:33.33%">
+      <mat-card class="overview-card">
+        <div class="main-container" [ngStyle]="{'background': oc.color}">
+          <div class="image filter-black">
+            <mat-icon class="theme-icon larger">people</mat-icon>
+          </div>
+          <div class="info">
+            <div class="title">
+              {{oc.title}}
+            </div>
+            <div class="data">
+              {{totalCandidatesFilter?.maleCount ?  totalCandidatesFilter[oc.count] : 0}}
+            </div>
+          </div>
+        </div>
+         <div class="footer-container" [ngStyle]="{'background': oc.background}">
+          <button mat-flat-button class="footer-button" (click)="onViewApplication(oc.filter)">{{'GENERAL.View' | translate}}</button>
+        </div>
+      </mat-card>
+    </div>
+  </ng-container>
+  <!--<ng-container>
+    <mat-card class="overview-card">
+      <div class="main-container" style="background: rgb(255 164 164 / 76%);">
+        <div class="image filter-black">
+          <mat-icon class="theme-icon larger">group</mat-icon>
+        </div>
+        <div class="info">
+          <div class="title">
+              Female
+          </div>
+          <div class="data">
+            2304
+          </div>
+        </div>
+      </div>
+       <div class="footer-container" style="background: rgb(243 148 148 / 78%)">
+        <button mat-flat-button class="footer-button">GENERAL.View</button>
+      </div>
+    </mat-card>
+  </ng-container>
+  <ng-container>
+    <mat-card class="overview-card">
+      <div class="main-container" style="background: rgb(255 228 167);">
+        <div class="image filter-black">
+          <mat-icon class="theme-icon larger">people</mat-icon>
+        </div>
+        <div class="info">
+          <div class="title">
+             Age Above
+          </div>
+          <div class="data">
+            35
+          </div>
+        </div>
+      </div>
+       <div class="footer-container" style="    background: rgb(245 212 136);">
+        <button mat-flat-button class="footer-button">GENERAL.View</button>
+      </div>
+    </mat-card>
+  </ng-container>-->
+
+</div>
+<!--<div class="dashboard-container new-cards" fxLayout="row" style="width: 33.33%;">
+  <ng-container>
+    <mat-card class="overview-card" >
+      <div class="main-container" style="background: rgb(168 243 150);">
+        <div class="image filter-black">
+          <mat-icon class="theme-icon larger">group</mat-icon>
+        </div>
+        <div class="info">
+          <div class="title">
+            Age Below
+          </div>
+          <div class="data">
+            35
+          </div>
+        </div>
+      </div>
+       <div class="footer-container" style="    background: rgb(146 229 126);">
+        <button mat-flat-button class="footer-button">GENERAL.View</button>
+      </div>
+    </mat-card>
+  </ng-container>
+</div>-->
+
+  <!--<div class="page-container">
+    <div class="flex-container">
+      <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','openings'])" [caption]="'RECRUITING.JOB_OPENINGS' | translate" [icon]="'tile-survey'"
+                       [textColor]="'#ffffff'" [backgroundColor]="'#479FF8'"
+                       [topText]="" [borderColor]="" [dashboardCount]="dashboardTableData.totalJobOpening">
+      </app-action-tile>
+
+      <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','candidates'])" [caption]="'RECRUITING.CANDIDATES' | translate" [icon]="'tile-employee'"
+                       [textColor]="'#ffffff'" [backgroundColor]="'#479FF8'"
+                       [topText]="" [borderColor]="" [dashboardCount]="dashboardTableData.totalCandidates">
+      </app-action-tile>
+
+      <app-action-tile (clickEvent)="navigateTo(['insights','main','recruiting','applications'])" [caption]="'RECRUITING.JOB_APPLICATIONS' | translate" [icon]="'account-plus'"
+                       [textColor]="'#ffffff'" [backgroundColor]="'#479FF8'"
+                       [topText]="" [borderColor]="" [dashboardCount]="dashboardTableData.totalJobApplications">
+      </app-action-tile>
+
+    </div>
+  -->

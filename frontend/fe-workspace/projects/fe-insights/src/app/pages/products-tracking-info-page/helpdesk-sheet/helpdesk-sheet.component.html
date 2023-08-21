@@ -1,0 +1,14 @@
+<mat-nav-list class="navigation-list">
+    <div class="navigation-item info-tile info-background item-text info-text">
+        <mat-label>
+            Help Desk Simplast attivo dalle 9:00 alle 18:00.<br>
+            email : helpdesk@simplast.it<br>
+            Tel: +39 03311940062<br>
+        </mat-label>
+    </div>
+    <a *ngFor="let hd of helpDeskAction" mat-list-item class="navigation-item"
+        [ngStyle]="getActionStyle(hd)" (click)="onServiceAction(hd)">
+        <mat-label class="item-text white-text" mat-line>{{ hd.Caption }}</mat-label>
+        <i class="material-icons white-text">{{ hd.Icon }}</i>
+    </a>
+</mat-nav-list>

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title><b>{{'ACCESS_CONTROL.SendCommand'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="general-container">
+        <div class="command-container">
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Command" appearance="legacy"
+                    [(ngModel)]="command">
+            </mat-form-field>
+            <button mat-flat-button class="action-button" color="primary"
+                cdkFocusInitial (click)="onSendCommand()">
+            {{'ACCESS_CONTROL.Send'|translate}}</button>
+        </div>
+        <button mat-flat-button class="action-button width-250" color="primary"
+                cdkFocusInitial (click)="onGetResponse()">
+            {{'ACCESS_CONTROL.ViewLastResponse'|translate}}</button>
+        {{site.lastAccessControlAnswer}}
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onClose()">{{'GENERAL.CLOSE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

@@ -1,0 +1,138 @@
+
+<div class="header-bg">
+    <mat-toolbar color="primary" class="main-header justify-content-between" >
+        <div class="menu-icon d-flex align-items-center">
+          <div>
+            <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse">
+              <img [src]="toggleIcon" alt="">
+            </button>
+          </div>
+          <div><a class="add-oppo">{{sideListMenuName | translate }}</a></div>
+        </div>
+
+        <div class="tools-wrapper">
+          <div class="language-menu-new">
+            {{userLanguageSelect}}
+            <mat-form-field >
+              <!-- <span class="lang-flag" >
+                <img src="assets/images/defult-flag.png"alt="">
+              </span>-->
+              <!--<span class="lang-flag" *ngIf="userLanguageSelect === 'en'">
+                <img [src]="englishFlag" alt="">ENGLISH (EN)
+              </span>
+              <span class="lang-flag" *ngIf="userLanguageSelect === 'it'">
+                <img [src]="englishFlag" alt="">ITALIANO (ITA)
+              </span>
+              <span class="lang-flag" *ngIf="userLanguageSelect === 'es'">
+                <img [src]="englishFlag" alt="">Spanish (SP)
+              </span>
+              <span class="lang-flag" *ngIf="userLanguageSelect === 'fr'">
+                <img [src]="englishFlag" alt="">French (FR)
+              </span>-->
+              <mat-select (selectionChange)='onLanguageChange($event)' [(ngModel)]="userLanguageSelect" name='language'>
+                <mat-select-trigger>
+                  <span class="lang-flag" (click)="enLocale()" *ngIf="userLanguageSelect === 'en'" >
+                    <img  [src]="englishFlag" alt=""> ENGLISH (EN)
+                  </span>
+                  <span class="lang-flag" (click)="itLocale()" *ngIf="userLanguageSelect === 'it'" >
+                    <img  [src]="italianFlag" alt=""> ITALIANO (ITA)
+                  </span>
+                  <span class="lang-flag" (click)="spLocale()" *ngIf="userLanguageSelect === 'es'" >
+                    <img  [src]="spanishFlag" alt=""> Spanish (SP)
+                  </span>
+                  <span class="lang-flag" (click)="frLocale()" *ngIf="userLanguageSelect === 'fr'" >
+                    <img  [src]="frenchFlag" alt=""> French (FR)
+                  </span>
+                </mat-select-trigger>
+                <ng-container *ngFor="let lang of language">
+                  <mat-option [value]="lang.languageCode" *ngIf="lang.checked" style="text-transform: uppercase">
+                    <!--<img [src]="lang.languages === 'Italian'  ? italianFlag : englishFlag " alt=""> {{lang.languages}}-->
+                    <img [src]="lang.languagesFlagImg" alt=""> {{lang.languages}}
+                  </mat-option>
+                </ng-container>
+
+<!--    <mat-option value="en" ><img [src]="englishFlag" alt=""> ENGLISH (EN)</mat-option>
+    <mat-option value="sp" ><img alt="" src="assets/images/spa-flag.png"> Spanish (SPA)</mat-option>
+    <mat-option value="it" ><img alt="" [src]="italianFlag"> ITALIAN (ITA)</mat-option>
+    <mat-option value="fr" ><img src="assets/images/fr-flag.png" alt=""> French (FR)</mat-option>-->
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="notify-bell">
+            <img src="assets/images/notify-bell.svg" alt="">
+            <span matBadgeOverlap="true" *ngIf="unreadCount > 0">{{unreadCount}}</span>
+            <div class="notification-bar" >
+              <div class="notify-header">
+                <h4>{{'Notification' | translate}}</h4>
+                <img src="assets/images/cross-icon.svg" alt="" (click)="closeNotification()">
+              </div>
+              <div class="notify-body">
+                <ul class="notification-list">
+                  <ng-container *ngFor=" let notification of notificationList ">
+                    <ng-container *ngIf="notification.type == 'Recruiting'">
+                      <li *ngIf="notification.body || notification.bodyIt"  (click)="details(notification.jobApplicationId, notification.id)" [ngClass]="notification.isRead  ? 'bg-white' : 'bg-darkGray' ">
+                        <b class="notify-date">{{notification.createdAt | date : 'dd/MM/yyyy HH:mm'}}</b>
+                        <h5>{{notification.type}}</h5>
+                        <p *ngIf="userLanguageSelect === 'en'">{{notification.body}}</p>
+                        <p *ngIf="userLanguageSelect !== 'en'">{{notification.bodyIt}}</p>
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="notification.type != 'Recruiting'">
+                      <li *ngIf="notification.body || notification.bodyIt"  (click)="openDetailsDialog(notification)" [ngClass]="notification.isRead  ? 'bg-white' : 'bg-darkGray' ">
+                        <b class="notify-date">{{notification.createdAt | date : 'dd/MM/yyyy HH:mm'}}</b>
+                        <h5>{{notification.type}}</h5>
+                        <p *ngIf="userLanguageSelect === 'en'">{{notification.body}}</p>
+                        <p *ngIf="userLanguageSelect !== 'en'">{{notification.bodyIt}}</p>
+                      </li>
+                    </ng-container>
+                  </ng-container>
+
+                  <li *ngIf="noRecordlist">
+                    <h5 style="text-align: center">
+                      {{'TABLE.No_record_found' | translate}}
+                    </h5>
+                  </li>
+              <!--    <li>
+                    <h5>People Groups</h5>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                  </li>
+                  <li>
+                    <h5>Accounts</h5>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                  </li>
+                  <li>
+                    <h5>Recruiting</h5>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                  </li>-->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="user-menu">
+            <button mat-button [matMenuTriggerFor]="usermenu">
+              <div class="user-profile-info">
+                <div class="user-profile-img"><img #src (error)="onImgError($event)" [src]="fileDetails" alt=""></div>
+                <div class="users-name">{{authUser?.name}} {{authUser?.surname}}</div>
+                <span class="material-icons">expand_more</span>
+              </div>
+            </button>
+            <mat-menu #usermenu="matMenu" class="profile-dropdown">
+              <button *ngIf="isCompany" class="d-flex align-items-center" mat-menu-item routerLink="/edit-company">
+                <mat-icon class="material-icons">business</mat-icon>{{'EDIT COMPANY.Edit Company' | translate}}
+              </button>
+                <button *ngIf="isCompany" class="d-flex align-items-center" mat-menu-item routerLink="/mobile-application">
+                   <img class=" mat-icon" src="assets/images/mobile-app.svg">{{'Mobile_Application' | translate}}
+                </button>
+              <button *ngIf="isCompany" mat-menu-item class="d-flex align-items-center" routerLink="settings">
+                <mat-icon class="material-icons">settings</mat-icon>{{'Settings' | translate}}
+              </button>
+              <button mat-menu-item class="d-flex align-items-center" (click)="logOUT()">
+                <mat-icon class="material-icons" >{{'logout' | translate}}</mat-icon>
+                {{'INSIGHTS_MENU.LOGOUT' | translate}}
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+    </mat-toolbar>
+  </div>
+

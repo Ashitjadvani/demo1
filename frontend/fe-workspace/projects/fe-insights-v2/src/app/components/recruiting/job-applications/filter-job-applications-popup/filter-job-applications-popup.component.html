@@ -1,0 +1,203 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'ACCESS_CONTROL.Filter' | translate}}</h4>
+            <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.JOBOPENING' | translate}}</mat-label>
+                            <input type="text" formControlName="jobOpening" matInput name="jobOpening">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.DEPARTMENTS' | translate}}</mat-label>
+                            <mat-select formControlName="jobArea" (selectionChange)="onSelectChangeUpdateText($event, 'jobAreaText')">
+                                <mat-option *ngFor="let area of areas" [value]="area.id">
+                                    {{ area.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.JOB_TYPE' | translate}}</mat-label>
+                            <mat-select formControlName="jobType" (selectionChange)="onSelectChangeUpdateText($event, 'jobTypeText')">
+                                <mat-option *ngFor="let jt of jobTypeFilter" [value]="jt.id">
+                                    {{ jt.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.SURNAME' | translate}}</mat-label>
+                            <input type="text" formControlName="surname" matInput name="surname" style="text-transform: capitalize;">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.NAME' | translate}}</mat-label>
+                            <input type="text" formControlName="name" matInput name="name" style="text-transform: capitalize;">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.GENDER' | translate}}</mat-label>
+                            <mat-select formControlName="gender">
+                                <mat-option *ngFor="let gender of genderData" [value]="gender.id">
+                                    {{ gender.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-2">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.AGE' | translate}} Min</mat-label>
+                            <input type="number" formControlName="minAge" matInput name="minAge">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-2">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.AGE' | translate}} Max</mat-label>
+                            <input type="number" formControlName="maxAge" matInput name="maxAge">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.UNIVERSITY' | translate}}</mat-label>
+                            <mat-select formControlName="university">
+                                <mat-option *ngFor="let uni of universityListData" [value]="uni">
+                                    {{ uni }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.DEGREE_YEAR' | translate}}</mat-label>
+                            <input type="number" formControlName="degreeYear" matInput name="degreeYear">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-2">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.DEGREE_VOTE' | translate}} Min</mat-label>
+                            <input type="number" formControlName="minDegree" matInput name="minDegree">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-2">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.DEGREE_VOTE' | translate}} Max</mat-label>
+                            <input type="number" formControlName="maxDegree" matInput name="maxDegree">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.EDU_LEVEL' | translate}}</mat-label>
+                            <mat-select formControlName="eduLevel">
+                                <mat-option *ngFor="let edu of levelEducation" [value]="edu.id">
+                                    {{ edu.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.COMPLETION_DATE' | translate}}</mat-label>
+                            <mat-select formControlName="completionDate">
+                                <mat-option *ngFor="let cd of completionDate" [value]="cd.id">
+                                    {{ cd.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.FIT_INDEX' | translate}}</mat-label>
+                            <input type="text" formControlName="fitIndex" matInput name="fitIndex">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'JOB_APPLICATION_FILTER_POPUP.STATUS' | translate}}</mat-label>
+                            <mat-select formControlName="status" (selectionChange)="onSelectChangeUpdateText($event, 'statusText')">
+                                <mat-option *ngFor="let state of applicationStatusTableData" [value]="state.id">
+                                    {{ state.description }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">    
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field" [formGroup]="filterJobApplicationForm">
+                        <div class="switch-tab">
+                            {{'JOB_APPLICATION_FILTER_POPUP.SHOW_UNREAD' | translate}}<mat-slide-toggle formControlName="showUnread" name="showUnread"></mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onClick(false)" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true)" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</section>

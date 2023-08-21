@@ -1,0 +1,15 @@
+:host ::ng-deep.mat-menu-panel{
+    min-height: 48px !important;
+}
+:host ::ng-deep button.mat-menu-item {
+    min-height: 64px;
+}
+.red-dot {
+  position: absolute;
+  background-color: red;
+  height: 6px;
+  width: 6px;
+  border-radius: 100%;
+  top: 3px;
+  right: 3px;
+}

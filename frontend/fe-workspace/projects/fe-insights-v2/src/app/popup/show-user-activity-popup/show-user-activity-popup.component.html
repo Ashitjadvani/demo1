@@ -1,0 +1,24 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{'SELEZIONA MESE'| translate}}</h4>
+      <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <div class="popup-body">
+    <div class="popup-content m-auto text-center" style="max-height: 65vh;overflow: auto;">
+      <mat-form-field appearance="outline" class="element-full-width">
+        <mat-select [(ngModel)]="selectedMonth" [ngModelOptions]="{standalone: true}">
+          <mat-option *ngFor="let m of months" [value]="m">{{ m.name | translate}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <hr>
+  <div class="popup-footer">
+    <div class="footer-content justify-content-end">
+      <button (click)="onClose()" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+      <button (click)="onSave()" class="btn-style theme-btn">{{'GENERAL.Confirm' | translate}}</button>
+    </div>
+  </div>
+</section>

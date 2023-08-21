@@ -1,0 +1,15 @@
+<div class="popup-content text-center">
+  <div class="popup-header">
+    {{'OTHERS.Delete' | translate}} <span (click)="onNoClick(false)" class="material-icons">close</span>
+  </div>
+  <div class="popup-body">
+    <img src="assets/image/delete-icon.png" alt="delete icon"/>
+    <p>{{data.message | translate}}</p>
+  </div>
+  <div class="popup-footer">
+    <div mat-dialog-actions class="btn-wrapper justify-content-between">
+      <button (click)="onNoClick(true)" class="common-btn" mat-button>{{'OTHERS.Confirm' | translate}}</button>
+      <button (click)="onNoClick(false)" class="common-btn transparent-btn" mat-button>{{'OTHERS.Cancel' | translate}}</button>
+    </div>
+  </div>
+</div>

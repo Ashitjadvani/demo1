@@ -1,0 +1,91 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <!-- <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li> -->
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                    <li routerLink="../" class="breadcrumb-item">Resource Type Management</li>
+                    <li class="breadcrumb-item active" aria-current="page"><span>Add Resource Type</span> </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>Add Resource Type</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addResourceGroupForm" [formGroup]="addResourceForm"
+                        (ngSubmit)="onCreateOrUpdateResourceType()" novalidate>
+                        <div class="row">
+                            <div class="col-xl-3 col-xxl-3">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Resource Type<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="resourceType"
+                                            (selectionChange)="onResourceTypeChange($event)">
+                                            <mat-option *ngFor="let rt of resourceTypes" [value]="rt">
+                                                {{ rt }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addResourceForm?.controls.resourceType.errors?.required">
+                                            Select resource type.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-xxl-3">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Site' | translate}}<span style="color:#EA5455">*</span>
+                                        </mat-label>
+                                        <mat-select formControlName="site">
+                                            <mat-option>{{'Select Site' | translate}}</mat-option>
+                                            <mat-option *ngFor="let sites of siteList" value="{{sites.id}}">{{sites.name
+                                                | translate}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addResourceForm.controls.site.errors?.required">
+                                            {{'Please select site' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-xxl-3">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Name<span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="name" matInput name="name">
+                                        <mat-error *ngIf="addResourceForm?.controls.name.errors?.required">
+                                            Enter resource name.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-xxl-3">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Description<span style="color:#EA5455">*</span></mat-label>
+                                        <input type="text" formControlName="description" matInput name="description">
+                                        <mat-error *ngIf="addResourceForm?.controls.description.errors?.required">
+                                            Enter resource description.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">Save</button>
+                            <button class="btn-style red-line-btn" routerLink="/assets-management/resource-management" type="button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,955 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="common-stepper">
+                <mat-horizontal-stepper #stepperSupplier (selectionChange)="selectionChange($event)" labelPosition="bottom" linear="{{isLinear}}">
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-1.svg" />
+                                <img class="inactive-img" src="assets/images/inactive-img-1.svg" />
+                            </div>
+                            <p>{{'MYACCOUNT.PersonalData' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'MYACCOUNT.PersonalData' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="savePersonalData(stepperSupplier)" [formGroup]="personalDetailsForm" class="form-wrapper">
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'SIGNUP.CompanyName' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="companyName" matInput name="companyName" type="text">
+                                                <mat-error *ngIf="personalDetailsForm.controls.companyName.errors?.required">{{'SIGNUP.CompanyNameRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <!-- <div class="form-field textarea-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'MYACCOUNT.FiscalAddress' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                      <textarea formControlName="fiscalAddress" matInput name="fiscalAddress" type="text"></textarea>
+                                      <mat-error *ngIf="personalDetailsForm.controls.fiscalAddress.errors?.required"> {{'MYACCOUNT.FiscalAddressRequired' | translate}}</mat-error>
+                                    </mat-form-field>
+                                </div> -->
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.VATNumber' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="VATCode" matInput name="VATCode" type="text" [(ngModel)]="vatCodeNumber" (keyup)="bindVATValue($event)"
+                                                       onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                                                <mat-error *ngIf="personalDetailsForm.controls.VATCode.errors?.required">{{'MYACCOUNT.VATNumberReuired' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.VATCode.errors?.pattern">{{'MYACCOUNT.VATinvalid' | translate}} </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.TaxID' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <!--<input formControlName="fiscalCode" matInput minlength="16" maxlength="16" name="fiscalCode" type="text" style="text-transform: uppercase;">-->
+                                                <input formControlName="fiscalCode" matInput name="fiscalCode" type="text" style="text-transform: uppercase;">
+                                                <mat-error *ngIf="personalDetailsForm.controls.fiscalCode.errors?.required">{{'MYACCOUNT.TaxIDRequired' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.fiscalCode.errors?.pattern">{{'MYACCOUNT.TaxIDinvalid' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.DUNS' | translate}}</mat-label>
+                                                <input formControlName="duns" matInput name="duns" type="text">
+                                                <!-- <mat-error *ngIf="personalDetailsForm.controls.duns.errors?.required">{{'MYACCOUNT.DUNSRequired' | translate}}</mat-error> -->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.PEC' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="pec" matInput name="pec" type="text">
+                                                <mat-error *ngIf="personalDetailsForm.controls.pec.errors?.required">{{'MYACCOUNT.PECRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-xl-8">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.AtecoCode' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="atecoCode" [(ngModel)]="selectedValue" multiple>
+                                                    <div class="tools-wrapper">
+                                                        <div class="search-menu">
+                                                            <input [(ngModel)]="searchTxt" formControlName="atecoCodeSearch" type="text" class="search-field" matInput placeholder="{{'Search' | translate}}">
+                                                        </div>
+                                                        <!-- <div class="selected-options">
+                                            <mat-checkbox class="remember-check" >selected</mat-checkbox>
+                                          </div> -->
+                                                    </div>
+
+                                                    <mat-option *ngFor="let ateco of atecoRecords | search : searchTxt" [value]="ateco.description">{{ateco.code}} - {{ateco.description}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.atecoCode.errors?.required">{{'MYACCOUNT.AtecoCodeRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h5 class="stepper-form-heading">{{'MYACCOUNT.FiscalAddress' | translate}}</h5>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Nation' | translate}} <span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="nation" (selectionChange)="changeCountry($event.value)" (openedChange)="triggerEvent($event, resetSearch)">
+                                                    <mat-select-filter #resetSearch [array]="countryRecord" (filteredReturn)="countryRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                                                    <mat-option *ngFor="let coutry of countryRecordFiltered" value="{{coutry.id}}">{{coutry.name}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.nation.errors?.required">
+                                                    {{'MYACCOUNT.NationRequired' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <!--<mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>
+                                      <mat-select formControlName="nation" (selectionChange)="changeCountry($event.value)">
+                                        <div class="search-menu">
+                                          <input [(ngModel)]="searchNation" formControlName="nationSearch"  type="text" class="search-field" matInput placeholder="search">
+                                        </div>
+                                        <mat-option *ngFor="let coutry of countryRecord | search : searchNation" value="{{coutry.name}}">{{coutry.name}}</mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="personalDetailsForm.controls.nation.errors?.required">
+                                        {{'MYACCOUNT.NationRequired' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>-->
+
+
+                                            <!--<mat-form-field class="element-full-width" appearance="outline">
+                                      <mat-label>{{'MYACCOUNT.Nation' | translate}}  <span style="color:#EA5455">*</span></mat-label>
+                                      &lt;!&ndash;<input type="text" aria-label="Number" matInput [formControl]="nation" [matAutocomplete]="auto">&ndash;&gt;
+                                      <mat-select [formControl]="countryCtrl" #singleSelect (selectionChange)="changeCountry($event.value)">
+                                        <mat-option>
+                                          <ngx-mat-select-search [formControl]="countryFilterCtrl"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let coutry of filteredCountries | async" [value]="coutry.name">
+                                          {{coutry.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                      <mat-error *ngIf="personalDetailsForm.controls.nation.errors?.required">&ndash;&gt;
+                                        {{'MYACCOUNT.NationRequired' | translate}}
+                                      </mat-error>
+                                    </mat-form-field>-->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'MYACCOUNT.State' | translate}}</mat-label>
+                                                <mat-select formControlName="state" (selectionChange)="changeState($event.value)" (openedChange)="triggerEvent($event, resetSearch)">
+                                                    <mat-select-filter #resetSearch [array]="statesRecord" (filteredReturn)="statesRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                                                    <mat-option *ngFor="let state of statesRecordFiltered" value="{{state.id}}">{{state.name}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.state.errors?.required">
+                                                    {{'MYACCOUNT.StateRequired' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Select Province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="province" (selectionChange)="changeProvince($event.value)" style="text-transform: uppercase;">
+                                                    <mat-select-filter [array]="provList" (filteredReturn)="provListRecordFiltered = $event" placeholder="{{'Search' | translate}}"></mat-select-filter>
+                                                    <mat-option *ngFor="let prov of provListRecordFiltered" [value]="prov" style="text-transform: uppercase;">{{prov}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.province.errors?.required">
+                                                    {{'Select Province' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Town' | translate}}</mat-label>
+                                                <mat-select formControlName="city">
+                                                    <mat-select-filter #resetSearch [array]="citiesRecord" (filteredReturn)="citiesRecordFiltered = $event" [displayMember]="'name'" placeholder="{{'Search' | translate}}" (openedChange)="triggerEvent($event, resetSearch)"></mat-select-filter>
+                                                    <mat-option *ngFor="let city of citiesRecordFiltered" value="{{city.name}}">{{city.name}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.city.errors?.required">{{'MYACCOUNT.TownRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-8">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Street' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="address" matInput name="address" type="text">
+                                                <mat-error *ngIf="personalDetailsForm.controls.address.errors?.required">{{'MYACCOUNT.StreetRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Cap' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="ZipCode" matInput name="ZipCode" type="text" minlength="5" maxlength="5">
+                                                <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.required">{{'MYACCOUNT.CapRequired' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.pattern">{{'MYACCOUNT.EnterOnlyNumber' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.ZipCode.errors?.minlength">{{'Please enter minimum five digits'| translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="copy-address">
+                                            <h5 class="stepper-form-heading">{{'MYACCOUNT.OperationalAddress' | translate}}</h5>
+                                            <mat-checkbox class="remember-check" [formControl]="isSameAddressControl" (change)="copySameAddress($event)">{{'Use same address as Fiscal Address' | translate}}</mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Nation' | translate}} <span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="operationalNation" (selectionChange)="changeCountry2($event.value)" (openedChange)="triggerEvent($event, resetSearch)">
+                                                    <mat-select-filter #resetSearch [array]="countryRecord2" (filteredReturn)="countryRecord2Filtered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                                                    <mat-option *ngFor="let coutry of countryRecord2Filtered" value="{{coutry.id}}">{{coutry.name}}</mat-option>
+                                                </mat-select>
+                                                <!--<mat-error *ngIf="personalDetailsForm.controls.operationalNation.errors?.required">
+                                        {{'MYACCOUNT.NationRequired' | translate}}
+                                      </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'MYACCOUNT.State' | translate}} </mat-label>
+                                                <mat-select formControlName="operationalState" (selectionChange)="changeState2($event.value)" (openedChange)="triggerEvent($event, resetSearch)">
+                                                    <mat-select-filter #resetSearch [array]="statesRecord2" (filteredReturn)="statesRecord2Filtered = $event" [displayMember]="'name'"></mat-select-filter>
+                                                    <mat-option *ngFor="let state of statesRecord2Filtered" value="{{state.id}}">{{state.name}}</mat-option>
+                                                </mat-select>
+                                                <!--<mat-error *ngIf="personalDetailsForm.controls.operationalState.errors?.required">
+                                        {{'MYACCOUNT.StateRequired' | translate}}
+                                      </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Select Province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="operationalProvince" (selectionChange)="changeProvince2($event.value)" style="text-transform: uppercase;">
+                                                    <mat-select-filter [array]="provList2" (filteredReturn)="provListRecordFiltered = $event" placeholder="{{'Search' | translate}}"></mat-select-filter>
+                                                    <mat-option *ngFor="let prov of provListRecordFiltered2" [value]="prov" style="text-transform: uppercase;">{{prov}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="personalDetailsForm.controls.province.errors?.required">
+                                                    {{'Select Province' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Town' | translate}}</mat-label>
+                                                <mat-select formControlName="operationalCity" (openedChange)="triggerEvent($event, resetSearch)">
+                                                    <mat-select-filter #resetSearch [array]="citiesRecord2" (filteredReturn)="citiesRecord2Filtered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                                                    <mat-option *ngFor="let city of citiesRecord2Filtered" value="{{city.name}}">{{city.name}}</mat-option>
+                                                </mat-select>
+                                                <!--                                    <input formControlName="city" matInput name="city" type="text">-->
+                                                <!--<mat-error *ngIf="personalDetailsForm.controls.operationalCity.errors?.required">{{'MYACCOUNT.TownRequired' | translate}}</mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-8">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Street' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="operationalAddress" matInput name="operationalAddress" type="text">
+                                                <mat-error *ngIf="personalDetailsForm.controls.operationalAddress.errors?.required">{{'MYACCOUNT.StreetRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.Cap' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="operationalZipCode" matInput name="operationalZipCode" type="text" minlength="5" maxlength="5">
+                                                <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.required">{{'MYACCOUNT.CapRequired' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.pattern">{{'MYACCOUNT.EnterOnlyNumber' | translate}}</mat-error>
+                                                <mat-error *ngIf="personalDetailsForm.controls.operationalZipCode.errors?.minlength">{{'Please enter minimum five digits'| translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <h5 class="stepper-form-heading">{{'onBoarding.Dati_Autenticazione' | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Email_Contatto_Principale' | translate}}</mat-label>
+                                                <input formControlName="email" matInput name="email" type="text">
+                                                <mat-error *ngIf="personalDetailsForm.controls.email.errors?.required">Please enter your email contatto principale</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'LOGIN-PAGE.Password' | translate}}</mat-label>
+                                                <input [type]="hide ? 'password' : 'text'" formControlName="password" matInput name="password">
+                                                <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                </button>
+                                                <mat-error *ngIf="personalDetailsForm.controls.password.errors?.required">{{'LOGIN-PAGE.PasswordERROR' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                        <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                    </div>
+                                    <div class="">
+                                        <button class="custom-btn btn-style theme-btn " mat-button type="submit">{{'OTHERS.Next' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-2.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-2.svg" />
+                            </div>
+                            <p>{{'MYACCOUNT.Documentation' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'MYACCOUNT.Documentation' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveDocumentation(stepperSupplier)" [formGroup]="documentationForm" class="form-wrapper">
+                                <div class="row">
+                                    <div class="col-sm-12 col-xl-6">
+                                        <div class="form-field">
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-in">
+                                                    <div class="file-upload-text"><span class="material-icons">attachment</span> {{'onBoarding.DURC_Upload' | translate}}</div>
+                                                    <label for="upload_btn"> {{'onBoarding.Navigare' | translate}}</label>
+                                                </div>
+                                                <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                                <input #fileCoverImage *ngIf="!disableDURC" (change)="onFileChanged(fileCoverImage, 1)" accept=".pdf" formControlName="DURC" id="upload_btn" type="file" />
+                                                <mat-error *ngIf="documentValidation && documentationForm.controls.DURC.errors?.required">{{'onBoarding.Please_select_DURC_documents' | translate}}</mat-error>
+                                                <mat-error *ngIf="documentationForm.value.DURC && documentationForm.controls.DURC.errors?.invalidFile">{{'onBoarding.Please_upload_PDF_file' | translate}}</mat-error>
+                                                <span class="file-info">{{ this.DURCUploadName }}
+                                                    <span (click)="resetCoverValue('DURC'); DURCUploadInput = null; DURCUploadName = null" class="material-icons close-icon">{{ this.DURCUploadName ? "close" : null }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-2">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                <mat-label>{{'MYACCOUNT.DURCDeadline' | translate}}</mat-label>
+                                                <input [disabled]="disableDURC" (click)="disableDURC ? scadenzaDURC.open() : ''" [matDatepicker]="scadenzaDURC" [min]="minDate" formControlName="scadenzaDURC" matInput name="scadenzaDURC">
+                                                <mat-datepicker-toggle [for]="scadenzaDURC" matSuffix></mat-datepicker-toggle>
+                                                <mat-datepicker #scadenzaDURC></mat-datepicker>
+                                                <mat-error *ngIf="documentationForm.controls.scadenzaDURC.errors?.required">{{'onBoarding.DURCDeadlineRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <div class="custom-switch switch">
+                                                <mat-checkbox formControlName="declarationDURC" (change)="noRequiredDURCField($event)">{{'You declare that you do not have the requirements to submit the DURC' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-xl-6">
+                                        <div class="form-field">
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-in">
+                                                    <div class="file-upload-text"><span class="material-icons">attachment</span> {{'onBoarding.DURF_Upload' | translate}}</div>
+                                                    <label for="upload_btn1" >{{'onBoarding.Navigare' | translate}}</label>
+                                                </div>
+                                                <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                                <input #fileCoverImage2 *ngIf="!disableDURF" (change)="onFileChanged(fileCoverImage2, 2)" accept=".pdf" formControlName="DURF" id="upload_btn1" type="file" />
+                                                <mat-error *ngIf="documentValidation && documentationForm.controls.DURF.errors?.required">{{'onBoarding.Please_select_DURF_documents' | translate}}</mat-error>
+                                                <mat-error *ngIf="documentationForm.value.DURF && documentationForm.controls.DURF.errors?.invalidFile">{{'onBoarding.Please_upload_PDF_file' | translate}}</mat-error>
+                                                <span class="file-info">{{ this.DURFUploadName }}
+                                                    <span (click)="resetCoverValue('DURF'); DURFUploadInput = null; DURFUploadName = null " class="material-icons close-icon">{{ this.DURFUploadName ? "close" : null }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-2">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                <mat-label>{{'MYACCOUNT.DURFDeadline' | translate}}</mat-label>
+                                                <input [disabled]="disableDURF" (click)="disableDURF ? scadenzaDURF.open() : ''" [matDatepicker]="scadenzaDURF" [min]="minDate" formControlName="scadenzaDURF" matInput name="scadenzaDURF" readonly="true">
+                                                <mat-datepicker-toggle [for]="scadenzaDURF" matSuffix></mat-datepicker-toggle>
+                                                <mat-datepicker #scadenzaDURF></mat-datepicker>
+                                                <mat-error *ngIf="documentationForm.controls.scadenzaDURF.errors?.required">{{'onBoarding.DURFDeadlineRequired' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <div class="custom-switch switch">
+                                                <mat-checkbox formControlName="declarationDURF" (change)="noRequiredDURFField($event)">{{'You declare that you do not have the requirements to submit the DURF' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-xl-6">
+                                        <div class="form-field">
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-in">
+                                                    <div class="file-upload-text"><span class="material-icons">attachment</span> {{'onBoarding.Visura_Camerale_Upload' | translate}}</div>
+                                                    <label for="upload_btn2">{{'onBoarding.Navigare' | translate}}</label>
+                                                </div>
+                                                <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                                <input #fileCoverImage3 *ngIf="!disableVisura" (change)="onFileChanged(fileCoverImage3, 3)" accept=".pdf" formControlName="visuraCamerale" id="upload_btn2" type="file" />
+                                                <mat-error *ngIf="documentValidation && documentationForm.controls.visuraCamerale.errors?.required">{{'onBoarding.Visura_Camerale_Required' | translate}}</mat-error>
+                                                <mat-error *ngIf="documentationForm.value.visuraCamerale && documentationForm.controls.visuraCamerale.errors?.invalidFile">{{'onBoarding.Please_upload_PDF_file' | translate}}</mat-error>
+                                                <span class="file-info">{{ this.visuraCameraleUploadName }}
+                                                    <span (click)="resetCoverValue('visuraCamerale'); visuraCameraleUploadInput = null; visuraCameraleUploadName = null" class="material-icons close-icon">{{ this.visuraCameraleUploadName ? "close" : null }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-xl-2"></div>
+
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <div class="custom-switch switch">
+                                                <mat-checkbox formControlName="declarationChamberOfCommerce" (change)="noRequiredChamberOfCommerceField($event)">{{'You declare that you do not have the requirements to present the Chamber of Commerce registration' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="showSupplierGeneralConditionsUpload" class="col-sm-12 col-xl-6">
+                                        <div class="form-field">
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-in">
+                                                    <div class="file-upload-text"><span class="material-icons">attachment</span> {{'onBoarding.General_conditions_Upload' | translate}}</div>
+                                                    <label for="upload_btn3" >{{'onBoarding.Navigare' | translate}}</label>
+                                                </div>
+                                                <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                                <input #fileCoverImage4  (change)="onFileChanged(fileCoverImage4, 4)" accept=".pdf" formControlName="condizioniDocumento" id="upload_btn3" type="file" />
+                                                <mat-error *ngIf="documentValidation && documentationForm.controls.condizioniDocumento.errors?.required">{{'onBoarding.General_conditions_of_performance_Required' | translate}}</mat-error>
+                                                <mat-error *ngIf="documentationForm.value.condizioniDocumento && documentationForm.controls.condizioniDocumento.errors?.invalidFile">{{'onBoarding.Please_upload_PDF_file' | translate}}</mat-error>
+                                                <span class="file-info">{{ this.generalConditionsUploadName }}
+                                                    <span (click)="resetCoverValue('condizioniDocumento'); generalConditionsUploadNameInput = null; generalConditionsUploadName = null" class="material-icons close-icon">
+                                                        {{ this.generalConditionsUploadName ? "close" : null }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-xl-12">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xl-6">
+                                                <div class="form-field">
+                                                    <div class="file-upload-wrapper">
+                                                        <div class="file-upload-in">
+                                                            <div class="file-upload-text"><span class="material-icons">attachment</span>{{'SIGNUP.AttachCompanyBrochure' | translate }}</div>
+                                                            <label for="upload_btn4">{{'GENERAL.Browse' | translate }}</label>
+                                                        </div>
+                                                        <input #fileCoverImage5 (change)="onFileChanged(fileCoverImage5, 5)" formControlName="companyBroucher" accept=".pdf" id="upload_btn4" type="file" />
+                                                        <span class="file-info">{{ this.companyBrochureName }}
+                                                            <span class="material-icons close-icon" (click)="resetCoverValue('companyBroucher'); companyBrochureInput = null; companyBrochureName = null">
+                                                                {{ this.companyBrochureName ? "close" : null }}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                        <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                    </div>
+                                    <div class="">
+                                        <button mat-button matStepperPrevious class="custom-btn btn-style prev-theme-btn " type="button">{{'OTHERS.Previous' | translate}}</button>
+                                        <button class="custom-btn btn-style theme-btn" mat-button>{{'OTHERS.Next' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-3.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-3.svg" />
+                            </div>
+                            <p>{{'onBoarding.Terms_of_payment' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'onBoarding.Terms_of_payment' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveTermsOfPayment(stepperSupplier)" [formGroup]="termsOfPaymentForm" class="form-wrapper">
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.IBAN' | translate}}</mat-label>
+                                                <input formControlName="paymentConditionIBAN" matInput name="paymentConditionIBAN" type="text">
+                                                <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.errors?.required">{{'MYACCOUNT.IBANRequired' | translate}}</mat-error>
+                                                <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.errors?.iban">
+                                                    {{'MYACCOUNT.IBANinvalid' | translate }}
+                                                </mat-error>
+                                                <span class="valid-iban" *ngIf="termsOfPaymentForm.controls.paymentConditionIBAN.valid && (termsOfPaymentForm.controls.paymentConditionIBAN.dirty || termsOfPaymentForm.controls.paymentConditionIBAN.touched)">
+                                                    {{'MYACCOUNT.IBANvalid' | translate }}
+                                                </span>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MYACCOUNT.PaymentsDeadline' | translate }}</mat-label>
+                                                <mat-select formControlName="paymentConditionScadenzaPagamenti">
+                                                    <mat-option>{{'MYACCOUNT.SelectPaymentsDue' | translate }}</mat-option>
+                                                    <mat-option value="30">30gg</mat-option>
+                                                    <mat-option value="60">60gg</mat-option>
+                                                    <mat-option value="90">90gg</mat-option>
+                                                    <mat-option value="RD">RD - Rimessa Diretta</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="termsOfPaymentForm.controls.paymentConditionScadenzaPagamenti.errors?.required">{{'MYACCOUNT.PaymentsDeadlineRequired' | translate }}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="step-form-bottom">
+                                        <div>
+                                            <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                            <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                        </div>
+                                        <div class="">
+                                            <button mat-button matStepperPrevious class="custom-btn btn-style prev-theme-btn " type="button">{{'OTHERS.Previous' | translate}}</button>
+                                            <button class="custom-btn btn-style theme-btn " mat-button>{{'OTHERS.Next' | translate}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="supplierAgreement.length" completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-4.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-4.svg" />
+                            </div>
+                            <p>{{'onBoarding.Condizioni_di_Conformità' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'onBoarding.Condizioni_di_Conformità' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveConformityForm(stepperSupplier)" [formGroup]="conditionsOfConformityForm" class="form-wrapper">
+                                <div class="row">
+                                    <div *ngFor="let agreement of supplierAgreement; let i = index" class="col-md-12">
+                                        <div class="form-field">
+                                            <p>
+                                                {{agreement.serviceAgreement}}
+                                            </p>
+                                            <div class="remember-forgot">
+                                                <mat-checkbox [ngModelOptions]="{standalone: true}" formControlName="declarationsConformity1" class="remember-check" (change)="changeStatus($event, i)" [checked]="agreement.selected">{{'MYACCOUNT.DeclarationsConformity' | translate}}</mat-checkbox>
+                                            </div>
+                                            <!-- {{agreement.selected}} -->
+                                        </div>
+                                    </div>
+                                    <div class="step-form-bottom">
+                                        <div>
+                                            <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                            <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                        </div>
+                                        <div class="">
+                                            <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn " mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                            <button class="custom-btn btn-style theme-btn " mat-button>{{'OTHERS.Next' | translate}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="supplierSurvey.length" [stepControl]="adminLoginForm" label="Quiz Step Supplier">
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-5.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-5.svg" />
+                            </div>
+                            <p>{{"MYACCOUNT.quizQuestionario" | translate}}</p>
+                        </ng-template>
+                        <div class="quiz-stepper supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{"MYACCOUNT.quizQuestionario" | translate}}</h3>
+                                <span class="info-text">
+                                    <img src="assets/images/i-icon.svg" alt="">
+                                    <div class="info-text-content" *ngIf="(disclaimerText != '' && disclaimerText != null) || (instructionText != '' && instructionText != null)">
+                                        <div class="info-text-content-in">
+                                            <div class="declaimer" *ngIf="disclaimerText != '' && disclaimerText != null">
+                                                <h2>Disclaimer: </h2>
+                                                <p>{{disclaimerText}}</p>
+                                            </div>
+                                            <div class="instruction" *ngIf="instructionText != '' && instructionText != null">
+                                                <h2>Instruction: </h2>
+                                                <p>{{instructionText}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="stepper-form-content">
+                                <mat-horizontal-stepper linear #stepper2="matHorizontalStepper">
+                                    <mat-step *ngFor="let server of supplierSurvey">
+                                        <ng-template matStepLabel>{{server.surveyName}}</ng-template>
+                                        <!--<form #myformQuestion="ngForm" *ngIf="!this.questionView.isShowDisclaimer" class="form-content-box no-shadow" name="quizeFormGroup">-->
+                                        <form #myformQuestion="ngForm" [formGroup]="quizStepSaveForm" class="form-content-box no-shadow" name="quizeFormGroup">
+                                            <div class="stepper-form-content">
+                                                <div class="question-wrapper">
+                                                    <div class="single-question">
+                                                        <p>{{questionView.question}}</p>
+                                                        <span *ngIf="questionView.subtitle" class="subTitle">{{questionView.subtitle}}</span>
+                                                        <div *ngIf="questionView.type == 'singleRadio'" class="mt-20">
+                                                            <mat-radio-group [(ngModel)]="questionView.givenAnswer" [ngModelOptions]="{standalone: true}" aria-label="Select an option">
+                                                                <mat-radio-button *ngFor="let ans of questionView.answers;" value="{{ans.id}}">{{ans.value}}</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div>
+                                                        <div *ngIf="questionView.type == 'singleCheck'" class="mt-20">
+                                                            <span class="example-list-section">
+                                                                <mat-checkbox (change)="questionView.givenAnswer = ans.id" [checked]="questionView.givenAnswer === ans.id" [value]="ans.id" *ngFor="let ans of questionView.answers;let j = index">{{ans.value}}</mat-checkbox><br />
+                                                            </span>
+                                                        </div>
+                                                        <div class="mt-20" *ngIf="questionView.type == 'FreeText'">
+                                                            <span class="example-list-section">
+                                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                                    <input matInput id="textAnswer" type="email" name="textAnswer" [(ngModel)]="questionView.givenAnswer" [ngModelOptions]="{standalone: true}">
+                                                                </mat-form-field>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="question-count" style="text-align: right;">
+                                                        <span>{{questionView.numberOfQuestion}}</span> / <span>{{questionView.totalQuestion}}</span> {{'GENERAL.Questions' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="step-form-bottom">
+                                                <div>
+                                                    <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                                    <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                                </div>
+                                                <div class="">
+                                                    <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn " mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                                    <!--<button class="custom-btn btn-style theme-btn " mat-button matStepperNext type="button">Prossima Domanda</button>-->
+                                                    <button (click)="surveyButton()" *ngIf="!lastQuestion" class="custom-btn btn-style theme-btn" mat-button type="button">Prossima Domanda</button>
+                                                    <button (click)="goForward(stepperSupplier)" *ngIf="lastQuestion" class="custom-btn btn-style theme-btn" mat-button>Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!--<div *ngIf="this.questionView.isShowDisclaimer" class="quiz-desclaimer" >
+                                <p>{{questionView.disclaimer}}</p>
+                              </div>-->
+                                    </mat-step>
+                                    <mat-step class="last-success-step">
+                                        <ng-template matStepLabel>Completed</ng-template>
+                                        <div class="stepper-form-content">
+                                            <div class="success-content">
+                                                <img src="assets/images/success-icon.svg" />
+                                                <!--<h3>Congratulazioni!</h3>-->
+                                                <p>Grazie per aver completato il questionario</p>
+                                                <!--<button mat-button class="custom-btn" routerLink="/">{{'JOBAPPLICATION.ViewOtherPositions' | translate}}</button>-->
+                                            </div>
+                                        </div>
+                                        <div class="step-form-bottom justify-content-end">
+                                            <div>
+                                                <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn" mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                                <button (click)="goForwardNext(stepperSupplier)" class="custom-btn btn-style theme-btn" mat-button matStepperNext type="button">Prossima</button>
+                                            </div>
+                                        </div>
+                                    </mat-step>
+                                </mat-horizontal-stepper>
+                            </div>
+                        </div>
+                    </mat-step>
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-6.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-6.svg" />
+                            </div>
+                            <p>{{'MYACCOUNT.GeneralContacts' | translate}}</p>
+                        </ng-template>
+                        <div class="supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'MYACCOUNT.GeneralContacts' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveContactInformation(stepperSupplier)" [formGroup]="contactInformationForm" class="form-wrapper">
+                                <div class="row-wrapper" formArrayName="generalContacts">
+                                    <div *ngFor="let itemrow of formContactInformationArr.controls; let i=index; last as isLast; first as isFirst" [formGroupName]="i" class="row row-list">
+                                        <div class="col-sm-12">
+                                            <!--<h3 class="h3"> {{'onBoarding.Primo_Contatto' | translate}} {{i + 1}}</h3>-->
+                                            <h3 class="h3"> {{'onBoarding.Contatto' | translate}} {{i + 1}}</h3>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                                                            <input formControlName="firstName" matInput name="firstName" type="text" value="John Deo">
+                                                            <mat-error *ngIf="contactInformationForm.controls.firstName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                                                            <input formControlName="lastName" matInput name="lastName" type="text">
+                                                            <mat-error *ngIf="contactInformationForm.controls.lastName.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                                                            <input formControlName="email" matInput name="email" type="email">
+                                                            <mat-error *ngIf="contactInformationForm.controls.email.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                                                            <input formControlName="contactNumber" matInput name="contactNumber" type="tel" (keydown)="space($event)">
+                                                            <mat-error *ngIf="contactInformationForm.controls.contactNumber.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div *ngIf="!isFirst" class="col-sm-12 btn-margin">
+                                                    <button (click)="deleteContactInformationRow(i)" class="custom-btn btn-style red-btn" mat-button type="button">{{'MYACCOUNT.DeleteContact' | translate}}</button>
+                                                </div>
+                                                <div *ngIf="isLast" class="col-sm-12">
+                                                    <button (click)="addContactInformationRow()" class="custom-btn btn-style green-btn normal-btn" mat-button type="button"><span class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                        <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                    </div>
+                                    <div class="">
+                                        <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn " mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                        <button class="custom-btn btn-style theme-btn " mat-button>{{'OTHERS.Next' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-7.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-7.svg" />
+                            </div>
+                            <p>{{'MYACCOUNT.AdministrativeContacts' | translate}}</p>
+                        </ng-template>
+                        <div class="supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'MYACCOUNT.AdministrativeContacts' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveAdministrativeContact(stepperSupplier)" [formGroup]="administrativeContactForm" class="form-wrapper">
+                                <div class="row-wrapper" formArrayName="administrativeContact">
+                                    <div *ngFor="let itemrow of formAdministrativeContactArr.controls; let i=index; last as isLast; first as isFirst" [formGroupName]="i" class="row row-list">
+                                        <div class="col-sm-12">
+                                            <!--<h3 class="h3">{{'onBoarding.Primo_Contatto' | translate}} {{i + 1}}</h3>-->
+                                            <h3 class="h3">{{'onBoarding.Contatto' | translate}} {{i + 1}}</h3>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                                                            <input formControlName="firstName" matInput name="firstName" type="text" value="John Deo">
+                                                            <mat-error *ngIf="administrativeContactForm.controls.firstName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                                                            <input formControlName="lastName" matInput name="lastName" type="text">
+                                                            <mat-error *ngIf="administrativeContactForm.controls.lastName.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                                                            <input formControlName="email" matInput name="email" type="email">
+                                                            <mat-error *ngIf="administrativeContactForm.controls.contactEmail.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                                                            <input formControlName="contactNumber" matInput name="contactNumber" type="tel" (keydown)="space($event)">
+                                                            <mat-error *ngIf="administrativeContactForm.controls.contactNumber.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div *ngIf="!isFirst" class="col-sm-12 btn-margin">
+                                                    <button (click)="deleteAdministrativeContactRow(i)" class="custom-btn btn-style red-btn" mat-button type="button">{{'MYACCOUNT.DeleteContact' | translate}}</button>
+                                                </div>
+                                                <div *ngIf="isLast" class="col-sm-12">
+                                                    <button (click)="addAdministrativeContactRow()" class="custom-btn btn-style green-btn normal-btn" mat-button type="button"><span class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                        <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                    </div>
+                                    <div class="">
+                                        <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn " mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                        <button class="custom-btn btn-style theme-btn " mat-button>{{'OTHERS.Next' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step completed>
+                        <ng-template matStepLabel>
+                            <div class="step-icon">
+                                <img class="active-img" src="assets/images/active-stepper-8.svg">
+                                <img class="inactive-img" src="assets/images/inactive-img-8.svg" />
+                            </div>
+                            <p>{{'MYACCOUNT.ContactShipping' | translate}}</p>
+                        </ng-template>
+                        <div class="supplier-forms">
+                            <div class="stepper-form-title">
+                                <h3>{{'MYACCOUNT.ContactShipping' | translate}}</h3>
+                            </div>
+                            <form (ngSubmit)="saveContactShipping(stepperSupplier)" [formGroup]="contactShippingForm" class="form-wrapper">
+                                <div class="row-wrapper" formArrayName="contactShipping">
+                                    <div *ngFor="let itemrow of formContactShippingArr.controls; let i=index;  last as isLast; first as isFirst" [formGroupName]="i" class="row row-list">
+                                        <div class="col-sm-12">
+                                            <!--<h3 class="h3">{{'onBoarding.Primo_Contatto' | translate}} {{i + 1}}</h3>-->
+                                            <h3 class="h3">{{'onBoarding.Contatto' | translate}} {{i + 1}}</h3>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Name' | translate}}*</mat-label>
+                                                            <input formControlName="firstName" matInput name="firstName" type="text" value="John Deo">
+                                                            <mat-error *ngIf="contactShippingForm.controls.firstName.errors?.required">{{'MYACCOUNT.NameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.LastName' | translate}}</mat-label>
+                                                            <input formControlName="lastName" matInput name="lastName" type="text">
+                                                            <mat-error *ngIf="contactShippingForm.controls.lastName.errors?.required">{{'MYACCOUNT.LastNameRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.Email' | translate}}*</mat-label>
+                                                            <input formControlName="email" matInput name="email" type="email">
+                                                            <mat-error *ngIf="contactShippingForm.controls.email.errors?.required">{{'MYACCOUNT.EmailRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>{{'MYACCOUNT.PhoneNo' | translate}}</mat-label>
+                                                            <input formControlName="contactNumber" matInput name="contactNumber" type="tel" (keydown)="space($event)">
+                                                            <mat-error *ngIf="contactShippingForm.controls.contactNumber.errors?.required">{{'MYACCOUNT.PhoneNoRequired' | translate}}</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div *ngIf="!isFirst" class="col-sm-12 btn-margin">
+                                                    <button (click)="deleteContactShippingRow(i)" class="custom-btn btn-style red-btn" mat-button type="button">{{'MYACCOUNT.DeleteContact' | translate}}t</button>
+                                                </div>
+                                                <div *ngIf="isLast" class="col-sm-12">
+                                                    <button (click)="addContactShippingRow()" class="custom-btn btn-style green-btn normal-btn" mat-button type="button"><span class="material-icons">add</span>{{'MYACCOUNT.AddMoreContact' | translate}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="declineUser()" class="custom-btn red-btn-light" mat-button type="button">{{'onBoarding.Decline' | translate}}</button>
+                                        <!--<button mat-button routerLink="/client-management" class="custom-btn red-btn-light" type="button">Cancel</button>-->
+                                    </div>
+                                    <div class="">
+                                        <button (click)="goBack(stepperSupplier)" class="custom-btn btn-style prev-theme-btn " mat-button type="button">{{'OTHERS.Previous' | translate}}</button>
+                                        <button class="custom-btn btn-style theme-btn " mat-button>{{'onBoarding.Send' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

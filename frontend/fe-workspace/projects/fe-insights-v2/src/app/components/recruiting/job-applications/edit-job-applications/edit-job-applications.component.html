@@ -1,0 +1,241 @@
+<section class="client-management" xmlns="http://www.w3.org/1999/html">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style"> -->
+<!--          <li routerLink="/recruiting-dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>-->
+          <!-- <li routerLink="/recruiting/job-applications" class="breadcrumb-item">{{'RECRUITING.JobApplications' | translate}}</li> -->
+<!--          <li class="breadcrumb-item active" aria-current="page">Detail Job-->
+<!--            Applications for <span>Applications Name</span></li>-->
+          <!-- <li class="breadcrumb-item active" aria-current="page" style="text-transform: capitalize;">{{'Edit' | translate}}: {{opening.area}} | {{opening.description}} | {{jobOpeningType? (jobOpeningType | translate): ''}}</li> -->
+        <!-- </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'RECRUITING.JobApplications'"  [routePath]="'/recruiting/job-applications'"
+      [type]="': ' + opening.area + ' | '+ opening.description + ' | ' + jobOpeningType? (jobOpeningType | translate): ''" [title3]="'Edit' ">
+      </app-breadcrumb>
+    </div>
+  </div>
+  <div class="edit-job-applications table-content">
+    <div class="box-style company-info">
+      <div class="edit-app-header">
+        <div class="table-heading">
+          <h3 style="text-transform: capitalize;">{{'RECRUITING.Detail' | translate}}: {{opening.area}} | {{opening.description}} | {{jobOpeningType? (jobOpeningType | translate): ''}}</h3>
+        </div>
+        <div class="buttons-group">
+<!--          <p><span style="color:#EA5455">*</span> Indicates a required field</p>-->
+          <button class="btn-style yellow-btn" (click)="downloadCv()">
+            <mat-icon>save_alt</mat-icon>
+            {{'EXTRA_WORD.DownloadCV' | translate}}
+          </button>
+        </div>
+      </div>
+      <div class="company-details">
+        <div class="detail-wrapper bg-grey">
+          <div class="detail-box">
+            <p>{{'TABLE.Name' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.nome ? userInfo.nome : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'TABLE.Surname' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.cognome ? userInfo.cognome : '-'}}</b>
+            <!--                                        <p>{{'RECRUITING.JobOpening' | translate}}</p>-->
+            <!--                                        <b>Spontaneous Application - Litigation</b>-->
+          </div>
+        </div>
+        <hr>
+        <div class="detail-wrapper">
+          <div class="detail-box">
+            <p>{{'TABLE.Email' | translate}}</p>
+            <b>{{userInfo.email ? userInfo.email : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.Birthdate' | translate}}</p>
+            <b>{{userInfo.data_nascita ? (userInfo.data_nascita | date:'dd/MM/yyyy') : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'TABLE.Age' | translate}}</p>
+            <b>{{JobapplicationsDetails.age ? (JobapplicationsDetails.age  | number: '2.0-0') : '-' }} <b
+              *ngIf="JobapplicationsDetails.age > 0">years old</b></b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.Gender' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.sesso ? userInfo.sesso : '-' }}</b>
+          </div>
+        </div>
+        <hr>
+        <div class="detail-wrapper bg-grey">
+          <div class="detail-box">
+            <p>{{'RECRUITING.Nationality' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.nationality ? userInfo.nationality : '-' }}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'TABLE.Phone No' | translate}}</p>
+            <b>{{userInfo.telefono ? userInfo.telefono : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.Address' | translate}}</p>
+            <b>{{userInfo.indirizzo ? userInfo.indirizzo : '-' }}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.CityName' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.cityName ? userInfo.cityName : '-' }}</b>
+          </div>
+        </div>
+        <div class="detail-wrapper">
+          <div class="detail-box">
+            <p>{{'RECRUITING.StateName' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.stateName ? userInfo.stateName : '-' }}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.CountryName' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.countryName ? userInfo.countryName : '-' }}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.Company' | translate}}</p>
+            <b>{{userInfo.azienda ? userInfo.azienda : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'TABLE.Title' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.titolo ? userInfo.titolo : '-'}}</b>
+          </div>
+        </div>
+        <div class="detail-wrapper bg-grey">
+          <div class="detail-box">
+            <p>{{'RECRUITING.LevelofEducation' | translate}}</p>
+            <b style="text-transform: capitalize;">{{userInfo.livello_studi ? (userInfo.livello_studi ==='not-graduated' || userInfo.livello_studi === 'Not Graduated' ? 'Not Graduated': (userInfo.livello_studi | titlecase)) : '-' }}</b>
+<!--            <b>{{userInfo.livello_studi ? userInfo.livello_studi : '-' }}</b>-->
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.University' | translate}}</p>
+            <b style="text-transform: capitalize;">{{univ?.description ? univ.description : '-'}}</b>
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.Degree' | translate}}</p>
+            <b style="text-transform: capitalize;">{{laurea ? laurea.description : '-'}}</b>
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.DegreeMark' | translate}}</p>
+            <b>{{userInfo.voto_laurea ? userInfo.voto_laurea : '-' }}</b>
+          </div>
+        </div>
+        <div class="detail-wrapper">
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.DegreeYear' | translate}}</p>
+            <b>{{userInfo.degreeYear ? userInfo.degreeYear : '-' }}</b>
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.MasterDiscription' | translate}}</p>
+            <b>{{userInfo.masterDescription ? userInfo.masterDescription : '-' }}</b>
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.DoctorateDescription' | translate}}</p>
+            <b>{{userInfo.doctorateDescription ? userInfo.doctorateDescription : '-' }}</b>
+          </div>
+          <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+            <p>{{'RECRUITING.StateExamination' | translate}}</p>
+            <b>{{userInfo.stateExamination ? userInfo.stateExamination : '-' }}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.Area' | translate}}</p>
+            <b style="text-transform: capitalize;">{{opening.area ? opening.area : '-'}}</b>
+          </div>
+        </div>
+        <div class="detail-wrapper bg-grey">
+          <div class="detail-box">
+            <p>{{'RECRUITING.CompletionDate' | translate}}</p>
+            <b>{{JobapplicationsDetails.data_completamento ? (JobapplicationsDetails.data_completamento | date:'dd/MM/yyyy') : '-'}}</b>
+          </div>
+          <div class="detail-box">
+            <p>{{'RECRUITING.FitIndex' | translate}}</p>
+            <b>{{JobapplicationsDetails.fitindex ? JobapplicationsDetails.fitindex : '-'}}</b>
+          </div>
+        </div>
+      </div>
+      <div class="edit-application-history">
+        <form name="addAreasForm" [formGroup]= "frmChangeStatus"  novalidate
+              #myform="ngForm" (ngSubmit)="editStatus(frmChangeStatus, myform)" >
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="table-content" style=" padding:  24px 0px 44px;">
+                <h3>{{'RECRUITING.Jobapplicationstatushistory' | translate}}</h3>
+                <div class="table-wrapper resource-color-table">
+                  <table mat-table matSort [dataSource]="applicationStatus">
+                    <ng-container matColumnDef="DateTime">
+                      <th mat-header-cell *matHeaderCellDef>{{'RECRUITING.DateandTime' | translate}}</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.createdAt ? (element.createdAt | date:'dd/MM/yyyy HH:mm') : '-' }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="appStatus">
+                      <th mat-header-cell *matHeaderCellDef>{{'TABLE.Status'| translate}}</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.from_state_name ? (element.from_state_name | translate) : '-'}}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="appNote">
+                      <th mat-header-cell *matHeaderCellDef>{{'RECRUITING.Note' | translate}}</th>
+                      <td mat-cell *matCellDef="let element" style="word-break: keep-all;">
+                        {{ element.notes ? element.notes : '-' }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="appBy">
+                      <th mat-header-cell *matHeaderCellDef>{{'RECRUITING.By' | translate}}</th>
+                      <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                        {{ element.change_by ? element.change_by : '-' }}
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                  </table>
+                </div>
+                <div *ngIf="!noRecordFound" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                <div  *ngIf="noRecordFound"class="paginate-footer"></div>
+              </div>
+            </div>
+            <div class="col-xl-4">
+
+                <div class="edit-application-form">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Procurement_Management.Status' | translate}}</mat-label>
+                    <mat-select [formControlName]="'from_state_id'">
+                      <!-- <mat-option *ngFor="let opt of applicationStatusNotes" [disabled]="!isStatusEnabled(opt)" [value]="opt.id" [ngStyle] ="{'display': opt.description === 'Draft' ? 'none' : 'block'} ">
+                        {{opt.description | translate}}
+                      </mat-option> -->
+                      <mat-option *ngFor="let opt of applicationStatusNotes"  [value]="opt.id" >
+                        {{opt.description | translate}}
+                      </mat-option>
+                    </mat-select>
+                   <!-- <mat-error *ngIf="frmChangeStatus.controls.from_state_id.errors?.required" >
+                      Enter your first name.
+                    </mat-error> -->
+                  </mat-form-field>
+                  <!--                              <mat-form-field>-->
+                  <!--                                <mat-label>{{'JOB_APPLICATION.STATUS'|translate}}</mat-label>-->
+                  <!--                                <mat-select [formControlName]="'from_state_id'">-->
+                  <!--                                  <mat-option *ngFor="let opt of applicationStatusTableData"-->
+                  <!--                                              [value]="opt.id" [disabled]="!isStatusEnabled(opt)">{{opt.description}}</mat-option>-->
+                  <!--                                </mat-select>-->
+                  <!--                              </mat-form-field>-->
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'RECRUITING.Notes' | translate}}</mat-label>
+                    <textarea matInput name="notes" [formControlName]="'notes'" required ></textarea>
+                    <mat-error *ngIf="frmChangeStatus.controls.notes.errors?.required" >
+                      {{'RECRUITING.Please add notes' | translate}}
+                   </mat-error>
+                  </mat-form-field>
+                </div>
+
+            </div>
+          </div>
+          <div class="popup-footer mt-30">
+            <div class="footer-content">
+              <button class="btn-style theme-btn" type="submit" >{{'GENERAL.Save' | translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="/recruiting/job-applications">{{'GENERAL.Cancel' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>

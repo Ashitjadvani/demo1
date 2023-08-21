@@ -1,0 +1,23 @@
+<section class="popups">
+  <div class="popup-header">
+      <div class="header-content">
+          <h4>Add Field</h4>
+          <img src="./assets/images/cross-icon.svg" (click)="onNoClick()" alt="">
+      </div>
+  </div>
+  <div class="popup-body pb-0">
+    <div [formGroup]="addFieldPopup" class="form-field">
+      <mat-form-field appearance="outline" class="element-full-width">
+          <mat-label>Name</mat-label>
+          <input formControlName="title" matInput type="text" name="title">
+          <mat-error *ngIf="addFieldPopup.controls.title.errors?.required">Please enter field name</mat-error>
+        </mat-form-field>
+    </div>
+  </div>
+  <div class="popup-footer">
+    <div class="footer-content footer-right">
+      <button type="button" class="btn-style inactive" (click)="onNoClick()">Cancel</button>
+      <button class="btn-style theme-btn" (click)="onSaveField()">Save</button>
+    </div>
+  </div>
+</section>

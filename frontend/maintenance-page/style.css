@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo {
+    width: 200px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info-box-title {
+    margin-top: 30px;
+    text-align: center;
+    font-family: 'Work Sans';
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.info-box {
+    margin-top: 25px;
+    text-align: center;
+    font-family: 'Work Sans';
+}

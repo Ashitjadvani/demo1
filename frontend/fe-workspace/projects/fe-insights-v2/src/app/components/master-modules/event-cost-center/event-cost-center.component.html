@@ -1,0 +1,105 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.MASTER_MODULES'" [title3]="'INSIGHTS_MENU.Cost_Centers'">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="common-tabbing">
+        <div class="table-content box-style company-info">
+          <div class="table-heading">
+            <h3 style="font-weight: 600">{{'INSIGHTS_MENU.Cost_Centers' | translate}}</h3>
+            <div class="search-form-wrapper">
+              <div class="search-form">
+                <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'EVENT_MANAGEMENT.SearchCostCenters'| translate }}" />
+                <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+              </div>
+              <button  class="btn-style" routerLink="add-edit-cost-center/0">
+                <span class="material-icons">add</span>{{'EVENT_MANAGEMENT.AddCostCenter'| translate}}
+              </button>
+              <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                <mat-icon >more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="deleteMultiCostCenter()">
+                  <span>{{'GENERAL.Delete' | translate}}</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="table-wrapper resource-color-table">
+            <table #table [dataSource]="costCenterList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                  <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                [aria-label]="checkboxLabel()">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                  <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(row) : null"
+                                [checked]="selection.isSelected(row)"
+                                [aria-label]="checkboxLabel(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="wheelAction">
+                <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                  {{'TABLE.Action' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                  <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                                    (edit)="edit($event)" (delete)="openAccountDeleteDialog($event)"></app-wheel-action>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="costCenterName">
+                <th (click)="changeSorting('name',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                  {{'EVENT_MANAGEMENT.CostCenterName' | translate}} <span
+                  [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" >
+                    <img alt="" src="../../../../assets/images/up-arrow.svg"></span> </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">{{element.name ? element.name : '-' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="costCenterCode">
+                <th (click)="changeSorting('code',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                  {{'EVENT_MANAGEMENT.CostCenterCode' | translate}} <span
+                  [ngClass]="{'down': sortKey === 'code' && sortBy === '-1' , 'up': sortKey === 'code' && sortBy === '1'}" >
+                    <img alt="" src="../../../../assets/images/up-arrow.svg"></span> </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">{{element.code ? element.code : '-' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="costCenterType">
+                <th (click)="changeSorting('costCenterTypes.name',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                  {{'INSIGHTS_MENU.Cost_Center_Type' | translate}} <span
+                  [ngClass]="{'down': sortKey === 'costCenterTypes.name' && sortBy === '-1' , 'up': sortKey === 'costCenterTypes.name' && sortBy === '1'}" >
+                    <img alt="" src="../../../../assets/images/up-arrow.svg"></span> </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">{{element.costCenterTypes ? element.costCenterTypes : '-' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="CreatedDate">
+                <th (click)="changeSorting('createdAt',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                  {{'INSIGHTS_MENU.Created_Date'| translate}} <span
+                  [ngClass]="{'down': sortKey === 'createdAt' && sortBy === '-1' , 'up': sortKey === 'createdAt' && sortBy === '1'}" >
+                    <img alt="" src="../../../../assets/images/up-arrow.svg"></span> </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">{{ element.createdAt ? (element.createdAt | date: 'dd/MM/yyyy HH:mm' ): '-' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="UpdatedDate">
+                <th (click)="changeSorting('updated_at',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                  {{'INSIGHTS_MENU.Updated_Date'| translate}} <span
+                  [ngClass]="{'down': sortKey === 'updated_at' && sortBy === '-1' , 'up': sortKey === 'updated_at' && sortBy === '1'}" >
+                    <img alt="" src="../../../../assets/images/up-arrow.svg"></span> </th>
+                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">{{ element.updated_at ? (element.updated_at | date: 'dd/MM/yyyy HH:mm'): '-' }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="scopesDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: scopesDisplayedColumns"></tr>
+            </table>
+          </div>
+          <app-pagination [noRecordFound]="noRecordFound"
+                          [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+                          [totalItems]="totalItems"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

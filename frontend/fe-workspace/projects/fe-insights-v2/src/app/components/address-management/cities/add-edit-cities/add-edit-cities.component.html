@@ -1,0 +1,134 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+          <li class="breadcrumb-item">{{'Address Management' | translate}}</li>
+          <li routerLink="/address-management/cities" class="breadcrumb-item">{{'Cities'| translate}}</li>
+          <li *ngIf="editMode === 'Add'" class="breadcrumb-item active" aria-current="page"><span>{{'Add Cities'|translate}}</span> </li>
+          <li *ngIf="editMode === 'Edit'" class="breadcrumb-item active" aria-current="page"><span>{{'Edit Cities'|translate}}</span> </li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'Address Management'" [routePath2]="'/address-management/cities'" [title2]="'Cities'"
+      [title3]="editMode == 'Add' ? 'Add Cities' : 'Edit Cities'">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span *ngIf="editMode === 'Add'" >{{'Add Cities'|translate}}</span> <span *ngIf="editMode === 'Edit'" >{{'Edit Cities'|translate}}</span></h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addResourceGroupForm" [formGroup]= "addCitiesFrom"  novalidate
+                (ngSubmit)="addCity()"
+                #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Select Country' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <mat-select formControlName="country_id" >
+                      <mat-select-filter #resetSearch [array]="country" (filteredReturn)="countryRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                      <mat-option *ngFor="let country of countryRecordFiltered" [value]="country.id" (click)="regionSelect(country.id)" >{{country.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addCitiesFrom.controls.country_id.errors?.required" >
+                      {{'Select Country' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Select Region' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <mat-select formControlName="state_id" >
+                      <mat-select-filter  [array]="region" (filteredReturn)="regionRecordFiltered = $event" placeholder="{{'Search' | translate}}" [displayMember]="'name'"></mat-select-filter>
+                      <mat-option *ngFor="let regions of regionRecordFiltered" [value]="regions.id" (click)="provinceSelect(regions.id)">{{regions.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addCitiesFrom.controls.state_id.errors?.required" >
+                      {{'Select Region' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!--<div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'Select province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <mat-select formControlName="province" multiple>
+                      <mat-option *ngFor="let country of country" [value]="country">{{country}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addCitiesFrom.controls.province.errors?.required" >
+                      {{'RECRUITINGTXT.ScopeIsRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>-->
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'City Name'|translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="name" matInput name="name" (keydown)="space($event)" style="text-transform:capitalize;">
+                    <mat-error *ngIf="addCitiesFrom.controls.name.errors?.required" >
+                      {{'Enter city name'|translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="feature-contents provice-switch">
+                  <div class="custom-switch-group">
+                    <div  class=" features-switch switch" >
+                      <mat-slide-toggle #DropOrText formControlName="provinceFlag" >{{'Is Province ?'|translate}}</mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width" *ngIf="DropOrText.checked == false">
+                    <mat-label>{{'Select Province' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <mat-select formControlName="province" style="text-transform: uppercase;">
+                      <mat-select-filter  [array]="provList" (filteredReturn)="provListRecordFiltered = $event" placeholder="{{'Search' | translate}}" ></mat-select-filter>
+                      <mat-option *ngFor="let prov of provListRecordFiltered" value="{{prov}}" style="text-transform: uppercase;">{{prov}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addCitiesFrom.controls.province.errors?.required" >
+                      {{'Select Province' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="element-full-width" *ngIf="DropOrText.checked == true">
+                    <mat-label>{{'Province code'|translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="province" matInput name="province" pattern="[a-zA-Z ]*" (keydown)="space($event)" minlength="2" maxlength="2" style="text-transform: uppercase">
+                    <mat-error *ngIf="addCitiesFrom.controls.province.errors?.required || addCitiesFrom.controls.province.errors?.minlength" >
+                      {{'Enter Province'|translate}}
+                    </mat-error>
+                    <mat-error *ngIf="addCitiesFrom.controls.province.errors?.pattern" >
+                      {{'Enter only text'|translate}}
+                    </mat-error>
+                  </mat-form-field>
+
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit" *ngIf="button === 'Save'">{{'GENERAL.Save'|translate}}</button>
+              <button class="btn-style theme-btn" type="submit" *ngIf="button === 'Update'" >{{'GENERAL.Update'|translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="/address-management/cities" type="button">{{'GENERAL.Cancel'|translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

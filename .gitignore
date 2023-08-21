@@ -1,0 +1,7 @@
+/.idea/
+/backend/plug-ins/mqs-super-admin/package-lock.json
+/backend/plug-ins/user-manager/.cache/
+/.cache/
+backend/plug-ins/user-manager/.cache
+node_modules
+/backend/plug-ins/event-manager/assets/

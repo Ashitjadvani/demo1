@@ -1,0 +1,386 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/procurement-dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+          <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER' | translate}}</li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [title3]="'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER'">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="common-tabbing manage-supplier-tab">
+        <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)" #tabGroup [selectedIndex]="selectedTab">
+          <mat-tab *ngFor="let tabInfo of manageSupplierTabbing" class="mt-5" label="{{tabInfo.label}}" aria-label="{{tabInfo.indexNumber}}" >
+            <ng-template mat-tab-label>
+              {{tabInfo.label | translate}} <span class="count-label">{{tabInfo.count ? tabInfo.count : '0'}}</span>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+        <div class="table-content box-style company-info">
+          <div class="table-heading">
+            <h3 style="font-weight: 600">
+              {{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SUPPLIER' | translate}}
+              <span class="refresh-btn" (click)="onRefreshTable('refresh')" matTooltip="Refresh Supplier List">
+                <mat-icon>autorenew</mat-icon>
+              </span>
+            </h3>
+            <div class="search-form-wrapper">
+              <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+              <div *ngIf="currentTab == 5 || currentTab == 0" class="switch-tab">
+                {{'Procurement_Management.WithExpiredDocuments' | translate}}<mat-slide-toggle class="red-switch" (change)="showListExpireDocs($event.checked)" [(ngModel)]="sliderChecked"></mat-slide-toggle>
+              </div>
+              <div class="search-form">
+                <!--<input (keyup)="onKeyUp($event)" [(ngModel)]="search" mat-input placeholder="{{'Procurement_Management.SearchSupplier' | translate}} "/>
+                <mat-icon matSuffix class="material-icons">search</mat-icon>-->
+                <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'Procurement_Management.SearchSupplier' | translate}}" />
+                <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+              </div>
+              <button class="btn-style" routerLink="add-edit-supplier">
+                <span class="material-icons">add</span>{{'Procurement_Management.AddSupplier' | translate}}
+              </button>
+            </div>
+          </div>
+
+
+          <div class="table-wrapper resource-color-table">
+            <table class="table custom-table">
+              <tr class="header-row">
+                <th class="header" (click)="changeSorting('serviceCategory')">
+                  {{'Procurement_Management.ServiceCategory' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('companyName')">
+                  {{'Procurement_Management.CompanyName' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('createdAt')">
+                  {{'Procurement_Management.CreatedOn' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" (click)="changeSorting('updatedAt')">
+                  {{'Procurement_Management.UpdatedOn' | translate}}<span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <th class="header" *ngIf="this.statusLabel === 'all'">{{'Procurement_Management.Status' | translate}}</th>
+                <th class="header">{{'TABLE.ViewDetails' | translate}}</th>
+                <th class="header" style="min-width: 130px;">{{'Procurement_Management.SendNotice' | translate}}</th>
+                <th class="header">{{'TABLE.Action' | translate}}</th>
+              </tr>
+              <tbody *ngFor="let element of serviceList; let i = index" [class.active]="selectedIndex === i">
+                <tr class="table-row-not-expanded">
+                  <td class="cell" (click)="supplierLogFunction(element, element.id, i)" style="padding: 0px 20px 0px 0px;">
+                    <span *ngIf="!element.isExpired && !element.willExpired" [style.borderLeftColor]="'transparent'" class="border-types" style="white-space: pre-line;padding: 20px 15px 20px 15px;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                    <span *ngIf="!element.isExpired && element.willExpired" [style.borderLeftColor]="'#F8A14F'" class="border-types" style="white-space: pre-line;padding: 20px 15px 20px 15px;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                    <span *ngIf="element.isExpired && !element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;padding: 20px 15px 20px 15px;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                    <span *ngIf="element.isExpired && element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;padding: 20px 15px 20px 15px;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  </td>
+                  <td (click)="supplierLogFunction(element, element.id, i)">{{element.companyName ? element.companyName : '-'}}
+                  </td>
+                  <td (click)="supplierLogFunction(element, element.id, i)">{{ (element.createdAt | date : 'dd/MM/yyyy HH:mm') ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                  </td>
+                  <td (click)="supplierLogFunction(element, element.id, i)">{{ (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') ? (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                  </td>
+                  <td (click)="supplierLogFunction(element, element.id, i)" *ngIf="this.statusLabel === 'all'">
+                    <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageEng' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                           disabled>{{ element.statusName}}
+                    </label>
+                    <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageIT' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                           disabled>{{ element.statusItalyName }}
+                    </label>
+                  </td>
+                  <td>
+                    <button class="btn-style table-btn theme-line-btn sm-btn" routerLink="view-manage-supplier/{{element.id}}">
+                      {{'TABLE.ViewDetails' | translate}}
+                    </button>
+                  </td>
+                  <td>
+                      <div class=" features-switch switch">
+                        <mat-slide-toggle *ngIf="element.sendNotice == 'sendMail' " (change)="chnageSendNotice(element.id,'notSendMail')" [checked]="sendNotice"></mat-slide-toggle>
+                        <mat-slide-toggle *ngIf="element.sendNotice == 'notSendMail' " (change)="chnageSendNotice(element.id,'sendMail')"></mat-slide-toggle>
+                      </div>
+                  </td>
+                  <td>
+                    <div class="actions-btn">
+                      <button *ngIf="saveTabInfo != '2' && (element.status === 5 || element.status === 9)" (click)="openEditSupplierEmail(element.id,i)" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.EditEmail' | translate}}
+                      </button>
+                      <button *ngIf="saveTabInfo != '2' && element.status === 5" (click)="onReInviteEmail(element.id, element.companyReferenceEmail)" class="btn-style table-btn black-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.Re_invite' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 11" (click)="sendReminder(element.id,element.companyReferenceEmail, 'sendReminder')" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.SendReminder' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 4 || element.status === 12" (click)="setStatusDialog($event,'accept', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.Accept' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 12" (click)="setStatusDialog($event,'reject', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.Refuse' | translate}}
+                      </button>
+                      <!--<button *ngIf="(saveTabInfo == '' || saveTabInfo == 'all') && element.status === 2" (click)="setStatusDialog($event,'active', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.MarkAsActivate' | translate}}
+                      </button>
+                      <button *ngIf="(saveTabInfo == '' || saveTabInfo == 'all') && element.status === 1" (click)="setStatusDialog($event,'deactivate', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.MarkAsDeactivate' | translate}}
+                      </button>-->
+                      <!--<mat-slide-toggle class="green-switch"  [checked]="element.statusName != 'Active'" *ngIf="saveTabInfo == '1' && element.status === 1" (change)="setStatusDialog($event,'deactivate', element.id, i)"></mat-slide-toggle>
+                      <mat-slide-toggle class="green-switch"  [checked]="element.statusName != 'Deactivate'" *ngIf="saveTabInfo == '2' && element.status === 2" (change)="setStatusDialog($event,'active', element.id, i)" style="margin-right: 10px;margin-top: 6px;"></mat-slide-toggle>-->
+                      <button *ngIf="element.status === 2" (click)="setStatusDialog($event,'active', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.MarkAsActivate' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 1" (click)="setStatusDialog($event,'deactivate', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.MarkAsDeactivate' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 3 || element.status === 6" (click)="deleteDecline(element.id)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.Delete' | translate}}
+                      </button>
+                      <button *ngIf="element.status === 4" (click)="setStatusDialog($event,'reject', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.Reject' | translate}}
+                      </button>
+                      <button *ngIf="(saveTabInfo == '2' && element.status === 2) || (((saveTabInfo == '' || saveTabInfo == 'all' || saveTabInfo == '2')) && element.status === 2 || element.status === 12)" (click)="requestMoreDetail(element.id)" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                        {{'Procurement_Management.RequestMoreDetail' | translate}}
+                      </button>
+                        <button (click)="sendNoticeFunc(element.id)" *ngIf="(!element.isExpired && element.willExpired || element.isExpired && !element.willExpired || element.isExpired && element.willExpired) && (element.statusName !== 'Inactive') && (element.statusName !== 'Refused')" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                            {{'SendNoticeEmail' | translate}}
+                        </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="logDetailsRow">
+                  <td colspan="7" class="custom-table-content">
+                    <div class="expanded-panel">
+                      <div class="table-container">
+                        <table class="table" [dataSource]="supplierLogData">
+                          <tr class="header-row">
+                            <th class="header">{{'RECRUITING.DateandTime' | translate}}</th>
+                            <th class="header">{{'User' | translate}}</th>
+                            <th class="header">{{'Message' | translate}}</th>
+                          </tr>
+                          <tr class="table-row" *ngFor="let element of supplierLogData">
+                            <td class="cell">{{ element.supplierLogDate ? (element.supplierLogDate | date : 'dd/MM/yyyy HH:mm') : '-'}}</td>
+                            <td class="cell">{{element.author ? element.author : '-'}}</td>
+                            <td class="cell"><span style="padding: 0px">{{element.isAdmin === true ? element.author : ''}}</span> {{(element.activity ? element.activity : '-').toString() | translate}}</td>
+                          </tr>
+                        </table>
+                        <div *ngIf="supplierLogData.length == 0" class="no-record-found" style="padding-top: 0px;padding-bottom: 20px;font-weight: bold">{{'TABLE.No_record_found' | translate}}</div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns"></tr>
+            </table>
+          </div>
+          <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div> -->
+          <table [dataSource]="serviceList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%;display: none">
+            <ng-container matColumnDef="ServiceCategory">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="CompanyName">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="createdAt">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="updatedAt">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="Status">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="ActiveInactiveSupplier">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="ViewDetails">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th *matHeaderCellDef class="short-arrow" mat-header-cell></th>
+              <td *matCellDef></td>
+            </ng-container>
+            <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns"></tr>
+          </table>
+          <!-- <div *ngIf="noRecordFound" class="paginate-footer">
+            <div class="page-item">
+              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+              <mat-form-field appearance="fill">
+                <mat-select (selectionChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                  <mat-option [value]=5>5</mat-option>
+                  <mat-option [value]=10>10</mat-option>
+                  <mat-option [value]=15>15</mat-option>
+                  <mat-option [value]=20>20</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+            </div>
+            <div class="table-paginator">
+              <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+            </div>
+          </div> -->
+          <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeSelectOption($event)"
+              [totalItems]="totalItems"></app-pagination>
+
+
+          <!--<div class="table-wrapper resource-color-table">
+            <table [dataSource]="serviceList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%">
+              <ng-container matColumnDef="ServiceCategory">
+                <th (click)="changeSorting('serviceCategory')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                   {{'Procurement_Management.ServiceCategory' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell class="p-0" *matCellDef="let element" style="max-width: 300px;min-width: 200px" >
+                  <span *ngIf="!element.isExpired && !element.willExpired" [style.borderLeftColor]="'transparent'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="!element.isExpired && element.willExpired" [style.borderLeftColor]="'#F8A14F'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="element.isExpired && !element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                  <span *ngIf="element.isExpired && element.willExpired" [style.borderLeftColor]="'#ff0000'" class="border-types" style="white-space: pre-line;">{{element.serviceCategoryName ? element.serviceCategoryName : '-' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="CompanyName">
+                <th (click)="changeSorting('companyName')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                   {{'Procurement_Management.CompanyName' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td *matCellDef="let  element" mat-cell style="white-space: nowrap;">
+                  {{element.companyName ? element.companyName : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdAt">
+                <th (click)="changeSorting('createdAt')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                   {{'Procurement_Management.CreatedOn' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                  {{ (element.createdAt | date : 'dd/MM/yyyy HH:mm') ? (element.createdAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="updatedAt">
+                <th (click)="changeSorting('updatedAt')" *matHeaderCellDef class="short-arrow" mat-header-cell>
+                   {{'Procurement_Management.UpdatedOn' | translate}} <span [ngClass]="sortClass"><img alt="" src="assets/images/up-arrow.svg"></span>
+                </th>
+                <td mat-cell *matCellDef="let element" style="white-space: nowrap;">
+                  {{ (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') ? (element.UpdatedAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Status">
+                <th *matHeaderCellDef mat-header-cell>{{'Procurement_Management.Status' | translate}}</th>
+                <td mat-cell *matCellDef="let element">
+                  <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageEng' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                    disabled>
+                    {{ element.statusName}}
+                  </label>
+                  <label class="btn-style table-btn sm-btn label-btn {{'GENERAL.isLanguageIT' | translate}} {{ (element.statusName) ? element.statusName.split(' ').join('-').toLowerCase() : ''}}"
+                         disabled>
+                    {{ element.statusItalyName }}
+                  </label>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ActiveInactiveSupplier">
+                <th *matHeaderCellDef mat-header-cell> {{'Procurement_Management.Active_Inactive_Supplier' | translate}}</th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element.status === 1 || element.status === 2">
+                    <mat-slide-toggle [checked]="element.status === 1 ? true : false" class="custom-switch-style"></mat-slide-toggle>
+                  </ng-container>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ViewDetails">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                  {{'TABLE.ViewDetails' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                  <button class="btn-style table-btn theme-line-btn sm-btn" routerLink="view-manage-supplier/{{element.id}}">
+                     {{'TABLE.ViewDetails' | translate}}
+                  </button>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                   {{'TABLE.Action' | translate}}
+                </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <div class="actions-btn">
+                    &lt;!&ndash; <img alt=""  class=""   src="assets/images/edit-action.svg"> &ndash;&gt;
+                    <button *ngIf="saveTabInfo != '2' && (element.status === 5 || element.status === 9)" (click)="openEditSupplierEmail(element.id,i)" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.EditEmail' | translate}}
+                    </button>
+                    <button *ngIf="saveTabInfo != '2' && element.status === 5" (click)="onReInviteEmail(element.id)" class="btn-style table-btn black-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.Re_invite' | translate}}
+                    </button>
+                    <button *ngIf="element.status === 11" (click)="sendReminder(element.companyReferenceEmail, 'sendReminder')" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.SendReminder' | translate}}
+                    </button>
+                    <button *ngIf="element.status === 4 || element.status === 12" (click)="setStatusDialog($event,'accept', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.Accept' | translate}}
+                    </button>
+                    <button *ngIf="element.status === 12" (click)="setStatusDialog($event,'reject', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.Refuse' | translate}}
+                    </button>
+                    &lt;!&ndash;<button *ngIf="element.status === 1" (click)="setStatusDialog('deactivate', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.Deactivate' | translate}}
+                    </button>&ndash;&gt;
+                    <button *ngIf="(saveTabInfo == '' || saveTabInfo == 'all') && element.status === 1" (click)="setStatusDialog($event,'deactivate', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.MarkAsDeactivate' | translate}}
+                    </button>
+                    <mat-slide-toggle class="green-switch"  [checked]="element.statusName != 'Active'" *ngIf="saveTabInfo == '1' && element.status === 1" (change)="setStatusDialog($event,'deactivate', element.id, i)"></mat-slide-toggle>
+                    <mat-slide-toggle class="green-switch"  [checked]="element.statusName != 'Deactivate'" *ngIf="saveTabInfo == '2' && element.status === 2" (change)="setStatusDialog($event,'active', element.id, i)" style="margin-right: 10px;margin-top: 6px;"></mat-slide-toggle>
+
+                    <button *ngIf="element.status === 3 || element.status === 6" (click)="deleteDecline(element.id)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.Delete' | translate}}
+                    </button>
+                    &lt;!&ndash;<button *ngIf="element.status === 3" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.Delete' | translate}}
+                    </button>&ndash;&gt;
+                    <button *ngIf="element.status === 4" (click)="setStatusDialog($event,'reject', element.id, i)" class="btn-style table-btn red-btn sm-btn" style="min-width:80px;">
+                       {{'Procurement_Management.Reject' | translate}}
+                    </button>
+                    &lt;!&ndash;<button *ngIf="element.status === 2" (click)="setStatusDialog('active', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.Active' | translate}}
+                    </button>&ndash;&gt;
+                    <button *ngIf="(saveTabInfo == '' || saveTabInfo == 'all') && element.status === 2" (click)="setStatusDialog($event,'active', element.id, i)" class="btn-style table-btn green-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.MarkAsActivate' | translate}}
+                    </button>
+                    <button *ngIf="(saveTabInfo == '2' && element.status === 2) || (((saveTabInfo == '' || saveTabInfo == 'all' || saveTabInfo == '2')) && element.status === 2 || element.status === 12)" (click)="requestMoreDetail(element.id)" class="btn-style table-btn blue-btn sm-btn" style="min-width:80px;">
+                      {{'Procurement_Management.RequestMoreDetail' | translate}}
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns"></tr>
+            </table>
+            <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+          </div>
+          <div *ngIf="noRecordFound" class="paginate-footer">
+            <div class="page-item">
+              <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+              <mat-form-field appearance="fill">
+                <mat-select (selectionChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                  <mat-option [value]=5>5</mat-option>
+                  <mat-option [value]=10>10</mat-option>
+                  <mat-option [value]=15>15</mat-option>
+                  <mat-option [value]=20>20</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="table-paginator">
+              <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

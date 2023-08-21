@@ -1,0 +1,17 @@
+@import "../../../../theme/theme.scss";
+
+.page-content-container {
+    overflow: hidden;
+
+    .qr-scanner-container {
+        width: 100%;
+        height: 100%;
+
+        touch-action: pan-y !important;
+    }
+}
+
+:host ::ng-deep .video-player {
+    height: 100% !important;
+    object-fit: cover !important;
+}

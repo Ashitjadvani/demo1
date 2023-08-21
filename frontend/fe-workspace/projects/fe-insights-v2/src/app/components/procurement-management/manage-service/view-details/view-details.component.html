@@ -1,0 +1,146 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/procurement-dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li>
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</li>
+                    <li routerLink="/manage-service" class="breadcrumb-item" aria-current="page">{{'INSIGHTS_MENU.PROCUREMENT_MANAGE_SERVICE' | translate}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'Procurement_Management.ViewManageSupplier' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PROCUREMENT'" [routePath2]="'/manage-service'" [title2]="'INSIGHTS_MENU.PROCUREMENT_MANAGE_SERVICE'"
+            [title3]="'Procurement_Management.ViewManageSupplier'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="{{'Procurement_Management.ServiceDetails' | translate}}" class="mt-5">
+                        <div class="table-content box-style company-info p-30">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="company-details odd-even-false">
+                                        <div class="detail-wrapper bg-grey row">
+                                            <div class="col-sm-3">
+                                                <div class="detail-box w-100">
+                                                    <p>{{'Procurement_Management.ServiceName'| translate}}</p>
+                                                    <b style="text-transform: capitalize;">{{serviceDetails.serviceName ? serviceDetails.serviceName : '-'}}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="detail-box w-100">
+                                                    <p>{{'Procurement_Management.CostCenter'| translate}}</p>
+                                                    <b>{{serviceDetails.costCenterName ? serviceDetails.costCenterName : '-'}}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="detail-box w-100">
+                                                    <p>{{'TABLE.Description'| translate}}</p>
+                                                    <b>{{serviceDetails.descriptionEnglish ? serviceDetails.descriptionEnglish : '-'}}</b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mandatory-fields">
+                                <div class="col-xl-12">
+                                    <p>{{'Procurement_Management.TheMandatoryFieldsForThisService' | translate}}:</p>
+                                </div>
+                                <div *ngFor="let mandatory of mandatoryFields" class="col-xl-4">
+                                    <div class="form-field">
+                                        <div class="custom-switch">
+                                            <mat-checkbox (change)="$event ? toggleMandatory(mandatory.value , $event) : null" (click)="$event.stopPropagation()" [checked]="existsMandatory(mandatory.value)" disabled>{{mandatory.name | translate}}</mat-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'Procurement_Management.ServiceAgreement' | translate}}">
+                        <div class="table-content box-style company-info view-details-box">
+                            <div class="table-heading justify-content-end">
+                                <button (click)="servicePopup('add', 0)" class="btn-style m-h-50"><span class="material-icons">add</span>{{'Procurement_Management.AddServiceAgreement' | translate}}</button>
+                            </div>
+                            <div class="service-agreement-list">
+                                <div *ngFor="let agreement of serviceAgreement; let i = index" class="service-agreement-single">
+                                    <h3>{{ agreement.serviceAgreementTitle }}</h3>
+                                    <p>{{agreement.serviceAgreement}}</p>
+                                    <div class="btn-wrapper d-flex justify-content-end">
+                                        <button (click)="servicePopup('edit', i, agreement)" class="btn-style light-blue">{{'GENERAL.Edit'| translate}}</button>
+                                        <button (click)="deleteServicePopup(i, agreement)" class="btn-style red-btn">{{'Procurement_Management.Delete' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Survey">
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'INSIGHTS_MENU.QUIZ_SURVEY_SURVEY' | translate}}</h3>
+                                <div class="search-form-wrapper">
+                                    <!-- <button class="btn-style red-bordered-btn" >View All</button> -->
+                                    <!--<div class="search-form">
+                    <input mat-input (keyup)="onKeyUp($event)" placeholder="Search Survey" />
+                    <mat-icon matSuffix class="material-icons">search</mat-icon>
+                  </div>-->
+                                </div>
+                            </div>
+                            <div class="table-wrapper resource-color-table">
+                                <table [dataSource]="manageServiceViewDetailsData | paginate: config" mat-table style="width: 100%">
+                                    <mat-tab-group>
+                                        <ng-container matColumnDef="title">
+                                            <th *matHeaderCellDef mat-header-cell>{{'TABLE.Title' | translate}}</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.title}}
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="totalQuestions">
+                                            <th *matHeaderCellDef mat-header-cell>{{'Procurement_Management.TotalQuestions' | translate}}</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                {{element.totalQuestion}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                                {{'TABLE.Action'| translate}}
+                                            </th>
+                                            <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                                                <div class="action-icons d-flex switch">
+                                                    <img (click)="openSurveyDeleteDialog( i ,element.id)" alt="" src="assets/images/delete-action.svg">
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </mat-tab-group>
+
+                                    <tr mat-header-row *matHeaderRowDef="manageServiceViewDetailsColumns"></tr>
+                                    <tr mat-row *matRowDef="let element; columns: manageServiceViewDetailsColumns"></tr>
+                                </table>
+                            </div>
+                            <div *ngIf="!noRecordFound" class="no-record-found" style="margin-top: -40px;">{{'TABLE.No_record_found' | translate}} </div>
+                            <!--<div class="paginate-footer">
+                <div class="page-item">
+                  <h3>Items per page:</h3>
+                  <mat-form-field appearance="fill">
+                    <mat-select matNativeControl required [(ngModel)]="config.itemsPerPage">
+                      <mat-option value="5" selected >5</mat-option>
+                      <mat-option value="10">10</mat-option>
+                      <mat-option value="15">15</mat-option>
+                      <mat-option value="20">20</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="table-paginator">
+                  <pagination-controls  responsive="true" [id]="config.id"
+                                        (pageChange)="page = $event"></pagination-controls>
+                </div>
+              </div>-->
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,1200 @@
+<div class="recruiting-dashboard">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="client-chart">
+        <div style="display:flex; flex-direction:row; justify-content: space-between">
+          <h3 class="mb-30 mt-0">{{'MONITOR_PRESENCES.QPresences' | translate}} <span class="refresh-btn" (click)="getData()" matTooltip="Refresh"><mat-icon>autorenew</mat-icon></span></h3>
+          <button class="btn-style theme-btn" style="margin-top:-8px;margin-bottom:22px" type="button" (click)="onSettingsClick()">
+            <span class="material-icons" style="margin-right: 10px">settings</span>{{'MONITOR_PRESENCES.Settings' | translate}}
+          </button>
+        </div>
+        <div class="row">
+          <div *ngIf="periodType=='Monthly'" class="col">
+            <p style="margin-top:-20px; font-size:25px; font-weight:600; padding-bottom:15px">{{getSelectedMonthYear()}}</p>
+          </div>
+          <div *ngIf="periodType=='Daily'" class="col">
+            <p style="margin-top:-20px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedDate | date:'dd/MM/yyyy'}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngIf="selectedCity!='' && selectedSiteId==''" class="col">
+            <p style="margin-top:-35px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedCity}}</p>
+          </div>
+          <div *ngIf="selectedCity!='' && selectedSiteId!='' && selectedGateId==''" class="col">
+            <p style="margin-top:-35px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedSiteName}}</p>
+          </div>
+          <div *ngIf="selectedCity!='' && selectedSiteId!='' && selectedGateId!=''" class="col">
+            <p style="margin-top:-35px; font-size:25px; font-weight:600; padding-bottom:15px">{{selectedSiteName}} {{selectedGateName}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col statistics-vertical" style="padding-top:20px; min-width: 600px;" *ngIf="isFunctionAvailable('MonitorPresences/Presences')">
+            <div class="chart-group-wrapper procurement" style="height:100%">
+              <div class="chart-box box-style " >
+                <div class="chart-header" style="padding-top:14px">
+                  <h4>{{'MONITOR_PRESENCES.Presences' | translate}}
+                    <ng-container *ngIf="selectedGateId!=''"> {{selectedGateName}} {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedSiteId!='' && selectedGateId==''"> {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedCity!='' && selectedSiteId==''"> {{selectedCity}}</ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'"> {{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </h4>
+                </div>
+                <div *ngIf="periodType=='Daily'" class="statistics-box" style="height:80px !important">
+                  <div class="statistic-content row">
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important; min-width:200px; width:200px">
+                       
+                    </div>
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important; ">
+                      {{'ACCESS_CONTROL.Entrances' | translate}}
+                    </div>
+                    <div *ngIf="selectedGateId==''" class="manage-content col" style="font-size:24px !important; cursor:auto !important; ">
+                      {{'ACCESS_CONTROL.Exites' | translate}}
+                    </div>
+                    <div *ngIf="!dateHasPassed && selectedGateId==''" class="manage-content col" style="font-size:24px !important; cursor:auto !important; ">
+                      {{'ACCESS_CONTROL.CurrentPresences' | translate}}
+                    </div>
+                    <div *ngIf="dateHasPassed && selectedGateId==''" class="manage-content col" style="font-size:24px !important; cursor:auto !important; ">
+                      {{'MONITOR_PRESENCES.UnregisteredExit' | translate}}
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="periodType=='Monthly'" class="statistics-box" style="height:80px !important">
+                  <div class="statistic-content row" *ngIf="selectedGateId!=''">
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important; min-width:200px; width:200px">
+                       
+                    </div>
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'MONITOR_PRESENCES.People' | translate}}
+                    </div>
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'ACCESS_CONTROL.Entrances' | translate}}
+                    </div>
+                  </div>
+                  <div class="statistic-content row" *ngIf="selectedGateId=='' && selectedSiteId!=''">
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important; min-width:200px; width:200px ">
+                       
+                    </div>
+                    <div  class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'MONITOR_PRESENCES.People' | translate}}
+                    </div>
+                    <div  class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'ACCESS_CONTROL.Entrances' | translate}}
+                    </div>
+                  </div>
+                  <div class="statistic-content row" *ngIf="selectedGateId=='' && selectedSiteId==''">
+                    <div class="manage-content col" style="font-size:24px !important; cursor:auto !important;  min-width:200px; width:200px">
+                       
+                    </div>
+                    <div  class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'MONITOR_PRESENCES.People' | translate}}
+                    </div>
+                    <div  class="manage-content col" style="font-size:24px !important; cursor:auto !important;">
+                      {{'ACCESS_CONTROL.Entrances' | translate}}
+                    </div>
+                  </div>
+                </div>
+                <div class="statistics-box">
+                  <div *ngIf="totalPresences && selectedSiteId=='' && periodType=='Daily'" class="statistic-content row">
+                    <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                      <div class="statistic-info">
+                        <div style="font-size: 26px">{{'MONITOR_PRESENCES.Total' | translate}}<ng-container *ngIf="selectedCity!=''"> {{selectedCity}}</ng-container></div>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;">
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalEntrancesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                    <div *ngIf="selectedGateId==''" class="manage-content col" style="cursor:auto !important;">
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalExitesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                    <div *ngIf="selectedGateId==''" class="manage-content col" style="cursor:auto !important;"> 
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalNonExitesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="periodType=='Daily'">
+                    <div *ngFor="let site of sitePresences" class="statistic-content row">
+                      <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                        <div class="statistic-info">
+                          <div style="font-size: 26px"><ng-container *ngIf="selectedGateId!=''">{{selectedGateName}}</ng-container> {{site.siteName}}</div>
+                        </div>
+                      </div>
+                      <div class="manage-content col" style="cursor:auto !important;">  
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{site.totalEntrancesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                      <div *ngIf="selectedGateId==''" class="manage-content col" style="cursor:auto !important;"> 
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{site.totalExitesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                      <div *ngIf="selectedGateId==''" class="manage-content col" style="cursor:auto !important;">
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{site.totalNonExitesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div *ngIf="periodType=='Monthly' && selectedGateId!='' && totalPresences" class="statistic-content row">
+                    <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                      <div class="statistic-info">
+                        <div style="font-size:26px">{{selectedGateName}} {{selectedSiteName}}</div>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;"> 
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalUserEntrancesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;">
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalEntrancesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="periodType=='Monthly' && selectedGateId=='' && selectedSiteId!='' && totalPresences" class="statistic-content row">
+                    <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                      <div class="statistic-info">
+                        <div style="font-size:26px">{{selectedSiteName}}</div>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;"> 
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalUserEntrancesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="manage-content col" style="cursor:auto !important;">
+                      <div class="statistic-info">
+                        <h5 style="font-size: 40px">
+                          {{totalPresences.totalEntrancesNum}}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="periodType=='Monthly' && selectedGateId=='' && selectedSiteId=='' && totalPresences">
+                    <div class="statistic-content row">
+                      <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                        <div class="statistic-info">
+                          <div style="font-size:26px">{{'MONITOR_PRESENCES.Total' | translate}} {{selectedCity}}</div>
+                        </div>
+                      </div>
+                      <div class="manage-content col" style="cursor:auto !important;">
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{totalPresences.totalUserEntrancesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                      <div class="manage-content col" style="cursor:auto !important;">  
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{totalPresences.totalEntrancesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="statistic-content row" *ngFor="let sitePr of sitePresences">
+                      <div class="manage-content col" style="cursor:auto !important; min-width:220px; width:220px">
+                        <div class="statistic-info">
+                          <div style="font-size:26px">{{sitePr.siteName}}</div>
+                        </div>
+                      </div>
+                      <div class="manage-content col" style="cursor:auto !important;">  
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{sitePr.siteUserEntrancesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                      <div class="manage-content col" style="cursor:auto !important;">
+                        <div class="statistic-info">
+                          <h5 style="font-size: 40px">
+                            {{sitePr.siteEntrancesNum}}
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col statistics-vertical" style="padding-top:20px; width:800px" *ngIf="isFunctionAvailable('MonitorPresences/Charts')">
+            <div class="chart-group-wrapper" style="height:100%;">
+              <div class="chart-box box-style" style="padding-top: 30px !important; padding-bottom: 30px !important; border-radius: 20px !important;"> 
+                <div class="chart-header" style="padding: 0px 0px 30px 0px !important">
+                  <h4>{{'Charts' | translate}}
+                    <ng-container *ngIf="selectedGateId!=''"> {{selectedGateName}} {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedSiteId!='' && selectedGateId==''"> {{selectedSiteName}}</ng-container>
+                    <ng-container *ngIf="selectedCity!='' && selectedSiteId==''"> {{selectedCity}}</ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'"> {{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </h4>
+                  <button class="btn-style theme-btn" style="max-width:60px; min-width:60px;" (click)="downloadChartsPdf()">
+                    <span class="material-icons" style="margin-right:0px">file_download</span>
+                  </button>
+                </div>
+                <div class="chart-header">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                      <mat-label>{{'ChartType' | translate}}</mat-label>
+                      <mat-select [ngModel]="selectedChart" (selectionChange)="onChartSelectionChanged($event)">
+                        <ng-container *ngIf="chartType==0">
+                          <mat-option *ngFor="let chart of chartsHour" [value]="chart">
+                              {{ chart.chartName }}
+                          </mat-option>
+                        </ng-container>
+                        <ng-container *ngIf="chartType==1">
+                          <mat-option *ngFor="let chart of chartsDay" [value]="chart">
+                              {{ chart.chartName }}
+                          </mat-option>
+                        </ng-container>
+                      </mat-select>
+                  </mat-form-field>
+                </div>
+                <div id="chartsPdf" #chartsPdf>
+                  <div class="chart-header">
+                    <ul class="chart-details">
+                      <li *ngIf="selectedGateId==''" style="margin-bottom:0px">{{'MONITOR_PRESENCES.UsersNumber' | translate}}</li>
+                      <li *ngIf="selectedGateId!=''" style="margin-bottom:0px">{{'EnabledUsersNum' | translate}}</li>
+                        <li style="margin-bottom:0px">{{'MONITOR_PRESENCES.Entrances' | translate}}</li>
+                        <li *ngIf="selectedGateId==''" style="margin-bottom:0px">{{'MONITOR_PRESENCES.Exites' | translate}}</li>
+                    </ul>
+                    <div *ngIf="periodType=='Monthly'" class="chart-tools">
+                      <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onChartTabChanged($event)">
+                        <mat-tab label="{{'Hourly' | translate}}"></mat-tab>
+                        <mat-tab label="{{'Daily' | translate}}"></mat-tab>
+                      </mat-tab-group>
+                    </div>
+                  </div>
+                  <div *ngIf="totalPresences" class="table-wrapper resource-color-table" style="padding-top:30px; padding-bottom:30px; max-width: 1000px;">
+                    <canvas id="totalChart" baseChart class="chart"
+                      [datasets]="dynamicChartData"
+                      [labels]="dynamicChartLabels"
+                      [options]="totalChartOptions"
+                      [legend]="totalChartLegend"
+                      [plugins]="totalChartPlugins"
+                      [colors]="chartColors"
+                      [chartType]="totalChartType">
+                    </canvas>
+                  </div>
+                  <div style="font-size:20px">
+                    <ng-container *ngIf="selectedChart">
+                      <ng-container *ngIf="selectedChart.chartName=='Totale'">Utenti - </ng-container>
+                      <ng-container *ngIf="selectedChart.chartName!='Totale'">{{selectedChart.chartName}} - </ng-container>
+                      <ng-container *ngIf="selectedGateId!=''">{{selectedGateName}} - {{selectedSiteName}} - </ng-container>
+                      <ng-container *ngIf="selectedGateId=='' && selectedSiteId!=''">{{selectedSiteName}} - </ng-container>
+                      <ng-container *ngIf="selectedCity!='' && selectedSiteId==''">{{selectedCity}} - </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                    <ng-container *ngIf="periodType=='Daily'">{{selectedDate | date:'dd/MM/yyyy'}}</ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="padding-top: 30px !important;" *ngIf="isFunctionAvailable('MonitorPresences/Report')">
+          <div class="statistics-vertical">
+            <div class="table-content box-style company-info" style="padding-top: 30px !important; padding-bottom: 30px !important; border-radius: 20px !important"> 
+              <div class="chart-header" style="padding: 0px 0px 15px 0px !important">
+                <h4>Report
+                  <ng-container *ngIf="selectedGateId!=''"> {{selectedGateName}} {{selectedSiteName}}</ng-container>
+                  <ng-container *ngIf="selectedSiteId!='' && selectedGateId==''"> {{selectedSiteName}}</ng-container>
+                  <ng-container *ngIf="selectedCity!='' && selectedSiteId==''"> {{selectedCity}}</ng-container>
+                  <ng-container *ngIf="periodType=='Monthly'"> {{getSelectedMonthYear()}}</ng-container>
+                </h4>
+                <button class="btn-style theme-btn" style="max-width:60px; min-width:60px;" (click)="downloadReportPdf()">
+                  <span class="material-icons" style="margin-right:0px">file_download</span>
+                </button>
+              </div>
+              <div id="divPdf" #divPdf>
+                <div *ngIf="totalPresences && selectedSiteId=='' && periodType=='Daily'" class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" id="repDayTot">
+                  <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;">{{'MONITOR_PRESENCES.Total' | translate}} <ng-container *ngIf="selectedCity!='' && selectedSiteId==''">{{selectedCity}}</ng-container></p>
+                  <table class="table custom-table">
+                    <tr class="header-row">
+                      <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.HourlyPresence' | translate}}</th>
+                      <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                      <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                      <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                    </tr>
+                    <tbody *ngFor="let element of totalPresences.scopes">
+                      <tr>
+                        <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                          {{element.scopeName}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                          {{'ACCESS_CONTROL.Entrances' | translate}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNum">
+                          {{ent}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                          {{element.totalEntrancesNum}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                          {{element.scopeName}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                          {{'ACCESS_CONTROL.Exites' | translate}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ext of element.exitesNum">
+                          {{ext}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                          {{element.totalExitesNum}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                    <tr class="header-row" style="height:40px;">
+                      <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                      <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                      <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                      <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'ACCESS_CONTROL.AveragePresence' | translate}} *</th>
+                    </tr>
+                    <tbody *ngFor="let element of totalPresences.scopes">
+                      <tr>
+                        <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                          {{element.scopeName}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{element.totalEntrancesNum}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{element.percentualEntrancesNum}} %
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{element.averagePresence}}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr>
+                        <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                          {{'ACCESS_CONTROL.Total' | translate}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{totalPresences.totalEntrancesNum}}
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{totalPresences.percentualEntrancesNum}} %
+                        </td>
+                        <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                          {{totalPresences.averagePresence}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <ng-container *ngIf="periodType=='Daily'">
+                  <div *ngFor="let sitePr of sitePresences" class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" attr.id="repDay{{sitePr.siteName}}">
+                    <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;"><ng-container *ngIf="selectedGateId!=''">{{selectedGateName}}</ng-container> {{sitePr.siteName}}</p>
+                    <table class="table custom-table" >
+                      <tr class="header-row">
+                        <th class="header" style="cursor:auto; padding:4px 5px 2px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.HourlyPresence' | translate}}</th>
+                        <th class="header" *ngIf="selectedGateId==''" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of sitePr.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td *ngIf="selectedGateId==''" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'ACCESS_CONTROL.Entrances' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNum">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.totalEntrancesNum}}
+                          </td>
+                        </tr>
+                        <tr *ngIf="selectedGateId==''">
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'ACCESS_CONTROL.Exites' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ext of element.exitesNum">
+                            {{ext}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.totalExitesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                      <tr class="header-row" style="height:40px;">
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                        <th *ngIf="selectedGateId==''" class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'ACCESS_CONTROL.AveragePresence' | translate}} *</th>
+                      </tr>
+                      <tbody *ngFor="let element of sitePr.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.totalEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.percentualEntrancesNum}} %
+                          </td>
+                          <td *ngIf="selectedGateId==''" style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.averagePresence}}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{'ACCESS_CONTROL.Total' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{sitePr.totalEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{sitePr.percentualEntrancesNum}} %
+                          </td>
+                          <td *ngIf="selectedGateId==''" style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{sitePr.averagePresence}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p style="padding-top:20px" *ngIf="selectedGateId==''" id="repInfo">
+                    * {{'ACCESS_CONTROL.NoExitInfo' | translate}}
+                  </p>
+                </ng-container>
+                <ng-container *ngIf="periodType=='Monthly'">
+                  <div *ngIf="totalPresences && selectedGateId!=''" class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" id="repMonUnit">
+                    <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;">
+                      <ng-container>{{selectedGateName}} {{selectedSiteName}} {{getSelectedMonthYear()}}</ng-container>
+                    </p>
+                    <table class="table custom-table">
+                      <tr class="header-row">
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'HourlyOpenings' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'Openings' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByHours">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'People' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.usersEntrancesNumByHours">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeUserEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table custom-table" style="margin-top: 20px">
+                      <tr class="header-row">
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'DailyOpenings' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                        <th class="header" *ngFor="let day of totalPresences.entrancesNumByDays; let i = index" style="cursor:auto; padding:4px 10px 4px 10px; text-align:center">{{i+1}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'Openings' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByDays">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'People' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.usersEntrancesNumByDays">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeUserEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                      <tr class="header-row" style="height:40px;">
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'TotalOpenings' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.scopeUserEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.percentualEntrancesNum}} %
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{'ACCESS_CONTROL.Total' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.totalUserEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.percentualEntrancesNum}} %
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.totalEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div *ngIf="totalPresences && selectedGateId=='' && selectedSiteId!=''" class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" id="repMonSite">
+                    <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;">
+                      <ng-container >{{selectedSiteName}} {{getSelectedMonthYear()}}</ng-container>
+                    </p>
+                    <table class="table custom-table">
+                      <tr class="header-row">
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.HourlyPresence' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                        <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'ACCESS_CONTROL.Entrances' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByHours">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                            {{'ACCESS_CONTROL.Exites' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ext of element.exitesNumByHours">
+                            {{ext}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table custom-table" style="margin-top: 20px">
+                      <tr class="header-row">
+                        <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'DailyPresence' | translate}}</th>
+                        <th class="header" *ngFor="let day of totalPresences.entrancesNumByDays; let i = index" style="cursor:auto; padding:4px 10px 4px 10px; text-align:center">{{i+1}}</th>
+                        <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByDays">
+                            {{ent}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                      <tr class="header-row" style="height:40px;">
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'SingleUsers' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                        <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'ACCESS_CONTROL.AveragePresence' | translate}} *</th>
+                      </tr>
+                      <tbody *ngFor="let element of totalPresences.scopes">
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{element.scopeName}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.scopeEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.scopeUserEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.percentualEntrancesNum}} %
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{element.averagePresence}}
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                            {{'ACCESS_CONTROL.Total' | translate}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.totalEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.totalUserEntrancesNum}}
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.percentualEntrancesNum}} %
+                          </td>
+                          <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                            {{totalPresences.averagePresence}}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <ng-container *ngIf="totalPresences && selectedGateId=='' && selectedSiteId==''">
+                    <div class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" id="repMonTot">
+                      <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;">
+                        <ng-container><ng-container *ngIf="selectedCity==''">{{'ACCESS_CONTROL.Total' | translate}}</ng-container>{{selectedCity}} {{getSelectedMonthYear()}}</ng-container>
+                      </p>
+                      <table class="table custom-table">
+                        <tr class="header-row">
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.HourlyPresence' | translate}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                        </tr>
+                        <tbody *ngFor="let element of totalPresences.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                              {{'ACCESS_CONTROL.Entrances' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByHours">
+                              {{ent}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                              {{'ACCESS_CONTROL.Exites' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ext of element.exitesNumByHours">
+                              {{ext}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table custom-table" style="margin-top: 20px">
+                        <tr class="header-row">
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'DailyPresence' | translate}}</th>
+                          <th class="header" *ngFor="let day of totalPresences.entrancesNumByDays; let i = index" style="cursor:auto; padding:4px 10px 4px 10px; text-align:center">{{i+1}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                        </tr>
+                        <tbody *ngFor="let element of totalPresences.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByDays">
+                              {{ent}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                        <tr class="header-row" style="height:40px;">
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'SingleUsers' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'ACCESS_CONTROL.AveragePresence' | translate}} *</th>
+                        </tr>
+                        <tbody *ngFor="let element of totalPresences.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.scopeUserEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.percentualEntrancesNum}} %
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.averagePresence}}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{'ACCESS_CONTROL.Total' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{totalPresences.totalEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{totalPresences.totalUserEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{totalPresences.percentualEntrancesNum}} %
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{totalPresences.averagePresence}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngFor="let sitePr of sitePresences" class="table-wrapper resource-color-table" style="padding-bottom:20px; padding-top:20px" id="repMon{{sitePr.siteName}}">
+                      <p style="font-size:23px; font-weight: 600; color:rgb(58, 58, 58); height:20px;">
+                        <ng-container >{{sitePr.siteName}} {{getSelectedMonthYear()}}</ng-container>
+                      </p>
+                      <table class="table custom-table">
+                        <tr class="header-row">
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.HourlyPresence' | translate}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px;"> </th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">6:00 7:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">7:00 8:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">8:00 9:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">9:00 10:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">10:00 11:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">11:00 12:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">12:00 13:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">13:00 14:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">14:00 15:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">15:00 16:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">16:00 17:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">17:00 18:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">18:00 19:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">19:00 20:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">20:00 21:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">21:00 22:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">22:00 23:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">23:00 24:00</th>
+                          <th class="header" style="cursor:auto; padding:4px 2px 4px 2px; text-align:center">24:00 {{'ACCESS_CONTROL.Over' | translate}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                        </tr>
+                        <tbody *ngFor="let element of sitePr.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                              {{'ACCESS_CONTROL.Entrances' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByHours">
+                              {{ent}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:150px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right">
+                              {{'ACCESS_CONTROL.Exites' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ext of element.exitesNumByHours">
+                              {{ext}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table custom-table" style="margin-top: 20px">
+                        <tr class="header-row">
+                          <th class="header" style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'DailyPresence' | translate}}</th>
+                          <th class="header" *ngFor="let day of sitePr.entrancesNumByDays; let i = index" style="cursor:auto; padding:4px 10px 4px 10px; text-align:center">{{i+1}}</th>
+                          <th class="header" style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">{{'ACCESS_CONTROL.Total' | translate}}</th>
+                        </tr>
+                        <tbody *ngFor="let element of sitePr.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 2px 4px 2px; text-align:center" *ngFor="let ent of element.entrancesNumByDays">
+                              {{ent}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 5px; text-align:right; min-width:80px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table custom-table" style="width: 40%; margin-top: 20px">
+                        <tr class="header-row" style="height:40px;">
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 5px 4px 10px; min-width:170px;font-size:19px; color:rgb(112, 112, 112)">{{'ACCESS_CONTROL.Statistics' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">{{'ACCESS_CONTROL.TotalAttendance' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'SingleUsers' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px; ">% {{'ACCESS_CONTROL.Presences' | translate}}</th>
+                          <th class="header" style="height:40px; cursor:auto; padding:4px 10px 4px 10px;">{{'ACCESS_CONTROL.AveragePresence' | translate}} *</th>
+                        </tr>
+                        <tbody *ngFor="let element of sitePr.scopes">
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{element.scopeName}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.scopeEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.scopeUserEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.percentualEntrancesNum}} %
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{element.averagePresence}}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr>
+                            <td style="cursor:auto; padding:4px 5px 4px 10px; min-width:170px;">
+                              {{'ACCESS_CONTROL.Total' | translate}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{sitePr.siteEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{sitePr.siteUserEntrancesNum}}
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{sitePr.percentualEntrancesNum}} %
+                            </td>
+                            <td style="cursor:auto; padding:4px 10px 4px 10px;">
+                              {{sitePr.averagePresence}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p style="padding-top:20px" *ngIf="selectedGateId==''" id="repInfo">
+                      * {{'ACCESS_CONTROL.NoExitInfo' | translate}}
+                    </p>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="periodType=='Daily'" class="row" style="padding-top: 30px !important;">
+          <div class="statistics-vertical">
+            <div class="table-content box-style company-info" style="padding-top: 30px !important; padding-bottom: 30px !important; border-radius: 20px !important"> 
+              <div class="chart-header" style="padding: 0px 0px 15px 0px !important">
+                <h4>{{'ACCESS_CONTROL.AccessList' | translate}}</h4>
+                <div class="search-form-wrapper">
+                  <div class="search-form">
+                    <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                    <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'ACCESS_CONTROL.SearchBadge'| translate}}" />
+                    <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-wrapper resource-color-table">
+                <table class="table custom-table">
+                  <tr class="header-row">
+
+                    <th  (click)="changeSorting('name', sortKey)" class="header">
+                      {{'ACCESS_CONTROL.Name' | translate}} <span
+                      [ngClass]="{'down': sortBy === 'name' && sortKey === '-1' , 'up': sortBy === 'name' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'name'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'name'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+
+                    <th  (click)="changeSorting('site', sortKey)" class="header">
+                      {{'ACCESS_CONTROL.Site' | translate}} <span
+                      [ngClass]="{'down': sortBy === 'site' && sortKey === '-1' , 'up': sortBy === 'site' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'site'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'site'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+
+                    <th  (click)="changeSorting('scope',sortKey)" class="header">
+                      {{'ACCESS_CONTROL.UserScope'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'scope' && sortKey === '-1' , 'up': sortBy === 'scope' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'scope'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'scope'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+
+                    <th  (click)="changeSorting('firstIn',sortKey)" class="header">
+                      <ng-container *ngIf="selectedGateId!=''">Timestamp</ng-container>
+                      <ng-container *ngIf="selectedGateId==''">{{'ACCESS_CONTROL.Entrance'| translate}}</ng-container> <span
+                      [ngClass]="{'down': sortBy === 'firstIn' && sortKey === '-1' , 'up': sortBy === 'firstIn' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'firstIn'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'firstIn'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+
+                    <th *ngIf="selectedGateId==''" (click)="changeSorting('lastOut',sortKey)" class="header">
+                      {{'ACCESS_CONTROL.Exit'| translate}} <span
+                      [ngClass]="{'down': sortBy === 'lastOut' && sortKey === '-1' , 'up': sortBy === 'lastOut' && sortKey === '1'}" >
+                      <img *ngIf="sortBy == 'lastOut'" alt="" src="assets/images/up-arrow.svg">
+                      <img *ngIf="sortBy != 'lastOut'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                    </th>
+
+                  </tr>
+                  <tbody *ngFor="let element of userPresencesPaginated | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }; let i = index" [class.active]="selectedIndex === i">
+                    <tr class="table-row-not-expanded">
+                      <td (click)="getLogDetails(element, i)">
+                        {{element.userName ? element.userName : '-'}}
+                      </td>
+                      <td (click)="getLogDetails(element, i)">
+                        {{element.siteName ? element.siteName : '-'}}
+                      </td>
+                      <td (click)="getLogDetails(element, i)">
+                        {{element.userScope ? element.userScope : '-'}}
+                      </td>
+                      <td (click)="getLogDetails(element, i)">
+                        {{element.firstIn ? (element.firstIn | date:'dd/MM/yyyy HH:mm:ss'):'-'}}
+                      </td>
+                      <td *ngIf="selectedGateId==''" (click)="getLogDetails(element, i)">
+                        {{element.lastOut ? (element.lastOut | date:'dd/MM/yyyy HH:mm:ss'):'-'}}
+                      </td>
+                    </tr>
+                    <tr class="logDetailsRow">
+                      <td colspan="7" class="custom-table-content">
+                        <div class="expanded-panel">
+                          <div class="table-container">
+                            <table class="table" [dataSource]="logDetailsData">
+                              <tr class="header-row">
+                                <th class="header" style="height:50px;">Timestamp</th>
+                                <th class="header" style="height:40px;">{{'ACCESS_CONTROL.Type' | translate}}</th>
+                                <th class="header" style="height:50px;">{{'ACCESS_CONTROL.Action' | translate}}</th>
+                                <th class="header" style="height:50px;white-space: break-spaces;width: 800px;min-width: 800px">{{'ACCESS_CONTROL.Gate' | translate}}</th>
+                              </tr>
+                              <tr class="table-row" *ngFor="let element of logDetailsData">
+                                <td class="cell" > {{ element.timestamp ? (element.timestamp | date : 'dd/MM/yyyy HH:mm:ss') : '-'}} </td>
+                                <td class="cell" > {{ element.type ? element.type : '-' }} </td>
+                                <td class="cell" > {{ element.action ? element.action : '-'}} </td>
+                                <td class="cell" style="white-space: break-spaces;width: 800px;min-width: 800px"> {{ element.gate ? element.gate : '-'}} </td>
+                              </tr>
+                            </table>
+                            <div *ngIf="logDetailsData.length == 0" class="no-record-found" style="padding-top: 0px;padding-bottom: 20px;font-weight: bold">{{'TABLE.No_record_found' | translate}}</div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <ng-container *ngIf="userPresences">
+                <div *ngIf="userPresences.length == 0" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+                <div *ngIf="userPresences.length > 0" class="paginate-footer">
+                  <div class="page-item">
+                    <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                    <mat-form-field appearance="fill">
+                      <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                        <mat-option value='5'>5</mat-option>
+                        <mat-option value='10'>10</mat-option>
+                        <mat-option value='15'>15</mat-option>
+                        <mat-option value='20'>20</mat-option>
+                        <mat-option value='30'>30</mat-option>
+                        <mat-option value='40'>40</mat-option>
+                        <mat-option value='50'>50</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+                  </div>
+                  <div class="table-paginator">
+                    <pagination-controls (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+@import '../../../theme-color.scss';
+
+.dashboard{
+    .congrats-tag {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 220px;
+        border-radius: 20px;
+        color: $white;
+        padding: 0px 40px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @media (max-width: 1600px) {
+            padding: 0px 15px;
+            min-height: 180px;
+        }
+        @media (max-width:1199px) {
+            margin-bottom: 30px;
+        }
+        h3 {
+            font-size: 32px;
+            line-height: 54px;
+            letter-spacing: 0.16px;
+            font-weight: 600;
+            @media (max-width: 1600px) {
+                font-size: 22px;
+                line-height: 33px;
+            }
+        }
+        p {
+            font-size: 20px;
+            line-height: 26px;
+            letter-spacing: 0.1px;
+            font-weight: normal;
+            color: #DAE2ED;
+            @media (max-width: 1600px) {
+                font-size: 16px;
+            }
+            b{
+                color: $white;
+            }
+        }
+    }
+    .statistics {
+        padding: 30px;
+        h5{
+            margin-bottom: 40px;font-weight: 600;font-size: 24px;
+            @media (max-width:1600px) {
+                margin-bottom: 25px;
+            }
+            @media (max-width:1400px) {
+                font-size: 21px;
+            }
+        }
+        ul{
+            display: flex;
+            justify-content: space-between;
+            height: 60%;
+            align-items: center;
+            li {
+                display: flex;
+                cursor: pointer;
+                img{
+                    margin-right: 18px;
+                    @media (max-width:1600px) {
+                        margin-right: 10px;
+                    }
+                    @media (max-width:1400px) {
+                        width: 55px;
+                    }
+
+                }
+                h4{
+                    font-size: 30px;color: $theme_color;letter-spacing: 0.15px;font-weight: bold;line-height: 28px;margin-bottom: 10px;
+                    @media (max-width:1600px) {
+                        font-size: 24px;
+                    }
+                }
+                p{
+                    margin-bottom: 0; font-size: 18px;
+                    @media (max-width:1600px) {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

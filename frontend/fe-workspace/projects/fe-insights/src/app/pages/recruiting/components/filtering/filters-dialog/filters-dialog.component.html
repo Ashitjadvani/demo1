@@ -1,0 +1,119 @@
+<mat-card class="mat-elevation-z10 card">
+  <mat-card-header class="card-header">
+    {{'RECRUITING.FILTERS' | translate}}
+  </mat-card-header>
+  <mat-card-content class="card-body">
+
+    <form [formGroup]="this._filterForm" id="filterForm"
+          (keydown.enter)="this.dialogRef.close(this._filterForm.getRawValue())">
+
+      <ng-container *ngFor="let item of this.availableFilters">
+        <ng-container *ngIf="!item.filterWidget?.widget">
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <input matInput [formControlName]="item.columnDataField" autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="item.filterWidget?.widget=='select'">
+          <div class="form-row">
+          <mat-form-field>
+            <mat-label>{{item.columnCaption}}</mat-label>
+            <mat-select [formControlName]="item.columnDataField">
+              <mat-option *ngFor="let opt of item.filterWidget.options() | async"
+                          [value]="opt[item.filterWidget.value_field]" >
+                {{opt[item.filterWidget.label_field]}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="item.filterWidget?.widget=='filter_select'">
+          <div class="form-row">
+            <mat-form-field >
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <mat-select [formControlName]="item.columnDataField">
+                <mat-option *ngFor="let opt of item.filterWidget.options | myOpenfilter:_filterForm.value.scope"
+                            [value]="opt[item.filterWidget.value_field]">
+                  {{opt[item.filterWidget.label_field]}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="item.filterWidget?.widget=='select_single'">
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <mat-select [formControlName]="item.columnDataField">
+                <mat-option *ngFor="let opt of item.filterWidget.options() | async"
+                            [value]="opt">
+                  {{opt}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="item.filterWidget?.widget=='select_age'">
+            <mat-form-field *ngIf="item.filterWidget?.inputField=='min'" style="width: 49%;">
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <input matInput [formControlName]="item.columnDataField" autocomplete="off" (keyup)="_filterForm.patchValue({ 'person.max_age': _filterForm.value['person.min_age']})"/>
+            </mat-form-field>
+            <mat-form-field *ngIf="item.filterWidget?.inputField=='max'" style="width: 49%">
+              <mat-label>{{item.columnCaption}}</mat-label>
+              <input matInput [formControlName]="item.columnDataField" autocomplete="off" />
+            </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="item.filterWidget?.widget=='select_voto_laurea'">
+          <mat-form-field *ngIf="item.filterWidget?.inputField=='min'" style="width: 49%;">
+            <mat-label>{{item.columnCaption}}</mat-label>
+            <input matInput [formControlName]="item.columnDataField" autocomplete="off" 
+            (keyup)="_filterForm.patchValue({ 'person.max_voto_laurea': _filterForm.value['person.min_voto_laurea']})"/>
+          </mat-form-field>
+          <mat-form-field *ngIf="item.filterWidget?.inputField=='max'" style="width: 49%">
+            <mat-label>{{item.columnCaption}}</mat-label>
+            <input matInput [formControlName]="item.columnDataField" autocomplete="off" />
+          </mat-form-field>
+      </ng-container>
+
+
+        <ng-container *ngIf="item.filterWidget?.widget == 'slider'">
+          <div class="form-row">
+          <mat-label>{{item.columnCaption}}</mat-label>
+          <!--<input matInput [formControlName]="item.columnDataField"/>-->
+
+          <mat-slider
+            thumbLabel
+            [min]="item.filterWidget?.options?.min"
+            [max]="item.filterWidget?.options?.max"
+            [formControlName]="item.columnDataField"
+          ></mat-slider>
+          </div>
+        </ng-container>
+      </ng-container>
+      <div  class="showUnread">
+        <mat-slide-toggle (change)="showUnread($event)" [checked]="showUnreadApp">Show unread</mat-slide-toggle>
+      </div>
+    </form>
+    <pre *ngIf="false">
+        {{this._filterForm.getRawValue() | json}}
+      </pre>
+
+  </mat-card-content>
+  <mat-card-actions class="card-footer">
+    <button mat-button [mat-dialog-close]="false">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-button [mat-dialog-close]="this._filterForm.getRawValue()">
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+

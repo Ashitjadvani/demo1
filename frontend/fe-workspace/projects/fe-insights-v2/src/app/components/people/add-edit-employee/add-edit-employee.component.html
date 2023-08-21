@@ -1,0 +1,1168 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav> -->
+            <!-- <ol class="breadcrumb box-style"> -->
+            <!-- <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li>  -->
+            <!-- <li routerLink="/people" class="breadcrumb-item">{{'INSIGHTS_MENU.PEOPLE'| translate}}</li> -->
+            <!-- <li routerLink="/people" class="breadcrumb-item">{{scope.name}}</li> -->
+            <!-- <li *ngIf="!this.id" class="breadcrumb-item active" aria-current="page">{{'Add' | translate}} {{scope.name}}</li> -->
+            <!-- <li *ngIf="this.id"  class="breadcrumb-item active" aria-current="page">{{'Edit' | translate}} {{scope.name}}</li> -->
+            <!-- </ol> -->
+            <!-- </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PEOPLE'" [title3]="this.id ? 'Edit' :'Add'" [type]="scope.name" [routePath]="'/people'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper clickableStepper">
+                <mat-horizontal-stepper linear labelPosition="bottom" #peopleStepper (selectionChange)="onTabChanged($event);">
+                    <mat-step [stepControl]="generalDetailsForm">
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/General.svg"/>
+                          <p>{{'General' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'General' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <!--<form class="form-wrapper" (ngSubmit)="onSubmit(1)" [formGroup]="generalDetailsForm">-->
+                            <form class="form-wrapper" (ngSubmit)="savegeneralDetailsData(peopleStepper)" [formGroup]="generalDetailsForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Name' | translate}}<span class="red-label">*</span></mat-label>
+                                                <input formControlName="name" matInput type="text" name="name" (keydown)="space($event)" style="text-transform:capitalize;">
+                                                <mat-error *ngIf="generalDetailsForm.controls.name.errors?.required">{{'Please enter name' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Surname' | translate}}<span class="red-label">*</span></mat-label>
+                                                <input formControlName="surname" matInput type="text" name="surname" (keydown)="space($event)" style="text-transform:capitalize;">
+                                                <mat-error *ngIf="generalDetailsForm.controls.surname.errors?.required">{{'Please enter surname' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Fiscal Code' | translate}}</mat-label>
+                                                <input formControlName="fiscalCode" matInput type="text" name="fiscalCode">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'Gender' | translate}}</mat-label>
+                                                <mat-select formControlName="gender">
+                                                    <mat-option>{{'Select Gender' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let genders of genderList" value="{{genders.value}}">{{genders.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                <mat-label>{{'Birthday' | translate}}</mat-label>
+                                                <input formControlName="birthday" [max]="maxDate" [matDatepicker] [matDatepicker]="picker_1" matInput type="text" name="birthday">
+                                                <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker_1 (opened)="streamOpened()"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Birth Place' | translate}}</mat-label>
+                                                <input formControlName="birthPlace" matInput type="text" name="birthPlace" style="text-transform:capitalize;">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'Prov' | translate}}</mat-label>
+                                                <mat-select formControlName="prov">
+                                                    <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs | translate}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Tags</mat-label>
+                                                <mat-chip-list #chipList aria-label="Tags selection" class="scroll-style">
+                                                    <mat-chip *ngFor="let tag of Tags" [selectable]="selectable"
+                                                            [removable]="removable" (removed)="remove(tag)">
+                                                    {{tag.name}}
+                                                    <mat-icon matChipRemove *ngIf="removable">clear</mat-icon>
+                                                    </mat-chip>
+                                                    <input placeholder="New Tags..."
+                                                        [matChipInputFor]="chipList"
+                                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                        formControlName="tags"
+                                                        [matChipInputAddOnBlur]="addOnBlur"
+                                                        (matChipInputTokenEnd)="add($event)">
+                                                </mat-chip-list>
+                                              </mat-form-field>
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="">
+                                        <button matStepperNext  class="btn-style theme-btn" type="submit" (click)="submitCheckFunc(true)">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="contactInformationForm">
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/Contact.svg"/>
+                          <p>{{'Contact' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Contact' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <!--<form class="form-wrapper" (ngSubmit)="onSubmit(2)" [formGroup]="contactInformationForm">-->
+                            <form class="form-wrapper" (ngSubmit)="saveContactInformationdata(peopleStepper)" [formGroup]="contactInformationForm">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="form-field error-message-custom date-picker-style">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Address' | translate}}</mat-label>
+                                                <textarea formControlName="address" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'City' | translate}}</mat-label>
+                                                <input formControlName="city" matInput type="text" name="city" style="text-transform:capitalize;">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'Prov' | translate}}</mat-label>
+                                                <mat-select formControlName="prov">
+                                                    <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs | translate}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Cap' | translate}}</mat-label>
+                                                <input formControlName="cap" matInput type="text" name="cap">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Phone' | translate}}</mat-label>
+                                                <input formControlName="phone" matInput type="number" name="phone">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Email' | translate}}<span class="red-label">*</span></mat-label>
+                                                <input formControlName="email" matInput type="email" name="email">
+                                                <mat-error *ngIf="contactInformationForm.controls.email.errors?.required">{{'Please enter email' | translate}}</mat-error>
+                                                <mat-error *ngIf="contactInformationForm.controls.email.errors?.email">{{'Please enter valid email' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button  matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="settingsForm">
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/Settings.svg"/>
+                          <p>{{'Settings' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Settings' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <!--<form class="form-wrapper" (ngSubmit)="onSubmit(3)" [formGroup]="settingsForm">-->
+                            <form class="form-wrapper" (ngSubmit)="saveSettingsData(peopleStepper)" [formGroup]="settingsForm">
+                                <div class="row">
+                                    <!-- <div class="col-md-12">
+                                      <h4 class="form-sub-title">Basic Details</h4>
+                                    </div> -->
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableBadgeId">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeBadgeName ? scope?.alternativeBadgeName :'Badge No' | translate}}<span class="red-label" *ngIf="scope?.requiredBadgeId">*</span></mat-label>
+                                                <input formControlName="badgeNo" matInput type="text" name="badgeNo">
+                                                <mat-error *ngIf="settingsForm.controls.badgeNo.errors?.required">
+                                                    {{scope?.alternativeBadgeName ? 'Please enter ' + scope?.alternativeBadgeName :'Please enter badge no' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableRestaurantCardId">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeRestaurantCardName ? scope?.alternativeRestaurantCardName :'Restaurant Card No' | translate}}<span class="red-label" *ngIf="scope?.requiredRestaurantCardId">*</span></mat-label>
+                                                <input formControlName="restaurantCardNo" matInput type="number" name="restaurantCardNo">
+                                                <mat-error *ngIf="settingsForm.controls.restaurantCardNo.errors?.required">
+                                                    {{scope?.alternativeRestaurantCardName ? 'Please enter ' + scope?.alternativeRestaurantCardName :'Please enter restaurant card no' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableDateStart">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeDateStartName ? scope?.alternativeDateStartName :'Hire Date' | translate}}<span class="red-label"  *ngIf="scope?.requiredDateStart">*</span></mat-label>
+                                                <input formControlName="hireDate" [matDatepicker]="picker" matInput type="text" name="hireDate">
+                                                <mat-datepicker-toggle matSuffix [for]="picker" class="full-date-select"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker  (opened)="streamOpened()"></mat-datepicker>
+                                                <mat-error *ngIf="settingsForm.controls.hireDate.errors?.required">
+                                                    {{scope?.alternativeDateStartName ? 'Please enter ' + scope?.alternativeDateStartName :'Please enter hire date' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableDateEnd">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeDateEndName ? scope?.alternativeDateEndName :'Resignation Date' | translate}}<span class="red-label" *ngIf="scope?.requiredDateEnd">*</span></mat-label>
+                                                <input formControlName="resignationDate" [matDatepicker]="picker_2" matInput type="text" name="resignationDate">
+                                                <mat-datepicker-toggle matSuffix [for]="picker_2" class="full-date-select"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker_2  (opened)="streamOpened()"></mat-datepicker>
+                                                <mat-error *ngIf="settingsForm.controls.resignationDate.errors?.required">
+                                                    {{scope?.alternativeDateEndName ? 'Please enter ' + scope?.alternativeDateEndName :'Please enter resignation date' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="scope?.enableWorkingHours">
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Working Start Time' | translate}}<span class="red-label" *ngIf="scope?.requiredWorkingHours">*</span></mat-label>
+                                                    <input formControlName="workingStartTime" [ngModel]="getWorkingTime(0)" (change)="onWorkingTimeChange(0, $event.target.value)" readonly (click)="pickerA.open()" matInput name="workingStartTime">
+                                                    <mat-icon matSuffix (click)="pickerA.open()">schedule</mat-icon>
+                                                    <mat-error *ngIf="settingsForm.controls.workingStartTime.errors?.required">{{'Please enter working start time' | translate}}</mat-error>
+                                                    <!-- <ngx-mat-timepicker #pickerA></ngx-mat-timepicker> -->
+                                                    <ngx-material-timepicker #pickerA [format]="24" (timeSet)="setWorkingTime(0, $event)">
+                                                    </ngx-material-timepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Lunch Start Time' | translate}}<span class="red-label" *ngIf="scope?.requiredWorkingHours">*</span></mat-label>
+                                                    <input formControlName="lunchStartTime" [ngModel]="getWorkingTime(1)" (change)="onWorkingTimeChange(1, $event.target.value)" readonly (click)="pickerB.open()" matInput name="lunchStartTime">
+                                                    <mat-icon matSuffix (click)="pickerB.open()">schedule</mat-icon>
+                                                    <mat-error *ngIf="settingsForm.controls.lunchStartTime.errors?.required">{{'Please enter lunch start time' | translate}}</mat-error>
+                                                </mat-form-field>
+                                                <ngx-material-timepicker #pickerB [format]="24" (timeSet)="setWorkingTime(1, $event)">
+                                                </ngx-material-timepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Lunch End Time' | translate}}<span class="red-label" *ngIf="scope?.requiredWorkingHours">*</span></mat-label>
+                                                    <input formControlName="lunchEndTime" [ngModel]="getWorkingTime(2)" (change)="onWorkingTimeChange(2, $event.target.value)" readonly (click)="pickerC.open()" matInput name="lunchEndTime">
+                                                    <mat-icon matSuffix (click)="pickerC.open()">schedule</mat-icon>
+                                                    <mat-error *ngIf="settingsForm.controls.lunchEndTime.errors?.required">{{'Please enter lunch end time' | translate}}</mat-error>
+                                                </mat-form-field>
+                                                <ngx-material-timepicker #pickerC [format]="24" (timeSet)="setWorkingTime(2, $event)">
+                                                </ngx-material-timepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Working End Time' | translate}}<span class="red-label" *ngIf="scope?.requiredWorkingHours">*</span></mat-label>
+                                                    <input formControlName="workingEndTime" [ngModel]="getWorkingTime(3)" (change)="onWorkingTimeChange(3, $event.target.value)" readonly (click)="pickerD.open()" matInput name="workingEndTime">
+                                                    <mat-icon matSuffix (click)="pickerD.open()">schedule</mat-icon>
+                                                    <mat-error *ngIf="settingsForm.controls.workingEndTime.errors?.required">{{'Please enter working end time' | translate}}</mat-error>
+                                                </mat-form-field>
+                                                <ngx-material-timepicker #pickerD [format]="24" (timeSet)="setWorkingTime(3, $event)">
+                                                </ngx-material-timepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox formControlName="openLunch">{{'Open Lunch' | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox formControlName="enablePlan">{{'Enable Plan' | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox formControlName="greenPass">{{'Greenpass Verification' | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field error-message-custom">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox formControlName="keys">{{'Enable Keys' | translate}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- <div class="col-md-12">
+                                      <h4 class="form-sub-title">Advance Details</h4>
+                                    </div> -->
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableTypology">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.topologyAlternativeName ? scope?.topologyAlternativeName :'Typology' | translate}}<span style="color:#EA5455" *ngIf="scope?.requiredTopology">*</span></mat-label>
+                                                <mat-select formControlName="typology">
+                                                    <mat-option>{{'Select Typology' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let typologys of typologyList" value="{{typologys.value}}">{{typologys.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.typology.errors?.required">
+                                                    {{scope?.topologyAlternativeName ? 'Please enter ' + scope?.topologyAlternativeName :'Please select typology' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableArea">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.areaAlternativeName ? scope?.areaAlternativeName :'Area' | translate}}<span style="color:#EA5455" *ngIf="scope?.requiredArea">*</span></mat-label>
+                                                <mat-select formControlName="area">
+                                                    <mat-option>{{'Select Area' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let areas of sortedAreasAvailable" value="{{areas.name}}" style="text-transform:capitalize;">{{areas.name | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.area.errors?.required">
+                                                    {{scope?.areaAlternativeName ? 'Please enter ' + scope?.areaAlternativeName :'Please select area' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableRole">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeRoleName ? scope?.alternativeRoleName :'Role' | translate}}<span style="color:#EA5455" *ngIf="scope?.requiredRole">*</span></mat-label>
+                                                <mat-select formControlName="role">
+                                                    <mat-option>{{'Select Role' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let roles of sortedRoles" value="{{roles}}" style="text-transform:capitalize;">{{roles | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.role.errors?.required">
+                                                    {{scope?.alternativeRoleName ? 'Please enter ' + scope?.alternativeRoleName :'Please select role' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableJobTitle">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeJobTitleName ? scope?.alternativeJobTitleName :'Job Title' | translate}}<span style="color:#EA5455" *ngIf="scope?.requiredJobTitle">*</span></mat-label>
+                                                <mat-select formControlName="jobTitle">
+                                                    <mat-option>{{'Select Job Title' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let jt of sortedJobTitles" value="{{jt}}" style="text-transform:capitalize;">{{jt | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.jobTitle.errors?.required">
+                                                    {{scope?.areaAlternativeName ? 'Please enter ' + scope?.alternativeJobTitleName :'Please select job title' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label> {{'Site' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="site">
+                                                    <mat-option>{{'Select Site' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let sites of siteList" value="{{sites.id}}" style="text-transform:capitalize;">{{sites.name | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.site.errors?.required">
+                                                    {{'Please select site' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableIdentificationCode">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativeIdentificationCodeName ? scope?.alternativeIdentificationCodeName :'Code Identity' | translate}}<span class="red-label" *ngIf="scope?.requiredIdentificationCode">*</span></mat-label>
+                                                <input formControlName="codeIdentity" matInput type="number" name="codeIdentity">
+                                                <mat-error *ngIf="settingsForm.controls.codeIdentity.errors?.required">
+                                                    {{scope?.alternativeIdentificationCodeName ? 'Please enter ' + scope?.alternativeIdentificationCodeName :'Please enter code identity' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enablePartTimePercentage">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.alternativePartTimePercentageName ? scope?.alternativePartTimePercentageName :'Part Time' | translate}}<span class="red-label" *ngIf="scope?.requiredPartTimePercentage">*</span></mat-label>
+                                                <input formControlName="partTime" matInput type="number" name="partTime">
+                                                <mat-error *ngIf="settingsForm.controls.partTime.errors?.required">
+                                                    {{scope?.alternativePartTimePercentageName ? 'Please enter ' + scope?.alternativePartTimePercentageName :'Please enter part time' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableManager">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{scope?.managerAlternativeName ? scope?.managerAlternativeName :'Manager' | translate}}<span class="red-label" *ngIf="scope?.requiredManager">*</span></mat-label>
+                                                <!-- <input formControlName="manager" matInput type="text" name="manager"> -->
+                                                <!-- <mat-icon matSuffix class="material-icons">search</mat-icon> -->
+                                                <mat-select formControlName="manager">
+                                                    <!-- <mat-option>Select Site</mat-option> -->
+                                                    <mat-option *ngFor="let p of people" value="{{p.id}}" style="text-transform:capitalize;">{{p.name}} {{p.surname}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.manager.errors?.required">
+                                                    {{scope?.managerAlternativeName ? 'Please enter ' + scope?.managerAlternativeName :'Please select manager' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{'Numero Matricola' | translate}}</mat-label>
+                                                <input formControlName="numeroMatricola" matInput type="text" name="numeroMatricola">
+                                                <mat-error *ngIf="settingsForm.controls.numeroMatricola.errors?.required">
+                                                    {{'Please enter numero matricola' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{'Tutor' | translate}}</mat-label>
+                                                <mat-select formControlName="tutor">
+                                                    <mat-option *ngFor="let p of people" value="{{p.id}}" style="text-transform:capitalize;">{{p.name}} {{p.surname}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.tutor.errors?.required">
+                                                    {{'Please select tutor' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{'Ente patrocinante' | translate}}</mat-label>
+                                                <mat-select formControlName="patrocinante">
+                                                    <mat-option *ngFor="let p of universityList" value="{{p.id}}" style="text-transform:capitalize;">{{p.description}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="settingsForm.controls.patrocinante.errors?.required">
+                                                    {{'Please select patrocinante' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button  matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}}<span class="material-icons">arrow_forward</span></button>
+                                        <button  class="btn-style green-btn" type="button" type="submit" (click)="saveAndFinish(3)">{{'GENERAL.Save&Finish' | translate}} <!-- <span class="material-icons">arrow_forward</span> --> </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="accessControlForm">
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/Accesses.svg"/>
+                          <p>{{'Accesses' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Accesses' | translate}}</h3>
+                                <div style="display:flex; justify-content:flex-end;">
+                                    <button (click)="onBadgeHistory()" class="btn-style theme-btn">{{'ACCESS_CONTROL.BadgeHistory' | translate}} <span class="material-icons" style="padding-left:10px">manage_search</span></button>
+                                    <button (click)="onRegenerateBadge()" class="btn-style theme-btn">{{'ACCESS_CONTROL.RegenerateBadge' | translate}} <span class="material-icons" style="padding-left:10px">history</span></button>
+                                </div>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="saveAccessControlData()" [formGroup]="accessControlForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ACCESS_CONTROL.AccessControlSystem' | translate}}</mat-label>
+                                                <mat-select formControlName="accessControlSystem" (selectionChange)="onSystemChange($event)">
+                                                    <mat-option *ngFor="let system of accessControlSystemsList" value="{{system.id}}">{{system.name}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ACCESS_CONTROL.AccessLevel' | translate}}</mat-label>
+                                                <mat-select (selectionChange)="onLevelChange($event)" formControlName="accessControlLevel">
+                                                    <mat-option [value]="accessControlLevels.NONE">
+                                                        {{'INSIGHTS_PEOPLE_PAGE.ACCESS NONE' | translate}}
+                                                    </mat-option>
+                                                    <mat-option [value]="accessControlLevels.PASSEPARTOUT">
+                                                        {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSEPARTOUT' | translate}}
+                                                    </mat-option>
+                                                    <mat-option [value]="accessControlLevels.GROUP">
+                                                        {{'INSIGHTS_PEOPLE_PAGE.ACCESS GROUP' | translate}}
+                                                    </mat-option>
+                                                    <mat-option [value]="accessControlLevels.SINGLE_PASSAGES">
+                                                        {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSAGES' | translate}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="accessControlForm.value.accessControlLevel==accessControlLevels.SINGLE_PASSAGES">
+                                    <div class="row">
+                                        <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                            <p class="m-0" style="color: black; font-size: 20px">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS ACCESSES' | translate}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngFor="let site of accessControlGatesList">
+                                        <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                            <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                        </div>
+                                        <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                            <div class="form-field">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox (change)="gateCheckEvent(gate.id,$event)" [checked]="checkGate(gate.id)">{{gate.name}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="accessControlForm.value.accessControlLevel==accessControlLevels.GROUP">
+                                    <div class="row" >
+                                        <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                            <p class="m-0" style="color: black; font-size: 20px">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS GROUP' | translate}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-3 col-xxl-3" *ngFor="let group of accessControlGroupsList">
+                                            <div class="form-field">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox (change)="groupCheckEvent(group.id,$event)" [checked]="checkGroup(group.id)">{{group.name}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                            <p class="m-0" style="color: black; font-size: 20px">{{'ACCESS_CONTROL.IncludedGates' | translate}}:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngFor="let site of accessControlGatesList">
+                                        <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                            <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                        </div>
+                                        <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                            <div class="form-field">
+                                                <div class="custom-switch mt-0">
+                                                    <mat-checkbox disabled [checked]="checkGateGroup(gate.id)">{{gate.name}}</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="accessControlForm.value.accessControlLevel==accessControlLevels.PASSEPARTOUT">
+                                    <div class="row">
+                                        <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                            <p class="m-0" style="color: black; font-size: 20px">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS PASSEPARTOUT' | translate}}</p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="accessControlForm.value.accessControlLevel==accessControlLevels.NONE">
+                                    <div class="row">
+                                        <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                            <p class="m-0" style="color: black; font-size: 20px">{{'INSIGHTS_PEOPLE_PAGE.DESCRIPTION ACCESS NONE' | translate}}</p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button  matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                        <button  class="btn-style green-btn" type="button" (click)="saveAndFinish(4)">{{'GENERAL.Save&Finish' | translate}} </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/Documents.svg"/>
+                          <p>{{'Documents' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Documents' | translate}}</h3>
+                                <button (click)="onUploadDoc()" class="btn-style theme-btn">{{'DOCUMENTS.Upload staff document'|translate}}<span class="material-icons" style="padding-left:10px">note_add</span></button>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="saveDocumentsData()">
+                               <!-- <div class="common-tabbing-popup">
+                                    <mat-tab-group mat-stretch-tabs (selectedTabChange)="onDocTabChange($event)" [selectedIndex]="docTabIndex">
+                                        <mat-tab *ngFor="let doc of documentList" label="{{doc.name}}"></mat-tab>
+                                    </mat-tab-group>
+                                </div>-->
+                                <div class="table-wrapper resource-color-table">
+                                    <table [dataSource]="userDocumentListTransformed | paginate: {id: 'doc-pagination', itemsPerPage: this.itemsPerPageD, currentPage: this.pageD, totalItems: this.totalItemsD }" mat-table style="width: 100%" >
+                                        <mat-tab-group>
+                                            <ng-container matColumnDef="wheelAction">
+                                                <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                                                    {{'ACCESS_CONTROL.Actions'| translate}}
+                                                </th>
+                                                <td class="p-0" mat-cell *matCellDef="let element" style="width: 100px;">
+                                    <span *ngIf="element.isExpired"  [style.borderLeftColor]="'white'" class="border-types" style="white-space: nowrap;">
+                                      <div class="hover-effect-menu four-icons">
+                                        <div class="short-arrow">
+                                          <span class="material-icons" >more_horiz</span>
+                                        </div>
+                                        <div class="hover-round-effect">
+                                          <button mat-menu-item (click)="editUserDocument(element)" matTooltip="{{'DOCUMENTS.Edit staff document' | translate}}">
+                                            <span class="material-icons">edit</span>
+                                          </button>
+                                          <button mat-menu-item (click)="viewUserDocument(element)" matTooltip="{{'DOCUMENTS.View staff document' | translate}}">
+                                            <span class="material-icons">visibility</span>
+                                          </button>
+                                          <button mat-menu-item (click)="downloadUserDocument(element)" matTooltip="{{'DOCUMENTS.Download staff document' | translate}}">
+                                            <span class="material-icons">download</span>
+                                          </button>
+                                          <button mat-menu-item (click)="deleteUserDocument(element)" matTooltip="{{'DOCUMENTS.Delete staff document' | translate}}">
+                                            <span class="material-icons">delete</span>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </span>
+                                                    <span *ngIf="!element.isExpired"  [style.borderLeftColor]="'#00A042'" class="border-types" style="white-space: nowrap;">
+                                      <div class="hover-effect-menu four-icons">
+                                        <div class="short-arrow">
+                                          <span class="material-icons" >more_horiz</span>
+                                        </div>
+                                        <div class="hover-round-effect">
+                                          <button mat-menu-item (click)="editUserDocument(element)" matTooltip="{{'DOCUMENTS.Edit staff document' | translate}}">
+                                            <span class="material-icons">edit</span>
+                                          </button>
+                                          <button mat-menu-item (click)="viewUserDocument(element)" matTooltip="{{'DOCUMENTS.View staff document' | translate}}">
+                                            <span class="material-icons">visibility</span>
+                                          </button>
+                                          <button mat-menu-item (click)="downloadUserDocument(element)" matTooltip="{{'DOCUMENTS.Download staff document' | translate}}">
+                                            <span class="material-icons">download</span>
+                                          </button>
+                                          <button mat-menu-item (click)="deleteUserDocument(element)" matTooltip="{{'DOCUMENTS.Delete staff document' | translate}}">
+                                            <span class="material-icons">delete</span>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </span>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="docType">
+                                                <th  (click)="changeSortingD('documentId',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                                                    {{'INSIGHTS_MENU.StaffDocument'|translate}}<span
+                                                    [ngClass]="{'down': sortByD === 'documentId' && sortKeyD === '-1' , 'up': sortByD === 'documentId' && sortKeyD === '1'}" >
+                                    <img *ngIf="sortByD == 'documentId'" alt="" src="assets/images/up-arrow.svg">
+                                    <img *ngIf="sortByD != 'documentId'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                                                    {{element.staffDocumentName ? element.staffDocumentName : '-'}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="fileName">
+                                                <th  (click)="changeSortingD('fileName',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                                                    {{'DOCUMENTS.FileName'| translate}} <span
+                                                    [ngClass]="{'down': sortByD === 'fileName' && sortKeyD === '-1' , 'up': sortByD === 'fileName' && sortKeyD === '1'}" >
+                                    <img *ngIf="sortByD == 'fileName'" alt="" src="assets/images/up-arrow.svg">
+                                    <img *ngIf="sortByD != 'fileName'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                                                    {{element.fileName ? element.fileName : '-'}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="timestamp">
+                                                <th  (click)="changeSortingD('timestamp',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                                                    {{'DOCUMENTS.StartDate'| translate}} <span
+                                                    [ngClass]="{'down': sortByD === 'timestamp' && sortKeyD === '-1' , 'up': sortByD === 'timestamp' && sortKeyD === '1'}" >
+                                    <img *ngIf="sortByD == 'timestamp'" alt="" src="assets/images/up-arrow.svg">
+                                    <img *ngIf="sortByD != 'timestamp'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                                                    {{element.timestamp ? (element.timestamp | date:'dd/MM/yyyy'):'-'}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="expirationDate">
+                                                <th  (click)="changeSortingD('expirationDate',sortKey)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 180px;min-width: 180px">
+                                                    {{'DOCUMENTS.ExpirationDate'| translate}} <span
+                                                    [ngClass]="{'down': sortByD === 'expirationDate' && sortKeyD === '-1' , 'up': sortByD === 'expirationDate' && sortKeyD === '1'}" >
+                                    <img *ngIf="sortByD == 'expirationDate'" alt="" src="assets/images/up-arrow.svg">
+                                    <img *ngIf="sortByD != 'expirationDate'" alt="" src="assets/images/up-arrow-grey.svg"></span>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 180px;min-width: 180px">
+                                                    {{element.expirationDate ? (element.expirationDate | date:'dd/MM/yyyy'):'-'}}
+                                                </td>
+                                            </ng-container>
+                                        </mat-tab-group>
+                                        <tr mat-header-row *matHeaderRowDef="userDocumentsDisplayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let element; columns: userDocumentsDisplayedColumns"></tr>
+                                    </table>
+                                </div>
+                                <div *ngIf="!noRecordFoundD" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                                <div *ngIf="noRecordFoundD"class="paginate-footer">
+                                    <div class="page-item">
+                                        <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                                        <mat-form-field appearance="fill">
+                                            <mat-select [(ngModel)]="itemsPerPageD" (selectionChange)="changeItemsPerPageD()">
+                                                <mat-option value='5'>5</mat-option>
+                                                <mat-option value='10'>10</mat-option>
+                                                <mat-option value='15'>15</mat-option>
+                                                <mat-option value='20'>20</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="table-paginator">
+                                        <pagination-controls id="doc-pagination" responsive="true" (pageChange)="pageChangedD($event)"></pagination-controls>
+                                    </div>
+                                </div>
+
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button  matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                        <button  class="btn-style green-btn" type="button" (click)="saveAndFinish(5)">{{'GENERAL.Save&Finish' | translate}} </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="scope?.enableDisputes" [stepControl]="disputeFieldsForm">
+                        <ng-template matStepLabel>
+                          <span>
+                            <img src="assets/images/Dispute.svg"/>
+                            <p>{{'Dispute' | translate}}</p>
+                          </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Dispute' | translate}}</h3>
+                                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+                            </div>
+                            <!-- <ng-container *ngIf="currentEditPerson.disputes && currentEditPerson.disputes.length">
+                              <ng-container *ngFor="let item of currentEditPerson.disputes; let i = index;">
+                                <form class="form-wrapper mb-30" [formGroup]="disputeFieldsForm" id="disputeFieldForm">
+                                  <div class="row row-list">
+                                    <div class="col-xl-6 col-xxl-4">
+                                      <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                          <mat-label>{{'Date' | translate}}</mat-label>
+                                          <input value="{{item.date}}" [matDatepicker]="picker_3" matInput name="disputeDate" type="text">
+                                          <mat-datepicker-toggle matSuffix [for]="picker_3" class="full-date-select"></mat-datepicker-toggle>
+                                          <mat-datepicker #picker_3></mat-datepicker>
+                                          <mat-error *ngIf="disputeFieldsForm.controls.disputeDate.errors?.required">{{'Please select dispute date' | translate}}
+                                          </mat-error>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                      <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                          <mat-label>{{'Dispute' | translate}}</mat-label>
+                                          <input matInput name="dispute" type="text" value="{{item.dispute}}">
+                                          <mat-error *ngIf="disputeFieldsForm.controls.dispute.errors?.required">{{'Please enter dispute' | translate}}</mat-error>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                      <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                          <mat-label>{{'Note' | translate}}</mat-label>
+                                          <input matInput name="note" type="text" value="{{item.note}}">
+                                          <mat-error *ngIf="disputeFieldsForm.controls.note.errors?.required">{{'Please enter note' | translate}}</mat-error>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                      <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                          <mat-label>{{'Notification Date' | translate}}</mat-label>
+                                          <input [matDatepicker]="picker_4" matInput name="notificationDate" type="text" value="{{item.notificationDate}}">
+                                          <mat-datepicker-toggle matSuffix [for]="picker_4" class="full-date-select"></mat-datepicker-toggle>
+                                          <mat-datepicker #picker_4></mat-datepicker>
+                                          <mat-error *ngIf="disputeFieldsForm.controls.notificationDate.errors?.required">{{'Please enter notification date' | translate}}</mat-error>
+                                        </mat-form-field>
+                                      </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                      <div class="row">
+                                        <div class="col-sm-12 btn-margin">
+                                          <button class="custom-btn btn-style red-btn"  type="button"
+                                            (click)="removeDisputeItem(i)">{{'Delete Dispute' | translate}}</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </ng-container>
+                            </ng-container> -->
+                            <form class="form-wrapper" [formGroup]="disputeFieldsForm" >
+                                <div class="row row-list" formArrayName="dispute" *ngFor="let item of disputeFieldsForm.get('dispute').controls; let i = index;">
+                                    <ng-container [formGroupName]="i">
+
+                                        <!-- <div class="col-sm-12">
+                                          <h4 style="font-weight: 600;">First Dispute</h4>
+                                        </div> -->
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                    <mat-label>{{'Date' | translate}}</mat-label>
+                                                    <input formControlName="date" [matDatepicker]="picker_3" matInput name="disputeDate" type="text">
+                                                    <mat-datepicker-toggle matSuffix  [for]="picker_3" class="full-date-select"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker_3 (opened)="streamOpened()"></mat-datepicker>
+                                                    <mat-error *ngIf="formSubmitted && disputeFieldsFormNew.controls.dispute.errors?.required">{{'Please select dispute date' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Dispute' | translate}}</mat-label>
+                                                    <input formControlName="dispute" matInput name="dispute" type="text" style="text-transform:capitalize;">
+                                                    <mat-error *ngIf="formSubmitted && disputeFieldsFormNew.controls.dispute.errors?.required">{{'Please enter dispute' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Note' | translate}}</mat-label>
+                                                    <input formControlName="note" matInput name="note" type="text">
+                                                    <mat-error *ngIf="formSubmitted && disputeFieldsFormNew.controls.note.errors?.required">{{'Please enter note' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width date-select">
+                                                    <mat-label style="text-transform:capitalize;">{{'Notification Date' | translate}}</mat-label>
+                                                    <input formControlName="notificationDate" [matDatepicker]="picker_4" matInput name="notificationDate" type="text">
+                                                    <mat-datepicker-toggle matSuffix  [for]="picker_4" class="full-date-select"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker_4  (opened)="streamOpened()"></mat-datepicker>
+                                                    <mat-error *ngIf="disputeFieldsFormNew.controls.notificationDate.errors?.required">{{'Please enter notification date' | translate}}</mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-4">
+                                            <div class="row">
+                                                <!-- <div class="col-sm-12 btn-margin">
+                                                  <button  class="custom-btn btn-style red-btn" mat-button  type="button">Delete Dispute</button>
+                                                </div> -->
+                                                <div class="col-sm-12">
+                                                    <button *ngIf="getLastIndex() != i" class="custom-btn btn-style red-btn"  type="button"
+                                                            (click)="removeDisputeItem(i)">{{'Delete Dispute' | translate}}</button>
+                                                    <button *ngIf="getLastIndex() == i" class="custom-btn btn-style green-btn normal-btn" type="submit" (click)="addDispute()"><span class="material-icons">add</span>{{'Add More Dispute' | translate}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                            </form>
+                            <div class="step-form-bottom">
+                                <div>
+                                    <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                    <button  matStepperNext (click)="saveDisputeFieldsdata(peopleStepper)" class="btn-style theme-btn" >{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    <!--<button  matStepperNext (click)="onSubmit(4)" class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>-->
+                                    <button  class="btn-style green-btn" type="button" (click)="saveAndFinish(6)">{{'GENERAL.Save&Finish' | translate}} <!-- <span class="material-icons">arrow_forward</span> --> </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="scope?.enableSalary || scope?.enableMbo || scope?.enableBonus || scope?.enableContractLevel" [stepControl]="economicsFieldsForm">
+                        <ng-template matStepLabel>
+                          <span>
+                            <img src="assets/images/Economics.svg"/>
+                            <p>{{'Economics' | translate}}</p>
+                          </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Economics' | translate}}</h3>
+                                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+                            </div>
+                            <!--<form class="form-wrapper" (ngSubmit)="onSubmit(5)" [formGroup]="economicsFieldsForm">-->
+                            <form class="form-wrapper" (ngSubmit)="saveEconomicsFieldsData(peopleStepper)" [formGroup]="economicsFieldsForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableSalary">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Salary' | translate}}</mat-label>
+                                                <input formControlName="salary" matInput name="salary" type="number">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableMbo">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'MBO' | translate}}</mat-label>
+                                                <input formControlName="mbo" matInput name="mbo" type="number">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableBonus">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Bonus' | translate}}</mat-label>
+                                                <input formControlName="bonus" matInput name="bonus" type="number">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="scope?.enableContractLevel">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{'Contract Level' | translate}}</mat-label>
+                                                <input formControlName="contractLevel" matInput name="contractLevel" type="text">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;">{{'CCNL' | translate}}</mat-label>
+                                                <input formControlName="ccnl" matInput name="ccnl" type="text">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button  matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                        <button  class="btn-style green-btn" type="button" (click)="saveAndFinish(7)">{{'GENERAL.Save&Finish' | translate}} <!-- <span class="material-icons">arrow_forward</span> --> </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="addAccountForm">
+                        <ng-template matStepLabel>
+                        <span>
+                          <img src="assets/images/Add Account.svg" />
+                          <p>{{'Add Account' | translate}}</p>
+                        </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Add Account' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <!--<form class="form-wrapper" (ngSubmit)="onSubmit(6)" [formGroup]="addAccountForm">-->
+                            <form class="form-wrapper" (ngSubmit)="saveAddAccountData(peopleStepper)" [formGroup]="addAccountForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'User ID' | translate}}</mat-label>
+                                                <input formControlName="userId" matInput name="userId" (keydown)="space($event)">
+                                                <mat-error *ngIf="addAccountForm.controls.userId.errors?.required">{{'Please enter user id' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label style="text-transform:capitalize;"> {{'Authentication Method' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="authProvider">
+                                                    <mat-option>{{'Select Authentication Method' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let authenticationMethods of authenticationMethodList" value="{{authenticationMethods.value}}">
+                                                        {{authenticationMethods.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.authProvider.errors?.required">
+                                                    {{'Please select authentication method' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-xxl-4"></div> -->
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Password' | translate}}</mat-label>
+                                                <input matInput formControlName="newPassword" minlength="6"  name="newPassword"  [type]="hide ? 'password' : 'text'" onkeypress="return event.charCode != 32">
+                                                <mat-error *ngIf="addAccountForm.controls.newPassword.errors?.required" >{{'Please enter password' | translate}}</mat-error>
+                                                <!-- <mat-error *ngIf="addAccountForm.controls.password.errors?.confirmedValidator">{{'RESET_PASSWORD.ConfirmPasswordMatch' | translate}}</mat-error> -->
+                                                <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Confirm Password' | translate}}</mat-label>
+                                                <input matInput formControlName="confirmPassword" minlength="6"  name="password"  [type]="hide1 ? 'password' : 'text'" onkeypress="return event.charCode != 32">
+                                                <mat-error *ngIf="addAccountForm.controls.confirmPassword.errors?.required" >{{'Please enter confirm password' | translate}}</mat-error>
+                                                <mat-error *ngIf="addAccountForm.controls.confirmPassword.errors?.confirmedValidator">{{'RESET_PASSWORD.ConfirmPasswordMatch' | translate}}</mat-error>
+                                                <button mat-icon-button matSuffix (click)="hide1 = !hide1" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Password Validity' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="passwordValid">
+                                                    <mat-option>{{'Select Password Validity' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let validity of passwordValidity" value="{{validity.value}}">{{validity.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.passwordValid.errors?.required" >
+                                                    {{'Please Select password validity' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Password Min' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="passwordMin">
+                                                    <mat-option>{{'Select Password Min' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let minPassword of passwordMinList" value="{{minPassword.value}}">{{minPassword.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.passwordMin.errors?.required" >
+                                                    {{'Please Select password min' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Password Max' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="passwordMax">
+                                                    <mat-option>{{'Select Password Max' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let maxPassword of passwordMaxList" value="{{maxPassword.value}}">{{maxPassword.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.passwordMax.errors?.required" >
+                                                    {{'Please Select password max' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Password Pattern' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="passwordPattern">
+                                                    <mat-option>{{'Select Password Pattern' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let passwordPatter of passwordPatternList" value="{{passwordPatter.value}}">{{passwordPatter.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.passwordPattern.errors?.required" >
+                                                    {{'Please select password pattern' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Allowed Previous Password' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="allowedPreviousPassword">
+                                                    <mat-option>{{'Select Allowed Previous Password' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let allowpass of previousPassword" value="{{allowpass.value}}">{{allowpass.viewValue | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="addAccountForm.controls.allowedPreviousPassword.errors?.required" >
+                                                    {{'Please select allowed previous password' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button  routerLink="/people" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <span routerLink="/people" class="stepper-link">{{'Add Account Later' | translate}}</span>
+                                        <button  matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <!-- <button  matStepperNext class="btn-style theme-btn" type="button">Save & Finish <span class="material-icons">arrow_forward</span></button> -->
+                                        <button  class="btn-style green-btn" type="submit">{{'GENERAL.Save&Finish' | translate}} <!-- <span class="material-icons">arrow_forward</span> --> </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,77 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'ACCESS_CONTROL.BadgeHistory' | translate}}</h4>
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="common-tabbing-popup">
+            <mat-tab-group>
+                <mat-tab class="mt-5" *ngFor="let badge of badgeList">
+                    <ng-template mat-tab-label>
+                        {{badge.codeData.startDate ? (badge.codeData.startDate | date:'dd/MM/yyyy'):'-'}} - {{badge.codeData.endDate ? (badge.codeData.endDate | date:'dd/MM/yyyy'):'-'}}
+                        <span *ngIf="badge.blocked" class="material-icons label-icon red">block</span>
+                        <span *ngIf="!badge.blocked && !isExpired(badge.codeData.endDate)" class="material-icons label-icon green">done</span>
+                        <span *ngIf="!badge.blocked && isExpired(badge.codeData.endDate)" class="material-icons label-icon yellow">history</span>
+                    </ng-template>
+                    <div class="tab-container">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'ACCESS_CONTROL.AccessLevel' | translate}}</mat-label>
+                                        <mat-select disabled [(ngModel)]="badge.codeData.type">
+                                            <mat-option value="PASSEPARTOUT">
+                                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSEPARTOUT' | translate}}
+                                            </mat-option>
+                                            <mat-option value="GROUP">
+                                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS GROUP' | translate}}
+                                            </mat-option>
+                                            <mat-option value="SINGLE_PASSAGES">
+                                                {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSAGES' | translate}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="badge.codeData.type=='GROUP' || badge.codeData.type=='SINGLE_PASSAGES'">
+                            <div class="row" *ngFor="let site of gatesListBySite">
+                                <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                    <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                </div>
+                                <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                <div class="form-field">
+                                    <div class="custom-switch mt-0">
+                                        <mat-checkbox disabled [checked]="checkGate(badge, gate.id)">{{gate.name}}</mat-checkbox>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="badge.codeData.type=='PASSEPARTOUT'">
+                            <div class="row" *ngFor="let site of gatesListBySite">
+                                <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                    <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                </div>
+                                <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                <div class="form-field">
+                                    <div class="custom-switch mt-0">
+                                        <mat-checkbox disabled checked="true">{{gate.name}}</mat-checkbox>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onClose()"  class="btn-style inactive">{{'ACCESS_CONTROL.Close' | translate}}</button>
+        </div>
+    </div>
+</section>

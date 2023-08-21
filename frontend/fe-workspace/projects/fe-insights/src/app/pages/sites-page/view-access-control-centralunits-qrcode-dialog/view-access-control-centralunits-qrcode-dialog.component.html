@@ -1,0 +1,43 @@
+<h2 mat-dialog-title><b>{{'ACCESS_CONTROL.CentralUnitQrCodes'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="qr-codes-container" id="div">
+        <div class="qr-code-container">
+            <qr-code *ngIf="unit.createQrCode" class="qr-code" [value]="unit.createQrCode" [level]="qrLevel" [size]="150"></qr-code>
+            <div class="no-qr-code" *ngIf="!unit.createQrCode">
+                <i class="material-icons icon">error</i>
+            </div>
+            <div class="qr-code-name">{{unit.name}} create</div>
+        </div>
+        <div class="qr-code-container">
+            <qr-code *ngIf="unit.setWifiQrCode" class="qr-code" [value]="unit.setWifiQrCode" [level]="qrLevel" [size]="150"></qr-code>
+            <div class="no-qr-code" *ngIf="!unit.setWifiQrCode">
+                <i class="material-icons icon">error</i>
+            </div>
+            <div class="qr-code-name">{{unit.name}} set wifi</div>
+        </div>
+        <div class="qr-code-container">
+            <qr-code *ngIf="unit.setPathQrCode" class="qr-code" [value]="unit.setPathQrCode" [level]="qrLevel" [size]="150"></qr-code>
+            <div class="no-qr-code" *ngIf="!unit.setPathQrCode">
+                <i class="material-icons icon">error</i>
+            </div>
+            <div class="qr-code-name">{{unit.name}} set path</div>
+        </div>
+        <div class="qr-code-container">
+            <qr-code *ngIf="unit.resetKeypadQrCode" class="qr-code" [value]="unit.resetKeypadQrCode" [level]="qrLevel" [size]="150"></qr-code>
+            <div class="no-qr-code" *ngIf="!unit.resetKeypadQrCode">
+                <i class="material-icons icon">error</i>
+            </div>
+            <div class="qr-code-name">{{unit.name}} reset keypad</div>
+        </div>
+        <div class="qr-code-container">
+            <qr-code *ngIf="unit.resetBlacklistQrCode" class="qr-code" [value]="unit.resetBlacklistQrCode" [level]="qrLevel" [size]="150"></qr-code>
+            <div class="qr-code-name">{{unit.name}} reset blacklist</div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+    <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+        (click)="onDownload()">Download</button>
+</mat-dialog-actions>

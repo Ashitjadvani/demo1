@@ -1,0 +1,30 @@
+<section class="popups service-agreement-popup">
+  <form (ngSubmit)="onSubmit()" [formGroup]="serviceAgreementForm">
+    <div class="popup-header">
+      <div class="header-content">
+        <h4>{{'Procurement_Management.AddServiceAgreement' | translate}}</h4>
+        <img src="assets/images/cross-icon.svg" (click)="onNoClick()" alt="">
+      </div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-content m-auto text-center">
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'Procurement_Management.ServiceAgreement' | translate}}</mat-label>
+            <textarea type="text"  name="serviceAgreement" formControlName="serviceAgreement" matInput style="min-height: 140px;"></textarea>
+            <mat-error *ngIf="serviceAgreementForm.controls.serviceAgreement.errors?.required">
+              {{'Procurement_Management.ServiceAgreementRequired' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+      <div class="footer-content justify-content-end">
+        <button (click)="onNoClick()" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+        <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</section>

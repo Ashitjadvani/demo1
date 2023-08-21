@@ -1,0 +1,23 @@
+@import '../../../../theme-color.scss';
+
+.dashboard{
+    .statistics {
+        padding: 30px;
+        h5{margin-bottom: 40px;font-weight: 600;font-size: 24px;}
+        ul{
+            display: flex;
+            justify-content: space-between;
+            height: 60%;
+            align-items: center;
+            li {
+                display: flex;
+                cursor: pointer;
+                img{
+                    margin-right: 18px;
+                }
+                h4{font-size: 30px;color: $theme_color;letter-spacing: 0.15px;font-weight: bold;line-height: 28px;}
+                p{margin-bottom: 0;}
+            }
+        }
+    }
+}

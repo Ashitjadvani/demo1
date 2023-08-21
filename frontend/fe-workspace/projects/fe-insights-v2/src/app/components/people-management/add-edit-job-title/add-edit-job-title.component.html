@@ -1,0 +1,64 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/people-management" class="breadcrumb-item">{{'INSIGHTS_MENU.PEOPLE_MANAGEMENT' | translate}}</li>
+                  <li routerLink="/people-management" class="breadcrumb-item">{{'PEOPLE_MANAGEMENT.Job Title'|translate}}</li>
+                  <li *ngIf="editMode === 'Add'" class="breadcrumb-item active" aria-current="page"><span>{{'PEOPLE_MANAGEMENT.AddJobTitle'|translate}}</span> </li>
+                  <li *ngIf="editMode === 'Edit'" class="breadcrumb-item active" aria-current="page"><span>{{'EditJobTitle'|translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [routePath]="'/people-management'" [routePath2]="'/people-management'" [title]="'INSIGHTS_MENU.PEOPLE_MANAGEMENT'"
+            [title2]="'PEOPLE_MANAGEMENT.Job Title'" [title3]="editMode === 'Add' ? 'PEOPLE_MANAGEMENT.AddJobTitle' : 'EditJobTitle' "></app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{editMode| translate}} {{'PEOPLE_MANAGEMENT.Job Title'|translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="jobTitleForm" [formGroup]= "jobTitleForm"  novalidate
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'INSIGHTS_PEOPLE_PAGE.JobTitle Name'|translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="jobTitleNameEnglish" matInput  name="jobTitleNameEnglish" (keydown)="space($event)" style="text-transform:capitalize">
+                                        <mat-error *ngIf="jobTitleForm.controls.jobTitleNameEnglish.errors?.required" >
+                                          {{'PEOPLE_MANAGEMENT.Enter your job title name (English)' | translate}}
+                                        </mat-error>
+                                        <mat-error *ngIf="jobTitleForm.controls.jobTitleNameEnglish.errors?.nameValidator">{{'Special character not allowed' | translate}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                      <!--      <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Job Title Name (Italian)<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="jobTitleNameItalian" matInput name="jobTitleNameItalian" >
+                                        <mat-error *ngIf="jobTitleForm.controls.jobTitleNameItalian.errors?.required" >
+                                            Enter your job title name (Italian).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="form-footer">
+<!--                            <button class="btn-style theme-btn" type="submit">Save</button>-->
+                          <button class="btn-style theme-btn" type="submit" *ngIf="editMode === 'Add'" (click)="addJob()">{{'GENERAL.Save'|translate}}</button>
+                          <button class="btn-style theme-btn" type="submit" *ngIf="button === 'Update'" (click)="editJob()">{{'GENERAL.Update'|translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/people-management" type="button">{{'GENERAL.Cancel'|translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

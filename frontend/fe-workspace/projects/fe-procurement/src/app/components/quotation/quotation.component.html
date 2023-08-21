@@ -1,0 +1,75 @@
+<!--======================== Main Header Title ==================== -->
+<div class="main-title">
+    <h1>{{'MAIN-TITLE.Quotation' | translate }}</h1>
+</div>
+<!--======================= Main Section Body ==================== -->
+<section class="rfqs-section quotation">
+    <div class="container">
+        <div class="box-style content-wrapper">
+            <div class="heading">
+                <h4>{{'RFQS.SendQuote' | translate}}</h4>
+            </div>
+            <hr>
+            <div class="quotation-form">
+                <form name="quotationForm" [formGroup]="quotationForm" novalidate (ngSubmit)="onSubmit()">
+                    <div class="form-wrapper">
+                        <div class="input-wrapper">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'RFQS.Price' | translate}}</mat-label>
+                                            <input matInput formControlName="prezzo"  type="text" id="prezzo" name="prezzo" >
+                                            <mat-error *ngIf="quotationForm.controls.prezzo.errors?.required">{{'RFQS.PriceRequired' | translate}}</mat-error>
+                                         </mat-form-field>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <div class="form-field m-0 textarea-field" >
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'RFQS.AdditionalMessage' | translate}}</mat-label>
+                                            <textarea matInput formControlName="messaggioAggiuntivo" id="messaggioAggiuntivo" name="messaggioAggiuntivo"></textarea>
+                                            <mat-error *ngIf="quotationForm.controls.messaggioAggiuntivo.errors?.required">{{'RFQS.AdditionalMessageRequired' | translate}}</mat-error>
+                                         </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-field">
+                                        <div class="file-upload-wrapper">
+                                          <div class="file-upload-in">
+                                            <div class="file-upload-text"><span class="material-icons">attachment</span>{{'RFQS.PDFDocument' | translate}}</div>
+                                            <label for="upload_btn" >{{'RFQS.Navigate' | translate}}</label>
+                                          </div>
+                                          <!-- <input id="upload_btn" type="file" #fileCoverImage (change)="onCoverImage(fileCoverImage)" accept=".pdf,.xls,.xlsx,.png,.jpeg,.doc, .docx" /> -->
+                                          <input id="upload_btn" type="file"  #fileCoverImage (change)="onFileChanged(documentInput)" accept="image/png ,image/svg , image/jpg ,image/jpeg" />
+                                          <span class="file-info">{{ this.documentName }}
+                                            <span class="material-icons close-icon" (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                            </span>
+                                          </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quate-footer">
+                                <div class="buttons">
+                                  <button mat-raised-button routerLink="/quotation" type="submit" class="btn-style theme-btn normal-btn">
+                                    {{'RFQS.SendQuote' | translate}}
+                                  </button>
+                                  <button mat-raised-button type="button" routerLink="/RFQs" class="btn-style normal-btn theme-line-btn">
+                                    {{'GENERAL.Cancel' | translate}}
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</section>
+

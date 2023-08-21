@@ -1,0 +1,78 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    height:500px;
+    
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.icon-button {
+    background-color: #4B6BA2;
+}
+
+.icon-button-disabled {
+    background-color: #ababab;
+}
+
+.white {
+    color: white;
+}
+
+.upload-container {
+    width: 100%;
+    height: 280px;
+    text-align: center;
+    border: dashed 1px #979797;
+    border-radius: 10px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+    color: #38424c;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+
+    .action-button {
+        width: 150px;
+    }
+
+    .icon {
+        color: rgba(56, 66, 76, 0.196);
+        font-size:80px;
+    }
+  
+    input {
+        opacity: 0;
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: pointer;
+    }
+
+    .small-font {
+        font-weight: 500;
+    }
+}
+
+.padding-top {
+    padding-top: 10px;
+}
+  

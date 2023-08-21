@@ -1,0 +1,8 @@
+<div class="user-param-box">
+    <button mat-flat-button class="upload-button" color="primary" cdkFocusInitial (click)="onUploadDoc()">{{'DOCUMENTS.UploadUserDoc'|translate}}</button>
+    <div class="table-container">
+        <app-table-data-view [tableDataSet]="userDocuments" [columnTemplates]="userDocTableColumnTemplates" 
+            [rowActions]="userDocTableRowActions" [filteredValueShow]="true" [pageSize]="5">
+        </app-table-data-view>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<form class="user-param-box" name="insertSurveyForm" [formGroup]="insertSurveyForm" novalidate
+  (ngSubmit)="onSaveInsertedData()" #myform="ngForm">
+  <div class="input-row">
+    <span class="vspan-5"></span>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" name="title" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.subtitle.errors?.required">
+        Title is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-40">
+      <mat-label>SubTitle</mat-label>
+      <input formControlName="subtitle" name="subtitle" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.subtitle.errors?.required">
+        SubTitle is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>Disclaimer</mat-label>
+      <input formControlName="disclaimer" name="disclaimer" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.disclaimer.errors?.required">
+        Disclaimer is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>On Completion</mat-label>
+      <input formControlName="oncompletion" name="oncompletion" matInput type="text" maxlength="150" required />
+      <mat-error *ngIf="insertSurveyForm.controls.oncompletion.errors?.required">
+        On Completion is required!
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>Start Date</mat-label>
+      <input name="startdate" formControlName="startdate" matInput [matDatepicker]="startdate" maxlength="150"
+        (focus)="startdate.open()" />
+      <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
+      <mat-datepicker #startdate></mat-datepicker>
+      <mat-error> Start Date is required! </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="legacy" class="width-50">
+      <mat-label>End Date</mat-label>
+      <input name="enddate" formControlName="enddate" matInput [matDatepicker]="enddate" maxlength="150"
+        (focus)="enddate.open()" />
+      <mat-datepicker-toggle matSuffix [for]="enddate"></mat-datepicker-toggle>
+      <mat-datepicker #enddate></mat-datepicker>
+      <mat-error> End Date is required! </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="element-full-width">
+      <mat-label>Privacy</mat-label>
+      <mat-select name="privacy" formControlName="privacy" required>
+        <mat-option *ngFor="let privacyTypes of surveyPrivacy" [value]="privacyTypes.value">
+          {{ privacyTypes.valueName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+<section class="input-row">
+  <div>
+    <div>
+      <table mat-table  style="width: 100%">
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef>Order</th>
+          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+            {{ element.order}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="question">
+          <th mat-header-cell *matHeaderCellDef>Question</th>
+          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+            {{ element.question}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="addQuestion">
+          <th mat-header-cell *matHeaderCellDef style="width: 130px; min-width: 130px; max-width: 130px" (click)="addNewQuestion()">
+           +
+          </th>
+          <td mat-cell *matCellDef="let element" style="
+              white-space: nowrap;
+              width: 130px;
+              min-width: 130px;
+              max-width: 130px;
+   ">
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: userColumns"></tr>
+      </table>
+    </div>
+  </div>
+</section>

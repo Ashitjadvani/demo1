@@ -1,0 +1,23 @@
+
+@import '../../../theme-color.scss';
+
+.bottom-links {
+    text-align: center;
+    margin-top: 40px;
+    @media (max-width: 1699px) {
+        margin-top: 30px;
+    }
+
+    a {
+        font-size: 16px;
+        line-height: 20px;
+        text-decoration: underline;
+        color: $theme_color;
+        font-weight: 600;
+        // margin-right: 30px;
+    }
+
+    a:last-child {
+        margin-right: 0;
+    }
+}

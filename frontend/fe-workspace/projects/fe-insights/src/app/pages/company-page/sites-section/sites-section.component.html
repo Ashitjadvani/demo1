@@ -1,0 +1,7 @@
+<div class="section-container">
+    <app-table-data-view [tableDataSet]="sitesTableData" [columnTemplates]="tableColumnTemplates"
+        [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+    </app-table-data-view>
+
+    <input type="file" #file style="display: none" (change)="onUploadFile()" />
+</div>

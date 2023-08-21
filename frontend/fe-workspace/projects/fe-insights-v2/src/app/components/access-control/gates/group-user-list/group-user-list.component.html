@@ -1,0 +1,101 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/access-control/dashboard" class="breadcrumb-item">{{'ACCESS_CONTROL.AccessControl'| translate}}</li>
+                    <li routerLink="/access-control/gates/groups" class="breadcrumb-item">{{'ACCESS_CONTROL.Gates'| translate}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'GroupUsers'| translate}} <b>{{group.name}}</b></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items:center; align-content: center; justify-items: center; gap: 20px">
+                        <h3 style="font-weight: 600;">
+                            <span>{{'GroupUsers'| translate}} <b>{{group.name}}</b></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col statistics-vertical" style="padding-top:20px;">
+                        <div class="chart-group-wrapper" style="height:100%;">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="table-wrapper resource-color-table">
+                                        <table *ngIf="newGroupPeopleList.length > 0" class="table custom-table" >
+                                            <tr class="header-row">
+                                                <th (click)="changeSorting('name')" class="header">
+                                                    {{'ACCESS_CONTROL.Name'| translate}} <span [ngClass]="{'down': sortBy === 'name' && sortKey === '-1' , 'up': sortBy === 'name' && sortKey === '1'}" >
+                                                        <img *ngIf="sortBy == 'name'" alt="" src="assets/images/up-arrow.svg">
+                                                        <img *ngIf="sortBy != 'name'" alt="" src="assets/images/up-arrow-grey.svg">
+                                                    </span>
+                                                </th>
+                                                <th (click)="changeSorting('surname')" class="header">
+                                                    {{'ACCESS_CONTROL.Surname'| translate}} <span [ngClass]="{'down': sortBy === 'surname' && sortKey === '-1' , 'up': sortBy === 'surname' && sortKey === '1'}" >
+                                                        <img *ngIf="sortBy == 'surname'" alt="" src="assets/images/up-arrow.svg">
+                                                        <img *ngIf="sortBy != 'surname'" alt="" src="assets/images/up-arrow-grey.svg">
+                                                    </span>
+                                                </th>
+                                                <th (click)="changeSorting('scope')" class="header">
+                                                    {{'RECRUITING.Scope'| translate}} <span [ngClass]="{'down': sortBy === 'scope' && sortKey === '-1' , 'up': sortBy === 'scope' && sortKey === '1'}" >
+                                                        <img *ngIf="sortBy == 'scope'" alt="" src="assets/images/up-arrow.svg">
+                                                        <img *ngIf="sortBy != 'scope'" alt="" src="assets/images/up-arrow-grey.svg">
+                                                    </span>
+                                                </th>
+                                                <th (click)="changeSorting('state')" class="header">
+                                                    {{'State' | translate}} <span [ngClass]="{'down': sortBy === 'state' && sortKey === '-1' , 'up': sortBy === 'state' && sortKey === '1'}" >
+                                                        <img *ngIf="sortBy == 'state'" alt="" src="assets/images/up-arrow.svg">
+                                                        <img *ngIf="sortBy != 'state'" alt="" src="assets/images/up-arrow-grey.svg">
+                                                    </span>
+                                                </th>
+                                                <th style="display:flex; justify-content:flex-end" class="header">
+                                                    
+                                                </th>
+                                            </tr>
+                                            <tbody *ngFor="let element of newGroupPeopleList">
+                                                <tr [ngClass]="element.state === 'Removed' ? 'red-bkg' : element.state === 'Added' ? 'green-bkg' : null">
+                                                    <td>{{element.name ? element.name : '-'}}</td>
+                                                    <td>{{element.surname ? element.surname : '-'}}</td>
+                                                    <td>{{element.scope ? element.scope : '-'}}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="element.state == 'Removed'">
+                                                            {{'RemoveGroupAccess'|translate}}
+                                                        </ng-container>
+                                                        <ng-container *ngIf="element.state == 'Added'">
+                                                            {{'Added'|translate}}
+                                                        </ng-container>
+                                                        <ng-container *ngIf="element.state == 'OriginallyInGroup'">
+                                                            {{'HasAccessToGroup'|translate}}
+                                                        </ng-container>
+                                                    </td>
+                                                    <td style="display:flex; justify-content:flex-end">
+                                                        <ng-container *ngIf="element.state == 'Removed'">
+                                                            <button class="btn-style theme-btn" style="max-height:20px;width:140px;" type="button" (click)="cancelRemove(element.id)">{{'Cancel'| translate}}</button>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="element.state == 'Added'">
+                                                            <button class="btn-style red-line-btn" style="max-height:20px;width:140px;" type="button" (click)="removePerson(element.id)">{{'Remove'| translate}}</button>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="element.state == 'OriginallyInGroup'">
+                                                            <button class="btn-style red-line-btn" type="button" style="max-height:20px;width:140px;" (click)="removePerson(element.id)">{{'Remove'| translate}}</button>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div *ngIf="newGroupPeopleList.length == 0" style="width:100%; text-align:center">{{'NoResult' | translate}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-footer d-flex justify-content-between">
+                                <button class="btn-style red-line-btn" routerLink="/access-control/gates/groups" type="button">{{'Exit'| translate}}</button>
+                                <button class="btn-style theme-btn" [disabled]="disableConfirmButton()" (click)="onConfirm()">{{'Confirm'| translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

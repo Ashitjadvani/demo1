@@ -1,0 +1,619 @@
+<section class="client-management create-event-stepper">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="(scopeId === null) ? 'INSIGHTS_MENU.EVENT_MANAGEMENT' : 'INSIGHTS_MENU.Training'"
+                            [title2]="scopeId === null ? null : 'INSIGHTS_MENU.ObbligatoriaProfessionisti'"
+                            [title3]="this.isCalendar === 'calendar'?'INSIGHTS_MENU.Calendar':'INSIGHTS_MENU.Event_list'"
+                            [routePath2]="(scopeId !== null) ? '/training/event-dashboard/'+ scopeId:
+                (this.isCalendar === 'calendar') ?'event-management/event-list' :null"
+                            [routePath3]="
+                (!this.isCalendar && (scopeId !== null)) ?'/training/event-list/' + scopeId:
+                 (this.isCalendar === 'calendar' && (scopeId !== null))? '/training/event-calendar/'+ scopeId:
+                 (this.isCalendar === 'calendar' && (scopeId === null)) ?'/event-management/event-calendar' :
+                 (!this.isCalendar && (scopeId === null)) ?'/event-management/event-list':  null"
+                            [title4]="conditionTextId ? 'EVENT_MANAGEMENT.CreateNewEvent' : 'Edit Event'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper clickableStepper">
+                <mat-horizontal-stepper [linear]="isLinear" labelPosition="bottom" #eventStepper
+                                        (selectionChange)="onTabChanged($event);">
+                    <mat-step *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="detailsInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-details-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Details' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <app-create-event-detail-info [eventStepper]="eventStepper" [authorId]="authorId" [id]="id" [scopeId]="scopeId"
+                                                      [finalValueForm]="finalValueForm" (changeId)="getId($event)"
+                                                      [detailsInfoForm]="detailsInfoForm" [detailsInfoFormOldData]="detailsInfoFormOldData" (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                      [eventCurrentStatus]="eventCurrentStatus" [disableInvitationFlow]="disableInvitationFlow"
+                                                      (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                      (sendInvitationAllByEmailNew)="sendInvitationAllByEmailNew()" (createICSFile)="createICSFile($event)"
+                        ></app-create-event-detail-info>
+                    </mat-step>
+                    <mat-step *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="venuesInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-venue-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Venues' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <app-venue-step [eventStepper]="eventStepper" [authorId]="authorId" [id]="id" [scopeId]="scopeId"
+                                        [finalValueForm]="finalValueForm" [venueSiteList]="venueSiteList"
+                                        [externalVenuesList]="externalVenuesList"
+                                        [detailsInfoFormOldData]="detailsInfoFormOldData"
+                                        [eventCurrentStatus]="eventCurrentStatus"
+                                        [venuesInfoForm]="venuesInfoForm" (changeVenueEvent)="changeVenueType($event)"
+                                        [vanueDetailsForm]="vanueDetailsForm" (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                        (updateFinalFormValue)="updateFinalFormValue($event)" (sendInvitationAllByEmailNew)="sendInvitationAllByEmailNew()"
+                                        (createICSFile)="createICSFile($event)"
+                        ></app-venue-step>
+                    </mat-step>
+                    <mat-step *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="resourcesInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-resources-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Resources' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <app-resource-step [finalValueForm]="finalValueForm" [authorId]="authorId"
+                                           [eventStepper]="eventStepper"
+                                           [id]="id" [scopeId]="scopeId" [resourcesInfoForm]="resourcesInfoForm"
+                                           [resourceByAssetType]="resourceByAssetType"
+                                           [venuesInfoForm]="venuesInfoForm" (siteListTrigger)="getSiteList()"
+                                           (getResourceType)="resourceType($event)" (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                           (updateFinalFormValue)="updateFinalFormValue($event)"
+                                           (createICSFile)="createICSFile($event)"
+                        ></app-resource-step>
+                    </mat-step>
+                    <mat-step *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="servicesInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-services-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Services' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <app-service-step [eventStepper]="eventStepper" [servicesInfoForm]="servicesInfoForm"
+                                          [finalValueForm]="finalValueForm" [id]="id" [scopeId]="scopeId"
+                                          [authorId]="authorId" (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                          (updateFinalFormValue)="updateFinalFormValue($event)"
+                                          (createICSFile)="createICSFile($event)"
+                        ></app-service-step>
+                    </mat-step>
+                    <mat-step *ngIf=" matStepVisible===true" [stepControl]="attendeesInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-attendees-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Attendees' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <div class="create-vertical-wrap">
+                            <div class="create-vertical-sidebar table-content box-style">
+                                <div class="table-heading">
+                                    <h3 style="font-weight: 600">
+                                        <span>{{'EVENT_MANAGEMENT.Attendees' | translate}}</span></h3>
+                                </div>
+                            </div>
+                            <mat-vertical-stepper #attendeesStepper [linear]="attendeesStepperControl"
+                                                  class="vertical-stepper-style create-vertical-stepper {{createTimeId != 0 ? '' : 'create-time-id'}}"
+                                                  labelPosition="bottom" (selectionChange)="checkedListData($event)">
+                                <mat-step [stepControl]="ownerFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.AddOwner' | translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'owner'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (rowToggle)="toggleAllRows()"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'owner')"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            [stepName]="'owner'"
+                                                            [searchExternal]="searchExternal" [sortBy]="sortBy"
+                                                            (outputValue)="changeValue($event)" [sortKey]="sortKey"
+                                                            (addEvent)="addOwnerExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)">
+                                        </app-interal-people>
+
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <app-external-list-rows [externalList]="externalOwnerList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeOwnerExternal($event)"></app-external-list-rows>
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalOwnerList" [id]="id" [scopeId]="scopeId"
+                                                                                 [eventStepper]="eventStepper"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [internalPeoplesList]="internalPeoplesList"
+                                                                                 [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [stepName]="'owner'"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addOwnerExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedOwnerList($event, 'owner')"
+                                                                                 (createICSFile)="createICSFile($event)">
+                                        </app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                                <mat-step [stepControl]="organizerFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.AddOrganizer'| translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'organizer'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (rowToggle)="toggleAllRows()"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'organizer')"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            [stepName]="'organizer'"
+                                                            [searchExternal]="searchExternal" [sortBy]="sortBy"
+                                                            (outputValue)="changeValue($event)" [sortKey]="sortKey"
+                                                            (addEvent)="addOrganizeExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)"></app-interal-people>
+
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <app-external-list-rows [externalList]="externalOrganizeList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeOrganizeExternal($event)"></app-external-list-rows>
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalOrganizeList" [id]="id" [scopeId]="scopeId"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [internalPeoplesList]="internalPeoplesList"
+                                                                                 [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [stepName]="'organizer'"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addOrganizeExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedOrganizerList($event, 'organizer')"
+                                                                                 (createICSFile)="createICSFile($event)"></app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                                <mat-step [stepControl]="speakerFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.AddSpeaker'| translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'speaker'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people (rowToggle)="toggleAllRows()"
+                                                            (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'speaker')"
+                                                            [searchExternal]="searchExternal"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            [stepName]="'speaker'"
+                                                            (outputValue)="changeValue($event)" [sortBy]="sortBy"
+                                                            [sortKey]="sortKey" (addEvent)="addSpeakerExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)"></app-interal-people>
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <!-- <table #externalSpeakerTable [dataSource]="externalSpeakerList" mat-table style="width: 100%" > -->
+                                            <app-external-list-rows [externalList]="externalSpeakerList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeSpeakerExternal($event)"></app-external-list-rows>
+                                            <!-- </table> -->
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalSpeakerList" [id]="id" [scopeId]="scopeId"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [stepName]="'speaker'"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addSpeakerExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedSpeakerList($event, 'speaker')"
+                                                                                 (createICSFile)="createICSFile($event)"></app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                                <mat-step [stepControl]="attendeeFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.AddAttendee'| translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'attendee'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people [stepName]="'attendee'" (rowToggle)="toggleAllRows()"
+                                                            (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'attendee')"
+                                                            [searchExternal]="searchExternal" [sortBy]="sortBy"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            (outputValue)="changeValue($event)" [sortKey]="sortKey"
+                                                            (addEvent)="addAttendeeExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)"></app-interal-people>
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <app-external-list-rows [externalList]="externalAttendeeList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeAttendeeExternal($event)"></app-external-list-rows>
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalAttendeeList" [id]="id" [scopeId]="scopeId"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [stepName]="'attendee'"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addAttendeeExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedAttendeeList($event, 'attendee')"
+                                                                                 (createICSFile)="createICSFile($event)"></app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                                <mat-step [stepControl]="technicalSupportFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.AddTechnicalSupport'| translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'technicalSupport'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people [stepName]="'technicalSupport'"
+                                                            (rowToggle)="toggleAllRows()"
+                                                            (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'technicalSupport')"
+                                                            [searchExternal]="searchExternal"
+                                                            [sortBy]="sortBy"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            (outputValue)="changeValue($event)" [sortKey]="sortKey"
+                                                            (addEvent)="addTechnicalSupportExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)"></app-interal-people>
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <app-external-list-rows [externalList]="externalTechnicalSupportList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeTechnicalSupportExternal($event)"></app-external-list-rows>
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalTechnicalSupportList"
+                                                                                 [id]="id" [scopeId]="scopeId"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [stepName]="'technicalSupport'"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addTechnicalSupportExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedTechnicalSupportList($event, 'technicalSupport')"
+                                                                                 (createICSFile)="createICSFile($event)">
+                                        </app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                                <mat-step [stepControl]="assistantFormGroup">
+                                    <ng-template matStepLabel>
+                                        {{'EVENT_MANAGEMENT.Assistant'| translate}}
+                                    </ng-template>
+                                    <div class="table-content box-style">
+                                        <app-search-attendee
+                                            [headerText]="('EVENT_MANAGEMENT.InternalPeoples' | translate)"
+                                            [selectedInternalPeopleCount] ="selectedInternalPeopleCount"
+                                            [totalCount] ="totalCount"
+                                            [attendeesStepName]="'assistant'"
+                                            [search]="search" (keyUpEvent)="onKeyUp($event)"
+                                            [showSelectedOnly]="showSelectedOnly" (showSelectedEvent)="showSelected($event)"
+                                            (applyInternalFilter)="applyInternalFilterFunction($event)"
+                                            (resetSearchEvent)="resetSearch()"></app-search-attendee>
+                                        <app-interal-people (rowToggle)="toggleAllRows()"
+                                                            (allSelected)="isAllSelected()"
+                                                            (labelCheckox)="checkboxLabel($event)"
+                                                            (sortColumn)="sortColumn($event)"
+                                                            (filter)="applyFilter($event,'assistant')"
+                                                            [searchExternal]="searchExternal"
+                                                            [internalPeoplesList]="internalPeoplesList"
+                                                            [interPeopleDisplayedColumns]="interPeopleDisplayedColumns"
+                                                            [saveInternalOwner]="saveInternalOwner"
+                                                            [saveInternalOrganize]="saveInternalOrganize"
+                                                            [saveInternalSpeaker]="saveInternalSpeaker"
+                                                            [saveInternalAttendee]="saveInternalAttendee"
+                                                            [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                            [saveInternalAssistant]="saveInternalAssistant"
+                                                            [selectedInternalPeople]="selectedInternalPeople"
+                                                            [saveExternalOwner]="saveExternalOwner"
+                                                            [saveExternalOrganize]="saveExternalOrganize"
+                                                            [saveExternalAttendee]="saveExternalAttendee"
+                                                            [saveExternalSpeaker]="saveExternalSpeaker"
+                                                            [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                            [saveExternalAssistant]="saveExternalAssistant"
+                                                            [selectedExternalPeopleCount] = selectedExternalPeopleCount
+                                                            [stepName]="'assistant'"
+                                                            (outputValue)="changeValue($event)" [sortBy]="sortBy"
+                                                            [sortKey]="sortKey" (addEvent)="addAssistantExternal()"
+                                                            [addButtonText]="('EVENT_MANAGEMENT.AddExternalPeople' | translate)"></app-interal-people>
+                                        <div class="table-content-box" style="max-height: 450px;overflow: auto;">
+                                            <app-external-list-rows [externalList]="externalAssistantList"
+                                                                    [externalPeopleDisplayedColumns]="externalPeopleDisplayedColumns"
+                                                                    (externalRemove)="removeAssistantExternal($event)"></app-external-list-rows>
+                                        </div>
+                                        <app-no-record-found-message-with-footer [list]="externalAssistantList"
+                                                                                 [id]="id" [scopeId]="scopeId"
+                                                                                 [authorId]="authorId"
+                                                                                 [saveInternalOwner]="saveInternalOwner"
+                                                                                 [saveExternalOwner]="saveExternalOwner"
+                                                                                 [saveExternalOrganize]="saveExternalOrganize"
+                                                                                 [saveInternalOrganize]="saveInternalOrganize"
+                                                                                 [saveExternalSpeaker]="saveExternalSpeaker"
+                                                                                 [saveInternalSpeaker]="saveInternalSpeaker"
+                                                                                 [saveExternalAttendee]="saveExternalAttendee"
+                                                                                 [selectedInternalPeople]="selectedInternalPeople"
+                                                                                 [saveInternalAttendee]="saveInternalAttendee"
+                                                                                 [saveExternalTechnicalSupport]="saveExternalTechnicalSupport"
+                                                                                 [saveInternalTechnicalSupport]="saveInternalTechnicalSupport"
+                                                                                 [saveExternalAssistant]="saveExternalAssistant"
+                                                                                 [saveInternalAssistant]="saveInternalAssistant"
+                                                                                 [sendAttendeesUserList]="sendAttendeesUserList"
+                                                                                 [stepName]="'assistant'"
+                                                                                 [attendeesStepper]="attendeesStepper"
+                                                                                 [finalValueForm]="finalValueForm"
+                                                                                 (addExternalEvent)="addAssistantExternal()"
+                                                                                 (updateFinalFormValue)="updateFinalFormValue($event)"
+                                                                                 (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                                                                 (savedList)="savedAssistantList($event, 'assistant' ,eventStepper)"
+                                                                                 (createICSFile)="createICSFile($event)"></app-no-record-found-message-with-footer>
+                                    </div>
+                                </mat-step>
+                            </mat-vertical-stepper>
+                        </div>
+                    </mat-step>
+                    <mat-step  *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="documentsInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-documents-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Documents' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <app-documents-step [eventStepper]="eventStepper" [documentsInfoForm]="documentsInfoForm"
+                                          [finalValueForm]="finalValueForm" [id]="id" [scopeId]="scopeId"
+                                          [authorId]="authorId" (detectNewAttendeeUser)="updateAttendeesUserCall($event)"
+                                          (callAttendees)="attendeesCertificateFuncation()"
+                                          (updateFinalFormValue)="updateFinalFormValue($event)"
+                                          (createICSFile)="createICSFile($event)"
+                        ></app-documents-step>
+                    </mat-step>
+                    <mat-step  *ngIf="matStepVisible===true" [stepControl]="checkpointsInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-checkpoints-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Checkpoints' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Checkpoints' | translate}}</h3>
+                                <p class="m-0"><span
+                                    class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <app-checkpoint-step [eventStepper]="eventStepper" [checkpointsInfoForm]="checkpointsInfoForm"
+                                             [finalValueForm]="finalValueForm" [id]="id" [scopeId]="scopeId" [htmlContent]="htmlContent" [editEventData]="editEventData" [disableInvitationFlow]="disableInvitationFlow" [attendeeList]="attendeeList" [attendeeListData]="attendeeListData"
+                                             [authorId]="authorId" (detectNewAttendeeUser)="updateAttendeesUserCall($event)" (callAttendees)="attendeesCertificateFuncation()"
+                                             (createQRCode)="createQRCode($event)" (createICSFile)="createICSFile($event)"
+                                             (updateFinalFormValue)="updateFinalFormValue($event)"
+                            ></app-checkpoint-step>
+                        </div>
+                    </mat-step>
+                    <mat-step *ngIf="editEventData?.status != concludedEvent && matStepVisible===true" [stepControl]="finishInfoForm">
+                        <ng-template matStepLabel>
+                            <span>
+                              <img src="assets/images/event-finish-icon.svg"/>
+                              <p>{{'EVENT_MANAGEMENT.Finish' | translate}}</p>
+                            </span>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.Finish' | translate}}</h3>
+                                <p class="m-0"><span
+                                    class="red-label">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                            </div>
+                            <div class="finish-step">
+                                <div class="download-qr download-qr-generated">
+                                    <img [src]="downloadLink" alt="" class="qrcode-img">
+                                    <a href="{{downloadLink}}" download="image"
+                                       class="link-btn">{{'JOB_OPENING.DOWNLOAD' | translate}}</a>
+                                    <h3>{{'JOB_OPENING.Congratulation' | translate}}</h3>
+                                    <div>
+                                        <h4>{{'EVENT_MANAGEMENT.EventAddedSuccessfully' | translate}}</h4>
+                                    </div>
+                                    <div class="button-group">
+                                        <button class="btn-style theme-btn" type="button" (click)="downloadICSFile()">
+                                            {{'EVENT_MANAGEMENT.DownloadICSFile' | translate}}
+                                        </button>
+                                        <button class="btn-style theme-btn" type="button" (click)="updateAttendeesUserCall(true)">
+                                            {{'EVENT_MANAGEMENT.BackToListOfEvents' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

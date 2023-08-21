@@ -1,0 +1,21 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading |  translate }}</h4>
+            <img (click)="onNoClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content">
+            <b class="d-flex justify-content-end">{{data.CreateDate | date: 'dd/MM/yyyy HH:mm'}}</b>
+            <h4>{{data.title}}</h4>
+            <p>{{data.message}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onNoClick(false)"  class="btn-style inactive">{{'GENERAL.OK' | translate}}</button>
+        </div>
+    </div>
+</section>

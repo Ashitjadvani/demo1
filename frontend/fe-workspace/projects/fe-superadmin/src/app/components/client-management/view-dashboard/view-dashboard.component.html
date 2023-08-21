@@ -1,0 +1,238 @@
+<section class="client-management dashboard">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                  <li routerLink="/client-management" class="breadcrumb-item">Client Management</li>
+                  <li routerLink="/view-client-details" class="breadcrumb-item active" aria-current="page">{{clientName}} Dashboard</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="client-chart statistic-charts">
+                <h3 class="mb-30">{{clientName}} Dashboard</h3>
+                <div class="chart-box box-style">
+                    <div class="chart-pin"  (click)="changePinDialog('peopleManagement', peopleManagementPin)">
+                      <img *ngIf="peopleManagementPin" src="assets/images/pin-icon.svg" alt="">
+                      <img *ngIf="!peopleManagementPin" src="assets/images/pin-view.svg" alt="">
+                    </div>
+                    <div class="chart-header">
+                        <h4>Statistics</h4>
+                    </div>
+                    <div class="statistics-box">
+                        <div class="statistic-content">
+                            <img src="assets/images/people-manage-icon.png" alt="">
+                            <div class="statistic-info">
+                                <h5>People Management</h5>
+                                <p><b *ngIf="peopleModuleData">{{peopleModuleData.accountCount ? peopleModuleData.areaCount : '0'}}</b> Areas</p>
+                                <p><b *ngIf="peopleModuleData">{{peopleModuleData.peopleRolesCount ? peopleModuleData.peopleRolesCount : '0'}}</b> Roles</p>
+                                <p><b *ngIf="peopleModuleData">{{peopleModuleData.jobTitleCount ? peopleModuleData.jobTitleCount : '0'}}</b> Job Titles</p>
+                            </div>
+                        </div>
+                        <div class="statistic-content">
+                            <img src="assets/images/people-icon.svg" alt="">
+                            <div class="statistic-info">
+                                <h5 *ngIf="peopleModuleData">{{peopleModuleData.peopleCount ? peopleModuleData.peopleCount : '0'}}</h5>
+                                <p>People</p>
+                            </div>
+                        </div>
+                        <div class="statistic-content">
+                            <img src="assets/images/people-group-icon.svg" alt="">
+                            <div class="statistic-info">
+                                <h5 *ngIf="peopleModuleData">{{peopleModuleData.peopleGroupCount ? peopleModuleData.peopleGroupCount : '0'}}</h5>
+                                <p> People Groups</p>
+                            </div>
+                        </div>
+                        <div class="statistic-content">
+                            <img src="assets/images/account-icon.svg" alt="">
+                            <div class="statistic-info">
+                                <h5 *ngIf="peopleModuleData">{{peopleModuleData.accountCount ? peopleModuleData.accountCount : '0'}}</h5>
+                                <p> Accounts</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="charts-wrapper">
+                            <div class="client-chart people-by-gender">
+                                <div class="chart-box">
+                                    <div class="chart-header">
+                                        <h4>People By Gender</h4>
+                                    </div>
+                                    <div class="chart-body">
+                                        <div class="client-type">
+                                            <canvas baseChart class="chart"
+                                                    [data]="peopleByGenderData"
+                                                    [labels]="peopleByGenderLabels"
+                                                    [legend]="peopleByRoleLegend"
+                                                    [chartType]="peopleByGenderType"
+                                                    [colors]="peopleByGenderColors"
+                                            ></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="client-chart people-by-role">
+                                <div class="chart-box">
+                                    <div class="chart-header">
+                                        <h4>People By Role</h4>
+                                    </div>
+                                    <div class="chart-body">
+                                        <div class="client-type">
+                                          <canvas baseChart class="chart"
+                                                  [data]="peopleByRoleData"
+                                                  [labels]="peopleByRoleLabels"
+                                                  [options]="peopleByRoleOptions"
+                                                  [legend]="peopleByRoleLegend"
+                                                  [colors]="peopleByRoleColors"
+                                                  [chartType]="peopleByRoleType">
+                                          </canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="chart-group-wrapper">
+                            <div class="chart-header mb-30"><h4>Master Modules</h4></div>
+                            <div class="chart-box box-style">
+                                <div class="chart-pin"  (click)="changePinDialog('masterModules', masterModulesPin)">
+                                  <img *ngIf="masterModulesPin" src="assets/images/pin-icon.svg" alt="">
+                                  <img *ngIf="!masterModulesPin" src="assets/images/pin-view.svg" alt="">
+                                </div>
+                                <div class="chart-header">
+                                    <h4>Statistics</h4>
+                                </div>
+                                <div class="statistics-box">
+                                    <div class="statistic-content">
+                                        <img src="assets/images/people-manage-icon.png" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.eventTypesCount ? masterModuleData.eventTypesCount : "0"}}</h5>
+                                            <p>Event Types</p>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <img src="assets/images/people-icon.svg" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.globleTypeCount ? masterModuleData.globleTypeCount : "0"}}</h5>
+                                            <p>Global Types</p>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <img src="assets/images/people-group-icon.svg" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.scopeCount ? masterModuleData.scopeCount : "0"}}</h5>
+                                            <p>Scopes</p>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <img src="assets/images/account-icon.svg" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.siteCount ? masterModuleData.siteCount : "0"}}</h5>
+                                            <p>Sites</p>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <img src="assets/images/account-icon.svg" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.universityCount ? masterModuleData.universityCount : "0"}}</h5>
+                                            <p>University</p>
+                                        </div>
+                                    </div>
+                                    <div class="statistic-content">
+                                        <img src="assets/images/account-icon.svg" alt="">
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.degreeCount ? masterModuleData.degreeCount : "0"}}</h5>
+                                            <p>Degree</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="chart-group-wrapper">
+                            <div class="chart-header mb-30"><h4>Recruiting</h4></div>
+                            <div class="chart-box box-style">
+                                <div class="chart-pin"  (click)="changePinDialog('recruiting', recruitingPin)">
+                                  <img *ngIf="recruitingPin" src="assets/images/pin-icon.svg" alt="">
+                                  <img *ngIf="!recruitingPin" src="assets/images/pin-view.svg" alt="">
+                                </div>
+                                <div class="chart-header">
+                                    <ul class="chart-details">
+                                        <li>Job Openings</li>
+                                        <li>Candidates</li>
+                                        <li>Job Applications</li>
+                                    </ul>
+                                    <div class="chart-tools">
+                                      <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onTabChanged($event);">
+                                        <mat-tab label="This Week"></mat-tab>
+                                        <mat-tab label="This Month"></mat-tab>
+                                        <mat-tab label="This Year"></mat-tab>
+                                      </mat-tab-group>
+                                    </div>
+                                </div>
+                                <div class="chart-body">
+                                  <canvas id="recruitingMainChart" baseChart class="chart"
+                                          [datasets]="recruitingChartData"
+                                          [labels]="recruitingChartLabels"
+                                          [options]="recruitingChartOptions"
+                                          [legend]="recruitingChartLegend"
+                                          [plugins]="recruitingChartPlugins"
+                                          [colors]="recruitingChartColors"
+                                          [chartType]="recruitingChartType">
+                                  </canvas>
+                                  <div class="noDataAvail" *ngIf="(recruitingRejectedApplicationData.length == 0) && (recruitingHiredApplicationData.length == 0) && (recruitingApplicationData.length == 0) && (recruitingCandidateData.length == 0) && (recruitingOpeningData.length == 0)">
+                                    <span>No Data Available</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="alert-cards">
+                            <div class="chart-header mb-30"><h4>Alerts</h4></div>
+                            <div class="chart-box box-style mt-30" style="background-image: url(assets/images/alerts-bg.svg);">
+                                <div class="chart-pin"  (click)="changePinDialog('alerts', alertsPin)">
+                                  <img *ngIf="alertsPin" src="assets/images/white-pin.svg" alt="">
+                                  <img *ngIf="!alertsPin" src="assets/images/pin-view-white.svg" alt="">
+                                </div>
+                                <img src="assets/images/alert-icon-card.png" class="card-icon" alt="">
+                                <div class="alert-details">
+                                    <h3 *ngIf="mainDashboardData">{{mainDashboardData.alertCount ? mainDashboardData.alertCount : '0'}}</h3>
+                                    <p>Alerts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert-cards">
+                            <div class="chart-box box-style mt-30" style="background-image: url(assets/images/touchpoint-bg.svg);">
+                                <div class="chart-pin"  (click)="changePinDialog('touchPoint', touchPointPin)">
+                                  <img *ngIf="touchPointPin" src="assets/images/white-pin.svg" alt="">
+                                  <img *ngIf="!touchPointPin" src="assets/images/pin-view-white.svg" alt="">
+                                </div>
+                                <img src="assets/images/touchpoint-icon-card.png" class="card-icon" alt="">
+                                <div class="alert-details">
+                                    <h3 *ngIf="mainDashboardData">{{mainDashboardData.touchPointCount ? mainDashboardData.touchPointCount : '0'}}</h3>
+                                    <p>Touch Point</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

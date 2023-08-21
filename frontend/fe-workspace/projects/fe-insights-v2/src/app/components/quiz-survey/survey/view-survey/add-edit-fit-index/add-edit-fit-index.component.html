@@ -1,0 +1,104 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="/quiz-survey/survey" class="breadcrumb-item">{{'Quiz/Survey.Survey' | translate}}</li>
+                  <li class="breadcrumb-item " routerLink="../../"><span>{{'Quiz/Survey.SurveyDetails' | translate}}</span></li>
+                  <li class="breadcrumb-item " routerLink="../">{{'Quiz/Survey.Fit-Index Calc Management' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'RECRUITING.FitIndex' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Quiz/Survey.Survey'" [routePath]="'/quiz-survey/survey'"
+            [title2]="'Quiz/Survey.SurveyDetails'" [routePath]="'../../'" [title3]="'Quiz/Survey.Fit-Index Calc Management'"
+            [type2]="'RECRUITING.FitIndex'" [title4]="title">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'RECRUITING.FitIndex' | translate}}</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addFitIndexForm" [formGroup]= "addFitIndexForm"  novalidate
+                    (ngSubmit)="changeCategory()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Matrics' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="metric_id">
+                                            <mat-option>{{'Quiz/Survey.SelectMetric' | translate}}</mat-option>
+                                            <mat-option *ngFor="let metric of metricList" value="{{metric.metricId}}">{{metric.metricName}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addFitIndexForm.controls.metric_id.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselectmetric' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Quiz/Survey.Operatior' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="operator">
+                                            <mat-option>{{'Quiz/Survey.Select Operator' | translate}}</mat-option>
+                                            <mat-option *ngFor="let operatior of operatiorList" value="{{operatior.value}}">{{operatior.viewValue}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="addFitIndexForm.controls.operator.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselectoperatior' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Value' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="number" formControlName="value" matInput  name="value" >
+                                        <mat-error *ngIf="addFitIndexForm.controls.value.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseenteryourvalue' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.TextResult' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="result" matInput  name="result" >
+                                        <mat-error *ngIf="addFitIndexForm.controls.result.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseenteryourtextresult' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Quiz/Survey.ScalarResult' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="number" formControlName="scalarResult" matInput  name="scalarResult" >
+                                        <mat-error *ngIf="addFitIndexForm.controls.scalarResult.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseenteryourscalarresult' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit" (click)="addFitIndex()">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="../../" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

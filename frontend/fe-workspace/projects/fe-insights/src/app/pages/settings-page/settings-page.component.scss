@@ -1,0 +1,40 @@
+.list-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+.action-button-list {
+    height: 100%;
+    width: 7%;
+    display: flex;
+    flex-direction: column;
+
+    .action-button {
+        margin-bottom: 20px;
+        color: white;
+    }
+}
+
+.title-label {
+    font-size: x-large;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.settings-container {
+    height: auto;
+    width: 93%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+
+.mat-form-field {
+    width: 25%;
+    top: 10%;
+}

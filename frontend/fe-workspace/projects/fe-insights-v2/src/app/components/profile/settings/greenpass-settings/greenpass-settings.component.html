@@ -1,0 +1,57 @@
+<form class="w-100" name="greenPassForm" [formGroup]= "greenPassForm"  novalidate (ngSubmit)="changeGreenPass()" #myform="ngForm">
+    <div class="form-main table-content box-heading">
+        <h3>{{'INSIGHTS_PEOPLE_PAGE.Greenpass Settings' | translate}}</h3>
+        <div class="form-row-wrapper">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="abilitation" >{{'Greenpass Request Abilitation' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="requestedForCheckIn" >{{'Request greenpass for check in' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <div class="custom-switch">
+                    <mat-checkbox formControlName="checkName" >{{'Check name correspondence' | translate}} </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <div class="custom-switch">
+                    <mat-checkbox formControlName="checkDate" >{{'Check date of birth correspondence' | translate}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+         <!--       <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>Requested Level</mat-label>
+                            <mat-select formControlName="requestedFormControl">
+                                <mat-option>Select Requested Level</mat-option>
+                                <mat-option *ngFor="let requestedOption of requestedLevel" [value]="requestedOption">
+                                  {{requestedOption}}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="greenPassForm.controls.requestedFormControl.errors?.required">
+                            Please select your encryption.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div class="form-footer">
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</form>

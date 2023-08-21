@@ -1,0 +1,59 @@
+@import "../../../theme/theme.scss";
+
+.padding-tile {
+    visibility: hidden;
+}
+
+.main-tile {
+    width: 100%;
+}
+
+.home-page-content-container {
+    height: auto;
+}
+
+.bottom-sheet {
+    background: red;
+    width: 350px !important;
+    min-width: 100px;
+}
+
+::ng-deep .mat-bottom-sheet-container {
+    min-width: 350px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+    background: #d1d1d1;
+}
+
+.qr-code-tile-container {
+    width: 165px;
+    height: 170px;
+    // padding: 8px;
+    cursor: pointer;
+}
+
+.qr-code-tile {
+    margin: auto;
+    width: 160px;
+    height: 160px;    
+    border: 1px solid rgb(232, 232, 232);
+    border-radius: 15px;
+    box-shadow: 2px 2px 0px rgb(230, 230, 230);
+    background-color: rgb(255, 255, 255);
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-content: center;
+}
+
+.qr-code {
+    padding-top:8px;
+    padding-left:3px;
+}
+
+.verify-greenpass-icon {
+    height:100%;
+    font-size: 100px;
+    color: green;
+    padding-top: 25px;
+}

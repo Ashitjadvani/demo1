@@ -1,0 +1,63 @@
+<div class="general-container">
+  <div class="first-line">
+      <div class="card width-40 height-100">
+          <div class="card-header">
+              <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.Greenpass Settings' | translate}}</div>
+          </div>
+          <div class="card-body">
+            <mat-checkbox [(ngModel)]="currentGreenpassSettings.abilitation" (change)="somethingChanged()" >
+                {{'INSIGHTS_PEOPLE_PAGE.Greenpass Abilitation' | translate}}
+            </mat-checkbox>
+            <!--div *ngFor="let ageRangeLevel of currentGreenpassSettings.ageRangeLevel" class="age-range-level-container">
+                {{'INSIGHTS_PEOPLE_PAGE.From' | translate}}: 
+                <mat-form-field class="width-50">
+                    <input [disabled]="!currentGreenpassSettings.abilitation" matInput type="number" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Years' | translate}}" (change)="onRangeChanged(ageRangeLevel)" [(ngModel)]="ageRangeLevel.lowerBound">
+                </mat-form-field>
+                <span class="span-20"></span>
+                {{'INSIGHTS_PEOPLE_PAGE.To' | translate}}: 
+                <mat-form-field class="width-50">
+                    <input [disabled]="!currentGreenpassSettings.abilitation" matInput type="number" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Years' | translate}}" (change)="onRangeChanged(ageRangeLevel)" [(ngModel)]="ageRangeLevel.upperBound">
+                </mat-form-field>
+                <span class="span-30"></span>
+                <mat-form-field class="width-230">
+                    <mat-select [disabled]="!currentGreenpassSettings.abilitation" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Greenpass Level' | translate}}" [(ngModel)]="ageRangeLevel.level" (selectionChange)="somethingChanged()" >
+                        <mat-option value="BASE">
+                            {{'INSIGHTS_PEOPLE_PAGE.Greenpass Base' | translate}}
+                        </mat-option>
+                        <mat-option value="SUPER">
+                            {{'INSIGHTS_PEOPLE_PAGE.Greenpass Super' | translate}}
+                        </mat-option>
+                        <mat-option value="BOOSTER">
+                            {{'INSIGHTS_PEOPLE_PAGE.Greenpass Booster' | translate}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-icon-button [disabled]="!currentGreenpassSettings.abilitation" class="remove-age-range-button" (click)="onRemoveAgeRangeLevelClick(ageRangeLevel)">
+                    <i class="material-icons icon">close</i>
+                </button>
+            </div>
+            <div class="add-age-range-level">
+                <button [disabled]="!currentGreenpassSettings.abilitation" mat-icon-button class="add-age-range-button" (click)="onAddAgeRangeLevelClick()">
+                    <i class="material-icons">add</i>
+                </button>
+                <div class="add-age-range-label">{{'INSIGHTS_PEOPLE_PAGE.Add Age Range Level' | translate}}</div>
+            </div-->
+            <mat-checkbox [disabled]="!currentGreenpassSettings.abilitation" [(ngModel)]="currentGreenpassSettings.requestedForCheckIn" (change)="somethingChanged()" >
+                {{'INSIGHTS_PEOPLE_PAGE.Greenpass Requested' | translate}}
+            </mat-checkbox>
+            <!--mat-checkbox [disabled]="!currentGreenpassSettings.abilitation" [(ngModel)]="currentGreenpassSettings.storeGreenpass" (change)="somethingChanged()" >
+                {{'INSIGHTS_PEOPLE_PAGE.Greenpass Store' | translate}}
+            </mat-checkbox-->
+            <mat-checkbox [disabled]="!currentGreenpassSettings.abilitation" [(ngModel)]="currentGreenpassSettings.checkName" (change)="somethingChanged()" >
+                {{'INSIGHTS_PEOPLE_PAGE.Greenpass Check Name' | translate}}
+            </mat-checkbox>
+            <mat-checkbox [disabled]="!currentGreenpassSettings.abilitation" [(ngModel)]="currentGreenpassSettings.checkDate" (change)="somethingChanged()" >
+                {{'INSIGHTS_PEOPLE_PAGE.Greenpass Check Date' | translate}}
+            </mat-checkbox>
+          </div>
+          <div class="card-footer">
+
+          </div>
+      </div>
+  </div>
+</div>

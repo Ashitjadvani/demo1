@@ -1,0 +1,100 @@
+@import "../../../styles.scss";
+
+.access-control-page-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 64px);
+    margin: auto;
+    padding: 20px;
+    overflow-y: auto;
+
+    .group-tab {
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+    }
+}
+
+:host ::ng-deep .green {
+    color: green;
+}
+:host ::ng-deep .red {
+    color: rgb(175, 13, 13);
+}
+
+:host ::ng-deep .green-bkg {
+    background: rgb(112, 255, 17);
+}
+:host ::ng-deep .red-bkg {
+    background: red;
+}
+:host ::ng-deep .yellow {
+    color: rgb(238, 166, 0);
+}
+:host ::ng-deep .grey {
+    color: rgb(201, 201, 201);
+}
+
+:host ::ng-deep .dot {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+:host ::ng-deep .mat-column-Type {
+    max-width: 60px;
+}
+
+:host ::ng-deep .mat-column-Valid {
+    max-width: 60px;
+}
+
+:host ::ng-deep .mat-column-LimitNumber {
+    max-width: 80px;
+}
+
+:host ::ng-deep .mat-column-Blocked {
+    max-width: 80px;
+}
+
+:host ::ng-deep .mat-column-Online {
+    max-width: 80px;
+}
+
+
+
+/*
+:host ::ng-deep .mat-column-Name {
+    flex: 1 1 60px;
+}
+:host ::ng-deep .mat-column-Surname {
+    flex: 1 1 60px;
+}
+:host ::ng-deep .mat-column-Email {
+    flex: 1 1 80px;
+}
+:host ::ng-deep .mat-column-Type {
+    flex: 1 1 60px;
+}
+:host ::ng-deep .mat-column-StartDate {
+    flex: 1 1 60px;
+}
+:host ::ng-deep .mat-column-EndDate {
+    flex: 1 1 60px;
+}
+:host ::ng-deep .mat-column-LimitNumber {
+    flex: 1 1 50px;
+}
+:host ::ng-deep .mat-column-Blocked {
+    max-width: 40px;
+}*/
+
+:host ::ng-deep .small {
+    font-size:smaller;
+}
+
+
+

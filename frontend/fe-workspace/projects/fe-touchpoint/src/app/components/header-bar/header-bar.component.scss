@@ -1,0 +1,66 @@
+@import "../../../theme/theme.scss";
+
+.page-header {
+    width: 100%;
+    height: 56px;
+    background-color: mat-color($mat-primary, main);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+}
+
+.page-header-logo {
+    width: auto;
+    height: 40px;
+    margin-top: 12px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.span {
+    flex-grow: 1;
+}
+
+/*
+.page-header {
+    width: 100%;
+    height: 64px;
+    // background-color: mat-color($mat-primary, main);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.page-header-command {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.page-header-title {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+    flex-grow: 1;
+    line-height: 64px;
+    font-size: medium;
+}
+
+.page-header-logo {
+    width: auto;
+    height: 40px;
+    margin-top: 12px;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.span {
+    flex-grow: 1;
+}
+
+.filter-black {
+    filter: invert(100%) sepia(98%) saturate(9%) hue-rotate(157deg) brightness(93%) contrast(102%);
+} 
+*/

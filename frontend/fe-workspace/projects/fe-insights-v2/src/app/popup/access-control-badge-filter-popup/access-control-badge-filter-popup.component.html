@@ -1,0 +1,31 @@
+<section class="popups" style="max-width:400px">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'FilterByGroup' | translate}}</h4>
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <mat-form-field appearance="outline" class="element-full-width">
+                <mat-label>{{'SelectGroup' | translate}}</mat-label>
+                <mat-select [(value)]="selectedGroupId">
+                  <mat-option *ngFor="let group of groups" [value]="group.id">
+                    {{ group.name }}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="form-field">
+                <div class="custom-switch">
+                    <mat-checkbox [(ngModel)]="getOnlyActive">{{'GetOnlyActiveBadge' | translate}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onConfirmClick()" class="btn-style theme-btn">{{'Confirm' | translate}}</button>
+            <button (click)="onCancelClick()"  class="btn-style inactive">{{'Cancel' | translate}}</button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,101 @@
+<div class="col-md-12">
+    <div class="common-tabbing">
+        <div class="table-content box-style company-info">
+            <div class="table-heading">
+                <h3 style="font-weight: 600">{{sharedData.title | translate}}</h3>
+                <div class="search-form-wrapper">
+                </div>
+            </div>
+            <div class="form-content-box">
+                <form class="w-100" name="addAreasForm" [formGroup]= "emailUpdateForm"  novalidate
+                      #myform="ngForm" (ngSubmit)="updateEmailTemplate()">
+                    <div class="row">
+                        <div class="col-xl-12 col-xxl-12">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width phone">
+                                    <mat-label>{{'EVENT_MANAGEMENT.EmailSubject' | translate}}</mat-label>
+                                    <input  formControlName="subject" type="text"  matInput  name="subject">
+                                    <mat-error *ngIf="emailUpdateForm.controls.subject.errors?.required">
+                                        {{'EVENT_MANAGEMENT.EnterSubjectName' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="custom-editor mb-30">
+                                <!--                                <mat-label>Privacy Policy (English)</mat-label>-->
+                                <div class="form-field error-message-custom">
+                                    <angular-editor [config]="config" [(ngModel)]="sharedData.template" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}" formControlName="template"></angular-editor>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="view-legenda">
+                            <mat-accordion>
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                     (closed)="panelOpenState = false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            {{'EVENT_MANAGEMENT.View Legenda' | translate}}
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <div class="col-xl-12 col-xxl-12">
+                                        <div class="legenda">
+                                            <h4>{{'EVENT_MANAGEMENT.Legenda' | translate}}</h4>
+                                            <div class="led-container">
+                                                <ul>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Attendee_Name%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Name of attendee' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Name%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Name of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%web meeting link%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.meeting_link' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Venue%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Event_venue' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Organizer_Email_Address%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Organizer_Email_Address' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_Start_Date%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.Start Date of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%Event_End_Date%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.End Date of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%From_Time%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.From time of Event' | translate}}</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="title">{{'EVENT_MANAGEMENT.%To_Time%' | translate}}</div>
+                                                        <span>{{'EVENT_MANAGEMENT.To time of Event' | translate}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>-->
+                    </div>
+                    <div class="form-footer">
+                        <button class="btn-style theme-btn" type="submit"  >{{'GENERAL.Save'|translate}}</button>
+                        <button class="btn-style red-line-btn" (click)="clearData()" type="button">{{'GENERAL.Cancel'|translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

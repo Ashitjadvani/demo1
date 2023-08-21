@@ -1,0 +1,292 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ASSETS_MANAGEMENT'"  [routePath2]="'/assets-management/resource-group'" [title2]="'INSIGHTS_MENU.Resource_Group'" [backPath]="'EVENT_MANAGEMENT.Resources'"
+                            (back)="back()" [title3]="title" [type]="'Resource'"></app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper clickableStepper">
+                <mat-horizontal-stepper linear labelPosition="bottom">
+                    <mat-step [stepControl]="resourceForm">
+                        <ng-template matStepLabel>
+                            <div>
+                                <img src="assets/images/survey-details.svg"/>
+                                <p>{{'SITES.General' | translate}}</p>
+                            </div>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">
+                                    <span>{{title}} {{'EVENT_MANAGEMENT.Resource' | translate}} {{resourceType ? resourceType : resourceTypeAdd}}</span>
+                                </h3>
+                                <div class="search-form-wrapper">
+                                    <div class="buttons-group">
+                                        <p><span
+                                            style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="w-100" [formGroup]="resourceForm" (ngSubmit)="submit()" novalidate>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'EVENT_MANAGEMENT.Resource' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="code" [readonly]="resourceType" type="text"
+                                                       name="Code" matInput>
+                                                <mat-error *ngIf="resourceForm.controls.code.errors?.required">
+                                                    {{'ASSETS_MANAGEMENT.pleaseEnterResourceName' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field error-message-custom">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'TABLE.Description' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input formControlName="description" type="text" name="Description"
+                                                       matInput>
+                                                <mat-error *ngIf="resourceForm.controls.description.errors?.required">
+                                                    {{'ASSETS_MANAGEMENT.pleaseEnterResourceDescription' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'INSIGHTS_PEOPLE_PAGE.SITE'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <mat-select formControlName="site" placeholder="Site">
+                                                    <mat-option *ngFor="let site of allSites"
+                                                                value="{{ site.key }}">
+                                                        {{ site.key}}
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="resourceForm.controls.site.errors?.required">
+                                                    {{'ASSETS_MANAGEMENT.pleaseSelectResourceSite' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ADMIN DIALOGS.CAPACITY' | translate}}</mat-label>
+                                                <input formControlName="capacity" type="number" name="capacity" matInput
+                                                       onkeypress="return event.charCode != 32">
+                                                <!--                                                        <mat-error *ngIf="resourceForm.controls.password.errors?.required">-->
+                                                <!--                                                            {{'Enter your password' | translate}}-->
+                                                <!--                                                        </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="custom-switch switch mt-0">
+                                            <mat-checkbox formControlName="enabled"
+                                            >{{'ASSETS_MANAGEMENT.Enabled' | translate}}</mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'RECRUITING.Area' | translate}}</mat-label>
+                                                <mat-select formControlName="area" placeholder="{{'RECRUITING.Area' | translate}}">
+                                                    <mat-option *ngIf="filterResourceTypes?.customData.areas.length=== 0">{{'TABLE.No_record_found'|translate}}</mat-option>
+                                                    <mat-option
+                                                        *ngFor="let area of filterResourceTypes?.customData.areas"
+                                                        value="{{ area }}">
+                                                        {{ area}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.Facility'| translate}}</mat-label>
+                                                <mat-select  formControlName="facilityList" placeholder="{{'ASSETS_MANAGEMENT.Facility'| translate}}"
+                                                            #select multiple>
+                                                    <div class="custom-select-all">
+                                                        <mat-checkbox [(ngModel)]="allSelected"
+                                                                      [ngModelOptions]="{standalone: true}"
+                                                                      (change)="toggleAllSelection()">{{'EVENT_MANAGEMENT.SelectAll' | translate}}</mat-checkbox>
+                                                    </div>
+                                                    <mat-option
+                                                        *ngFor="let facility of filterResourceTypes?.customData.facilities"
+                                                        value="{{ facility}}" (click)="optionClick()">
+                                                        {{ facility}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.Layout'| translate}}</mat-label>
+                                                <mat-select formControlName="layout" placeholder="{{'ASSETS_MANAGEMENT.Layout'| translate}}">
+                                                    <mat-option *ngIf="filterResourceTypes?.customData.layouts.length=== 0">{{'TABLE.No_record_found'|translate}}</mat-option>
+                                                    <mat-option
+                                                        *ngFor="let layout of filterResourceTypes?.customData.layouts"
+                                                        value="{{ layout }}">
+                                                        {{ layout}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.gracePeriodMinutes' | translate}}</mat-label>
+                                                <input formControlName="gracePeriod" type="number" autocomplete="off"
+                                                       name="Site" matInput>
+                                                <!--                                                        <mat-error *ngIf="resourceForm.controls.userName.errors?.required">-->
+                                                <!--                                                            {{'Enter your username' | translate}}-->
+                                                <!--                                                        </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.instantBookMinutes' |translate}}</mat-label>
+                                                <input formControlName="minutesInstantBook" type="number"
+                                                       autocomplete="off" name="Site" matInput>
+                                                <!--                                                        <mat-error *ngIf="resourceForm.controls.userName.errors?.required">-->
+                                                <!--                                                            {{'Enter your username' | translate}}-->
+                                                <!--                                                        </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.extendBookMinutes' | translate}}</mat-label>
+                                                <input formControlName="minutesExtendedBook" type="number"
+                                                       autocomplete="off" name="Site" matInput>
+                                                <!--                                                        <mat-error *ngIf="resourceForm.controls.userName.errors?.required">-->
+                                                <!--                                                            {{'Enter your username' | translate}}-->
+                                                <!--                                                        </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.panelRefreshRateSeconds' | translate}}</mat-label>
+                                                <input formControlName="panelRefreshRate" type="number"
+                                                       autocomplete="off" name="Site" matInput>
+                                                <!--                                                        <mat-error *ngIf="resourceForm.controls.userName.errors?.required">-->
+                                                <!--                                                            {{'Enter your username' | translate}}-->
+                                                <!--                                                        </mat-error>-->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="form-footer step-form-bottom">
+                                        <button class="btn-style red-line-btn" (click)="back()"
+                                                type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        <button class="btn-style theme-btn" matStepperNext
+                                                type="submit">{{'GENERAL.Save&Next'| translate}} <span
+                                            class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>
+                            <div>
+                                <img src="assets/images/questions-icons.svg"/>
+                                <p>{{'ASSETS_MANAGEMENT.uploadResourceImage' | translate}}</p>
+                            </div>
+                        </ng-template>
+                        <div class="attendee-detail-wrapper inner-tabbing document-detail-wrapper">
+                            <div class="box-style company-info simple-tabbing">
+                                <ng-container>
+                                    <div class="col-md-12">
+                                        <div class="generate-button">
+                                            <label>{{'ASSETS_MANAGEMENT.uploadResourceImage' | translate}}</label>
+                                            <button class="btn-style red-btn file-upload-button" type="button">
+                                                <span class="material-icons">upload</span>
+                                                {{'EDIT COMPANY.Drag and Drop here' | translate}}
+                                                <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                                                <span
+                                                    class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                                                <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg"
+                                                       id="file" #documentInput (change)="onFileChanged(documentInput,$event)"
+                                                       id="emp-input-profile"/>
+                                            </button>
+                                            <span class="file-info">
+                                                <span class="material-icons close-icon"
+                                                      (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                                                                                </span>
+                                                                              </span>
+                                            <div class="company-brochure mb-30">
+                                                <img [src]="this.url" alt="">
+<!--                                                <pdf-viewer [autoresize]="true" [original-size]="false" [show-all]="true" [src]="fileToUpload" class="pdf-viewer"></pdf-viewer>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="form-footer step-form-bottom">
+                                    <button class="btn-style red-line-btn" (click)="back()"
+                                            type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    <button class="btn-style theme-btn" matStepperNext
+                                            type="submit" (click)="saveImage()">{{'GENERAL.Save&Next'| translate}} <span
+                                        class="material-icons">arrow_forward</span></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>
+                            <div>
+                                <img src="assets/images/fit-index-calc-management.svg"/>
+                                <p>{{'ASSETS_MANAGEMENT.uploadResourceMap' | translate}}</p>
+                            </div>
+                        </ng-template>
+                        <div class="attendee-detail-wrapper inner-tabbing document-detail-wrapper">
+                            <div class="box-style company-info simple-tabbing">
+                                <ng-container>
+                                    <div class="col-md-12">
+                                        <div class="generate-button">
+                                            <label>{{'ASSETS_MANAGEMENT.uploadResourceMap' | translate}}</label>
+                                            <button class="btn-style red-btn file-upload-button" type="button">
+                                                <span class="material-icons">upload</span>
+                                                {{'EDIT COMPANY.Drag and Drop here' | translate}}
+                                                <br> {{'EDIT COMPANY.Or' | translate}} <br>
+                                                <span
+                                                    class="blue-label">{{'EDIT COMPANY.Browse File' | translate}}</span>
+                                                <input type="file" accept="image/png ,image/svg , image/jpg ,image/jpeg"
+                                                       id="file" #documentInput2 (change)="onMapChanged(documentInput2,$event)" id="emp-input-profile"/>
+                                            </button>
+                                                                                        <span class="file-info">
+                                                                                            <span class="material-icons close-icon" (click)="resetMapCoverValue()">{{ this.mapDocumentName ? "close" : null }}
+                                                                                </span>
+                                                                              </span>
+                                            <div class="company-brochure mb-30">
+                                                <img [src]="this.mapUrl" alt="">
+                                                <!--                                                <pdf-viewer [autoresize]="true" [original-size]="false" [show-all]="true" [src]="fileToUpload" class="pdf-viewer"></pdf-viewer>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="form-footer step-form-bottom">
+                                    <button class="btn-style red-line-btn" (click)="back()"
+                                            type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    <button class="btn-style theme-btn"
+                                            type="submit" (click)="saveMap()">{{'GENERAL.Save&Finish'| translate}} <span
+                                        class="material-icons">arrow_forward</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

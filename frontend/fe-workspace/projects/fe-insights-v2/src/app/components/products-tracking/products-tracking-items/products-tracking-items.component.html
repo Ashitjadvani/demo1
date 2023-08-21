@@ -1,0 +1,83 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'Tracciamento Produzioni'" [title3]="'Articoli'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600">
+                        Articoli
+                        <!--
+                        <span class="refresh-btn" (click)="onRefreshTable()" matTooltip="Refresh">
+                            <mat-icon>autorenew</mat-icon>
+                        </span>
+                        -->
+                    </h3>
+                    <div class="search-form-wrapper">
+                        <div class="search-form">
+                            <mat-icon matPrefix class="material-icons search">search</mat-icon>
+                            <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="Cerca" />
+                            <mat-icon *ngIf="searchBox.value !='' " class="material-icons clear" (click)="resetSearch()">clear</mat-icon>
+                        </div>
+
+                        <button class="btn-style" (click)="onSyncItems()">
+                            <span class="material-icons">sync</span>Sync
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper resource-color-table">
+                    <table #table mat-table matSort [dataSource]="listOfItems | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" style="width: 100%">
+                        <mat-tab-group>
+                            <!--
+                            <ng-container matColumnDef="view">
+                                <th *matHeaderCellDef class="short-arrow" mat-header-cell style="min-width: 80px;">
+                                    {{'TABLE.Action' | translate}}
+                                </th>
+                                <td class="p-0" mat-cell *matCellDef="let element; let i = index" style="white-space: nowrap;min-width: 80px;">
+                                    <span [style.borderLeftColor]="element.statusText == 'Inactive' ? '#ff0000' : 'transparent'" class="border-types" style="white-space: nowrap;">
+                                        <app-wheel-action [icons]="'three'" [viewOn]="true" [editOn]="allowEdit" [deleteOn]="allowDelete" [element]="element" (edit)="edit($event)" (view)="viewDetail($event)" (delete)="openDeleteDialog($event)"></app-wheel-action>
+                                    </span>
+                                </td>
+                            </ng-container>
+                            -->
+                            <ng-container matColumnDef="code">
+                                <th (click)="changeSorting('code',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:200px;">
+                                    <div class="table-title">
+                                        <span>Codice</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'opening.description' && sortBy === '-1' , 'up': sortKey === 'opening.description' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:200px;text-transform: capitalize;">{{element.code ? element.code : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <th (click)="changeSorting('description',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow">
+                                    <div class="table-title">
+                                        <span style="white-space: nowrap;text-transform: capitalize;">Descrizione</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'opening.jobOpeningType' && sortBy === '-1' , 'up': sortKey === 'opening.jobOpeningType' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="word-break: initial;">{{element.description ? element.description : '-'}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="measure_unit">
+                                <th (click)="changeSorting('measure_unit',sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow" style="min-width:100px;">
+                                    <div class="table-title">
+                                        <span>Unità di misura</span><span class="arrow-sorting" [ngClass]="{'down': sortKey === 'person.cognome' && sortBy === '-1' , 'up': sortKey === 'person.cognome' && sortBy === '1'}">
+                                            <img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element" style="min-width:100px;text-transform: capitalize;">{{element.measure_unit ? element.measure_unit : '-'}}</td>
+                            </ng-container>
+                        </mat-tab-group>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+                <app-pagination [noRecordFound]="noRecordFound" [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)" [totalItems]="totalItems"></app-pagination>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,102 @@
+.span-spacer {
+    flex: 1 1 auto;
+}
+
+.blue-color {
+    color: #0640A9;
+}
+
+.main-bar {
+    padding: 10px;
+    width: 100%;
+    height: 80px;
+
+    .main-bar-card {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        border-radius: 10px;
+
+        justify-content: space-between;
+
+        background-color: #ebebeb;
+        box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+        .logo {
+            height: 64px;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: 16px;
+        }
+
+        .label-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 100px;
+            line-height: 2.1em;
+            cursor: pointer;
+
+            .label {
+                font-size: large;
+                font-weight: 500;
+            }
+        }
+
+        .logout-button {
+            margin-top: auto;
+            margin-bottom: auto;
+            height: 48px;
+            width: 48px;
+
+            .logout-icon {
+                font-size: xx-large;
+            }
+        }
+
+        .profile-button {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-right: 10px;
+            height: 48px;
+            width: 48px;
+            background: white;
+            font-size: 32px;
+
+            .profile-icon {
+                margin-top: -4px;
+                font-size: 32px;
+            }
+        }
+
+    }
+}
+
+.main-toolbar {
+    height: 210px;
+    overflow: hidden;
+    max-width: 400px;
+
+    .agos-logo {
+        height: 28px;
+        cursor: pointer;
+    }
+
+    .main-header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-header-title {
+        font-size: medium;
+    }
+
+    .main-header-subtitle {
+        font-size: x-small;
+    }
+
+    .account-image {
+        width: 40px;
+        height: 40px;
+    }
+}

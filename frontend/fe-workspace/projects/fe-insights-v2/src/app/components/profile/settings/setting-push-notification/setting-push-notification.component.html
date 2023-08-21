@@ -1,0 +1,23 @@
+<form class="w-100" name="pushNotificationform" [formGroup]= "pushNotificationform"  novalidate (ngSubmit)="setServer()" #myform="ngForm">
+  <div class="form-main table-content box-heading">
+    <h3>{{'INSIGHTS_MENU.PUSH_NOTIFICATIONS' | translate}}</h3>
+    <div class="form-row-wrapper">
+      <div class="row">
+        <div class="col-xl-6 col-xxl-4">
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="element-full-width">
+              <mat-label>{{'Push notification token' | translate}}</mat-label>
+              <input type="text"  name="token" formControlName="token" matInput >
+              <mat-error *ngIf="pushNotificationform.controls.token.errors?.required">
+                {{'Enter your push notification token' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-footer">
+      <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+    </div>
+  </div>
+</form>

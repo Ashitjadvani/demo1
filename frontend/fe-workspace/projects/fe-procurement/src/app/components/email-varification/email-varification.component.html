@@ -1,0 +1,50 @@
+<section class="login equal-height">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-lg-7 d-flex align-item-center">
+                    <div class="banner-img">
+                        <img src="./assets/images/email-varification.svg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-content">
+                        <div class="back-btn" routerLink="/signup"><mat-icon>arrow_back</mat-icon>{{'GENERAL.Back' | translate}}</div>
+                        <div class="logo">
+                            <img src="./assets/images/legance-color.svg" routerLink="" alt="">
+                        </div>
+                        <form name="loginForm" [formGroup]="emailVerificationForm" novalidate (ngSubmit)="onSubmit()">
+                            <div class="form-wrapper">
+                                <div class="input-wrapper">
+                                    <div class="form-title">
+                                        <h3>{{'EMAIL_VERIFICATION.Email_Verify' | translate }}</h3>
+                                        <p>{{'EMAIL_VERIFICATION.Sent_code' | translate }}  <span>{{companyReference}}</span>.</p>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <input formControlName="otp" id="otp" matInput maxlength="6" minlength="6" name="otp" placeholder="{{'GENERAL.TypeHere' | translate }}" type="text">
+                                            <mat-error *ngIf="emailVerificationForm.controls.otp.errors?.required">{{'EMAIL_VERIFICATION.Sent_Code_Error' | translate }} </mat-error>
+                                            <mat-error *ngIf="emailVerificationForm.controls.otp.errors?.pattern">{{'MYACCOUNT.EnterOnlyNumber' | translate}} </mat-error>
+                                            
+                                         </mat-form-field>
+                                    </div>
+                                    <div class="remember-forgot text-right" style="text-align: right;">
+                                        <a >{{'EMAIL_VERIFICATION.Get_Code' | translate }} 
+                                            <span  (click)="resendCode()" class="forgot-link" style="text-decoration: underline;margin-left: 5px;line-height: inherit;" >
+                                                {{'EMAIL_VERIFICATION.ResendCode' | translate }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-btn">
+                                    <button class="full-btn"  mat-button  type="submit">{{'GENERAL.Submit' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

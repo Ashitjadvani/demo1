@@ -1,0 +1,25 @@
+<div class="resource-item">
+    <div class="content">
+        <div class="image-container">
+            <img *ngIf="imageUrl" class="resource-image" [src]="imageUrl">
+            <img *ngIf="!imageUrl" class="resource-image" src="./assets/images/image-placeholder.svg">
+        </div>
+        <div class="resource-details">
+            <div class="resource-name">{{ safeNameDisplay() }}</div>
+            <div class="resource-address">{{ safeAddressDisplay() }}</div>
+
+            <ul class="resource-features" *ngIf="resourceItem">
+                <li class="resource-feature" *ngFor="let feature of resourceItem.custom.facilityList">
+                    <!-- <i class="theme-icon small" [ngClass]="feature"></i> -->
+                    <img class="feature-image" [src]="getFeatureImage(feature)" [matTooltip]="feature">
+                </li>
+            </ul>
+
+        </div>
+        <div class="resource-actions" *ngIf="displayActions">
+            <button mat-icon-button class="resource-action" (click)="onResourceSelect()">
+                <i class="theme-icon medium arrow-right-box"></i>
+            </button>
+        </div>
+    </div>
+</div>

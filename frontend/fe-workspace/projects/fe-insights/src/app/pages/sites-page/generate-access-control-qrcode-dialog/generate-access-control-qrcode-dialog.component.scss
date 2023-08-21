@@ -1,0 +1,63 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 5px;
+    height:500px;
+    width:1050px;
+}
+
+.label {
+    padding-bottom:5px;
+}
+
+.first-flex-row {
+    display:flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    align-content: center;
+    gap:30px;
+}
+
+.check-list {
+    padding-top: 9px;
+    padding-left: 12px;
+    padding-bottom:9px;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 5px;
+    overflow-y: auto;
+    height:350px;
+}
+
+.section {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 400px;
+    box-shadow: 2px 2px 8px 1px lightgrey;
+}
+
+.label-title {
+    padding-top:10px;
+    padding-left:10px;
+    padding-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.056);
+}
+
+.flex-row {
+    display:flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    gap:22px;
+}
+
+.info-field {
+    padding-left: 13px;
+}
+
+.width-32 {
+  width:32%;
+}

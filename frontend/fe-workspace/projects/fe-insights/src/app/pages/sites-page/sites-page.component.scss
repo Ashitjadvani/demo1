@@ -1,0 +1,315 @@
+.group-tab {
+    margin-top: -48px;
+}
+
+
+.card-height-800 {
+    height: 800px;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+
+    .user-param-box {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        
+        .input-row {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .site-param-box {
+        height: 580px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        overflow-y:auto;
+        gap:5px;
+    }
+}
+
+:host ::ng-deep .mat-column-Key {
+    max-width: 100px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Name {
+    flex: 0  200px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Status {
+    max-width: 100px;
+    font-size: 0.9em;
+}
+
+.mat-column-MaxCapacity {
+    max-width: 120px;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.mat-column-MeetingRoomAvailability {
+    max-width: 120px;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.mat-column-DeskAvailability {
+    max-width: 120px;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.mat-column-ManagerRestriction {
+    max-width: 120px;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-OfficeReservations {
+    flex-shrink: 1;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-OfficeIn {
+    flex-shrink: 1;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-OfficeOut {
+    flex-shrink: 1;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.mat-column-Action {
+    width: 250px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.passage-container {
+    position: relative;
+    //border-style: solid;
+    border-radius: 8px;
+    //border-width:1px;
+    //border-color:rgba(0, 0, 0, 0.302);
+    padding-left:15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    height:65px;
+    box-shadow: 2px 2px 7px 1px lightgrey;
+}
+
+.wrong-passage-container {
+    position: relative;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color:rgba(255, 0, 0, 0.816);
+    padding-left:15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    height:65px;
+    background-color: rgba(255, 0, 0, 0.015);
+    box-shadow: 2px 2px 7px 1px rgb(201, 142, 142);
+}
+
+.width-200 {
+    width: 200px;
+}
+.width-120 {
+    width: 120px;
+}
+.span-20 {
+    padding-left:20px;
+}
+.span-15 {
+    padding-left:15px;
+}
+
+.color-red {
+    font-size: 35px;
+    color:rgb(128, 17, 17);
+}
+
+.color-green {
+    font-size: 35px;
+    color: green;
+}
+
+.color-white {
+    color:white;
+}
+
+.test-connection {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:30px;
+    align-items: center;
+    align-content: center;
+    padding-bottom: 15px;
+}
+
+.circle-red {
+    width:35px;
+    height:35px;
+    border-radius: 50%;
+    background-color:rgb(128, 17, 17);
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content:center;
+    align-items:center;
+}
+
+.circle-green {
+    width:35px;
+    height:35px;
+    border-radius: 50%;
+    background-color:green;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content:center;
+    align-items:center;
+}
+
+
+.counter {
+    font-weight: bold;
+    font-size:medium;
+    //height:100%;
+    line-height:50px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 25px;
+    height:50px;
+    overflow-y: hidden;
+}
+
+.remove-passage-button {
+    background-color: rgb(232, 232, 232);
+    border-radius: 50%;
+    color:rgba(0, 0, 0, 0.713);
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:20px;
+    height:20px;
+  
+    .icon {
+      font-size:14px;
+      position:absolute;
+      bottom:-12px;
+      right:-7px;
+    }
+}
+
+.add-passage-button {
+    background-color: rgb(232, 232, 232);
+    border-radius: 50%;
+    color:rgba(0, 0, 0, 0.713);
+}
+
+.add-passage {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top:5px;
+}
+
+.add-passage-label {
+    padding-left:10px;
+}
+
+.passage-list {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.qrcode-icon {
+    position:absolute;
+    left:6px;
+    top:6px;
+}
+
+.button-icon {
+    position: absolute;
+    left:6px;
+    top:6px;
+}
+.button-txt {
+    text-align: center;
+}
+
+.field-centralunit-name {
+    height:90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.centralunit-qrcode-button {
+    position: absolute;
+    right: 10px;
+    top:14px;
+    background-color: rgb(237, 237, 237);
+}
+
+.gates-unlock-button {
+    position: absolute;
+    right: 40px;
+    top:14px;
+    background-color: rgb(237, 237, 237);
+}
+
+.view-connection-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:30px;
+}
+
+
+.width-200 {
+    width: 200px;
+}
+
+.flex-row {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
+}

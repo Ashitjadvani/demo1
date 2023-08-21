@@ -1,0 +1,160 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="'INSIGHTS_MENU.ASSETS_MANAGEMENT'" [title2]="'ASSETS_MANAGEMENT.ResourceType'" [routePath2]="'/assets-management/resource-type'"
+                            [type]="'ASSETS_MANAGEMENT.ResourceType'" [title3]="breadcrumb ">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper add-edit-scope-stepper">
+                <mat-horizontal-stepper linear labelPosition="bottom" #stepper>
+                    <mat-step  [stepControl]="resourceTypeDetailsForm">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/People Scope Details.svg" />
+                            <p>{{'ASSETS_MANAGEMENT.ResourceTypeDetails' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'ASSETS_MANAGEMENT.ResourceTypeDetails' | translate}}</h3>
+                                <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+                            </div>
+                            <form class="form-wrapper" [formGroup]="resourceTypeDetailsForm" (ngSubmit)="onSubmit(stepper, 1)">
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'ASSETS_MANAGEMENT.ResourceTypeName'|translate}}
+                                                    <!-- <span class="red-label">*</span> -->
+                                                </mat-label>
+                                                <input formControlName="name" matInput #searchBox  type="text" name="name" autocomplete="off" style="text-transform:capitalize;">
+                                                <mat-error *ngIf="resourceTypeDetailsForm.controls.name.errors?.required && submitted">{{'ASSETS_MANAGEMENT.Please enter resource type name (English)' | translate}}</mat-error>
+                                                <mat-error *ngIf="resourceTypeDetailsForm.controls.name.errors?.noWhitespaceValidator && submitted">{{'ASSETS_MANAGEMENT.Please enter resource type name (English)' | translate}}</mat-error>
+                                                <mat-error *ngIf="resourceTypeDetailsForm.controls.name.errors?.nameValidator && submitted">{{'Special character not allowed' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button *ngIf="!this.name" routerLink="/assets-management/resource-type" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        <button *ngIf="this.name" routerLink="/assets-management/resource-type" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="">
+                                        <button class="btn-style theme-btn"
+                                                type="submit" >{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="contactInformationForm">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/Settings Fields.svg" />
+                            <p>{{'MASTER_MODULE.Settings Fields' | translate}}</p>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'MASTER_MODULE.Settings Fields' | translate}}</h3>
+                            </div>
+                            <form [formGroup]="contactInformationForm" (ngSubmit)="onSubmit(stepper,2)">
+                                <div class="table-wrapper resource-color-table" style="height: 500px;">
+                                    <!-- <table mat-table style="width: 100%"> -->
+                                    <table [dataSource]="settingsFieldsList" mat-table style="width: 100%" formArrayName="settingFields">
+                                        <mat-tab-group>
+                                            <ng-container matColumnDef="title">
+                                                <th *matHeaderCellDef class="short-arrow" mat-header-cell>
+                                                    <mat-checkbox (change)="toggleAllSelection()"
+                                                                  [ngModelOptions]="{standalone: true}"
+                                                                  [(ngModel)]="allSelected"
+                                                                  >{{'TABLE.Title' | translate}}</mat-checkbox>
+                                                    <span [ngClass]="sortClass">
+                            <!-- <img alt="" src="assets/images/up-arrow.svg"> -->
+                          </span>
+                                                </th>
+                                                <td  mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap"
+                                                    [formGroupName]="i">
+                                                    <ng-container >
+                                                        <mat-checkbox [value]="element.check" [checked]="element.check"
+                                                                      (change)="changeCheck($event, i)" formControlName="check" name="check">
+                                                            {{'ASSETS_MANAGEMENT.' + element.title | translate}}</mat-checkbox>
+                                                    </ng-container>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="isRequired">
+                                                <th  *matHeaderCellDef class="short-arrow" mat-header-cell>
+                                                    {{'MASTER_MODULE.Is Required' | translate}} <span [ngClass]="sortClass">
+                            <!-- <img alt="" src="assets/images/up-arrow.svg"> -->
+                          </span>
+                                                </th>
+                                                <td mat-cell *matCellDef="let element, let i = index" style="white-space: nowrap"
+                                                    [formGroupName]="i">
+                                                    <div class="switch">
+                                                        <mat-slide-toggle [disabled]="element.check == false" [checked]="element.check === false ? false : element.isRequired"
+                                                                          [value]="element.isRequired" (change)="changeSlideToggle($event, i)"
+                                                                          formControlName="isRequired"></mat-slide-toggle>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="alternativeName">
+                                                <th  *matHeaderCellDef class="short-arrow"
+                                                    mat-header-cell>
+                                                    {{'MASTER_MODULE.Alternative Name' | translate}} <span [ngClass]="sortClass">
+                            <!-- <img alt="" src="assets/images/up-arrow.svg"> -->
+                          </span>
+                                                </th>
+                                                <!-- <td mat-cell style="min-width: 140px;">
+                                                <button class="btn-style table-btn theme-line-btn sm-btn"
+                                                  (click)="openAddAlternativeFieldDialog()">
+                                                  Add {{'MASTER_MODULE.Alternative Name' | translate}}
+                                                </button>
+                                              </td> -->
+                                                <td mat-cell *matCellDef="let element, let i = index" style="min-width: 140px;">
+                                                    <ng-container
+                                                        *ngIf="!settingsFieldsList[element.id].alternativeName && settingsFieldsList[element.id].check == true">
+                                                        <button class="btn-style table-btn theme-line-btn sm-btn" type="button"
+                                                                (click)="openAddAlternativeFieldDialog(element.id)">
+                                                            {{'Add' | translate}} {{'MASTER_MODULE.Alternative Name' | translate}}
+                                                        </button>
+                                                    </ng-container>
+                                                    <ng-container
+                                                        *ngIf="settingsFieldsList[element.id].alternativeName && settingsFieldsList[element.id].check == true">
+                                                        <!-- <mat-input  formControlName="alternativeName" type="text">{{element.alternativeName}}</mat-input> -->
+                                                        <div class="alternative-name">
+                                                            <p style="text-transform:capitalize;">{{element.alternativeName}}</p>
+                                                            <div class="action-icons d-flex switch">
+                                                                <img src="assets/images/edit-action.svg" (click)="editAlternativeName(element.id)">
+                                                                <img src="assets/images/delete-action.svg" (click)="deleteAlternativeName(element.id)">
+                                                            </div>
+                                                        </div>
+
+                                                    </ng-container>
+                                                </td>
+                                            </ng-container>
+
+                                        </mat-tab-group>
+                                        <tr mat-header-row *matHeaderRowDef="settingsFieldsDisplayedColumns" ></tr>
+                                        <tr mat-row  *matRowDef="let element; columns: settingsFieldsDisplayedColumns"></tr>
+                                    </table>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button *ngIf="!this.name" routerLink="/assets-management/resource-type" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                        <button *ngIf="this.name" routerLink="/assets-management/resource-type" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button matStepperPrevious class="btn-style privious-btn" type="button"><span
+                                            class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button [disabled]="!resourceTypeDetailsForm.valid" matStepperNext class="btn-style theme-btn"
+                                                type="submit">{{'GENERAL.Save' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,55 @@
+<form class="w-100" name="workSettingsForm" [formGroup]= "workSettingsForm"  novalidate (ngSubmit)="changeWorkSettings()" #myform="ngForm">
+    <div class="form-main table-content box-heading">
+        <h3>{{'Work Settings' | translate}}</h3>
+        <div class="form-row-wrapper">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="lunchQuestEnabledForOffice" >{{'Enable Lunch Popup for Office Working' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="lunchQuestEnabledForSmartworking" >{{'Enable Lunch Popup for Smart Working' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label>{{'Past days count for lunch settings modification' | translate}}</mat-label>
+                            <input type="number"  name="lunchCronDays" formControlName="lunchCronDays" matInput >
+                            <mat-error *ngIf="workSettingsForm.controls.lunchCronDays.errors?.required">
+                            {{'Enter lunch settings modification' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="enableLunchUpdaterCron" >{{'Enable User Lunch Updater' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label >{{'User lunch Updater dueTime' | translate}}</mat-label>
+                            <input type="time"  name="lunchUpdaterCronDueTime" formControlName="lunchUpdaterCronDueTime" matInput >
+                            <mat-error *ngIf="workSettingsForm.controls.lunchUpdaterCronDueTime.errors?.required">
+                            {{'Enter user lunch updater dueTime' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-footer">
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</form>

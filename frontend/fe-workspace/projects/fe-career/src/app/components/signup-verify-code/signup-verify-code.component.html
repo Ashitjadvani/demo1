@@ -1,0 +1,45 @@
+<section class="login-signup forgot-password">
+  <div class="login-box">
+    <div class="left-part">
+      <span routerLink="/" style="cursor: pointer;">
+        <img src="assets/image/legance-white.svg" class="legance-logo" alt=" lagacy Logo">
+      </span>
+      <p>{{'HOMEPAGE.BannerTitle' | translate}}</p>
+      <div class="banner-image">
+        <img [src]="loginImg" alt="">
+      </div>
+    </div>
+    <div class="right-part">
+      <form #myform="ngForm" (ngSubmit)="onSubmit()" [formGroup]="verifyForm" name="resetPassword" novalidate>
+        <div class="ragister">
+          <h3>{{'VERIFYSIGNUPFORM.VerifyCode' | translate}}</h3>
+          <hr>
+          <div class="login-pass" label="Login">
+            <div class="login-form">
+              <p>{{'VERIFYSIGNUPFORM.ResetPasswordDescription' | translate}}</p>
+              <div class="input-wrapper">
+                <div class="form-field">
+                  <label for="t-password">{{'VERIFYSIGNUPFORM.VerificationCode' | translate}}</label>
+                  <mat-form-field appearance="outline">
+                    <input formControlName="verificationCode" id="t-password" matInput  maxlength="6" placeholder="{{'VERIFYSIGNUPFORM.VerificationCode' | translate}}"
+                           type="text">
+                    <mat-error *ngIf="verifyForm.controls.verificationCode.errors?.required">
+                      {{'VERIFYSIGNUPFORM.VerificationCodeRequired' | translate}}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div (click)="resendVerificationCode()" class="resend-link">
+                  <span>{{'GENERAL.Resend Verification Code' | translate}}</span>
+                </div>
+                <div class="login-btn">
+                  <button class="btn-submit" mat-raised-button style="background-color: #002A3A;color: #fff;height: 100%;width: 100%;"
+                          type="submit">{{'GENERAL.Submit' | translate}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,158 @@
+<!-- Header top  -->
+<div class="head-top">
+  <div class="date-range">
+    <mat-form-field color="accent" appearance="fill">
+      <mat-label>From Date</mat-label>
+      <input matInput [matDatepicker]="picker1">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field color="accent" appearance="fill">
+      <mat-label>To Date</mat-label>
+      <input matInput [matDatepicker]="picker2">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 color="primary"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="select-custom">
+    <mat-form-field appearance="fill">
+      <mat-label>Sites</mat-label>
+      <mat-select [formControl]="toppings" multiple>
+        <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Top Bar  -->
+<div class="top-bar">
+  what work habits do people have?
+</div>
+
+<!-- Info Bar  -->
+<div class="info-bar">
+  <div class="single-info">
+    <h3>Office</h3>
+    <h2>0</h2>
+    <p>N/A</p>
+  </div>
+  <div class="single-info">
+    <h3>Smart</h3>
+    <h2>0</h2>
+    <p>N/A</p>
+  </div>
+  <div class="single-info">
+    <h3>Smart</h3>
+    <h2>0</h2>
+    <p>N/A</p>
+  </div>
+  <div class="single-info">
+    <h3>Other</h3>
+    <h2>0</h2>
+    <p>N/A</p>
+  </div>
+  <div class="single-info">
+    <h3>Incomplete</h3>
+    <h2>2</h2>
+    <p>0.0%</p>
+  </div>
+</div>
+
+<section class="content-wrapper">
+  <div class="row">
+    <div class="col-50">
+      <div class="graph-wrap left-graph">
+        <h2>what work habits do people have?</h2>
+        <canvas baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+                [colors]="pieChartColors"
+        ></canvas>
+        <div class="graph-info-box">
+          <h3>Persone</h3>
+          <h4>2</h4>
+          <p>0%</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-50">
+      <div class="graph-wrap right-graph">
+        <h2>how is the consumption of holidays, sickness and Rol going?</h2>
+        <div>
+          <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position" >
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef  mat-sort-header> Person </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="weight">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Vacation </th>
+              <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+              <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="symbol2">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Malat. </th>
+              <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[10]"
+                         showFirstLastButtons
+                         aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-50">
+      <div class="graph-wrap left-graph">
+        <h2>How many and what do they plan?</h2>
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [colors]="barChartColors"
+                [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+    <div class="col-50">
+      <div class="graph-wrap right-graph" >
+        <h2>How is the trend of the last quarter?</h2>
+        <canvas baseChart width="500" height="200"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [plugins]="lineChartPlugins"
+                [colors]="lineChartColors"
+                [chartType]="lineChartType"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+</section>

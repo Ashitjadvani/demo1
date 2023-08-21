@@ -1,0 +1,22 @@
+@import '../../../../styles.scss';
+
+.download-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 20px;
+  @media (max-width: $mobile){
+    display: block;
+  }
+  button{
+    @media (max-width: $mobile){
+      margin-top: 10px;
+      padding: 15px 50px;
+    }
+  }
+  h4 {
+    margin: 0px;
+  }
+}

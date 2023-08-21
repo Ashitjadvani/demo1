@@ -1,0 +1,193 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+            <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.ACCOUNTS'| translate}}</li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title]="'INSIGHTS_MENU.ACCOUNTS'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'INSIGHTS_MENU.ACCOUNTS'| translate}}</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'ACCOUNTS.SearchAccount'| translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+
+                </div>
+                <button  class="btn-style" (click)="openImportAccountDialog()">
+                    <span style="margin-right: 10px;"><img src="assets/images/import-icon.svg" alt=""></span>{{'ACCOUNTS.ImportAccount'| translate}}
+                </button>
+                <button  class="btn-style" routerLink="add-edit-account/0">
+                  <span class="material-icons">add</span>{{'ACCOUNTS.AddAccount'| translate}}
+                </button>
+                <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                  <mat-icon >more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="deleteMultiAccounts()">
+                    <span>{{'GENERAL.Delete' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table #table [dataSource]="accountsList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <!-- <ng-container matColumnDef="select">
+                  <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                    <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                  </th>
+                  <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                    <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                  </td>
+                </ng-container> -->
+
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)"
+                                  [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                  <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'TABLE.Action' | translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <!-- <div class="hover-effect-menu two-icons">
+                        <div class="short-arrow">
+                          <span class="material-icons" >more_horiz</span>
+                        </div>
+                        <div class="hover-round-effect">
+                          <button mat-menu-item routerLink="add-edit-account" (click)="edit(element.id)" matTooltip="{{'Edit' | translate}}">
+                            <span class="material-icons">edit</span>
+                          </button>
+                          <button mat-menu-item (click)="openAccountDeleteDialog(element.id, i, $event)" matTooltip="{{'Delete' | translate}}">
+                            <span class="material-icons">delete</span>
+                          </button>
+                        </div>
+                      </div> -->
+                      <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                      (edit)="edit($event)" (delete)="openAccountDeleteDialog($event)"></app-wheel-action>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="accountID">
+                    <th (click)="changeSorting('userId', sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 260px;min-width: 260px;">
+                        {{'ACCOUNTS.AccountID'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'userId' && sortBy === '-1' , 'up': sortKey === 'userId' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 260px;min-width: 260px;">{{element.userId ? element.userId : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="name">
+                    <th (click)="changeSorting('personInfo.name',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px;">
+                        {{'TABLE.Name'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'personInfo.name' && sortBy === '-1' , 'up': sortKey === 'personInfo.name' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;width: 160px;min-width: 160px;text-transform: capitalize;">{{element.personInfo.name ? element.personInfo.name : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="surname">
+                    <th (click)="changeSorting('personInfo.surname',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px;">
+                        {{'TABLE.Surname'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'personInfo.surname' && sortBy === '-1' , 'up': sortKey === 'personInfo.surname' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;width: 160px;min-width: 160px;text-transform: capitalize;">{{element.personInfo.surname ? element.personInfo.surname : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="authentication">
+                    <th (click)="changeSorting('authProvider',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="width: 160px;min-width: 160px;">
+                        {{'ACCOUNTS.Authentication'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'authProvider' && sortBy === '-1' , 'up': sortKey === 'authProvider' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;width: 160px;min-width: 160px;">{{element.authProvider ? element.authProvider : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="firstLogin">
+                    <th (click)="changeSorting('firstLoginAt',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 200px;">
+                        {{'ACCOUNTS.FirstLogin'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'firstLoginAt' && sortBy === '-1' , 'up': sortKey === 'firstLoginAt' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">{{(element.firstLoginAt | date : 'dd/MM/yyyy HH:mm' ) ? (element.firstLoginAt | date : 'dd/MM/yyyy HH:mm' ) : '-' }}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="lastLogin">
+                    <th (click)="changeSorting('lastLoginAt',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 200px;">
+                        {{'ACCOUNTS.LastLogin'| translate}} <span
+                      [ngClass]="{'down': sortKey === 'lastLoginAt' && sortBy === '-1' , 'up': sortKey === 'lastLoginAt' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;min-width: 200px;">{{(element.lastLoginAt | date : 'dd/MM/yyyy HH:mm') ? (element.lastLoginAt | date : 'dd/MM/yyyy HH:mm') : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      {{'TABLE.Action'| translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <div class="action-icons d-flex switch">
+                        <img src="assets/images/edit-action.svg"  class="" alt="" routerLink="add-edit-account" (click)="edit(element.id)">
+                        <img src="assets/images/delete-action.svg" (click)="openAccountDeleteDialog(element.id, i, $event)" alt="">
+                      </div>
+                    </td>
+                  </ng-container>
+                <tr mat-header-row *matHeaderRowDef="AccountsDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: AccountsDisplayedColumns"></tr>
+              </table>
+            </div>
+            <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+              </div>
+            </div> -->
+            <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,42 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{data.heading}}</h4>
+      <img src="./assets/images/cross-icon.svg" (click)="onNoClick(false)" alt="">
+    </div>
+  </div>
+  <form [formGroup]="addContactdPopup" class="form-field" (ngSubmit)="savedDta()">
+    <div class="popup-body pb-0">
+      <div class="row">
+
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>Contact Type</mat-label>
+            <input formControlName="name" matInput type="text" name="name">
+            <mat-error *ngIf="addContactdPopup.controls.name.errors?.required">Please enter contact type.</mat-error>
+          </mat-form-field>
+
+        </div>
+        <div class="col-sm-12">
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="element-full-width">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status_id" name="status_id">
+                <mat-option value="1">Active</mat-option>
+                <mat-option value="2">Inactive</mat-option>
+              </mat-select>
+              <mat-error *ngIf="addContactdPopup.controls.status_id.errors?.required">Please select status.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="popup-footer">
+      <div class="footer-content footer-right">
+        <button type="button" class="btn-style inactive" (click)="onNoClick(false)">Cancel</button>
+        <button type="submit" class="btn-style theme-btn" (click)="onNoClick(true)">Save</button>
+      </div>
+    </div>
+  </form>
+</section>

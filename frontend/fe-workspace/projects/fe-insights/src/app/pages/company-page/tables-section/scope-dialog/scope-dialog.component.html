@@ -1,0 +1,210 @@
+<h2 *ngIf="isNew" mat-dialog-title><b>{{'INSIGHTS_PEOPLE_PAGE.Add Scope'|translate}}</b></h2>
+<h2 *ngIf="!isNew" mat-dialog-title><b>{{'INSIGHTS_PEOPLE_PAGE.Modify Scope'|translate}}</b></h2>
+
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-form-field>
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Scope Name'|translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Scope Name'|translate}}" appearance="legacy"
+                [(ngModel)]="scope.name">
+        </mat-form-field>
+        <mat-checkbox class="enable-plan-checkbox" [(ngModel)]="scope.enablePlan" [ngModelOptions]="{standalone: true}" (change)="checkPlanCheckboxChange($event)">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.EnablePlanForScope' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox class="enable-plan-checkbox" [(ngModel)]="scope.enableGreenpass" [ngModelOptions]="{standalone: true}" (change)="checkGreenpassCheckboxChange($event)">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.EnableGreenpassForScope' | translate}}</div>
+        </mat-checkbox>
+        <mat-form-field class="width-30">
+            <input matInput placeholder="{{'ACCESS_CONTROL.ValidityDaysNum' | translate}}" type="number" [(ngModel)]="scope.accessControlValidityDaysNum">
+        </mat-form-field>
+        <mat-tab-group>
+            <mat-tab label="{{ 'ADMIN DIALOGS.SETTINGS' | translate }}">
+                <div class="user-param-box">
+                    <div class="input-row">
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableBadgeId" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Badge Number' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableRestaurantCardId" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Restaurant Card Number' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableDateStart" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Hire Date' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableDateEnd" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Resignation Date' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="width-100 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableWorkingHours" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Working Hours' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="width-45 borded">
+                            <mat-checkbox  class="pad-left" [(ngModel)]="scope.enableTypology" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Typology' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-45 borded">
+                            <div class="area-container">
+                                <mat-checkbox class="pad-left" [(ngModel)]="scope.enableArea" [ngModelOptions]="{standalone: true}">
+                                    <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Area' | translate}}</div>
+                                </mat-checkbox>
+                                <span class="width-15px"></span>
+                                <mat-form-field class="area-input" *ngIf="scope.enableArea">
+                                    <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Area Alternative Name'|translate}}" appearance="legacy" [(ngModel)]="scope.areaAlternativeName">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="width-45 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableRole" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Role' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-45 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableJobTitle" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Job Title' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="width-45 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableIdentificationCode" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Identification Code' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-45 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enablePartTimePercentage" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Part Time Percentage' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="width-45 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableManager" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'GENERAL.MANAGER' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+
+                </div>
+            </mat-tab>
+            <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Dispute' | translate }}">
+                <div class="user-param-box">
+                    <div class="input-row">
+                        <div class="width-100 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableDisputes" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.DISPUTE' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Economics' | translate }}">
+                <div class="user-param-box">
+                    <div class="input-row">
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableSalary" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.SALARY' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableMbo" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.MBO' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableBonus" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.BONUS' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                        <div class="width-20 borded">
+                            <mat-checkbox class="pad-left" [(ngModel)]="scope.enableContractLevel" [ngModelOptions]="{standalone: true}">
+                                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.CONTRACT LEVEL' | translate}}</div>
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>                    
+            </mat-tab>
+        </mat-tab-group>
+        <!--mat-checkbox [(ngModel)]="scope.enableTypology" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Typology' | translate}}</div>
+        </mat-checkbox>
+        <div class="area-container">
+            <mat-checkbox [(ngModel)]="scope.enableArea" [ngModelOptions]="{standalone: true}">
+                <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Area' | translate}}</div>
+            </mat-checkbox>
+            <span class="width-15px"></span>
+            <mat-form-field class="area-input">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.Area Alternative Name'|translate}}" appearance="legacy" [(ngModel)]="scope.areaAlternativeName">
+            </mat-form-field>
+        </div>
+        <mat-checkbox [(ngModel)]="scope.enableRole" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Role' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableJobTitle" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Job Title' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableIdentificationCode" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Identification Code' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enablePartTimePercentage" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Part Time Percentage' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableWorkingHours" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Working Hours' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableDateStart" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Hire Date' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableDateEnd" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Resignation Date' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableBadgeId" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Badge Number' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableRestaurantCardId" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.Restaurant Card Number' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableDisputes" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.DISPUTE' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableSalary" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.SALARY' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableMbo" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.MBO' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableBonus" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.BONUS' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableContractLevel" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'INSIGHTS_PEOPLE_PAGE.CONTRACT LEVEL' | translate}}</div>
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="scope.enableManager" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{'GENERAL.MANAGER' | translate}}</div>
+        </mat-checkbox-->
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+        <button mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="scope.name==''"
+            (click)="onSave()">{{'GENERAL.SAVE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

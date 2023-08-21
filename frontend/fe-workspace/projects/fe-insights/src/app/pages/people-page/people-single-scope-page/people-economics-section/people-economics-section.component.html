@@ -1,0 +1,25 @@
+<div class="user-param-box">
+    <div class="input-row">
+        <mat-form-field class="width-20" *ngIf="scope.enableSalary">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.SALARY' | translate}}" [(ngModel)]="currentEditPerson.salary">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>euro</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field class="width-20" *ngIf="scope.enableMbo">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.MBO' | translate}}" [(ngModel)]="currentEditPerson.mbo">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>euro</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field class="width-20" *ngIf="scope.enableBonus">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.BONUS' | translate}}" [(ngModel)]="currentEditPerson.bonus">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>euro</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field class="width-20" *ngIf="scope.enableContractLevel">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.CONTRACT LEVEL' | translate}}" [(ngModel)]="currentEditPerson.contractLevel">
+        </mat-form-field>
+    </div>
+</div>

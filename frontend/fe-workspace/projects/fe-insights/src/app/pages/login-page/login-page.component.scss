@@ -1,0 +1,63 @@
+@import "../../../theme/theme.scss";
+
+.logo {
+    margin-top: 80px;
+    width: 160px;
+    outline: none; //Disables outline when clicking
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    align-items: center;
+
+    min-width: 400px;
+
+    .forgot-password-link {
+      cursor: pointer;
+      text-decoration: underline;
+      text-align: right;
+      width: 70%;
+      padding: 0;
+      margin: 0 0 10px;
+      color: #0000ee;
+    }
+
+
+    .spacer-fill {
+        flex-grow: 1;
+    }
+
+    .main-logo {
+        width: 200px;
+    }
+
+    .main-label {
+        font-size: large;
+    }
+
+    .button-container {
+        margin-top: 10px;
+        text-align: center;
+        width: 100%;
+
+        .login-button {
+            color: white;
+            width: calc(100% - 60%);
+        }
+
+        .loader {
+            margin: auto;
+        }
+    }
+
+    .customer-logo {
+        width: 100px;
+    }
+
+    .label-version {
+        font-size: small;
+    }
+}

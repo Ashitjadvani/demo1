@@ -1,0 +1,48 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+
+    <div class="page-content-container">
+        <mat-horizontal-stepper *ngIf="!loading" [linear]="true" #stepper class="stepper">
+
+            <mat-step [stepControl]="searchFormGroup">
+                <form [formGroup]="searchFormGroup">
+                    <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.SEARCH' | translate }}</ng-template>
+                    <div class="primary-filters">
+                        <mat-form-field>
+                            <mat-label>{{ 'BOOK DESK PARAMETERS.LOCATION' | translate }}</mat-label>
+                            <mat-select matNativeControl formControlName="location" [(ngModel)]="locationSelected">
+                                <mat-option *ngFor="let pi of []" value="{{ pi.PropertyId }}">
+                                    {{ pi.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>{{ 'BOOK DESK PARAMETERS.AREA' | translate }}</mat-label>
+                            <mat-select matNativeControl formControlName="area" [(ngModel)]="areaSelected">
+                                <mat-option value="all">{{ 'BOOK DESK PARAMETERS.ALL' | translate }}</mat-option>
+                                <mat-option *ngFor="let area of []" value="{{area.AreaId}}">{{ area.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="filters-footer">
+                        <button mat-flat-button color="primary" class="no-round" (click)="onClickBook()">{{ 'BOOK DESK PARAMETERS.BOOK DESKS' | translate }}</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.SELECT' | translate }}</ng-template>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.BOOK' | translate }}</ng-template>
+            </mat-step>
+        </mat-horizontal-stepper>
+
+        <mat-spinner *ngIf="loading" class="loader"></mat-spinner>
+    </div>
+
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

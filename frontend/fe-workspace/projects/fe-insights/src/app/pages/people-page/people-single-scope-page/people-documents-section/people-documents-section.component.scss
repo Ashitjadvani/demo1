@@ -1,0 +1,28 @@
+@import "../people-single-scope-page.component.scss";
+
+.user-param-box {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.upload-button {
+    width: 200px;
+    margin-left: 20px;
+}
+
+.table-container {
+    margin-top: -50px;
+}
+
+.no-doc {
+    font-size: 16px;
+    font-weight: 600;
+    color: #38424c;
+}
+
+:host ::ng-deep .red {
+    color: rgb(175, 13, 13);
+}
+

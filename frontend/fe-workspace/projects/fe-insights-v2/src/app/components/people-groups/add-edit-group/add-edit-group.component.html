@@ -1,0 +1,218 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="/people-groups" class="breadcrumb-item">{{'INSIGHTS_MENU.PEOPLE_GROUPS'| translate}}</li>
+                  <li *ngIf="!this.id" class="breadcrumb-item active" aria-current="page">{{'Add Group'| translate}}</li>
+                  <li *ngIf="this.id" class="breadcrumb-item active" aria-current="page">{{'Edit Group'| translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PEOPLE_GROUPS'" [routePath]="'/people-groups'"
+             [title3]="id ? 'Edit Group' : 'Add Group'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper add-edit-scope-stepper">
+                <mat-horizontal-stepper [linear]="!this.id" labelPosition="bottom" #stepper>
+                  <mat-step [stepControl]="generalInformationForm">
+                    <ng-template matStepLabel>
+                        <img src="assets/images/general-step.svg"/>
+                        <p>{{'ADMIN DIALOGS.GENERAL'| translate}}</p>
+                      </ng-template>
+                      <form class="form-wrapper" [formGroup]="generalInformationForm" (ngSubmit)="onSubmit(1)">
+                      <div class="table-content box-style">
+                        <div class="table-heading m-30">
+                          <h3 style="font-weight: 600">{{'ADMIN DIALOGS.GENERAL'| translate}}</h3>
+                          <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field'| translate}}</p>
+                        </div>
+                          <div class="row">
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Name (English)'| translate}}<span class="red-label">*</span></mat-label>
+                                    <input formControlName="name" [readonly]="this.id" matInput type="text" name="name" style="text-transform: capitalize;">
+                                    <mat-error *ngIf="generalInformationForm.controls.name.errors?.required">{{'Please enter your name (English)'| translate}}.</mat-error>
+                                    <mat-error *ngIf="generalInformationForm.controls.name.errors?.noWhitespaceValidator">{{'Please enter your name (English)'| translate}}.</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'PEOPLE_MANAGEMENT.Description (English)'| translate}}</mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                                    <mat-error *ngIf="generalInformationForm.controls.description.errors?.required">
+                                      {{'Quiz/Survey.Enteryourdescription(English)'| translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="step-form-bottom">
+                            <div>
+                              <button routerLink="/people-groups" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                            </div>
+                            <div class="">
+                              <button matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next'| translate}} <span class="material-icons">arrow_forward</span></button>
+                            </div>
+                          </div>
+                      </div>
+                    </form>
+                    </mat-step>
+                    <mat-step [stepControl]="contactInformationForm">
+                      <ng-template matStepLabel>
+                        <img src="assets/images/member-stepper.svg"/>
+                        <p>{{'INSIGHTS_PEOPLE_PAGE.Members'| translate}}</p>
+                      </ng-template>
+                      <form>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                              <h3 style="font-weight: 600">{{'INSIGHTS_PEOPLE_PAGE.Members'| translate}}</h3>
+                              <div class="search-form-wrapper">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox (change)="onChangeShowSelected($event)" [labelPosition]="'before'" [(ngModel)]="showSelectedOnly">
+                                          {{'INSIGHTS_PEOPLE_PAGE.SHOW SELECTED ONLY'| translate}}
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div class="search-form-wrapper">
+                                  <div class="search-form">
+                                    <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                                    <input name="search" ##search="ngModel" matInput (keyup)="applyFilter($event.target.value)" [(ngModel)]="search" placeholder="{{'Search Members'| translate}}"/>
+                                    <mat-icon *ngIf="clearSearchText"  class="material-icons clear" (click)="resetSearch()">clear</mat-icon>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="table-wrapper resource-color-table" style="height: 500px;">
+                              <table [dataSource]="people" mat-table style="width: 100%" >
+                                  <ng-container matColumnDef="name">
+                                    <th *matHeaderCellDef class="short-arrow"  mat-header-cell><mat-checkbox (change)="checkAll($event)">{{'TABLE.Name' | translate}} </mat-checkbox>
+                                         <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                      <mat-checkbox [checked]="isPersonSelected(element)" [value]="element.id" (change)="onPersonSelected(element)" style="text-transform: capitalize;">
+                                        {{element.name ? element.name : '-'}}</mat-checkbox>
+                                    </td>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="surname">
+                                    <th *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                      {{'TABLE.Surname'  | translate}} <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;text-transform: capitalize;">
+                                      {{element.surname ? element.surname : '-'}}
+                                    </td>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="role">
+                                    <th *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                                        {{'PEOPLE.Role' | translate}} <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;text-transform: capitalize;">
+                                      {{element.role ? element.role : '-'}}
+                                    </td>
+                                  </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="RFQDisplayedColumns"></tr>
+                                <tr mat-row *matRowDef="let element; columns: RFQDisplayedColumns"></tr>
+
+                                <tr class="mat-row" *matNoDataRow>
+                                  <td class="mat-cell" colspan="4" style="text-align:center;">{{'TABLE.No_record_found' | translate}} </td>
+                                </tr>
+
+                              </table>
+                              <!-- <div *ngIf="noRecordFound === true" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div> -->
+                            </div>
+                            <div class="step-form-bottom">
+
+                                <div>
+                                  <button routerLink="/people-groups" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                </div>
+                                <div class="btn-wrapper">
+                                  <button matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                  <button matStepperNext class="btn-style theme-btn" type="click" (click)="onSubmit(2)">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                </div>
+                            </div>
+                      </div>
+                    </form>
+
+                  </mat-step>
+                  <mat-step [stepControl]="domainConfigurationForm">
+                    <ng-template matStepLabel>
+                      <img src="assets/images/function-stepper.svg"/>
+                      <p>{{'INSIGHTS_PEOPLE_PAGE.Functions' | translate}}</p>
+                    </ng-template>
+                    <div class="table-content box-style">
+                      <div class="table-heading m-30">
+                        <h3 style="font-weight: 600">{{'INSIGHTS_PEOPLE_PAGE.Functions' | translate}}</h3>
+                      </div>
+                      <div class="feature-contents">
+                        <div class="custom-switch-group">
+                          <div class="search-form-wrapper features-switch">
+                            <div class="search-form">
+                              <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                              <input (keyup)="searchFunctionTxt($event.target.value)" [(ngModel)]="searchFunction" mat-input placeholder="{{'Search Functions' | translate}}" style="width: 340px;"/>
+                              <mat-icon *ngIf="clearFunctionText" class="material-icons clear" (click)="resetFunction()">clear</mat-icon>
+                            </div>
+                          </div>
+                          <div class=" features-switch switch">
+                            <mat-slide-toggle (change)="onChangeShowSelectedFunction($event)" [(ngModel)]="showSelectedOnlyToggle" style="max-width: 340px !important;width: 340px !important">{{'INSIGHTS_PEOPLE_PAGE.SHOW SELECTED ONLY'| translate}}</mat-slide-toggle>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="height:500px; overflow-y: auto;">
+                        <div *ngFor="let func of functionList" style="padding:20px; border-radius: 15px; background-color: rgb(245, 245, 245); margin-top: 10px; margin-bottom: 10px; margin-right:5px; box-shadow: 1px 1px 1px rgb(192, 192, 192);">
+                          <div class="custom-switch-group" style="padding-bottom:15px">
+                            <div class="features-switch switch" style="max-width: 340px !important;width: 340px !important">
+                              <div style="display:flex;align-content: center;">
+                               <div style="font-size: 26px;font-weight: 600;" [ngClass]="{'col-black': isFunctionSelected(func), 'col-grey' : !isFunctionSelected(func) }">{{func.name}}</div><mat-slide-toggle [checked]="isFunctionSelected(func)" [value]="func" (change)="onFunctionSelected(func)" style="padding-top:7px; padding-left:20px;"></mat-slide-toggle>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="feature-contents">
+                            <div class="custom-switch-group">
+                              <div *ngFor="let subf of func.functions" class="features-switch switch" style="max-width: 340px !important;width: 340px !important">
+                                <mat-slide-toggle [disabled]="!isFunctionSelected(func)" [checked]="isFunctionSelected(subf)" [value]="subf" (change)="onFunctionSelected(subf)" style="max-width: 340px !important;width: 340px !important">{{subf.name}}</mat-slide-toggle>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                          <!--div class="custom-switch-group">
+                              <div class="search-form-wrapper features-switch">
+                                <div class="search-form">
+                                  <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                                  <input (keyup)="searchFunctionTxt($event.target.value)" [(ngModel)]="searchFunction" mat-input placeholder="{{'Search Functions' | translate}}" style="width: 340px;"/>
+                                  <mat-icon *ngIf="clearFunctionText"  class="material-icons clear" (click)="resetFunction()">clear</mat-icon>
+                                </div>
+                              </div>
+                              <div class=" features-switch switch">
+                                  <mat-slide-toggle (change)="onChangeShowSelectedFunction($event)" [(ngModel)]="showSelectedOnlyToggle" style="max-width: 340px !important;width: 340px !important">{{'INSIGHTS_PEOPLE_PAGE.SHOW SELECTED ONLY'| translate}}</mat-slide-toggle>
+                              </div>
+                          </div-->
+                          <!--div class="custom-switch-group">
+                            <div *ngFor="let element of functionList" class=" features-switch switch" style="max-width: 340px !important;width: 340px !important">
+                              <mat-slide-toggle [checked]="isFunctionSelected(element)" [value]="element" (change)="onFunctionSelected(element)" style="max-width: 340px !important;width: 340px !important">{{element}}</mat-slide-toggle>
+                            </div>
+                          </div-->
+                      <div class="row">
+                        <div class="step-form-bottom">
+                          <div>
+                            <button routerLink="/people-groups" class="btn-style red-line-btn"  type="button">{{'GENERAL.Cancel' | translate}}</button>
+                          </div>
+                          <div class="btn-wrapper">
+                            <button matStepperPrevious class="btn-style privious-btn"  type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                            <button matStepperNext class="btn-style theme-btn" type="click" (click)="onSubmit(3)">{{'GENERAL.Save&Finish' | translate}} <span class="material-icons">arrow_forward</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

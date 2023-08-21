@@ -1,0 +1,118 @@
+<header class="normal-page-header">
+    <mat-toolbar class="dashboard-logo">
+        <div class="legance-logo">
+            <img src="assets/images/legance-color.svg"  alt="">
+        </div>
+    </mat-toolbar>
+    <div class="tools-wrapper">
+        <div class="language-menu-new">
+            <!--{{userLanguageSelect}}-->
+            <mat-form-field >
+                <mat-select (selectionChange)='onLanguageChange($event)' [(ngModel)]="userLanguageSelect" name='language'>
+                    <mat-select-trigger>
+                      <span class="lang-flag" (click)="enLocale()" *ngIf="userLanguageSelect === 'en'" >
+                        <img  [src]="englishFlag" alt=""> ENGLISH (EN)
+                      </span>
+                        <span class="lang-flag" (click)="itLocale()" *ngIf="userLanguageSelect === 'it'" >
+                        <img  [src]="italianFlag" alt=""> ITALIANO (ITA)
+                      </span>
+                    </mat-select-trigger>
+                    <ng-container *ngFor="let lang of language">
+                        <mat-option [value]="lang.languageCode" *ngIf="lang.checked" style="text-transform: uppercase">
+                            <img [src]="lang.languagesFlagImg" alt=""> {{lang.languages}}
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--<app-header></app-header>-->
+</header>
+<div class="finish-step webex-page">
+    <div class="container">
+        <div class="events-details-box">
+            <div *ngIf="!eventNotFound"  class="row">
+                <div class="col-sm-7 border-right">
+                    <div class="events-details events-details-left">
+                        <div class="events-details-in">
+                            <h1>{{editEventData?.name}}</h1>
+                            <ul class="events-details-list">
+                                <li>
+                                    <span class="material-icons">event</span>
+                                    {{editEventData?.startDate? (editEventData.startDate | date: 'dd/MM/yyyy'):'-'}} - {{editEventData?.endDate? (editEventData.endDate | date: 'dd/MM/yyyy'):'-'}}
+                                </li>
+                                <li>
+                                    <span class="material-icons">schedule</span>
+                                    {{editEventData?.from? editEventData.from:'00:00'}} - {{editEventData?.to? editEventData.to:'00:00'}}
+                                </li>
+                                <li *ngIf="isSecretCodeErrorMessage" style="color: #ff0000;">
+                                    {{'notPossibleToDoCheckpoints' | translate}}
+                                </li>
+                                <!--<li>
+                                    <span class="material-icons">description</span>
+                                    <div *ngIf="editEventData?.description" [innerHTML]="editEventData?.description"></div>
+                                    <div *ngIf="!editEventData?.description">
+                                        -
+                                    </div>
+                                </li>-->
+                            </ul>
+                        </div>
+                        <div class="events-details-bottom text-center">
+                            {{currentDate | date:'dd/MM/yyyy  HH:mm:ss'}}
+                            <br>
+                            <span *ngIf="!ischeckpointControlErrorMessage && !isSecretCodeErrorMessage">{{'remainingTimeLeft' | translate}}: {{ (this.hours ? this.hours : '00') +':' + (this.minutes?this.minutes :'00') +':'+ (this.seconds ?this.seconds: '00')}}</span>
+                        </div><br>
+
+
+
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <li *ngIf="ischeckpointControlErrorMessage" style="color: red;" class="events-details d-flex align-items-center justify-content-center">
+                        {{'notPossibleToDoCheckpoints' | translate}}
+                    </li>
+                    <div *ngIf="isDisplayActivateButton" class="events-details d-flex align-items-center justify-content-center">
+                        <button class="btn-style theme-btn" type="button" (click)="activePageDialog()" style="background-color: #49ab12;">
+                            {{'EVENT_MANAGEMENT.ActivePage' | translate}}
+                        </button>
+                    </div>
+                    <div *ngIf="isDisplayActivePage" class="download-qr download-qr-generated">
+                        <ng-container>
+                            <img [src]="downloadLink" alt="" class="qrcode-img" >
+                        </ng-container>
+
+                        <div class="form-content">
+                            <form name="loginForm" (ngSubmit)="checkWebexCheckInOut()" [formGroup]="eventCheckInForm">
+                                <div class="form-wrapper">
+                                    <div class="input-wrapper" style="margin-top: 20px">
+                                        <p>{{'EVENT_MANAGEMENT.EnterPersonalCode' | translate}}</p>
+                                        <div class="form-field m-0">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <input matInput type="number" id="personalCode" name="personalCode" formControlName="meetingCode" maxlength="50" autocomplete="off">
+                                                <mat-error *ngIf="eventCheckInForm.controls.meetingCode.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterPersonalCode' | translate}}</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button-group">
+                                    <button class="btn-style theme-btn" type="submit" style="background-color: #49ab12;">
+                                        {{'EVENT_MANAGEMENT.SendCode' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="eventNotFound" class="page-not-found">
+                <div class="wrap-content">
+                    <h1>404</h1>
+                    <h4 *ngIf="eventExpired">{{'eventAlreadyConcluded' | translate}}</h4>
+                    <h4 *ngIf="isEventNotFound">{{'eventNotFound' | translate}}</h4>
+                    <!--<h4 *ngIf="!enableCheckPoint">{{'eventLinkNotExist' | translate}}</h4>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

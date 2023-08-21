@@ -1,0 +1,146 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.EVENT_MANAGEMENT'" [title3]="'SITES.Settings'">
+      </app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="common-tabbing">
+          <mat-tab-group  animationDuration="0ms">
+              <mat-tab  label="{{'INSIGHTS_PEOPLE_PAGE.EmailConfiguration' | translate}}" class="mt-5">
+                  <div class="col-md-12">
+                      <div class="common-tabbing">
+                          <div class="table-content box-style company-info">
+                              <div class="table-heading">
+                                  <h3 style="font-weight: 600">{{'INSIGHTS_PEOPLE_PAGE.EmailConfiguration' | translate}}</h3>
+                                  <div class="search-form-wrapper">
+                                      <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field' | translate}}</p>
+                                  </div>
+                              </div>
+                              <form class="w-100" name="emailConfigForm" (ngSubmit)="updateEmailConfig()" [formGroup]="emailConfigForm" novalidate  #myform="ngForm">
+                                  <div class="row">
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Host' | translate}}</mat-label>
+                                                  <input type="text" name="host" formControlName="host" matInput>
+                                                  <mat-error *ngIf="emailConfigForm.controls.host.errors?.required">
+                                                      {{'Enter your host' | translate}}
+                                                  </mat-error>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field error-message-custom">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Port' | translate}}</mat-label>
+                                                  <input type="text" name="port" formControlName="port" matInput>
+                                                  <mat-error *ngIf="emailConfigForm.controls.port.errors?.required">
+                                                      {{'Enter your port' | translate}}
+                                                  </mat-error>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'GENERAL.Username' | translate}}</mat-label>
+                                                  <input type="text" autocomplete="off" name="userName" formControlName="userName" matInput>
+                                                  <mat-error *ngIf="emailConfigForm.controls.userName.errors?.required">
+                                                      {{'Enter your username' | translate}}
+                                                  </mat-error>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Password' | translate}}</mat-label>
+                                                  <input type="password" name="password" formControlName="password" matInput onkeypress="return event.charCode != 32">
+                                                  <mat-error *ngIf="emailConfigForm.controls.password.errors?.required">
+                                                      {{'Enter your password' | translate}}
+                                                  </mat-error>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'From Name' | translate}}</mat-label>
+                                                  <input formControlName="emailFrom" matInput name="emailFrom" type="text">
+                                                  <mat-error *ngIf="emailConfigForm.controls.emailFrom.errors?.required">
+                                                      {{'Enter your from name' | translate}}
+                                                  </mat-error>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="col-xl-6 col-xxl-4">
+                                          <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'EVENT_MANAGEMENT.Encryption' | translate}}</mat-label>
+                                                  <mat-select formControlName="encryption" >
+                                                      <mat-option>{{'Select Encryption' |translate}}</mat-option>
+                                                      <mat-option *ngFor="let encryption of  mailEncryption" [value]="encryption.name">{{encryption.name}}</mat-option>
+                                                  </mat-select>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                                      <div class="form-footer">
+                                          <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </mat-tab>
+              <mat-tab  label="{{'EVENT_MANAGEMENT.General Settings' | translate}}" class="mt-5">
+                <div class="col-md-12">
+                    <div class="common-tabbing">
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading">
+                                <h3 style="font-weight: 600">{{'EVENT_MANAGEMENT.General Settings' | translate}}</h3>
+                                <div class="search-form-wrapper">
+                                    <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field' | translate}}</p>
+                                </div>
+                            </div>
+                            <form class="w-100" name="generalSettingForm" (ngSubmit)="updateGeneralSetting()" [formGroup]="generalSettingForm" novalidate  #myformGN="ngForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'EVENT_MANAGEMENT.Base URL' | translate}}</mat-label>
+                                                <input type="text" name="baseURL" formControlName="baseURL" matInput>
+                                                <mat-error *ngIf="generalSettingForm.controls.baseURL.errors?.required">
+                                                    {{'EVENT_MANAGEMENT.Enter your base URL' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-lg-6 col-xl-4">
+                                        <div class="form-field color-picker">
+                                            <mat-form-field appearance="outline" class="element-full-width" >
+                                                <mat-label>{{'EVENT_MANAGEMENT.emailTemplateColor' | translate}}</mat-label>
+                                                <input formControlName="emailTemplateColor" matInput type="color" name="emailTemplateColor" [(ngModel)]="primaryColor">
+                                                &lt;!&ndash;{{'Email Template.Hex' | translate}}:&ndash;&gt;
+                                                {{primaryColor ? primaryColor : '-'}}
+                                                <mat-error *ngIf="generalSettingForm.controls.emailTemplateColor.errors?.required">
+                                                    {{'EDIT COMPANY.Please choose color' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-footer">
+                                        <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+          </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</section>

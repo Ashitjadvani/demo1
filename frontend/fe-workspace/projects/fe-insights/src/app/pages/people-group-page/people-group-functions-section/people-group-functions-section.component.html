@@ -1,0 +1,7 @@
+<div class="people-group-param-box">
+    <mat-selection-list class="function-list">
+        <mat-list-option *ngFor="let func of companyFunctions" [selected]="isFunctionSelected(func)" [value]="func" (click)="onFunctionSelected(func)">
+            {{ func }}
+        </mat-list-option>
+    </mat-selection-list>
+</div>

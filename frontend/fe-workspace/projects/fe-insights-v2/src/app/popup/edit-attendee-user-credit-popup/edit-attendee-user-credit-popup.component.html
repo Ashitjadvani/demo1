@@ -1,0 +1,30 @@
+<form [formGroup]="editUserCreditForm" (ngSubmit)="saveUserCreditForm()">
+    <section class="popups">
+        <div class="popup-header">
+            <div class="header-content">
+                <h4>{{data.heading | translate}}</h4>
+                <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+            </div>
+        </div>
+        <div class="popup-body">
+            <div class="popup-content m-auto text-center">
+                <div class="col-xl-12">
+                    <div class="form-field">
+                        <mat-form-field appearance="outline" class="element-full-width">
+                            <mat-label> {{'EVENT_MANAGEMENT.NumberOfCredits' | translate}}</mat-label>
+                            <input formControlName="userCredit" matInput type="number" name="credits" >
+                            <mat-error *ngIf="editUserCreditForm.controls.userCredit.errors?.required">{{'EVENT_MANAGEMENT.PleaseEnterNumberOfCredits' | translate}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="popup-footer">
+            <div class="footer-content justify-content-end">
+                <button (click)="onClose()" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+            </div>
+        </div>
+    </section>
+</form>

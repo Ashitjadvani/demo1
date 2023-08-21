@@ -1,0 +1,45 @@
+
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="nav-brand">
+                <a href="javascript:;" routerLink=""  ><img src="assets/images/legance-white.svg" alt=" lagacy Logo"></a>
+            </div>
+            <div class="nav-menu">
+              <!-- <div class="language-menu-new">
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="userLanguageSelect" name='language' (selectionChange)='onLanguageChange($event)'>
+                    <mat-select-trigger>
+                      <span >
+                        <img [src]="(userLanguageSelect === 'en') ? flagEng : italianFlag" alt=""> {{(userLanguageSelect === 'en') ? 'ENGLISH (EN)' : 'ITALIANO (ITA)' }}
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option value="it" ><img [src]="italianFlag" alt="">{{ 'HEADER.ita' | translate}} </mat-option>
+                    <mat-option value="en" ><img [src]="flagEng" alt="">{{ 'HEADER.en' | translate}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+              <button  mat-raised-button routerLink="" class="btn-submit">{{'GENERAL.Login' | translate }}</button>
+              <!-- <button  class="btn-submit my-account-btn" mat-raised-button routerLink="my-account/edit-profile">
+                <span *ngIf="getSupplierAgreement?.isDurcExpired" class="red-dot"></span>
+                <span class="material-icons">person_outline</span>{{'HEADER.MyAccount' | translate}}</button> -->
+            </div>
+        </div>
+    </div>
+    <hr>
+</header>
+<!--======================= Main Section Body ==================== -->
+<div class="main-title">
+    <div class="container">
+      <!-- <h1>Positions</h1> -->
+      <!-- <h1>{{ "POSITION_PAGE.POSITIONS" | translate }}</h1> -->
+      <h1>{{'PrivatePolicy' | translate}}</h1>
+    </div>
+  </div>
+  <div class="the-content-wrap pt-5">
+    <div class="the-content container" [innerHTML]="privacyData">
+    </div>
+  </div>
+  <div class="copy-right" style="background-color: #1D1D1D;color: #fff; padding: 16px;text-align: center;">
+    {{'GENERAL.CopyRight' | translate}}
+  </div>

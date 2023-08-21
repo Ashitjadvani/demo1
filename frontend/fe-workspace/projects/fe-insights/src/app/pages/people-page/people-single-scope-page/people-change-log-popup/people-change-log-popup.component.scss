@@ -1,0 +1,27 @@
+.change-log-table {
+    width: 100%;
+
+    .table-head {
+        text-align: center;
+    }
+}
+
+:host ::ng-deep .mat-column-Date {
+    flex: 1 1 60px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Author {
+    flex: 1 1 80px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Changes {
+    flex: 1 1 450px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Action {
+    flex: 1 1 20px;
+    font-size: 0.9em;
+}

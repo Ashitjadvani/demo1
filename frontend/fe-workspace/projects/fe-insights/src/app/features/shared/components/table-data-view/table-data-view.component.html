@@ -1,0 +1,63 @@
+<div class="view-container">
+
+    <div *ngIf="mainActions && mainActions.length > 0" class="action-container">
+
+      <button mat-fab color="primary" class="action-button"
+              (click)="this.openFiltersDialog()">
+        <i class="material-icons" >filter_alt</i>
+      </button>
+      <button *ngFor="let act of mainActions" mat-fab color="primary" class="action-button"
+          matTooltip="{{ act.tooltip }}" (click)="onMainAction(act)">
+          <i *ngIf="act.icon" class="material-icons" [ngStyle]="{'color': act.color}">{{ act.icon }}</i>
+          <img *ngIf="act.image" src="{{ act.image }}">
+      </button>
+    </div>
+
+    <div class="table-container">
+        <div style="margin:20px;">
+
+          <mat-chip-list>
+            <mat-chip [removable]="true" (removed)="onChipRemove(item)" *ngFor="let item of this.activeFilters">{{item.columnCaption}}: {{item.filterValue}}
+              <mat-icon  matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+          </mat-chip-list>
+        </div>
+
+        <div class="main-table">
+          <pre style="height:300px; overflow: auto;" *ngIf="false">
+            {{this.entities$ | async | json}}
+          </pre>
+            <mat-table #table [dataSource]="this.entities$">
+                <ng-container *ngFor="let ct of _columnTemplates" matColumnDef="{{ ct.columnName }}">
+                    <mat-header-cell *matHeaderCellDef [ngStyle]="{'background': headerColor ? headerColor : 'white'}">
+
+
+                        {{ ct.columnCaption }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ getElementValue(element, ct) }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Action">
+                    <mat-header-cell *matHeaderCellDef [ngStyle]="{'background': headerColor ? headerColor : 'white'}">
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <button *ngFor="let act of rowActions" mat-icon-button matTooltip="{{ act.tooltip }}"
+                            (click)="onRowAction(element, act)">
+                            <i *ngIf="act.icon" class="material-icons" [ngStyle]="{'color': act.color}">{{ act.icon
+                                }}</i>
+                            <img *ngIf="act.image" src="{{ act.image }}">
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns">
+                </mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns">
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator [pageSizeOptions]="[10,20,50,100]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

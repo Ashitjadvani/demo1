@@ -1,0 +1,9 @@
+<mat-form-field class="full-width">
+    <input matInput placeholder="{{ placeholder }}" [formControl]="peopleFC" [ngModel]="selectedPerson"
+        [matAutocomplete]="autoPerson" [disabled]="" >
+    <mat-autocomplete #autoPerson="matAutocomplete" [displayWith]="displaySelectedPerson" (optionSelected)="onPersonSelected($event)">
+        <mat-option *ngFor="let person of people | async" [value]="person">
+            <span>{{ person.name }} {{ person.surname }}</span>
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

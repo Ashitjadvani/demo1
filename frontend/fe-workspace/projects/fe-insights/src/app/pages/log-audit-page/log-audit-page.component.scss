@@ -1,0 +1,77 @@
+.list-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+.action-button-list {
+    height: 100%;
+    width: 7%;
+    display: flex;
+    flex-direction: column;
+
+    .action-button {
+        margin-bottom: 20px;
+    }
+}
+
+.table-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.action-container {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-end;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.filter-container {
+    height: auto;
+    text-align: center;
+
+    .filter-field {
+        min-width: 500px;
+        max-width: 650px;
+    }
+}
+
+
+.mat-column-Timestamp {
+    flex: 0 100px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    font-size: 0.9em;
+    text-align: center;
+    justify-content: center;
+}
+
+.mat-column-Level {
+    flex: 0 60px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    font-size: 0.9em;
+}
+
+.mat-column-User {
+    flex: 0 180px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    font-size: 0.9em;
+}
+
+.mat-column-Message {
+    flex: 0 500px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}

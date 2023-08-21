@@ -1,0 +1,71 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  - <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD' | translate}}</li> 
+                  <li routerLink="/cms" class="breadcrumb-item">{{'INSIGHTS_MENU.CMS' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{'GENERAL.Edit' | translate}} {{'RECRUITINGTXT.TERMANDCONDITION' | translate}}</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.CMS'" [routePath]="'/cms'" [title3]="'GENERAL.Edit'" [type]="'RECRUITINGTXT.TERMANDCONDITION'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'GENERAL.Edit' | translate}} {{'RECRUITINGTXT.TERMANDCONDITION' | translate}}</span><!-- <span>Edit Area</span> --> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <!-- <p><span style="color:#EA5455">*</span> Indicates a required field</p> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addTermsConditionsForm" [formGroup]= "addTermsConditionsForm"  novalidate
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="custom-editor mb-30">
+                                    <mat-label>{{'RECRUITINGTXT.TERMANDCONDITION' | translate}} (English)</mat-label>
+                                    <div class="form-field error-message-custom">
+                                        <angular-editor [config]="config" formControlName="descriptionEN" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="custom-editor mb-30">
+                                    <mat-label>{{'RECRUITINGTXT.TERMANDCONDITION' | translate}} (Spanish)</mat-label>
+                                    <div class="form-field error-message-custom">
+                                        <angular-editor [config]="config" formControlName="descriptionES" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="custom-editor mb-30">
+                                    <mat-label>{{'RECRUITINGTXT.TERMANDCONDITION' | translate}} (Italian)</mat-label>
+                                    <div class="form-field error-message-custom">
+                                        <angular-editor [config]="config" formControlName="descriptionIT" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="custom-editor mb-30">
+                                    <mat-label>{{'RECRUITINGTXT.TERMANDCONDITION' | translate}} (French)</mat-label>
+                                    <div class="form-field error-message-custom">
+                                        <angular-editor [config]="config" formControlName="descriptionFR" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}"></angular-editor>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                          <!-- <button class="btn-style theme-btn" type="submit" *ngIf="editMode === 'Add'" (click)="addArea()">{{button}}</button> -->
+                          <button class="btn-style theme-btn" type="submit" (click)="addTerms()">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/cms" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

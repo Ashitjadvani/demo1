@@ -1,0 +1,64 @@
+.procurement{
+    .chart-box{
+        padding: 30px 0px;
+    }
+}
+  .recruit-alert {
+    .chart-header {
+      padding: 0px 30px;
+    }
+  }
+  .recruiting-dashboard{
+      .statistics-vertical {
+          height: 100%;
+          .statistics-box{
+              display: block;
+              .statistic-content{
+                  //flex-wrap: wrap;
+  
+              }
+              .manage-content {
+                  display: flex;
+                  //width: 100%;
+                  //min-width: 180px;
+                  //max-width: 273px;
+                  align-items: start;
+                  cursor: pointer;
+                  padding: 0px 15px;
+                  margin: 10px 0px;
+                  @media (max-width:1500px) {
+                      min-width: 150px;
+                      //max-width: 190px;
+                  }
+              }
+          }
+      }
+  }
+  
+  .procurement_data{
+      .statistics-box{
+          //flex-wrap: nowrap;
+          @media (max-width:1500px) {
+              // flex-wrap: wrap;
+          }
+          .statistic-content {
+              //min-width: 240px;
+              //max-width: 360px;
+              @media (max-width:1500px) {
+                  min-width: 120px;
+                  max-width: 240px;
+              }
+          }
+      }
+  }
+  
+  
+  .doc-img {
+      @media (max-width:1500px) {
+          width: 55px;
+      }
+  }
+
+:host ::ng-deep .people-by-gender {
+    width: 100% !important;
+}

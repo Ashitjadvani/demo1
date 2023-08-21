@@ -1,0 +1,35 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.PEOPLE'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page">{{breadcrumb}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.PEOPLE'" [title3]="breadcrumb">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+              <mat-tab-group animationDuration="0ms" [selectedIndex]="selectedIndex" (selectedTabChange)="handleMatTabChange($event);selectedTabValue($event)">
+                <mat-tab *ngFor="let scope of scopesAvailable" class="mt-5" label="{{scope.name}}" style="text-transform:capitalize;">
+                  <ng-template mat-tab-label>
+                    <span style="text-transform:capitalize;">{{scope.name}}</span>
+                  </ng-template>
+                  <app-people-single-scope-page [currentCompany]="currentCompany" [scope]="scope" [userAccount]="userAccount"></app-people-single-scope-page>
+                </mat-tab>
+              </mat-tab-group>
+              <div class="noDataAvail" *ngIf="scopesAvailable.length == 0">
+                <span>{{'No Data Available' | translate}}</span>
+              </div>
+<!--                <mat-tab-group animationDuration="0ms" [selectedIndex]="selectedIndex" (selectedTabChange)="selectedTabValue($event)">-->
+<!--                    <mat-tab *ngFor="let scope of scopesAvailable" class="mt-5" label="{{scope.name}}">-->
+<!--                      <app-people-single-scope-page [currentCompany]="currentCompany" [scope]="scope" [userAccount]="userAccount"></app-people-single-scope-page>-->
+<!--                    </mat-tab>-->
+<!--                </mat-tab-group>-->
+            </div>
+        </div>
+    </div>
+</section>

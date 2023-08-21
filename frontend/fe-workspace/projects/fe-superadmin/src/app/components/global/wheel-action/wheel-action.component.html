@@ -1,0 +1,19 @@
+<div class="hover-effect-menu {{icons}}-icons">
+    <div class="short-arrow">
+        <span class="material-icons">more_horiz</span>
+    </div>
+    <div class="hover-round-effect">
+        <button *ngIf="changePassword" mat-menu-item (click)="changePasswordEvent()" matTooltip="Edit">
+            <span class="material-icons">key</span>
+        </button>
+        <button *ngIf="viewOn" mat-menu-item (click)="viewDetail()" matTooltip="View">
+            <span class="material-icons">remove_red_eye</span>
+        </button>
+        <button *ngIf="editOn" mat-menu-item (click)="editEvent()" matTooltip="Edit">
+            <span class="material-icons">edit</span>
+        </button>
+        <button  *ngIf="deleteOn"  mat-menu-item (click)="deleteEvent()" matTooltip="Delete">
+            <span class="material-icons">delete</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="table-content-box max-height-scroll">
+    <table class="table custom-table">
+        <tr class="header-row">
+            <th class="header table-head">Codice Articolo</th>
+            <th class="header table-head">Turno</th>
+            <th class="header table-head">Quantità</th>
+            <th class="header table-head">Scarti</th>
+            <th class="header table-head">Differenza</th>
+            <th class="header table-head">Stato</th>
+        </tr>
+        <tr class="table-row" *ngFor="let element of planItems">
+            <td class="cell">{{ element.code ? element.code : '-' }}</td>
+            <td class="cell">{{ element.shift ? element.shift : '-' }}</td>
+            <td class="cell">{{ element.qty_prod ? element.qty_prod : '-' }}</td>
+            <td class="cell">{{ element.qty_sca ? element.qty_sca : '-' }}</td>
+            <td class="cell">{{ element.qty_dif ? element.qty_dif : '-' }}</td>
+            <td class="cell">{{ element.status ? element.status : '-' }}</td>
+        </tr>
+    </table>
+    <div class="no-record-found mt-3 mb-2" *ngIf="planItems?.length == 0"><strong>{{'TABLE.No_record_found' | translate}}</strong></div>
+</div>

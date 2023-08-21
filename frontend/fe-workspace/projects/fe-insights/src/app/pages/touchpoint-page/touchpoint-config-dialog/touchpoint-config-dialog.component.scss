@@ -1,0 +1,15 @@
+h2 {
+    text-transform: uppercase;
+}
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+}
+
+.full-width {
+    width: 100%;
+}

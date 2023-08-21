@@ -1,0 +1,29 @@
+@import "../../../../../styles.scss";
+
+.general-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 40px;
+}
+
+.detail-card{
+  width: 90%;
+  height: auto;
+}
+
+.form-row{
+  margin-top: 20px;
+  .mat-form-field{
+    margin-right: 10px;
+  }
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 250px;
+}
+
+table.mat-table {
+  display: table;
+  width:100%;
+}

@@ -1,0 +1,46 @@
+.span-spacer {
+    flex: 1 1 auto;
+}
+
+.blue-color {
+    color: #0640A9;
+}
+
+.main-tab-bar {
+    height: 48px;
+    padding: 10px;
+    z-index: 10;
+
+    .main-tab-bar-card {
+        display: flex;
+        flex-direction: row;
+        width: calc(100% - 20px);
+        height: 100%;
+        border-radius: 10px;
+
+        justify-content: space-evenly;
+
+        background-color: #ebebeb;
+        box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+
+        .bar-button-main {
+            top: -16px;
+            background: #ebebeb;
+            height: 64px;
+            width: 64px;
+
+            .bar-icon {
+                font-size: 32px;
+            }
+        }
+
+        .bar-button {
+            margin-top: auto;
+            margin-bottom: auto;
+
+            .bar-icon {
+                font-size: 28px;
+            }
+        }
+    }
+}

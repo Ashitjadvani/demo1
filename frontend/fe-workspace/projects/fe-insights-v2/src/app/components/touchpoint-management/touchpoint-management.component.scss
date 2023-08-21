@@ -1,0 +1,19 @@
+@import '../../../theme-color';
+
+span.red-round {
+    display: inline-block;
+    background-color: red;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+span.green-round {
+  display: inline-block;
+  background-color: limegreen;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin-right: 5px;
+}

@@ -1,0 +1,28 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{data.heading | translate}}</h4>
+      <img (click)="onNoClick()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="addSupplierForm">
+    <div class="popup-body">
+      <div class="popup-content m-auto text-center">
+        <mat-form-field appearance="outline" class="element-full-width">
+          <mat-label>{{'Procurement_Management.Please Enter Reason for Refuse' | translate}}</mat-label>
+          <textarea formControlName="reason" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+          <mat-error *ngIf="addSupplierForm.controls.reason.errors?.required">
+            {{'Procurement_Management.Please Enter Reason for Refuse' | translate}}.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+      <div class="footer-content">
+        <button class="btn-style theme-btn" type="submit">{{'Procurement_Management.Refuse Now' | translate}}</button>
+        <button (click)="onNoClick()" class="btn-style inactive" type="button">{{'Procurement_Management.Do Not Refuse' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</section>

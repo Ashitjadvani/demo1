@@ -1,0 +1,72 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+        <app-table-data-view [tableDataSet]="alertsTableData" [columnTemplates]="tableColumnTemplates"
+            [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+        </app-table-data-view>
+    </mat-tab>
+    <mat-tab>
+        <div class="general-container">
+            <div class="card width-60 card-height-600">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="main-input-row">
+                        <mat-form-field class="form-field date-field">
+                            <mat-label>{{'ADMIN COMPONENTS.PUBLICATION DATE'|translate}}</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="{{'INSIGHTS_PEOPLE_PAGE.PUBLICATION DATE' | translate}}" appearance="legacy"
+                                [(ngModel)]="currentAlert.publicationDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-field title-field">
+                            <mat-label>{{'GENERAL.TITLE'|translate}}</mat-label>
+                            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.ALERT TITLE' | translate}}" appearance="legacy"
+                                [(ngModel)]="currentAlert.title">
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field class="form-field note-field">
+                        <mat-label>{{'ADMIN DIALOGS.CONTENT'|translate}}</mat-label>
+                        <textarea matInput matTextareaAutosize placeholder="{{'INSIGHTS_PEOPLE_PAGE.ALERT CONTENT' | translate}}" appearance="legacy" maxRows="15" matAutosizeMaxRows="15" matAutosizeMinRows="15"
+                            [(ngModel)]="currentAlert.description"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="select-field">
+                        <mat-label>{{'GENERAL.SITE'|translate}}</mat-label>
+                        <mat-select multiple [(ngModel)]="currentAlert.distributionSites" [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let s of sites" [value]="s.id">{{ s.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>        
+                    <mat-form-field class="select-field">
+                        <mat-label>{{'ADMIN DIALOGS.SAFETY GROUP'|translate}}</mat-label>
+                        <mat-select multiple [(ngModel)]="currentAlert.distributionGroups" [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let grp of groups" [value]="grp.id">{{ grp.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="show-popup-container">
+                        <mat-checkbox class="canteen-flag" [(ngModel)]="currentAlert.showPopup" [ngModelOptions]="{standalone: true}">
+                            {{'ADMIN DIALOGS.ALERTSHOWPOPUP'|translate}}
+                        </mat-checkbox>
+                    </div>
+        
+                    <div class="attachment-container">
+                        <div class="attach-file">
+                            {{ attachmentFile != null ? attachmentFile.name : 'No attachment file selected' }}</div>
+                        <button mat-icon-button class="action-button" color="primary" (click)="onAttachment()"><img
+                                src="./assets/images/paperclip.svg"></button>
+                    </div>
+                    
+                    <input type="file" #file style="display: none" (change)="onUploadFile()" />
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()"
+                        cdkFocusInitial (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

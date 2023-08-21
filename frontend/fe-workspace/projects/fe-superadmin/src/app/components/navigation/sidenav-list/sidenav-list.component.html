@@ -1,0 +1,74 @@
+<!-- <div class="main-side-nav">
+    <mat-toolbar class="dashboard-logo">
+      <img src="assets/images/dashboard-logo.svg" routerLink="" alt="">
+    </mat-toolbar>
+    <ul class="side-nav" (mouseenter)="mouseHover()" (mouseleave)="mouseOut()">
+      <li>
+        <div mat-list-item >
+          <a routerLink="dashboard" class="link-menu" routerLinkActive="active-link">
+              <img src="assets/images/dashboard-icon.svg" class="list-icon" alt="">
+              <img src="assets/images/dashboard-hover.svg" class="list-icon-hover" alt="">
+            <span class="nav-caption">Dashboard</span>
+          </a>
+        </div>
+      </li>
+      <li>
+        <div mat-list-item>
+          <a routerLink="features" class="link-menu" routerLinkActive="active-link">
+            <img src="assets/images/features-icon.svg" class="list-icon" alt="">
+            <img src="assets/images/features-hover.svg" class="list-icon-hover" alt="">
+            <span class="nav-caption">Features</span>
+          </a>
+        </div>
+      </li>
+      <li>
+        <div mat-list-item>
+          <a routerLink="contact-type" class="link-menu" routerLinkActive="active-link">
+            <img src="assets/images/contact-icon.svg" class="list-icon" alt="">
+            <img src="assets/images/contact-hover.svg" class="list-icon-hover" alt="">
+            <span class="nav-caption">Contact Type</span>
+          </a>
+        </div>
+      </li>
+      <li>
+        <div mat-list-item>
+          <a routerLink="client-management" routerLinkActive="active-link" class="link-menu">
+            <img src="assets/images/client-icon.svg" class="list-icon" alt="">
+            <img src="assets/images/client-hover.svg" class="list-icon-hover" alt="">
+            <span class="nav-caption">Client Management</span>
+          </a>
+        </div>
+      </li>
+      <li>
+        <div mat-list-item>
+          <a routerLink="activity-log" routerLinkActive="active-link" class="link-menu">
+            <img src="assets/images/activity-icon.svg" class="list-icon" alt="">
+            <img src="assets/images/activity-hover.svg" class="list-icon-hover" alt="">
+            <span class="nav-caption">Activity Log</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+</div>
+ -->
+
+ <div class="main-side-nav">
+  <mat-toolbar class="dashboard-logo">
+    <img src="assets/images/dashboard-logo.svg"  alt="">
+  </mat-toolbar>
+  <ul class="side-nav" (mouseenter)="mouseHover()" (mouseleave)="mouseOut()">
+    <ng-container *ngFor="let nav of navList">
+      <li (click)="sideMenuName(nav.caption)">
+        <div mat-list-item >
+          <a routerLink="{{nav.routLink}}" class="link-menu" routerLinkActive="active-link">
+              <img [src]="nav.listIcon" class="list-icon" alt="">
+              <img [src]="nav.listIconHover" class="list-icon-hover" alt="">
+            <span class="nav-caption">{{nav.caption}}</span>
+          </a>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</div>
+
+

@@ -1,0 +1,41 @@
+<section class="popups">
+  <div class="popup-header">
+    <div class="header-content">
+      <h4>{{'Change Log' | translate}}</h4>
+      <img (click)="onClose()" alt="" src="assets/images/cross-icon.svg">
+    </div>
+  </div>
+  <div class="popup-body">
+    <div class="popup-content m-auto text-center" style="max-height: 65vh;overflow: auto;">
+      <table class="table-listing" mat-table matSort [dataSource]="currentPersonHistory" style="width: 100%">
+        <ng-container matColumnDef="Date">
+          <mat-header-cell *matHeaderCellDef class="table-head"> {{'INSIGHTS_PEOPLE_PAGE.TIMESTAMP' | translate}} </mat-header-cell>
+          <mat-cell *matCellDef="let element" style="white-space: nowrap"> {{ (element.t ? element.t : '-') | date: 'dd/MM/yyyy HH:mm'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Author">
+          <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.AUTHOR' | translate}} </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.a ? element.a : '-' }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Changes">
+          <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.CHANGES' | translate}} </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.cf.length > 0 ? (element.cf).join(',  ') : '-' }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Action" stickyEnd >
+          <mat-header-cell *matHeaderCellDef style="max-width: 70px;">
+            {{'TABLE.Action' | translate}}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element; let id=index;" style="max-width: 70px;">
+            <button mat-icon-button (click)="onModifyHistory(element)"
+                    matTooltip="{{'Edit'|translate}}">
+              <i class="material-icons">edit</i>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['Date', 'Author', 'Changes', 'Action']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['Date', 'Author', 'Changes', 'Action'];"></mat-row>
+      </table>
+
+    </div>
+  </div>
+</section>

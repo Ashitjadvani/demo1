@@ -1,0 +1,90 @@
+@import '../../../theme-color.scss';
+ 
+ 
+// defult
+hr {
+   margin: 0;
+   color: white;
+   opacity: 0.2;
+   height: 1px;
+   background-color: $white;
+}
+.btn-submit {
+   padding: 18px 62px;
+   font-size: 16px;
+   line-height: 19px;
+   border-radius: 4px;
+   &.my-account-btn{
+     padding: 18px 30px;
+   }
+}
+
+
+
+header{
+   background-color: $theme_color;
+   .container{
+       max-width: 100%;
+       padding: 0 100px;
+
+   }
+   .navbar {
+       padding: 23px 0px;
+       display: flex;
+       width: 100%;
+       .nav-brand {
+           display: flex;
+       }
+       .nav-menu {
+           display: flex;
+           margin-left: auto;
+           @media (max-width: 767px){
+             width: 100%;
+             align-items: center;
+             justify-content: space-between;
+             margin-top: 15px;
+           }
+           .language-menu {
+               margin: 0px 40px;
+               .dropdown {
+                   height: 100%;
+                   font-size: 18px;
+                   color: $white;
+                   background-color: transparent;
+                   img {
+                       margin-right: 10px;
+                   }
+               }
+           }
+           .btn-submit.my-account-btn {
+             @media (max-width: 767px){
+               padding: 12px 13px;
+               line-height: initial;
+               font-size: 14px;
+             }
+           }
+       }
+   }
+}
+
+.mat-menu-item {
+   font-size: 18px;
+   img {
+       margin-right: 10px;
+       vertical-align: middle;
+   }
+}
+
+.down-arrow{
+   margin: 0px 0px 0px 10px;
+}
+
+.the-content-wrap {
+  min-height: calc(100vh - 340px);
+}
+
+:host ::ng-deep.the-content-wrap {
+  h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+    font-weight: 600;
+  }
+}

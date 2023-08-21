@@ -1,0 +1,80 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <nav>
+          <ol class="breadcrumb box-style">
+            <!-- <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li> -->
+            <li  class="breadcrumb-item active" aria-current="page">Categories</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">Categories</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <!--<input (keyup)="onKeyUp($event)" [(ngModel)]="search" mat-input placeholder="Search Category" />
+                  <mat-icon matSuffix class="material-icons">search</mat-icon>-->
+
+
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="Search Category" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" >clear</mat-icon>
+                </div>
+                <button  class="btn-style" routerLink="add-edit-category">
+                  <span class="material-icons">add</span>Add Category
+                </button>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table [dataSource]="categoriesList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+                  <ng-container matColumnDef="catrgory">
+                    <th (click)="changeSorting('catrgory')" *matHeaderCellDef class="short-arrow"  mat-header-cell>
+                        Category <span [ngClass]="sortClass" ><img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;">
+                      {{element.catrgory}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">
+                      Action
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                      <div class="action-icons d-flex switch">
+                        <img src="assets/images/edit-action.svg"  class="" alt="" routerLink="add-edit-category/{{element.id}}">
+                        <img src="assets/images/delete-action.svg" (click)="openAccountDeleteDialog()" alt="">
+                      </div>
+                    </td>
+                  </ng-container>
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="categoriesDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: categoriesDisplayedColumns"></tr>
+              </table>
+            </div>
+            <div class="paginate-footer">
+              <div class="page-item">
+                <h3>Items per page:</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select (ngModelChange)="changeSelectOption()" [(ngModel)]="itemsPerPage">
+                    <mat-option value="5" selected >5</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="15">15</mat-option>
+                    <mat-option value="20">20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

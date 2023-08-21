@@ -1,0 +1,17 @@
+<div class="news-tile-container">
+    <div class="news-tile" [ngStyle]="{ 'backgroundColor': backgroundColor }" (click)="onClick()">
+        <div class="text-container">
+            <div class="news-tile-caption">{{ newsDocument.createdAt | date:'dd/MM/yyyy' }}</div>
+            <div class="news-tile-content">
+                <p>{{ newsDocument.title }}</p>
+            </div>
+        </div>
+        <div class="icon-container">
+            <div class="news-circle" [ngStyle]="{ 'background-color': iconBackgroundColor }">
+                <img *ngIf="icon == ICON_UNREAD" class="news-icon" src="./assets/images/news-unread.svg">
+                <img *ngIf="icon == ICON_READ" class="news-icon" src="./assets/images/news-read.svg">
+                <img *ngIf="icon == ICON_CONFIRMED" class="news-icon" src="./assets/images/news-confirmed.svg">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title">
+    <div class="container">
+        <h1>{{'MYACCOUNT.MyAccount' | translate}}</h1>
+    </div>
+</div>
+<!--======================== Dashboard section start ==================== -->
+<section class="dashboard-content">
+    <div class="container">
+        <div class="account-wrapper main-content-wrapper">
+            <div class="account-list">
+                <div class="box-style">
+                    <div class="my-account-title">
+                        <h4>{{'MYACCOUNT.MyAccount' | translate}}</h4>
+                    </div>
+                    <ul>
+                      <li routerLink="/my-application">{{'MYACCOUNT.MyApplications' | translate}}</li>
+                      <li routerLink="/edit-profile">{{'MYACCOUNT.EditProfile' | translate}}</li>
+                      <li routerLink="/change-password" *ngIf="userDetails === null">{{'MYACCOUNT.ChangePassword' | translate}}</li>
+                      <li routerLink="/activity-log">{{'MYACCOUNT.ActivityLog' | translate}}</li>
+                      <li class="active" routerLink="/download-document">{{'GENERAL.Download' | translate}}</li>
+                      <li routerLink="/delete-account">{{'MYACCOUNT.DeleteAccount' | translate}}</li>
+                      <li (click)="logout()">{{'GENERAL.Logout' | translate}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-content-box box-style">
+                <div class="name-title">
+                    <h4>{{'GENERAL.Download' | translate}}</h4>
+                </div>
+                <hr>
+                <div class="form-main">
+                  <div class="download-wrapper" *ngIf="user && user.resumeId">
+                    <h4>{{'MYACCOUNT.DownloadCV' | translate}}</h4>
+                    <!-- <button mat-raised-button class="btn-submit" type="button" (click)="downloadCV(element.fileLink,element.fileName)">{{'GENERAL.Download' | translate}}</button> -->
+                    <button mat-raised-button class="btn-submit" type="button" (click)="downloadCV()">{{'GENERAL.Download' | translate}}</button>
+                  </div>
+                  <div class="download-wrapper" *ngIf="user && user.videoId">
+                    <h4>{{'MYACCOUNT.DownloadVideo' | translate}}</h4>
+                    <button mat-raised-button class="btn-submit" type="button" (click)="downloadVideo()" >{{'GENERAL.Download' | translate}}</button>
+                  </div>
+                  <div class="download-wrapper">
+                    <h4>{{'MYACCOUNT.DownloadPersonalDetails' | translate}}</h4>
+                    <button mat-raised-button class="btn-submit" type="button" (click)="downloadCSVFile()">{{'GENERAL.Download' | translate}}</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

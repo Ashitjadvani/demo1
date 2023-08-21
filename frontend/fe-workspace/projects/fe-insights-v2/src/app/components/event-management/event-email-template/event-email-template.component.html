@@ -1,0 +1,14 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <app-breadcrumb [title]="(scopeId === null) ? 'INSIGHTS_MENU.EVENT_MANAGEMENT' : 'INSIGHTS_MENU.Training'" [title3]="'EVENT_MANAGEMENT.EmailTemplate'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <app-list-email-template *ngIf="!sharedData"></app-list-email-template>
+                <app-edit-email-template *ngIf="sharedData"></app-edit-email-template>
+            </div>
+        </div>
+    </div>
+</section>

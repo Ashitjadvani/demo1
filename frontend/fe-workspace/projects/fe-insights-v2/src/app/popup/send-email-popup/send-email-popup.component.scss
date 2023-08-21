@@ -1,0 +1,76 @@
+.dialog-head {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+
+    .title {
+        font-size: x-large;
+        margin-top: auto;
+        margin-bottom: auto;
+
+    }
+
+    .spacer {
+        flex-grow: 1;
+    }
+
+    .help-button {
+
+    }
+}
+//background-color: #ffffff;
+//box-shadow: 0px 3px 6px #00000029;
+//border-radius: 6px;
+.popover-help {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    border-width: 1px;
+    justify-content: center;
+    padding: 15px;
+    box-shadow: 0px 3px 6px #00000029;
+
+    .help-title {
+        font-size: x-large;
+        margin-bottom: 5px;
+    }
+
+    .help-row {
+        display: flex;
+        flex-direction: row;
+
+        .help-row-name {
+            font-weight: bold;
+            min-width: 200px;
+        }
+
+        .help-row-value {
+
+        }
+    }
+}
+
+.html-editor {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    .head-param {
+        display: flex;
+        flex-direction: row;
+
+        .spacer {
+            width: 10px;
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+}
+.angular-editor{
+    border: 2px solid red;
+}

@@ -1,0 +1,129 @@
+<mat-tab-group #tabgroup class="group-tab">
+  <mat-tab>
+
+    <app-table-data-view [tableDataSet]="accounts" [columnTemplates]="tableColumnTemplates"
+                         [rowActions]="tableRowActions" [mainActions]="tableMainActions" [filterFunction]="filterCallback">
+    </app-table-data-view>
+
+    <input type="file" #file style="display: none" (change)="onUploadFile()"/>
+  </mat-tab>
+  <mat-tab>
+    <div class="general-container">
+      <div class="card width-60">
+        <div class="card-header">
+          <div class="card-title">{{ titleCard }}</div>
+        </div>
+        <div class="card-body">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="{{ 'INSIGHTS_PEOPLE_PAGE.PERSON' | translate}}" [formControl]="peopleFC" [(ngModel)]="selectedPerson"
+                   [matAutocomplete]="autoPerson" [disabled]="isModify">
+            <mat-autocomplete #autoPerson="matAutocomplete" [displayWith]="displaySelectedUser">
+              <mat-option *ngFor="let person of people | async" [value]="person">
+                <span>{{ person.name }} {{ person.surname }}</span>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.USERID' | translate}}"
+                   [(ngModel)]="currentAccount.userId" [disabled]="isModify">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION METHOD' | translate}}"
+                        [(ngModel)]="selectedAuthMethod"
+                        [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let ap of availableAuthProviders" [value]="ap">{{ ap.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput [type]="!showPassword ? 'password' : ''"
+                   placeholder="{{'INSIGHTS_PEOPLE_PAGE.PASSWORD' | translate}}"
+                   [(ngModel)]="currentAccount.password" [disabled]="!needPassword()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="onToggleShowPassword()">
+              <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput [type]="!showPassword ? 'password' : ''"
+                   placeholder="{{'INSIGHTS_PEOPLE_PAGE.CONFIRM PASSWORD' | translate}}"
+                   [(ngModel)]="confirmPassword" [disabled]="!needPassword()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                    (click)="onToggleShowPassword()">
+              <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD VALID' | translate}}"
+                        [(ngModel)]="currentAccount.passwordValid"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+              <mat-option *ngFor="let ap of passwordValidArray" [value]="ap.id">{{ ap.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="user-param-box">
+            <div class="input-row">
+              <mat-form-field class="width-50">
+                <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD MIN' | translate}}"
+                            [(ngModel)]="currentAccount.passwordMin"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+                  <mat-option *ngFor="let ap of passwordValidMinMax" [value]="ap">{{ ap }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span class="vspan-5"></span>
+              <mat-form-field class="width-50">
+                <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD MAX' | translate}}"
+                            [(ngModel)]="currentAccount.passwordMax"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+                  <mat-option *ngFor="let ap of passwordValidMinMax" [value]="ap">{{ ap }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field class="full-width">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD PATTERN' | translate}}"
+                        [(ngModel)]="currentAccount.passwordPattern"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+              <mat-option *ngFor="let ap of passwordValidPattern" [value]="ap.value">{{ ap.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="user-param-box">
+            <div class="input-row">
+              <mat-form-field class="width-50">
+                <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD ALLOWED' | translate}}"
+                            [(ngModel)]="currentAccount.allowedPreviousPassword"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+                  <mat-option *ngFor="let ap of allowedPreviousPassword" [value]="ap.value">{{ ap.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <span class="vspan-5"></span>
+              <mat-form-field class="width-50" *ngIf="!currentAccount.allowedPreviousPassword">
+                <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.AUTHENTICATION PASSWORD DURATION ALLOWED' | translate}}"
+                            [(ngModel)]="currentAccount.passwordDuration"
+                            [ngModelOptions]="{standalone: true}" [disabled]="!needPassword()">
+                  <mat-option *ngFor="let ap of passwordDuration" [value]="ap.value">{{ ap.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button mat-flat-button class="action-button" color="primary"
+                  (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+          <span class="width-5"></span>
+          <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                  cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

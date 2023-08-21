@@ -1,0 +1,66 @@
+
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/people-management" class="breadcrumb-item">{{'INSIGHTS_MENU.PEOPLE_MANAGEMENT' | translate}}</li>
+          <li routerLink="/people-management" class="breadcrumb-item">{{'PEOPLE_MANAGEMENT.Areas' | translate}}</li>
+          <li class="breadcrumb-item active" aria-current="page">{{'PEOPLE_MANAGEMENT.ViewArea' | translate}}</li>
+        </ol>
+      </nav> -->
+      <app-breadcrumb [routePath]="'/people-management'" [routePath2]="'/people-management'" [title]="'INSIGHTS_MENU.PEOPLE_MANAGEMENT'"
+            [title2]="'PEOPLE_MANAGEMENT.Area'" [title3]="'PEOPLE_MANAGEMENT.ViewArea'"></app-breadcrumb>
+    </div>
+  </div>
+  <div class="edit-job-applications table-content">
+    <div class="box-style company-info ">
+      <div class="edit-app-header">
+        <div class="table-heading">
+          <h3>{{'PEOPLE_MANAGEMENT.ViewArea' | translate}}</h3>
+        </div>
+        <div class="buttons-group">
+          <button class="btn-style grey-btn" (click)="editArea()">{{'GENERAL.Edit' | translate}}</button>
+          <button class="btn-style red-btn" (click)="areaDeleteDialog()">{{'GENERAL.Delete' | translate}}</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="company-details odd-even-false">
+            <div class="detail-wrapper bg-grey">
+              <div class="detail-box">
+                <p>{{'TABLE.Name' | translate}}</p>
+                <b style="text-transform:capitalize;">{{areaDetails.name ? areaDetails.name : '-'}}</b>
+              </div>
+            </div>
+            <hr>
+            <div class="detail-wrapper bg-white" >
+              <div class="detail-box" style="width: 100%">
+                <p>{{'PEOPLE_MANAGEMENT.Scope' | translate}}</p>
+                <b>{{(areaDetails.scopes) ? (areaDetails.scopes).join(',  ') : '-'}}</b>
+              </div>
+            </div>
+            <div class="detail-wrapper bg-grey">
+              <div class="detail-box" style="width: 100%">
+                <p>{{'TABLE.Description' | translate}}</p>
+                <b [innerHTML]="areaDetails.description ? areaDetails.description : '-'" ></b>
+              </div>
+            </div>
+            <div class="detail-wrapper bg-white" >
+              <div class="detail-box" >
+                <p>{{'PEOPLE_MANAGEMENT.createdAt' | translate}}</p>
+                <b>{{areaDetails.createdAt ? (areaDetails.createdAt | date:'dd/MM/yyyy HH:mm') : '-'}}</b>
+              </div>
+              <div class="detail-box">
+                <p>{{'PEOPLE_MANAGEMENT.updatedAt' | translate}}</p>
+                <b>{{areaDetails.updatedAt ? (areaDetails.updatedAt | date:'dd/MM/yyyy HH:mm') : '-'}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+

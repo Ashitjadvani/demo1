@@ -1,0 +1,51 @@
+<section class="popups">
+    <form [formGroup]="addExternalForm" class="formHeight">
+        <div class="popup-header">
+            <div class="header-content">
+                <h4>{{'EVENT_MANAGEMENT.AddExternalPeople' | translate}}</h4>
+                <img (click)="onSave(false,$event)" alt="" src="assets/images/cross-icon.svg">
+            </div>
+        </div>
+        <div class="popup-body">
+            <div class="popup-content m-auto text-center">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.FirstName' | translate}}</mat-label>
+                        <input  type="text" formControlName="firstName" matInput  name="firstName" (keydown)="spaceCheck($event)" #inputDisabled style="text-transform:capitalize;">
+                        <mat-error *ngIf="addExternalForm.controls.firstName.errors?.required">
+                            {{'Please enter name' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.Surname' | translate}}</mat-label>
+                        <input  type="text" formControlName="surname" matInput  name="surname" (keydown)="spaceCheck($event)" #inputDisabled style="text-transform:capitalize;">
+                        <mat-error *ngIf="addExternalForm.controls.surname.errors?.required">
+                            {{'Please enter surname' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.Email Address' | translate}}</mat-label>
+                        <input  type="text" formControlName="email" matInput  name="email" (keydown)="spaceCheck($event)" #inputDisabled>
+                        <mat-error *ngIf="addExternalForm.controls.email.errors?.required">
+                            {{'Please enter email' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="addExternalForm.controls.email.errors?.pattern">
+                            {{'Please enter valid email' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="popup-footer">
+            <div class="footer-content justify-content-end">
+                <button (click)="onSave(false, $event)" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+                <button type="submit" (click)="onSave(true,this.addExternalForm.value)" class="btn-style theme-btn">{{'EVENT_MANAGEMENT.AddExternalPeople' | translate}}</button>
+            </div>
+        </div>
+    </form>
+</section>

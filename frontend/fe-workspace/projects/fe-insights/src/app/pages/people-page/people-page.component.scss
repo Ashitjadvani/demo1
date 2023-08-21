@@ -1,0 +1,15 @@
+@import "../../../styles.scss";
+
+.people-page-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 64px);
+    margin: auto;
+    padding: 20px;
+
+    .scope-group-tab {
+        height: 100%;
+        width: 100%;
+    }
+}
+

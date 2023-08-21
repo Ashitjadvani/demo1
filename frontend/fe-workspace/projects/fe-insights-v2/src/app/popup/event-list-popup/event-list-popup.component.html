@@ -1,0 +1,101 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading |  translate }}</h4>
+            <img (click)="onNoClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="d-flex justify-content-end mb-3">
+            <button *ngIf="enableInviteAll" class="btn-style black-btn sm-btn m-0" (click)="sendInvitationAllByEmail()" [disabled]="isDisabled">{{'Invite all' | translate}}</button>
+        </div>
+        <div class="popup-content list-table custom-mat-table">
+            <mat-table class="change-log-table activity-log-popup" #eventListTable [dataSource]="listTableData" mat-table style="width: 100%" matSort
+                       (matSortChange)="changeSort($event)">
+                <ng-container *ngIf="!coditionalParaShow" matColumnDef="firstName">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header  style="background-color: #f1f1f1;">{{'EVENT_MANAGEMENT.FirstName' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="padding-left: 10px;text-transform: capitalize;">
+                        <span>{{element.firstName ? element.firstName:'-'}}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="coditionalParaShow" matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header  style="background-color: #f1f1f1;">{{'EVENT_MANAGEMENT.FirstName' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="padding-left: 10px;text-transform: capitalize;">
+                        <span >{{element.name ? element.name:'-'}}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="surname">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Surname' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize;"> {{element.surname ? element.surname :'-'}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Email Address' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize" style=""> {{element.email ? element.email :'-'}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="role">
+                    <mat-header-cell *matHeaderCellDef mat-header-cell mat-sort-header style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Role' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize"> {{element.role ? ('EVENT_MANAGEMENT.' + element.role | translate):'-'}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="type">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;" mat-sort-header> {{'EVENT_MANAGEMENT.Type' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize"> {{element.type ? (('EVENT_MANAGEMENT.' + element.type) | translate) :'-' }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Status' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize">
+                        <label class="btn-style table-btn sm-btn label-btn {{ (element.invitataion) ? element.invitataion.split(' ').join('-').toLowerCase() : ''}}">
+                            {{ element.invitataion | translate}}
+                        </label>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="checkPointsCompiled">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Checkpoints Complied' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize">
+                        <span *ngIf="element.checkPointsCompiled == true">{{'GENERAL.Yes' | translate }}</span>
+                        <span *ngIf="element.checkPointsCompiled == false">{{'GENERAL.No' | translate }}</span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="eventCreditCount">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;"> {{'EVENT_MANAGEMENT.Credits Accrued' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize"> {{element.eventCreditCount ? element.eventCreditCount : '0' }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="updated_at">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;" mat-sort-header> {{'RECRUITING.DateandTime' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize"> {{element.updated_at ? (element.updated_at | date: 'dd/MM/yyyy HH:mm') : '-' }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="checkInOut">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;" mat-sort-header> {{'EVENT_MANAGEMENT.Check-type' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize">
+                            <span class="d-flex align-items-center" *ngIf="element?.checkInOut == 0">{{'EVENT_MANAGEMENT.CheckOut' | translate}}<span class="material-icons font-18 ml-5">{{element.platform == 'Web' ? 'language' : 'phone_iphone' }}</span></span>
+                            <span class="d-flex align-items-center" *ngIf="element?.checkInOut == 1">{{'EVENT_MANAGEMENT.CheckIn' | translate}}<span class="material-icons font-18 ml-5">{{element.platform == 'Web' ? 'language' : 'phone_iphone' }}</span></span>
+                            <span class="d-flex align-items-center" *ngIf="element?.checkInOut == 2">{{'EVENT_MANAGEMENT.Check' | translate}}<span class="material-icons font-18 ml-5">{{element.platform == 'Web' ? 'language' : 'phone_iphone' }}</span></span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;"> {{'TABLE.Action' | translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-transform: capitalize">
+                        <button *ngIf="element.invitataion == 'pending'" class="btn-style table-btn black-btn sm-btn" style="" [disabled]="isDisabled" (click)="sendInvitationUserByEmail(element.attendeeId)">
+                            {{'Invite' | translate}}
+                        </button>
+                        <span *ngIf="element.invitataion != 'pending'">-</span>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="listDataDisplayedColumns;sticky: true;"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: listDataDisplayedColumns;"></mat-row>
+            </mat-table>
+            <div *ngIf="listTableData.length == 0" class="no-record text-center mt-15"><strong>{{'TABLE.No_record_found' | translate}}</strong></div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content justify-content-end">
+            <button (click)="onNoClick(false)"  class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+        </div>
+    </div>
+</section>

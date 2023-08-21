@@ -1,0 +1,42 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.EVENT_MANAGEMENT'" [routePath2]="'/event-management/document-type'" [title2]="'INSIGHTS_MENU.Document_Type'" [title3]="title" [type]="'INSIGHTS_MENU.Document_Type'"></app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{title | translate}} {{'INSIGHTS_MENU.Document_Type' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addAreasForm" [formGroup]= "documentTypeForm"  novalidate
+                #myform="ngForm" (ngSubmit)="addDocumentType()">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>{{'MASTER_MODULE.COST_DOCUMENT_NAME' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="name" matInput  name="name"  style="text-transform: capitalize;" (keydown)="space($event)">
+                    <mat-error *ngIf="documentTypeForm.controls.name.errors?.required" >
+                      {{'MASTER_MODULE.Enter document type name' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="documentTypeForm.controls.name.errors?.nameValidator">{{'Special character not allowed' | translate}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save'|translate}}</button>
+              <button class="btn-style red-line-btn" routerLink="/event-management/document-type" type="button">{{'GENERAL.Cancel'|translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

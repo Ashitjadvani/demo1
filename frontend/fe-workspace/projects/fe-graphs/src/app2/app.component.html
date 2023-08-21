@@ -1,0 +1,60 @@
+<section class="dashboard-content">
+  <h2>Bar/Line Charts</h2>
+  <div class="row">
+    <div class="width-60">
+      <div style="display: block">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+    <div class="width-60">
+      <div style="display: block;">
+        <canvas baseChart width="500" height="200"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [plugins]="lineChartPlugins"
+                [chartType]="lineChartType"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <h2 class="mt-4">Pie/Doughnut Charts</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <div style="display: block">
+        <canvas baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+        ></canvas>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div style="display: block">
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [chartType]="doughnutChartType"></canvas>
+      </div>
+    </div>
+  </div>
+  <h2 class="mt-4">Radar Chart</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <div style="display: block">
+        <canvas baseChart
+                [datasets]="radarChartData"
+                [labels]="radarChartLabels"
+                [chartType]="radarChartType"></canvas>
+      </div>
+    </div>
+  </div>
+</section>

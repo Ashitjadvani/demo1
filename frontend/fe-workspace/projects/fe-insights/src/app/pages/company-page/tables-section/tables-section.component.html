@@ -1,0 +1,38 @@
+<div class="general-container">
+    <div class="first-line">
+        <div class="card width-40 height-100">
+            <div class="card-header">
+                <div class="card-title">{{'INSIGHTS_PEOPLE_PAGE.Scope' | translate}}</div>
+            </div>
+            <div class="card-body">
+                <mat-list class="card-list" *ngIf="currentCompany.scopes">
+                    <mat-list-item *ngFor="let scope of currentCompany.scopes">
+                        <div class="card-list-item">
+                            <div class="card-list-item-text">{{ scope.name }}</div>
+                            <div class="card-list-item-action">
+                                <button mat-icon-button (click)="onModifyScope(scope)"
+                                    matTooltip="{{'GENERAL.MODIFY' | translate}}">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                                <button mat-icon-button (click)="onDeleteScope(scope)"
+                                    matTooltip="{{'GENERAL.DELETE' | translate}}">
+                                    <i class="material-icons" style="color: red">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+                <div class="no-item-label" *ngIf="currentCompany.scopes">
+                    <mat-label class="no-item-label" *ngIf="currentCompany.scopes.length == 0">{{'INSIGHTS_PEOPLE_PAGE.No Scopes' | translate}}</mat-label>
+                </div>
+                <div class="no-item-label" *ngIf="!currentCompany.scopes">
+                    <mat-label class="no-item-label">{{'INSIGHTS_PEOPLE_PAGE.No Scopes' | translate}}</mat-label>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button mat-flat-button class="action-button" color="primary" cdkFocusInitial
+                    (click)="onAddScope()">{{'INSIGHTS_PEOPLE_PAGE.Add Scope'|translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

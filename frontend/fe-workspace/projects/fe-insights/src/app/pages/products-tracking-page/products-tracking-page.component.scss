@@ -1,0 +1,229 @@
+.dashboard-container {
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-around;
+
+    .overview-card {
+        display: flex;
+        flex-direction: column;
+        padding: 0px;
+        width: 400px;
+        margin: auto;
+        overflow: hidden;
+        font-family: "Work Sans";
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            padding: 15px;
+
+            .image {
+                .larger {
+                    font-size: xxx-large;
+                }
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+                text-align: end;
+                width: 100%;
+
+                .title {
+                    font-size: large;
+                }
+
+                .data {
+                    font-size: xx-large;
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        .footer-container {
+            padding: 5px;
+            font-size: large;
+            text-align: center;
+
+            .footer-button {
+                width: 100%;
+                background: #ffffff00;
+            }
+        }
+    }
+
+    .XXXXfilter-black {
+        position: relative;
+        span {
+            position: absolute;
+            top: 0px;
+            right: 0;
+            border-radius: 15px;
+            text-align: center;
+            float: right;
+            background-color: #f90000;
+            color: #ffffff;
+            padding: 3px 8px;
+            z-index: 1;
+        }
+        i {
+            filter: invert(100%) sepia(98%) saturate(9%) hue-rotate(157deg) brightness(93%) contrast(102%);
+            &:after {
+                filter: inherit;
+            }
+        }
+    }
+}
+
+.group-tab {
+    margin-top: -48px;
+    height: calc(100% + 48px);
+}
+
+.card-height-600 {
+    height: 600px;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+}
+
+.qr-info {
+    background-color: white;
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    z-index: 100;
+    top: calc((100vh - 400px) * 0.5);
+    left: calc((100vw - 600px) * 0.5);
+    border-radius: 10px;
+    border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    .splash-info-text {
+        text-align: center;
+    }
+
+    .print-qr {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: row;
+
+        .qr-button {
+            width: 100px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}
+
+.splash-info-text {
+    text-align: center;
+}
+
+.card-group-tab {
+    height: 100%;
+    overflow: hidden;
+
+    .group-tab {
+        padding: 5px;
+    }
+}
+
+.orderitem-table-container {
+    width: 100%;
+    overflow: auto;
+}
+
+.production-table-container {
+    width: 100%;
+    overflow: auto;
+}
+
+.product-activity-info {
+    background-color: white;
+    width: 300px;
+    height: 600px;
+    position: absolute;
+    z-index: 100;
+    top: calc((100vh - 620px) * 0.5);
+    left: calc((100vw - 300px) * 0.5);
+    border-radius: 10px;
+    border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+
+    .activity-container {
+        width: 100%;
+        height: 100%;
+
+        overflow-y: auto;
+
+        .activity-item {
+            border: 1px solid black;
+            border-radius: 3px;
+
+            margin-top: 5px;
+            margin-bottom: 5px;
+            width: calc(100% - 15px);
+            height: auto;
+
+            padding: 5px;
+            background-color: #eeeeee;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+
+            .timestamp {
+                width: 100%;
+                text-align: left;
+                font-weight: 500;
+            }
+
+            .activity-text {
+                width: 100%;
+                text-align: left;
+                font-weight: 500;
+                font-size: large;
+            }
+        }
+    }
+}
+
+.chart-drawer {
+    width: 100%;
+    height: 400px;
+
+    .chart-container {
+        width: 100%;
+        height: 400px;
+
+        display: flex;
+        flex-direction: row;
+
+        margin: 40px;
+    }
+}
+
+::ng-deep.mat-tab-body-wrapper {
+    height: 100% !important;
+}

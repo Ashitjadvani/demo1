@@ -1,0 +1,33 @@
+<form class="w-100" name="nativeLanguagesForm" [formGroup]= "nativeLanguagesForm"  novalidate (ngSubmit)="changeNativeLanguages()" #myform="ngForm">
+    <div class="form-main table-content box-heading">
+        <h3>{{"Native Languages" | translate}}</h3>
+        <div class="form-row-wrapper">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="form-field">
+                        <div class="drag-custom-table">
+                            <div class="drage-header">
+                                <ul>
+                                    <li style="min-width: 200px"><span>{{"Drag" | translate}}</span> </li>
+                                    <li class="checkbox-style" style="min-width: 200px"><mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue">Native Language</mat-checkbox></li>
+                                    <!--<li *ngIf="checkboxvalue === true" class="checkbox-style" style="min-width: 200px"><mat-checkbox (click)="toggleAllUnSelect(false)" [checked]="this.checkboxvalue">Native Language</mat-checkbox></li>-->
+                                    <!--<li *ngIf="checkboxvalue === null" class="checkbox-style" style="min-width: 200px"><mat-checkbox (click)="toggleAllSelection(true)" [checked]="checkboxvalue">Native Language</mat-checkbox></li>-->
+                                </ul>
+                            </div>
+                            <div cdkDropList class="drag-content"  (cdkDropListDropped)="drop($event)" #check>
+                                <ul *ngFor="let language of nativeLanguagesList;  let i = index" cdkDrag >
+                                    <li style="min-width: 200px;" cdkDragHandle ><img src="assets/images/drag-icon.svg" alt="" style="cursor: pointer;"></li>
+                                    <li class="checkbox-style" style="min-width: 200px"><mat-checkbox (change)="checkbox(i,$event)" [checked]=language.checked >{{language.languages}}</mat-checkbox></li>
+                                    <!--<li *ngIf="language.checked === true" class="checkbox-style" style="min-width: 200px"><mat-checkbox (click)="checkbox2(i, false)" [checked]=language.checked>{{language.languages}}</mat-checkbox></li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-footer" >
+            <button class="btn-style theme-btn" type="submit">Save</button>
+        </div>
+    </div>
+</form>

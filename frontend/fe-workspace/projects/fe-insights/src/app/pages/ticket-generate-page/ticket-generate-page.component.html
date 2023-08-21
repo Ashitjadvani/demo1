@@ -1,0 +1,65 @@
+<mat-tab-group #tabgroup class="group-tab">
+  <mat-tab>
+    <app-table-data-view [tableDataSet]="alertsTableData" [columnTemplates]="tableColumnTemplates"
+                         [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+    </app-table-data-view>
+  </mat-tab>
+  <mat-tab>
+    <div class="general-container">
+      <div class="card width-60 card-height-600">
+        <div class="card-header">
+          <div class="card-title">{{ titleCard }}</div>
+        </div>
+        <div class="card-body">
+
+          <mat-form-field class="form-field title-field">
+            <mat-label>{{'GENERAL.YOUR NAME'|translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.YOUR NAME' | translate}}" appearance="legacy"
+                   [(ngModel)]="currentTicket.name">
+          </mat-form-field>
+
+          <mat-form-field class="form-field title-field">
+            <mat-label>{{'GENERAL.YOUR EMAIL'|translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.YOUR EMAIL' | translate}}" appearance="legacy"
+                   [(ngModel)]="currentTicket.email">
+          </mat-form-field>
+
+          <mat-form-field class="form-field title-field">
+            <mat-label>{{'GENERAL.URGENCY'|translate}}</mat-label>
+            <mat-select [(ngModel)]="currentTicket.urgency" [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let grp of urgencyList" [value]="grp.value">{{ grp.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="form-field title-field">
+            <mat-label>{{'GENERAL.SUBJECT' | translate}}</mat-label>
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.SUBJECT' | translate}}" appearance="legacy"
+                   [(ngModel)]="currentTicket.subject">
+          </mat-form-field>
+
+          <mat-form-field class="form-field note-field">
+            <mat-label>{{'GENERAL.MESSAGE'|translate}}</mat-label>
+            <textarea matInput matTextareaAutosize placeholder="{{'INSIGHTS_PEOPLE_PAGE.MESSAGE' | translate}}" appearance="legacy" maxRows="15" matAutosizeMaxRows="15" matAutosizeMinRows="15"
+                      [(ngModel)]="currentTicket.message"></textarea>
+          </mat-form-field>
+
+          <div class="attachment-container">
+            <div class="attach-file">
+              {{ attachmentFile != null ? attachmentFile.name : 'No attachment file selected' }}</div>
+            <button mat-icon-button class="action-button" color="primary" (click)="onAttachment()"><img
+              src="./assets/images/paperclip.svg"></button>
+          </div>
+
+          <input type="file" #file style="display: none" (change)="onUploadFile()"/>
+        </div>
+        <div class="card-footer">
+          <button mat-flat-button class="action-button" color="primary"
+                  (click)="onCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+          <span class="width-5"></span>
+          <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()"
+                  cdkFocusInitial (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

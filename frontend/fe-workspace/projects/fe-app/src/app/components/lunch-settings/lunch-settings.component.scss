@@ -1,0 +1,146 @@
+@import "../../../theme/theme.scss";
+
+.action-tile-container {
+    height: auto;
+    // padding: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    .action-tile {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 10px;
+        height: 160px;
+        border: 0px solid mat-color($mat-primary, main);
+        border-radius: 15px;
+        background-color: #c4e8b4;
+        box-shadow: 2px 2px 1px lightgrey;
+
+        .tile-top-line {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            color: #5e5e5e;
+            overflow: hidden;
+
+            .image-container {
+                .image {
+                    font-size: 48px;
+                    background-size: 48px 48px;
+                    height: 48px;
+                    width: 48px;
+                }
+            }
+
+            .divider {
+                width: 10px;
+            }
+
+            .toggle-container {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+
+                .toggle-row-title {
+                    font-weight: bolder;
+                    font-size: 0.95rem;
+                    line-height: 48px;
+                    max-width: 300px;
+                }
+    
+                .toggle-row {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    .toggle-item {
+                        margin-top: auto;
+                        margin-bottom: auto;
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                    }
+                }
+                .toggle-row-filler {
+                    height: 20px;
+                }
+            }
+
+            .time-range-container {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+
+                .time-range-row-title {
+                    height: 48px;
+                    margin: auto;
+                    font-weight: bolder;
+                    font-size: 0.95rem;
+                    max-width: 290px;
+                    padding: 10px;
+                }
+
+                .time-range-row {
+                    max-width: 290px;
+                    display: flex;
+                    flex-direction: row;
+                    margin-left: 10px;
+                }
+                .time-range {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                }
+            }
+        }
+
+        .tile-bottom-line {
+            display: flex;
+            flex-direction: row;
+            align-self: flex-end;
+
+            .tile-button {
+            }
+        }
+    }
+}
+
+:host ::ng-deep .mat-slide-toggle-thumb {
+    background-color: white !important;
+}
+
+:host ::ng-deep .timepicker .timepicker__header {
+    background: #4b6ba2;
+}
+
+::ng-deep .timepicker {
+    .timepicker__header {
+        background-color: #4b6ba2 !important;
+    }
+
+    .clock-face__clock-hand {
+        background-color: #4b6ba2 !important;
+
+        &::after {
+            background-color: #4b6ba2 !important;
+        }
+
+        &::before {
+            border-color: #4b6ba2 !important;
+        }
+    }
+
+    .clock-face__number {
+        > span.active {
+            background-color: #4b6ba2 !important;
+        }
+    }
+
+    button:not(.timepicker-dial__item) {
+        color: #4b6ba2 !important;
+    }
+}

@@ -1,0 +1,306 @@
+<section class="dashboard">
+    <div class="row dashboard-order">
+        <div class="col-xl-12 mb-30" [ngStyle]="{'order':orderPeopleManagement}">
+            <div class="client-chart statistic-charts">
+                <!--<h3 class="mt-30 mt-0">People Management</h3>-->
+                <div class="chart-box box-style">
+                    <div *ngIf="showPeopleManagementModule">
+                        <div class="chart-header">
+                            <h4>{{'RECRUITING_DASHBOARD.Statistics' | translate}}</h4>
+                        </div>
+                        <div class="statistics-box align-items-start">
+                            <div *ngIf="showPeopleManagement" class="statistic-content">
+                              <div class="navigate-img">
+                                <img src="assets/images/people-management.png" alt="">
+                              </div>
+                                <div class="statistic-info">
+                                    <h5>{{'INSIGHTS_PEOPLE_PAGE.People Management' | translate}}</h5>
+                                    <p>
+                                      <span class="cursor-pointer" routerLink="/people-management" [queryParams]="{ tab : '0'}">
+                                        <b *ngIf="peopleModuleData">{{peopleModuleData.accountCount ? peopleModuleData.areaCount : '0'}}</b> {{'PEOPLE_MANAGEMENT.Areas' | translate}}
+                                      </span>
+                                    </p>
+                                    <p>
+                                      <span class="cursor-pointer" routerLink="/people-management" [queryParams]="{ tab : '1'}">
+                                        <b *ngIf="peopleModuleData">{{peopleModuleData.peopleRolesCount ? peopleModuleData.peopleRolesCount : '0'}}</b> {{'PEOPLE_MANAGEMENT.Roles' | translate}}
+                                      </span>
+                                    </p>
+                                    <p>
+                                      <span class="cursor-pointer" routerLink="/people-management" [queryParams]="{ tab : '2'}">
+                                        <b *ngIf="peopleModuleData">{{peopleModuleData.jobTitleCount ? peopleModuleData.jobTitleCount : '0'}}</b> {{'PEOPLE_MANAGEMENT.JobTitles' | translate}}
+                                      </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div *ngIf="showPeople" class="statistic-content">
+                              <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/people">
+                                <div class="navigate-img">
+                                  <img src="assets/images/people.svg" alt="">
+                                </div>
+                                <div class="statistic-info">
+                                    <h5 *ngIf="peopleModuleData">{{peopleModuleData.peopleCount ? peopleModuleData.peopleCount : '0'}}</h5>
+                                    <p>{{'INSIGHTS_MENU.PEOPLE' | translate}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="showPeopleGroup" class="statistic-content">
+                              <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/people-groups">
+                                <div class="navigate-img">
+                                  <img src="assets/images/people-groups.svg" alt="">
+                                </div>
+                                <div class="statistic-info">
+                                    <h5 *ngIf="peopleModuleData">{{peopleModuleData.peopleGroupCount ? peopleModuleData.peopleGroupCount : '0'}}</h5>
+                                    <p>{{'INSIGHTS_MENU.PEOPLE_GROUPS' | translate}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="showAccounts" class="statistic-content">
+                              <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/accounts">
+                                <div class="navigate-img">
+                                  <img src="assets/images/accounts.svg" alt="">
+                                </div>
+                                <div class="statistic-info">
+                                    <h5 *ngIf="peopleModuleData">{{peopleModuleData.accountCount ? peopleModuleData.accountCount : '0'}}</h5>
+                                    <p>{{'INSIGHTS_MENU.ACCOUNTS' | translate}} </p>
+                                </div>
+                              </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body" *ngIf="showPeopleByGender || showPeopleByRole">
+                        <div class="charts-wrapper">
+                            <div *ngIf="showPeopleByGender" class="client-chart people-by-gender recruit-alert">
+                                <div class="chart-box">
+                                    <div class="chart-header">
+                                        <h4 class="mb-2">{{'People By Gender' | translate}}</h4>
+                                        <div class="col-md-12">
+                                          <ul class="chart-details">
+                                            <li *ngFor="let peopleGender of peopleByGenderLabels">{{peopleGender | translate}}</li>
+                                          </ul>
+                                        </div>
+                                    </div>
+                                    <div class="chart-body">
+                                        <div class="client-type" *ngIf="paiChartValue">
+                                            <canvas baseChart class="chart"
+                                                    [data]="peopleByGenderData"
+                                                    [labels]="peopleByGenderLabels"
+                                                    [legend]="peopleByRoleLegend"
+                                                    [chartType]="peopleByGenderType"
+                                                    [colors]="peopleByGenderColors"
+                                            ></canvas>
+                                        </div>
+                                        <div class="noDataAvail" *ngIf="!paiChartValue">
+                                            <span>{{'No Data Available' | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="showPeopleByRole" class="client-chart people-by-role recruit-alert">
+                                <div class="chart-box">
+                                    <div class="chart-header">
+                                        <h4 class="mb-2">{{'People By Role' | translate}}</h4>
+                                        <!--<div class="col-md-12">
+                                          <ul class="chart-details">
+                                            <li *ngFor="let peopleRole of peopleByRoleLabels">{{peopleRole | translate}}</li>
+                                          </ul>
+                                        </div>-->
+                                    </div>
+                                    <div class="chart-body">
+                                        <div class="client-type" *ngIf="peopleByRoleData.length !== 0">
+                                            <canvas baseChart class="chart"
+                                                [data]="peopleByRoleData"
+                                                [labels]="peopleByRoleLabels"
+                                                [options]="peopleByRoleOptions"
+                                                [legend]="peopleByRoleLegend"
+                                                [colors]="peopleByRoleColors"
+                                                [chartType]="peopleByRoleType">
+                                            </canvas>
+                                        </div>
+                                        <div class="noDataAvail" *ngIf="peopleByRoleData.length == 0">
+                                          <span>{{'No Data Available' | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mb-30" *ngIf="showMasterModule" [ngStyle]="{'order':orderMasterModules}">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="chart-group-wrapper">
+                            <div class="chart-header mb-30"><h4>{{'INSIGHTS_MENU.MASTER_MODULES' | translate}}</h4></div>
+                            <div class="chart-box box-style">
+                                <div class="chart-header">
+                                    <h4>{{'RECRUITING_DASHBOARD.Statistics' | translate}}</h4>
+                                </div>
+                                <div class="statistics-box row">
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showEventTypes">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/event-types">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/event-types.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.typeCount ? masterModuleData.typeCount : "0"}}</h5>
+                                            <p>{{'INSIGHTS_MENU.EVENT_TYPE' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showDisputeTypes">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/dispute-types">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/dispute-types.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.globleTypeCount ? masterModuleData.globleTypeCount : "0"}}</h5>
+                                            <p>{{'INSIGHTS_MENU.DISPUTE_TYPES' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showScope">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/scopes">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/scopes.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.scopeCount ? masterModuleData.scopeCount : "0"}}</h5>
+                                            <p>{{'MASTER_MODULE.SCOPES' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showSites">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/sites">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/people.svg" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.siteCount ? masterModuleData.siteCount : "0"}}</h5>
+                                            <p>{{'INSIGHTS_MENU.SITES' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showUniversity">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/university">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/university.png" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.universityCount ? masterModuleData.universityCount : "0"}}</h5>
+                                            <p>{{'INSIGHTS_MENU.UNIVERSITY' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" *ngIf="showDegree">
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/degree">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/degree.png" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                            <h5 *ngIf="masterModuleData">{{masterModuleData.degreeCount ? masterModuleData.degreeCount : "0"}}</h5>
+                                            <p>{{'INSIGHTS_MENU.DEGREE' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" >
+                                      <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/cost-center-type">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/CostCentersType.png" alt="">
+                                        </div>
+                                        <div class="statistic-info">
+                                          <h5 *ngIf="masterModuleData">{{masterModuleData.costCenterTypeCount ? masterModuleData.costCenterTypeCount : "0"}}</h5>
+                                          <p>{{'INSIGHTS_MENU.Cost_Center_Type' | translate}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="statistic-content col-md-3 col-sm-4" >
+                                        <div class="statistic-content-wrap d-flex cursor-pointer" routerLink="/master-modules/event-cost-center">
+                                            <div class="navigate-img">
+                                                <img src="assets/images/CostCenters.svg" alt="">
+                                            </div>
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="masterModuleData">{{masterModuleData.costCenterCount ? masterModuleData.costCenterCount : "0"}}</h5>
+                                                <p>{{'INSIGHTS_MENU.Cost_Centers' | translate}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 mb-30" [ngStyle]="{'order': (orderRecruiting < orderAlerts ? orderRecruiting : orderAlerts)}">
+            <div class="client-chart recruit-alert">
+                <div class="row">
+                    <div class="col-xl-8" *ngIf="showRecruitingModule" [ngStyle]="{'order':orderRecruiting}">
+                        <div class="chart-group-wrapper">
+                          <div class="chart-header mb-30"><h4>{{'INSIGHTS_MENU.RECRUITING' | translate}}</h4></div>
+                          <div class="chart-box box-style">
+                            <div class="chart-header">
+                              <ul class="chart-details">
+                                <li *ngIf="showJobOpenings" class="blue-line">{{'INSIGHTS_MENU.RECRUITING_JOB_OPENING' | translate}}</li>
+                                <li *ngIf="showCandidates" class="orange-line">{{'INSIGHTS_MENU.RECRUITING_CANDIDATES' | translate}}</li>
+                                <li *ngIf="showJobApplications" class="purple-line">{{'INSIGHTS_MENU.RECRUITING_JOB_APPLICATIONS' | translate}}</li>
+                                <li *ngIf="showHiredApplications" class="green-line">{{'Hired Applications' | translate}}</li>
+                                <li *ngIf="showRejectedApplications" class="red-line">{{'Rejected Applications' | translate}}</li>
+                              </ul>
+                              <div class="chart-tools">
+                                <mat-tab-group #tabgroup2 class="chart-filter-list" (selectedTabChange)="onTabChanged($event);">
+                                  <mat-tab label="{{'This Week' | translate}}"></mat-tab>
+                                  <mat-tab label="{{'This Month' | translate}}"></mat-tab>
+                                  <mat-tab label="{{'This Year' | translate}}"></mat-tab>
+                                </mat-tab-group>
+                              </div>
+                            </div>
+                            <div class="chart-body">
+                              <canvas id="recruitingMainChart" baseChart class="chart" *ngIf="(recruitingRejectedApplicationData.length !== 0) && (recruitingHiredApplicationData.length !== 0) && (recruitingApplicationData.length !== 0) && (recruitingCandidateData.length !== 0) && (recruitingOpeningData.length !== 0)"
+                                      [datasets]="recruitingChartData"
+                                      [labels]="recruitingChartLabels"
+                                      [options]="recruitingChartOptions"
+                                      [legend]="recruitingChartLegend"
+                                      [plugins]="recruitingChartPlugins"
+                                      [colors]="recruitingChartColors"
+                                      [chartType]="recruitingChartType">
+                              </canvas>
+                              <div class="noDataAvail" *ngIf="(recruitingRejectedApplicationData.length == 0) && (recruitingHiredApplicationData.length == 0) && (recruitingApplicationData.length == 0) && (recruitingCandidateData.length == 0) && (recruitingOpeningData.length == 0)">
+                                <span>{{'No Data Available' | translate}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4" *ngIf="showAlertsModule" [ngStyle]="{'order':orderAlerts}">
+                        <div class="alert-cards">
+                            <div class="chart-header mb-30" style="opacity: 0"><h4>{{'INSIGHTS_MENU.ALERTS' | translate}}</h4></div>
+                            <div *ngIf="showAlerts" class="chart-box box-style mt-30 cursor-pointer" style="background-image: url('assets/images/alerts-bg2.png');" routerLink="/alerts">
+                              <div class="card-icon">
+                                <svg width="115" height="115" viewBox="0 0 115 115" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M58.4433 20C58.9899 20.2531 59.4899 20.5966 59.9223 21.016C60.3659 21.6181 60.6556 22.3194 60.7663 23.059C60.8472 24.1986 60.8593 25.342 60.8023 26.483C61.7113 26.692 62.6073 26.838 63.4653 27.105C72.2893 29.855 77.6573 35.738 79.4043 44.839C79.604 46.0513 79.7013 47.2783 79.6953 48.507C79.7663 51.999 79.6283 55.507 79.8623 58.984C80.0402 61.6804 80.7591 64.3133 81.9761 66.7259C83.1932 69.1386 84.8835 71.2815 86.9463 73.027C87.9271 73.8219 88.6408 74.8982 88.9913 76.111C89.1968 76.9121 89.2206 77.749 89.0609 78.5604C88.9013 79.3719 88.5622 80.1374 88.0684 80.8009C87.5747 81.4644 86.9389 82.0091 86.2075 82.3951C85.4761 82.7812 84.6676 82.9988 83.8413 83.032C83.6943 83.04 83.5413 83.04 83.3983 83.04C66.243 83.04 49.0873 83.04 31.9313 83.04C30.8015 83.1014 29.6805 82.8102 28.7235 82.2066C27.7665 81.6031 27.0207 80.717 26.5893 79.671C26.1094 78.6194 25.9852 77.44 26.2357 76.3115C26.4861 75.183 27.0975 74.1669 27.9773 73.417C30.2578 71.4525 32.1238 69.0531 33.4663 66.359C34.8057 63.6373 35.5211 60.6511 35.5603 57.618C35.5853 54.566 35.5603 51.518 35.5743 48.462C35.5603 43.6761 37.103 39.0155 39.9696 35.1831C42.8363 31.3507 46.8714 28.5544 51.4663 27.216C52.2415 26.9824 53.0312 26.7997 53.8303 26.669C54.3093 26.592 54.5193 26.442 54.4873 25.93C54.4463 25.268 54.5133 24.599 54.4703 23.937C54.3317 23.0889 54.5094 22.2195 54.9695 21.4938C55.4296 20.768 56.1402 20.2365 56.9663 20H58.4433Z" fill="#4B6BA2"/><path d="M23 50.0949C23.2225 40.027 27.3372 30.4368 34.48 23.3379C34.7665 23.0308 35.112 22.7845 35.4957 22.6138C35.8795 22.4431 36.2937 22.3514 36.7137 22.3442C37.1336 22.337 37.5507 22.4145 37.9401 22.572C38.3295 22.7295 38.6831 22.9638 38.98 23.2609C39.2791 23.5469 39.5179 23.8899 39.6823 24.2697C39.8467 24.6494 39.9334 25.0583 39.9374 25.4721C39.9413 25.8859 39.8623 26.2963 39.7051 26.6791C39.5479 27.0619 39.3156 27.4093 39.022 27.7009C36.0426 30.7153 33.6487 34.2566 31.962 38.1449C30.3081 42.0156 29.4152 46.1685 29.332 50.3769C29.3384 50.8917 29.2915 51.4058 29.192 51.9109C29.0085 52.6723 28.5445 53.3365 27.8928 53.7709C27.241 54.2052 26.4494 54.3777 25.676 54.2539C24.941 54.1432 24.2689 53.7757 23.7791 53.2167C23.2892 52.6576 23.0132 51.9431 23 51.1999C23 50.8309 23 50.4619 23 50.0949Z" fill="#4B6BA2"/><path d="M92.2738 49.8049C92.3006 50.3937 92.2973 50.9835 92.2639 51.5719C92.1606 52.3172 91.7926 53.0005 91.227 53.4968C90.6614 53.9931 89.9361 54.2693 89.1837 54.2749C88.4313 54.2805 87.702 54.0151 87.1292 53.5272C86.5563 53.0394 86.1782 52.3616 86.0639 51.6179C85.8829 49.8839 85.8639 48.1309 85.6299 46.4059C84.7961 40.2083 82.1687 34.3896 78.0708 29.6659C77.5138 29.0109 76.9119 28.3939 76.3269 27.7659C76.0304 27.4681 75.7964 27.1142 75.6383 26.7249C75.4803 26.3356 75.4015 25.9187 75.4065 25.4985C75.4115 25.0784 75.5001 24.6635 75.6674 24.278C75.8346 23.8925 76.077 23.5443 76.3803 23.2536C76.6837 22.9629 77.0421 22.7356 77.4343 22.585C77.8266 22.4344 78.2449 22.3635 78.6649 22.3765C79.0848 22.3895 79.498 22.486 79.8802 22.6606C80.2624 22.8351 80.606 23.0841 80.8908 23.3929C85.0768 27.5806 88.2541 32.6665 90.1819 38.2649C91.4714 41.9818 92.1774 45.8759 92.2749 49.8089" fill="#4B6BA2"/><path d="M46.1182 86.2041H69.1872C68.6458 88.8636 67.202 91.2543 65.1002 92.9714C62.9984 94.6885 60.3677 95.6265 57.6537 95.6265C54.9396 95.6265 52.309 94.6885 50.2071 92.9714C48.1053 91.2543 46.6615 88.8636 46.1202 86.2041" fill="#4B6BA2"/></svg>
+                              </div>
+                                <div class="alert-details">
+                                    <h3 *ngIf="mainDashboardData">{{mainDashboardData.alertCount ? mainDashboardData.alertCount : '0'}}</h3>
+                                    <p>{{'INSIGHTS_MENU.ALERTS' | translate}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert-cards" *ngIf="showTouchPoint">
+                            <div class="chart-box box-style mt-30 cursor-pointer" style="background-image: url('assets/images/touch-point-bg.png');" routerLink="/touchpoint-management">
+                                <div class="card-icon">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="115" height="115" viewBox="0 0 115 115">  <defs>  <clipPath id="clip-path">  <rect id="Rectangle_3912" data-name="Rectangle 3912" width="58.34" height="70" fill="#4b6ba2"/>  </clipPath>  </defs>  <g id="Group_14534" data-name="Group 14534" transform="translate(-1721.634 -1713.634)">  <g id="Group_14300" data-name="Group 14300" transform="translate(1749.634 1736.634)">  <g id="Group_13973" data-name="Group 13973" clip-path="url(#clip-path)">  <path id="Path_102559" data-name="Path 102559" d="M45.184,112.893a6.928,6.928,0,0,0-.462-.567q-7.678-7.688-15.363-15.369A6.431,6.431,0,0,1,27.37,93.1a5.846,5.846,0,0,1,7.25-6.264,6.619,6.619,0,0,1,2.935,1.785q3.282,3.289,6.569,6.574c.173.174.315.38.472.571l.2-.081v-.772q0-17.014,0-34.028a5.941,5.941,0,0,1,3.338-5.729A5.808,5.808,0,0,1,56.4,59.628a19.433,19.433,0,0,1,.109,1.973q.013,7.55,0,15.1v.9q2.219.637,4.43,1.271c3.69,1.053,7.383,2.1,11.071,3.159A6.551,6.551,0,0,1,76.7,89.975c-1.552,7.635-3.061,15.278-4.588,22.917Z" transform="translate(-21.482 -42.893)" fill="#4b6ba2"/>  <path id="Path_102560" data-name="Path 102560" d="M88.189,24.212l-5.3-2.2c1.843-6.047.482-11.013-4.928-14.492a11.29,11.29,0,0,0-12.6.485c-4.755,3.6-5.94,8.344-4.133,14l-5.3,2.195a17.469,17.469,0,1,1,32.26.006" transform="translate(-42.878 -0.001)" fill="#4b6ba2"/>  <path id="Path_102561" data-name="Path 102561" d="M7.629,49.78l-5.4,2.24a29.116,29.116,0,0,1,0-22.336l5.4,2.235a23.6,23.6,0,0,0,0,17.861" transform="translate(0 -23.333)" fill="#4b6ba2"/>  <path id="Path_102562" data-name="Path 102562" d="M237.055,31.92l5.4-2.239a29.133,29.133,0,0,1,.011,22.335l-5.407-2.237a23.576,23.576,0,0,0,0-17.859" transform="translate(-186.343 -23.332)" fill="#4b6ba2"/>  </g>  </g>  </g>  </svg>
+                                </div>
+                                <div class="alert-details">
+                                    <h3 *ngIf="mainDashboardData">{{mainDashboardData.touchPointCount ? mainDashboardData.touchPointCount : '0'}}</h3>
+                                    <p>{{'Touch Point' | translate}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

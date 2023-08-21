@@ -1,0 +1,231 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/procurement-dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li>
+            <li routerLink="/sites" class="breadcrumb-item">{{'INSIGHTS_MENU.SITES'| translate}}</li>
+            <li aria-current="page" class="breadcrumb-item active"><span>{{title | translate}} {{'INSIGHTS_MENU.SITES'| translate}}</span></li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb 
+         [title]="'INSIGHTS_MENU.SITES'" [routePath]="'/sites'" [title3]="title" [type]="'INSIGHTS_MENU.SITES'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+
+        <mat-vertical-stepper #stepper [linear]="true" class="vertical-stepper-style" labelPosition="bottom">
+          <mat-step [stepControl]="addGeneralInfoForm">
+            <ng-template matStepLabel>
+                {{'SITES.General'| translate}}
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading">
+                <h3 style="font-weight: 600"><span>{{'SITES.General'| translate}}</span></h3>
+                <div class="search-form-wrapper">
+                  <div class="buttons-group">
+                    <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'|translate}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-content-box">
+                <form class="w-100" name="addGeneralInfoForm" [formGroup]= "addGeneralInfoForm"  novalidate #myform="ngForm">
+                    <div class="row">
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.Key'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                    <input  type="text" formControlName="key" matInput name="key" >
+                                    <mat-error *ngIf="addGeneralInfoForm.controls.key.errors?.required" >
+                                      {{'SITES.Enteryourkey'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.SiteType'| translate}}</mat-label>
+                                    <mat-select formControlName="siteType" [(ngModel)]="selected">
+                                        <mat-option>{{'SITES.SelectSiteType'| translate}}</mat-option>
+                                        <mat-option *ngFor="let siteTypes of siteTypeList" value="{{siteTypes}}">{{siteTypes | translate}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="addGeneralInfoForm.controls.siteType.errors?.required">
+                                      {{'SITES.Pleaseselectsitetype'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.SiteName'| translate}}</mat-label>
+                                    <input  type="text" formControlName="name" matInput  name="name" (keydown)="space($event)" style="text-transform: capitalize;">
+                                    <mat-error *ngIf="addGeneralInfoForm.controls.name.errors?.required" >
+                                      {{'SITES.Enteryoursitename'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="form-field error-message-custom date-picker-style">
+                              <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label>{{'SITES.Address'| translate}}</mat-label>
+                                <textarea formControlName="address" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                                <mat-error *ngIf="addGeneralInfoForm.controls.address.errors?.required">
+                                  {{'SITES.Enteryouraddress'| translate}}
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label> {{'SITES.Cap'| translate}}</mat-label>
+                                    <input  type="text" formControlName="cap" matInput name="cap" >
+                                    <mat-error *ngIf="addGeneralInfoForm.controls.cap.errors?.required" >
+                                      {{'SITES.Enteryourcap'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.City'| translate}}</mat-label>
+                                    <input  type="text" formControlName="city" matInput name="city" style="text-transform: capitalize;">
+                                    <mat-error *ngIf="addGeneralInfoForm.controls.city.errors?.required" >
+                                      {{'SITES.Enteryourcity'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-footer d-flex justify-content-between">
+                        <button class="btn-style red-line-btn" routerLink="/sites" type="button"> {{'GENERAL.Cancel'| translate}}</button>
+                        <button class="btn-style theme-btn" matStepperNext type="button" >{{'GENERAL.Save&Next'| translate}} <mat-icon>arrow_forward</mat-icon></button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </mat-step>
+          <mat-step [stepControl]="addSettingInfoForm">
+            <ng-template matStepLabel>
+              {{'SITES.Settings'| translate}}
+            </ng-template>
+            <div class="table-content box-style">
+              <div class="table-heading">
+                <h3 style="font-weight: 600"><span> {{'SITES.Settings'| translate}}</span></h3>
+                <div class="search-form-wrapper">
+                  <div class="buttons-group">
+                    <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field'| translate}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-content-box">
+                <form class="w-100" name="addSettingInfoForm" [formGroup]="addSettingInfoForm"  novalidate
+                (ngSubmit)="onSiteSubmit()"
+                #myform="ngForm">
+                    <div class="row">
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.OfficeManager'| translate}}</mat-label>
+                                    <input  type="text" formControlName="facilityManagerId" matInput name="facilityManagerId" style="text-transform: capitalize;">
+                                    <mat-error *ngIf="addSettingInfoForm.controls.facilityManagerId.errors?.required" >
+                                      {{'SITES.Enteryourofficemanager'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.OfficePartner'| translate}}</mat-label>
+                                    <input  type="text" formControlName="officeManagerId" matInput  name="officeManagerId" style="text-transform: capitalize;">
+                                    <mat-error *ngIf="addSettingInfoForm.controls.officeManagerId.errors?.required" >
+                                      {{'SITES.Enteryourofficepartner'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label> {{'TABLE.Status'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                    <mat-select formControlName="globalStatus" name="globalStatus" [(ngModel)]="currentSite.globalStatus">
+                                        <mat-option>{{'SITES.SelectStatus'| translate}}</mat-option>
+                                        <mat-option *ngFor="let settingStatus of availableSiteStatus" value="{{settingStatus}}">{{settingStatus | translate}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="addSettingInfoForm.controls.globalStatus.errors?.required">
+                                      {{'SITES.Pleaseselectstatus'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'SITES.MaxCapacity'| translate}}</mat-label>
+                                    <input  type="number" formControlName="maxCapacity" matInput name="maxCapacity" [(ngModel)]="currentSite.maxCapacity">
+                                    <mat-error *ngIf="addSettingInfoForm.controls.maxCapacity.errors?.required" >
+                                      {{'SITES.Enteryourmaxcapacity'| translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-12"></div>
+                        <div class="col-xl-6">
+                            <div class="form-field error-message-custom">
+                                <div class="custom-switch">
+                                    <mat-checkbox formControlName="meetingRoomAvalabilityFlag" name="meetingRoomAvalabilityFlag"  [(ngModel)]="currentSite.meetingRoomAvalabilityFlag">{{'SITES.MeetingRoomAvailability'| translate}}</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-field error-message-custom">
+                                <div class="custom-switch">
+                                    <mat-checkbox formControlName="deskAvalabilityFlag" name="deskAvalabilityFlag" [(ngModel)]="currentSite.deskAvalabilityFlag">{{'SITES.DeskAvailability'| translate}}</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-field error-message-custom">
+                                <div class="custom-switch">
+                                    <mat-checkbox formControlName="managerRestriction" name="managerRestriction" [(ngModel)]="currentSite.managerRestriction">{{'SITES.ApplyManagerRestrictions'| translate}}</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-field error-message-custom">
+                                <div class="custom-switch">
+                                    <mat-checkbox formControlName="useAreaCapacities" name="useAreaCapacities" [(ngModel)]="currentSite.useAreaCapacities">{{'SITES.ApplyDepartmentRestrictions'| translate}} </mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-field error-message-custom">
+                                <div class="custom-switch">
+                                    <mat-checkbox formControlName="enableWeekend" name="enableWeekend" [(ngModel)]="currentSite.enableWeekend">{{'SITES.EnablePlansandActivitiesduringWeekend'| translate}}</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-footer d-flex justify-content-between">
+                        <button class="btn-style red-line-btn" routerLink="/sites" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                        <div>
+                            <button class="btn-style dark-grey-btn" matStepperPrevious type="button"><span
+                                class="material-icons" style="font-size: 18px;margin-left: 5px;width: 20px;">arrow_backward</span>{{'GENERAL.Previous'| translate}}
+                            </button>
+                            <button class="btn-style theme-btn"  type="submit" >{{'GENERAL.Save&Finish'| translate}}</button>
+                        </div>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </mat-step>
+        </mat-vertical-stepper>
+      </div>
+    </div>
+  </section>

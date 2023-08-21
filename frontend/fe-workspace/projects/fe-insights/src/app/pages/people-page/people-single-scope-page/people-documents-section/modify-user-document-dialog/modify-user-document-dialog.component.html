@@ -1,0 +1,55 @@
+<h2 mat-dialog-title><b>{{'DOCUMENTS.ModifyUserDoc'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <div class="row">
+            <mat-form-field class="width-100">
+                <mat-label>{{'DOCUMENTS.SelectDocType' | translate}}</mat-label>
+                <mat-select [(value)]="userDocument.documentId" [disabled]="newDocType">
+                    <mat-option *ngFor="let doc of companyDocuments" [value]="doc.id">
+                        {{doc.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-icon-button [ngClass]="newDocType ? 'icon-button-disabled' : 'icon-button'" [disabled]="newDocType" matTooltip="{{'DOCUMENTS.NewDocType'|translate}}" (click)="onAddDocType()">
+                <i class="material-icons white">add</i>
+            </button>
+        </div>
+        <div *ngIf="newDocType" class="row">
+            <mat-form-field class="width-100">
+                <mat-label>{{'DOCUMENTS.NewDocType' | translate}}</mat-label>
+                <input matInput placeholder="{{'DOCUMENTS.NewDocType'|translate}}" appearance="legacy" [(ngModel)]="newDocName">
+            </mat-form-field>
+            <button mat-icon-button class="icon-button" matTooltip="{{'DOCUMENTS.SelectDocType' | translate}}" (click)="onSelectDocType()">
+                <i class="material-icons white">undo</i>
+            </button>
+        </div>
+        <div class="upload-container" appDnd (fileDropped)="onFileDropped($event)">
+            <div class="no-file-container">
+                <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)">
+                <h3 class="small-font">{{'DOCUMENTS.UploadedFile' | translate}}</h3>
+                <h3 *ngIf="file!=null">{{file.name}}</h3>
+                <h3 *ngIf="file==null">{{userDocument.fileName}}</h3>
+                <button mat-flat-button class="action-button" color="primary">{{'DOCUMENTS.Browse new' | translate}}</button>
+            </div>
+        </div>
+        <div class="row padding-top">
+            <mat-form-field class="width-100">
+                <mat-label>{{'DOCUMENTS.EndValidityDate' | translate}}</mat-label>
+                <input matInput [matDatepicker]="pickerDate" (click)="pickerDate.open()"placeholder="{{'DOCUMENTS.EndValidityDate' | translate}}"
+                    [(ngModel)]="userDocument.expirationDate">
+                <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDate></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+        <button mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="!confirmButtonEnable()"
+            (click)="onConfirm()">{{'GENERAL.CONFIRM'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

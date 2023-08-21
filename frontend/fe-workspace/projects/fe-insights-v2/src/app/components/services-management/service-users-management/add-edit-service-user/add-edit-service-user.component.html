@@ -1,0 +1,169 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <!-- <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li> -->
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.ASSETS_MANAGEMENT' | translate}}</li>
+                    <li routerLink="../" class="breadcrumb-item">Service User</li>
+                    <li class="breadcrumb-item active" aria-current="page"><span>Add Service User</span> </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>Add Service User</span></h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addResourceGroupForm" [formGroup]="serviceUserForm" (ngSubmit)="onSaveServiceUser()" novalidate>
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Name' | translate}}<span class="red-label">*</span></mat-label>
+                                        <input formControlName="name" matInput type="text" name="name">
+                                        <mat-error *ngIf="serviceUserForm.controls.name.errors?.required">
+
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Surname' | translate}}<span class="red-label">*</span></mat-label>
+                                        <input formControlName="surname" matInput type="text" name="surname">
+                                        <mat-error *ngIf="serviceUserForm.controls.surname.errors?.required">
+                                            
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Fiscal Code' | translate}}<span class="red-label">*</span></mat-label>
+                                        <input formControlName="cf" matInput type="text" name="cf">
+                                        <mat-error *ngIf="serviceUserForm.controls.cf.errors?.required">
+                                            
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Gender' | translate}}</mat-label>
+                                        <mat-select formControlName="gender">
+                                            <mat-option>{{'Select Gender' | translate}}</mat-option>
+                                            <mat-option *ngFor="let genders of genderList" value="{{genders.value}}">
+                                                {{genders.viewValue | translate}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width date-select">
+                                        <mat-label>{{'Birthday' | translate}}</mat-label>
+                                        <input formControlName="birthDay" [matDatepicker]="picker_1" matInput
+                                            type="text" name="birthDay">
+                                        <mat-datepicker-toggle matSuffix [for]="picker_1" class="full-date-select">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #picker_1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Birth Place' | translate}}</mat-label>
+                                        <input formControlName="birthPlace" matInput type="text" name="birthPlace">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Prov' | translate}}</mat-label>
+                                        <mat-select formControlName="birthProv">
+                                            <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                            <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs |
+                                                translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Address' | translate}}</mat-label>
+                                    <textarea formControlName="address" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text"></textarea>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'City' | translate}}</mat-label>
+                                      <input formControlName="city" matInput type="text" name="city">
+                                    </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label> {{'Prov' | translate}}</mat-label>
+                                        <mat-select formControlName="prov">
+                                            <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                            <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs | translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                              <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'Cap' | translate}}</mat-label>
+                                      <input formControlName="cap" matInput type="text" name="cap">
+                                    </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'Phone' | translate}}</mat-label>
+                                      <input formControlName="phone" matInput type="number" name="phone">
+                                    </mat-form-field>
+                                </div>
+                              </div>
+                              <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                      <mat-label>{{'Email' | translate}}<span class="red-label">*</span></mat-label>
+                                      <input formControlName="email" matInput type="email" name="email">
+                                      <mat-error *ngIf="serviceUserForm.controls.email.errors?.required">{{'Please enter email' | translate}}</mat-error>
+                                      <mat-error *ngIf="serviceUserForm.controls.email.errors?.email">{{'Please enter valid email' | translate}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">Save</button>
+                            <button class="btn-style red-line-btn" routerLink="/services-management/srv-users-management" type="button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

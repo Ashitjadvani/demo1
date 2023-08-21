@@ -1,0 +1,271 @@
+@import "../../../../theme-color.scss";
+
+$breakpoint-desktop: 1500px;
+$breakpoint-tablet: 1199px;
+$breakpoint-tablet-sm: 991px;
+$breakpoint-mobile: 767px;
+
+
+.legance-logo {
+    max-width: 175px;
+    margin: auto;
+}
+
+.mat-expansion-panel {
+    background-color: transparent;
+    box-shadow: none !important;
+}
+
+.mat-expansion-panel-header-title {
+    color: inherit;
+}
+
+.mat-expansion-indicator::after {
+    color: #ffffff;
+}
+
+button.mat-menu-item {
+    color: #A6B0CF;
+    font-size: 18px;
+    border-radius: 3px;
+    padding: 10px 10px 10px 20px;
+    height: initial;
+    line-height: initial;
+
+    &:hover, &.active {
+        color: $theme_color;
+    }
+
+    @media (max-width: $breakpoint-desktop) {
+        font-size: 16px;
+    }
+}
+
+.dashboard-logo {
+    background-color: $theme_color;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 322px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    height: 100px;
+    z-index: 9;
+    cursor: pointer;
+    @media (max-width: $breakpoint-desktop) {
+        width: 280px;
+    }
+
+    img {
+        margin: auto;
+    }
+}
+
+.main-side-nav {
+    background-color: $theme_color;
+    scrollbar-color: #0000 #0000 !important;
+
+    .side-nav {
+        padding: 10px;
+        height: calc(100vh - 64px);
+        min-height: 100vh;
+        overflow: auto;
+        margin-bottom: 0px;
+        padding: 115px 0px 50px 5px;
+        @media (max-width: $breakpoint-desktop) {
+            padding: 115px 0px 50px 10px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            list-style: none;
+
+            &.active-link, &:hover {
+                //color: #FFCC00;
+                color: $theme_color;
+            }
+        }
+
+        .sub-menu {
+            padding: 0px;
+
+            li {
+                list-style: none;
+
+                .active-link {
+                    color: $theme_color;
+                }
+            }
+        }
+
+        .inner-list {
+            li {
+                position: relative;
+                z-index: 1;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 0px;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ECEFF4;
+                    color: $theme_color;
+                    z-index: -1;
+                    border-radius: 35px 0px 0px 35px;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                }
+
+                &.active-link, &:hover {
+                    color: $theme_color;
+
+                    &:before {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    // scroll bar css
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: none;
+        border-radius: 10px;
+        background-color: transparent;
+    }
+
+    .side-nav {
+        .link-menu {
+            color: $white;
+            position: relative;
+            font-size: 18px;
+            line-height: 24px;
+            border-radius: 3px;
+            padding: 17px 10px 17px 25px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            transition: 0.4s;
+            border-radius: 28px 0px 0px 28px;
+            @media (max-width: $breakpoint-desktop) {
+                font-size: 16px;
+                padding: 17px 10px 17px 15px;
+            }
+
+            .list-icon, .svg-icon {
+                margin-right: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                max-width: 21px;
+                max-height: 21px;
+            }
+
+            .list-icon-hover {
+                display: none;
+                margin-right: 21px;
+            }
+
+            &.active-link, &:hover, &.active {
+                background-color: $theme_color_offlight;
+                color: $theme_color;
+
+                .list-icon {
+                    display: none;
+                    transition: 0.4s;
+                }
+
+                .list-icon-hover {
+                    display: block;
+                    transition: 0.4s;
+                }
+            }
+        }
+
+        .has-submenu {
+            .inner-list{
+                .link-menu {
+                    font-size: 16px;
+                    padding: 17px 10px 17px 22px;
+                    @media (max-width:1500px) {
+                        padding: 17px 10px 17px 10px;
+                    }
+                }
+                .has-submenu-inner{
+                    li.link-menu{
+                        @media (max-width:1500px) {
+                            padding: 17px 10px 17px 15px;
+                        }
+                    }
+                }
+            }
+            .link-menu {
+                &.active-link {
+                    background-color: transparent;
+                    color: #FFFFFF;
+
+                    &:hover, &.active {
+                        background-color: $theme_color_offlight;
+                        color: $theme_color;
+
+                        .list-icon {
+                            display: none;
+                        }
+
+                        .list-icon-hover {
+                            display: block;
+                        }
+                    }
+
+                    .list-icon {
+                        display: block;
+                    }
+
+                    .list-icon-hover {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        li:not(.has-submenu) {
+            .active-link {
+                &.link-menu {
+                    background-color: #ffffff;
+                    color: $theme_color;
+                }
+            }
+        }
+    }
+
+    .sidenav-notify {
+        display: flex;
+        min-width: 30px;
+        min-height: 30px;
+        padding: 3px 8px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 6px rgb(0 0 0 / 16%);
+        background-color: #FFCC00;
+        color: $black;
+        font-weight: 600;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 16px;
+        right: 50px;
+    }
+}

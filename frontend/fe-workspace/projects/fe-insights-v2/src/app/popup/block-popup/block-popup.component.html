@@ -1,0 +1,24 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{data.heading |  translate }}</h4>
+            <img (click)="onNoClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <img src="assets/images/block-action-2.svg" class="delete-img"  alt="">
+            <p style="margin-top:20px">{{data.message1  |  translate }}</p>
+            <p *ngIf="data.message2 != null" style="margin-top:10px; font-weight: 800;">{{data.message2  |  translate }}</p>
+            <p *ngIf="data.message3 != null" style="margin-top:10px; font-weight: 800;">{{data.message3  |  translate }}</p>
+
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <div class="footer-content">
+            <button (click)="onNoClick(true)" class="btn-style theme-btn">{{'GENERAL.Yes' | translate}}</button>
+            <button (click)="onNoClick(false)"  class="btn-style inactive">{{'GENERAL.No' | translate}}</button>
+        </div>
+    </div>
+</section>

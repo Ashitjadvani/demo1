@@ -1,0 +1,17 @@
+.short-arrow{
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 100%;
+    padding: 3px;
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+.hover-effect-menu .short-arrow .material-icons {
+    display: block;
+    height: 24px;
+    padding: 3px 0px 0px 3px;
+}
+.hover-effect-menu .short-arrow .material-icons {
+    font-size: 18px !important;
+}

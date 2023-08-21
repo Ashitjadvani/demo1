@@ -1,0 +1,75 @@
+<form [formGroup]="activeCodeForm" (ngSubmit)="saveActiveCodeForm()">
+    <section class="popups">
+        <div class="popup-header">
+            <div class="header-content">
+                <h4>{{'EVENT_MANAGEMENT.ActivePageDetails' | translate}}</h4>
+                <img (click)="onClick(false,$event)" alt="" src="assets/images/cross-icon.svg">
+            </div>
+        </div>
+        <div class="popup-body">
+            <div class="popup-content m-auto">
+                <div class="form-field" >
+                    <mat-form-field appearance="outline" class="element-full-width">
+                        <mat-label>{{'EVENT_MANAGEMENT.EnterSecretCode' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                        <input  type="text" formControlName="secretCode" matInput  name="secretCode" (keydown)="space($event)" #inputDisabled style="text-transform:capitalize;">
+                        <mat-error *ngIf="activeCodeForm.controls.secretCode.errors?.required" >
+                            {{'EVENT_MANAGEMENT.PleaseEnterSecretCode' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <h4>{{'EVENT_MANAGEMENT.SelectActivationDuration' | translate}}</h4>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label>{{'Quiz/Survey.Hours' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                <mat-select formControlName="hours" [(ngModel)]="defaultTime">
+                                    <mat-option>{{'Select Hours' | translate}}</mat-option>
+                                    <mat-option *ngFor="let hour of hoursSelect" [value]="hour">
+                                        {{hour}}
+                                    </mat-option>z
+                                </mat-select>
+                                <mat-error *ngIf="activeCodeForm.controls.minutes.errors?.required" >
+                                    {{'Quiz/Survey.Pleaseselecthours' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label>{{'Quiz/Survey.Minutes' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                <mat-select formControlName="minutes" [(ngModel)]="defaultMinutes">
+                                    <mat-option>{{'Select Minutes' | translate}}</mat-option>
+                                    <mat-option *ngFor="let minute of minutesSelect" [value]="minute">
+                                        {{minute}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="activeCodeForm.controls.minutes.errors?.required" >
+                                    {{'Quiz/Survey.Pleaseselectminute' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4">
+                            <mat-form-field appearance="outline" class="element-full-width">
+                                <mat-label>{{'Quiz/Survey.Seconds' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                <mat-select formControlName="seconds" [(ngModel)]="defaultSeconds">
+                                    <mat-option>{{'Select Seconds' | translate}}</mat-option>
+                                    <mat-option *ngFor="let seconds of secondsSelect" [value]="seconds">
+                                        {{seconds}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="activeCodeForm.controls.seconds.errors?.required" >
+                                    {{'Quiz/Survey.Pleaseselectsecond' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="popup-footer">
+            <div class="footer-content justify-content-end">
+                <button (click)="onClose()" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+            </div>
+        </div>
+    </section>
+</form>

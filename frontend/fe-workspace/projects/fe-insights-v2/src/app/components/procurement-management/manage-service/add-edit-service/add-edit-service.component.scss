@@ -1,0 +1,17 @@
+.mandatory-fields {
+  p {
+    color: #000000;
+    font-size: 22px;
+  }
+}
+
+textarea{
+  min-height: 120px;
+  &.big-textarea{
+    min-height: 100px;
+  }
+}
+
+:host ::ng-deep [mat-sort-header].cdk-keyboard-focused .mat-sort-header-container,:host ::ng-deep[mat-sort-header].cdk-program-focused .mat-sort-header-container{
+  border-bottom: none;
+}

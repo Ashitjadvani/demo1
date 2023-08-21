@@ -1,0 +1,62 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+                  <li routerLink="/touchpoint-management" class="breadcrumb-item">{{'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'| translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{'TOUCH_POINTS.Configuration'|translate}}</span> </li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'" [routePath]="'/touchpoint-management'"
+        [title3]="'TOUCH_POINTS.Configuration'">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'TOUCH_POINTS.Configuration'|translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span>  {{'GENERAL.Indicates a required field'| translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="touchpointConfigForm" [formGroup]= "touchpointConfigForm"  novalidate
+                    (ngSubmit)="udateConfig()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TOUCH_POINTS.TouchPointKeepAliveInterval'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="keepAliveInterval" matInput  name="keepAliveInterval" >
+                                        <mat-error *ngIf="touchpointConfigForm.controls.keepAliveInterval.errors?.required" >
+                                          {{'TOUCH_POINTS.EnteryourTouchPointKeepAliveInterval'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'TOUCH_POINTS.NotificationMailRecipients'| translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="alertMailList" matInput name="alertMailList" >
+                                        <mat-error *ngIf="touchpointConfigForm.controls.alertMailList.errors?.required" >
+                                          {{'TOUCH_POINTS.Enteryournotificationmailrecipients'| translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save'| translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/touchpoint-management" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

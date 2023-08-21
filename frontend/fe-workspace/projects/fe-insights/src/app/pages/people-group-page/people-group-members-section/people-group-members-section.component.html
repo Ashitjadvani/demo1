@@ -1,0 +1,19 @@
+<div class="people-group-param-box">
+    <div class='filter-container'>
+        <mat-form-field class="filter-field">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'GENERAL.Filter' | translate}}">
+            <button mat-button matSuffix mat-icon-button>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-checkbox class="check-field" (change)="onChangeShowSelected($event)" [labelPosition]="'before'" [(ngModel)]="showSelectedOnly">
+            {{'INSIGHTS_PEOPLE_PAGE.SHOW SELECTED ONLY' | translate}}
+        </mat-checkbox>
+    </div>
+
+    <mat-selection-list class="people-list">
+        <mat-list-option *ngFor="let person of people" [selected]="isPersonSelected(person)" [value]="person.id" (click)="onPersonSelected(person)">
+            {{ person.name + ' ' + person.surname }}
+        </mat-list-option>
+    </mat-selection-list>
+</div>

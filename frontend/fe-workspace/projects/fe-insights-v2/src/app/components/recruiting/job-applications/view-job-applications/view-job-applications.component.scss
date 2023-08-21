@@ -1,0 +1,65 @@
+@import '../../../../../theme-color.scss';
+
+
+// personal details tab
+
+.application-history{
+    .table-content{
+        margin: 30px 0px;
+        h3{
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+    }
+}
+//.application-history{
+//  .table-content{
+//    padding: 24px 0px 44px;
+//  }
+//}
+
+.hover-content{
+    display: inline-block;
+    position: relative;
+    &:hover{
+      .hover-table{
+        display: block;
+      }
+    }
+  }
+  .hover-table{
+    position: absolute;
+    left: 100%;bottom: 0px;
+    display: none;
+    @media (max-width:1500px) {
+      max-width: 270px;
+    }
+  }
+  
+  .hover-content-wrap{
+    &:last-child{
+      .hover-table{
+        top: initial;bottom: 0;
+        @media (max-width:1700px) {
+          left: -270px;
+          bottom: 100%;
+        }
+      }
+    }
+  }
+
+ :host ::ng-deep .table-wrapper {
+    overflow: visible;
+  }
+
+  
+.pdf-viewer {
+  height: 500px;
+  width: 100%;
+}
+
+
+
+

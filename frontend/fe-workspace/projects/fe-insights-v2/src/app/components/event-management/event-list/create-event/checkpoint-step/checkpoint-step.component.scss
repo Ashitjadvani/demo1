@@ -1,0 +1,17 @@
+.flex-container {
+    font-family: Arial, Helvetica, sans-serif;
+    padding:10px;
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+}
+
+mat-radio-button {
+    display: flex;
+    flex-direction: column;
+    margin:10px;
+}
+
+.btn-style[disabled] {
+    opacity: 0.5;
+}

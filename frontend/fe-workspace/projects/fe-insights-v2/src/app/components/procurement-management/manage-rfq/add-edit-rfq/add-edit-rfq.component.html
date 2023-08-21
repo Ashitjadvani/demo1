@@ -1,0 +1,113 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/procurement-dashboard" class="breadcrumb-item">Dashboard</li>
+          <li routerLink="/manage-rfq" class="breadcrumb-item">Manage RFQ</li>
+          <li class="breadcrumb-item active" aria-current="page"><span>Add RFQ</span><!-- <span>Edit RFQ</span> --> </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>Add RFQ</span><!-- <span>Edit RFQ</span> --> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> Indicates a required field</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-content-box">
+          <form class="w-100" name="addRFQForm" [formGroup]= "addRFQForm"  novalidate (ngSubmit)="changeRFQ()" #myform="ngForm">
+            <div class="row">
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>Title (English)<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="RFQNameEnglish" matInput  name="RFQNameEnglish" >
+                    <mat-error *ngIf="addRFQForm.controls.RFQNameEnglish.errors?.required" >
+                      Enter your RFQ name (English).
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>Title (Itallian)<span style="color:#EA5455">*</span></mat-label>
+                    <input  type="text" formControlName="RFQNameItalian" matInput name="RFQNameItalian" >
+                    <mat-error *ngIf="addRFQForm.controls.RFQNameItalian.errors?.required" >
+                      Enter your RFQ name (Italian).
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xxl-4 ">
+              </div>
+              <div class="col-xl-12">
+                <div class="custom-editor mb-30">
+                  <mat-label>Description (English)</mat-label>
+                  <div class="form-field error-message-custom">
+                    <angular-editor [config]="config" formControlName="longDescriptionENG"></angular-editor>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-12">
+                <div class="custom-editor mb-30">
+                  <mat-label>Description (Italian)</mat-label>
+                  <div class="form-field error-message-custom">
+                    <angular-editor [config]="config" formControlName="longDescriptionIT"></angular-editor>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>Priority</mat-label>
+                    <mat-select formControlName="RFQPriority">
+                      <mat-option *ngFor="let priority of priorityList" [value]="priority">{{priority}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom date-picker-style">
+                  <mat-form-field appearance="outline" class="element-full-width" formControlName="RFQDueDate">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput type="date" [matDatepicker]="startDate" placeholder="Due Date">
+                    <mat-datepicker-toggle  [for]="startDate" class="full-date-select"></mat-datepicker-toggle>
+                    <mat-datepicker #startDate></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom date-picker-style">
+                  <mat-form-field appearance="outline" class="element-full-width" formControlName="RFQBudget">
+                    <mat-label>Budget</mat-label>
+                    <input matInput type="text" placeholder="Due Date">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-xl-6 col-xxl-4">
+                <div class="form-field error-message-custom">
+                  <mat-form-field appearance="outline" class="element-full-width">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="RFQStatus">
+                      <mat-option *ngFor="let status of statusList" [value]="status">{{status}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-style theme-btn" type="submit">Save</button>
+              <button class="btn-style red-line-btn" routerLink="/manage-rfq" type="button">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

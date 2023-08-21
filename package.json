@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "# Files Organization Files are organized inside two main directory: - **/backend**: contains all the source code for backend services - **/frontend**: contains Angular workspace for the frontend Applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "codice-fiscale-js": "^2.3.20",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "moment-timezone": "^0.5.40",
+    "uninstall": "^0.0.0"
+  }
+}

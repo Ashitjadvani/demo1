@@ -1,0 +1,126 @@
+<app-header></app-header>
+<!--======================== Title section start ==================== -->
+<div class="main-title open-positions"></div>
+
+<!--======================== full details section start ==================== -->
+<div class="full-job-details">
+    <div class="container">
+        <div class="position-deatils">
+            <div class="back-btn" (click)="back()">
+              <button>{{'GENERAL.Back' | translate}}</button>
+            </div>
+            <div class="part-1">
+                <div class="top-profile">
+                    <img *ngIf="jobDetailsData?.jobImageId" [src]="baseImageUrl+jobDetailsData?.jobImageId" (error)="onImgError($event)" alt="">
+                      <img *ngIf="!jobDetailsData?.jobImageId" style="width: 97px; height: 97px;" [src]="imageBase64" alt="">
+                    <div class="position-name">
+                        <h3>{{jobDetailsData?.description}}</h3>
+                        <div class="job-address">
+                            <p *ngIf="jobDetailsData?.address !== null">{{jobDetailsData?.address}}</p>
+                            <span>{{jobDetailsData?.questionsCount}} {{'GENERAL.Questions' | translate}}</span>
+                            <span>{{jobDetailsData?.minutes}} {{'GENERAL.Minutes' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="job-status">
+                      <button *ngIf="jobDetailsData?.applicationStatus == 1 || jobDetailsData?.applicationStatus == null" mat-raised-button type="button" class="btn-submit apply-btn" style="background-color: #002A3A;color: #fff;" (click)="jobApplyNow(jobDetailsData.id)"> {{'GENERAL.ApplyNow' | translate}}</button>
+                      <p *ngIf="jobDetailsData?.applicationStatus != 1 && jobDetailsData?.applicationStatus != null" style="color: green;white-space: nowrap;font-weight: 700;">
+                        {{'GENERAL.AppliedOpening' | translate}}
+                      </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="bottom-profile">
+                    <ul class="job-details">
+                        <li>
+                            <span>{{'POSITION_PAGE.Department' | translate}}:</span>
+                            <h5>{{jobDetailsData?.area ? jobDetailsData.area : '-'}}</h5>
+                        </li>
+                        <li>
+                          <span>{{'POSITION_PAGE.Application_Types' | translate}}:</span>
+                            <h5>{{ApplicationTypeArray[jobDetailsData?.type] | translate}}</h5>
+                        </li>
+                        <li>
+                            <span>{{'POSITION_PAGE.Experience' | translate}}:</span>
+                            <h5>{{jobDetailsData?.totalExperience?jobDetailsData.totalExperience:'-'}}</h5>
+                        </li>
+                        <li>
+                            <span>{{'POSITION_PAGE.SiteText' | translate}}:</span>
+                            <!--<h5>{{jobDetailsData.city?jobDetailsData.city:'-'}}</h5>-->
+                            <h5 matTooltip="{{jobDetailsData?.cityOtherName}}">{{jobDetailsData?.citySingleName ? jobDetailsData.citySingleName :'-'}} <span *ngIf="jobDetailsData?.cityOtherLength > 0"> & {{jobDetailsData?.cityOtherLength}} more</span> </h5>
+                        </li>
+                        <li>
+                            <span>{{'POSITION_PAGE.NoOpenings' | translate}}:</span>
+                            <h5>{{jobDetailsData?.noOfOpening ? jobDetailsData.noOfOpening : '-'}}</h5>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-wrapper-main">
+              <div class="content-description">
+                <div class="part-2">
+                  <div class="position-description">
+                      <h3>{{'JOBDETAILS.DepartmentDescription' | translate}}</h3>
+                      <p style="margin-bottom: 0px;" [innerHTML]="(jobDetailsData?.departmentDescription) ? jobDetailsData.departmentDescription : '-'"></p>
+                  </div>
+                </div>
+                <div class="part-2">
+                    <div class="position-description">
+                        <h3>{{'JOBDETAILS.JobDescription' | translate}}</h3>
+                        <p style="margin-bottom: 0px;" [innerHTML]="(jobDetailsData?.longDescription) ? jobDetailsData.longDescription : '-'"></p>
+                        <div class="description-list">
+
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="content-socials">
+                <div class="part-3">
+                    <div class="share-position">
+                        <div class="validate">
+                            <ul>
+                                <li>
+                                    <span>{{'GENERAL.StartDate' | translate}}</span>
+                                    <h5>{{jobDetailsData?.start ? (jobDetailsData.start | date:'dd/MM/yyyy') : '-'}}</h5>
+                                </li>
+                                <li>
+                                    <span>{{'GENERAL.EndDate' | translate}}</span>
+                                    <h5>{{jobDetailsData?.end ? (jobDetailsData.end | date:'dd/MM/yyyy') : '-'}}</h5>
+                                </li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div class="social-link">
+                            <h5>{{'JOBDETAILS.ShareOn' | translate}}</h5>
+                            <ul>
+                             <li> <share-button [theme]="'circles-dark'"
+                              [button]="'linkedin'"
+                              [autoSetMeta]="false"
+                             ></share-button></li>
+                             <li> <share-button [theme]="'circles-dark'"
+                              [button]="'twitter'"
+                              [autoSetMeta]="false"
+                             ></share-button></li>
+                             <li> <share-button [theme]="'circles-dark'"
+                              [button]="'facebook'"
+                              [autoSetMeta]="false"
+                             ></share-button></li><li> <share-button [theme]="'circles-dark'"
+                              [button]="'whatsapp'"
+                              [autoSetMeta]="false"
+                             ></share-button></li>
+                                <!-- <li><a href=""> <img [src]="socialicon_1" alt="linkdin"></a>  [url]="'https://career.beexpertapp.it'"</li>
+                                <li><a href=""> <img [src]="socialicon_2" alt="twitter"></a></li>
+                                <li><a href=""> <img [src]="socialicon_3" alt="facebook"></a></li>
+                                <li><a href=""> <img [src]="socialicon_4" alt="instagram"></a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="copy-right" style="background-color: #1D1D1D;color: #fff; padding: 16px;text-align: center;">
+  {{'GENERAL.CopyRight' | translate}}
+</div>

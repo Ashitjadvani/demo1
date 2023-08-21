@@ -1,0 +1,45 @@
+<div class="company-page-container">
+    <mat-tab-group class="group-tab">
+        <mat-tab label="{{ 'ADMIN DIALOGS.GENERAL' | translate }}">
+           <app-general-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()"></app-general-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.People Management' | translate }}">
+            <app-people-management-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()"
+            (ReloadEvent)="loadCompanyData()"></app-people-management-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Global Types' | translate }}">
+            <app-general-types [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()"></app-general-types>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Justification' | translate }}">
+            <app-justification-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+            </app-justification-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.CompanyWorkSettings' | translate }}">
+            <app-work-settings-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+            </app-work-settings-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Scope' | translate }}">
+            <app-tables-section  [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()" (ReloadEvent)="loadCompanyData()"></app-tables-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.EmailConfiguration' | translate }}">
+          <app-email-configuration [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+          </app-email-configuration>
+        </mat-tab>
+        <mat-tab label="{{ 'COMPANYTXT.University' | translate }}">
+          <app-university-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+          </app-university-section>
+        </mat-tab>
+        <mat-tab label="{{ 'COMPANYTXT.Degree' | translate }}">
+          <app-degree-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+          </app-degree-section>
+        </mat-tab>
+        <mat-tab label="{{ 'INSIGHTS_PEOPLE_PAGE.Greenpass Settings' | translate }}">
+          <app-greenpass-settings-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+          </app-greenpass-settings-section>
+        </mat-tab>
+        <mat-tab label="{{ 'ACCESS_CONTROL.AccessControl' | translate }}">
+          <app-access-control-section [currentCompany]="currentCompany" (UpdateEvent)="onUpdate()">
+          </app-access-control-section>
+        </mat-tab>
+    </mat-tab-group>
+</div>

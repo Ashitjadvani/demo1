@@ -1,0 +1,9 @@
+﻿node_modules
+dist
+debug.log
+fe-workspace/projects/fe-app/src/environments/version.ts
+fe-workspace/projects/fe-insights/src/environments/version.ts
+fe-workspace/projects/fe-touchpoint/src/environments/version.ts
+/.idea/
+**/__pycache__
+**/env39

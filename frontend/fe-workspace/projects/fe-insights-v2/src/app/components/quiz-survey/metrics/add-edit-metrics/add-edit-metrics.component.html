@@ -1,0 +1,119 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li routerLink="/quiz-survey/metrics" class="breadcrumb-item">{{'Quiz/Survey.Matrics' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'EXTRA_WORD.Matrics' | translate}}</span> </li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'Quiz/Survey.Matrics'" [routePath]="'/quiz-survey/metrics'" [title3]="title"
+            [type]="'EXTRA_WORD.Matrics'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'EXTRA_WORD.Matrics' | translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addMetricsForm" [formGroup]= "addMetricsForm"  novalidate
+                    (ngSubmit)="addMatrix()"
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Title(English)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="name" matInput  name="name" (keydown)="space($event)" style="text-transform: capitalize;">
+                                        <mat-error *ngIf="addMetricsForm.controls.name.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourtitle(English)' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                           <!-- <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Title(Italian)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <input  type="text" formControlName="name" matInput  name="name" >
+                                        <mat-error *ngIf="addMetricsForm.controls.name.errors?.required" >
+                                          {{'Quiz/Survey.Enteryourtitle(Italian)' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>-->
+                            <div class="col-xxl-12"></div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.Type' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="type" name="type">
+                                            <mat-option>{{'Select Type' | translate}}</mat-option>
+                                          <mat-option value="numeric">{{'Numeric' | translate}}</mat-option>
+<!--                                            <mat-option *ngFor="let metricsType of metricsTypeList" value="{{metricsType}}">{{metricsType}}</mat-option>-->
+                                        </mat-select>
+                                        <mat-error *ngIf="addMetricsForm.controls.type.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselecttype' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'Quiz/Survey.AggregationType' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                        <mat-select formControlName="aggregation_strategy">
+                                            <mat-option>{{'Select Aggregation Type' | translate}}</mat-option>
+<!--                                          <mat-option value="No_Aggregation" >No_Aggregation</mat-option>-->
+                                          <mat-option value="avg" >{{'avg' | translate}}</mat-option>
+                                          <mat-option value="acc" >{{'acc' | translate}}</mat-option>
+<!--                                            <mat-option *ngFor="let aggregation of aggregationTypeList" value="{{aggregation}}">{{aggregation}}</mat-option>-->
+                                        </mat-select>
+                                        <mat-error *ngIf="addMetricsForm.controls.aggregation_strategy.errors?.required" >
+                                          {{'Quiz/Survey.Pleaseselectaggregationtype' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4"></div>
+                            <div class="col-xl-6">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Quiz/Survey.Description(English)' | translate}}</mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text" (keydown)="space($event)"></textarea>
+                                    <mat-error *ngIf="addMetricsForm.controls.description.errors?.required">
+                                      {{'Quiz/Survey.Enteryourdescription(English)' | translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>
+                          <!--  <div class="col-xl-6">
+                                <div class="form-field error-message-custom date-picker-style">
+                                  <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Quiz/Survey.Description(Italian)' | translate}}</mat-label>
+                                    <textarea formControlName="description" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" required type="text"></textarea>
+                                    <mat-error *ngIf="addMetricsForm.controls.description.errors?.required">
+                                      {{'Quiz/Survey.Enteryourdescription(Italian)' | translate}}
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="form-footer">
+                            <button *ngIf="this.title === 'Add'" class="btn-style theme-btn" type="submit">{{'GENERAL.Save'| translate}}</button>
+                          <button *ngIf="this.title === 'Edit'" class="btn-style theme-btn" type="submit">{{'GENERAL.Update'| translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/quiz-survey/metrics" type="button">{{'GENERAL.Cancel'| translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

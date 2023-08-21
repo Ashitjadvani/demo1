@@ -1,0 +1,314 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <mat-tab>
+
+        <app-table-data-view [tableDataSet]="sitesTableData" [columnTemplates]="tableColumnTemplates"
+            [rowActions]="tableRowActions" [mainActions]="tableMainActions">
+        </app-table-data-view>
+
+        <input type="file" #file style="display: none" (change)="onUploadFile()" />
+    </mat-tab>
+    <mat-tab>
+        <div class="general-container">
+            <div class="card width-80 card-height-800">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <mat-tab-group #tabgroupmod>
+                        <mat-tab label="{{ 'ADMIN DIALOGS.GENERAL' | translate }}">
+                            <div class="site-param-box">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.SITEKEY' | translate }}"
+                                        appearance="legacy" [(ngModel)]="currentSite.key"
+                                        [disabled]="isModify">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="{{ 'ADMIN DIALOGS.SITETYPE' | translate }}" [(ngModel)]="currentSite.siteType">
+                                        <mat-option *ngFor="let siteType of siteTypes" [value]="siteType">
+                                            {{ siteType }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.SITENAME' | translate }}"
+                                        appearance="legacy" [(ngModel)]="currentSite.name">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.ADDRESS' | translate }}"
+                                        appearance="legacy" [(ngModel)]="currentSite.address">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.CAP' | translate }}"
+                                        appearance="legacy" [(ngModel)]="currentSite.cap">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.CITY' | translate }}"
+                                        appearance="legacy" [(ngModel)]="currentSite.city">
+                                </mat-form-field>
+                                <div class="flex-row">
+                                    <mat-form-field class="width-200">
+                                        <input matInput type="number" placeholder="{{ 'ADMIN DIALOGS.GPSLATITUDE' | translate }}"
+                                            appearance="legacy" [(ngModel)]="currentSite.gpsLatitude">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-200">
+                                        <input matInput type="number" placeholder="{{ 'ADMIN DIALOGS.GPSLONGITUDE' | translate }}"
+                                            appearance="legacy" [(ngModel)]="currentSite.gpsLongitude">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-200">
+                                        <mat-select placeholder="{{ 'ADMIN DIALOGS.GPSPOSGAP' | translate }}" [(ngModel)]="currentSite.gpsAreaGap">
+                                            <mat-option [value]="areaGap1">
+                                                50m
+                                            </mat-option>
+                                            <mat-option [value]="areaGap2">
+                                                100m
+                                            </mat-option>
+                                            <mat-option [value]="areaGap3">
+                                                250m
+                                            </mat-option>
+                                            <mat-option [value]="areaGap4">
+                                                500m
+                                            </mat-option>
+                                            <mat-option [value]="areaGap5">
+                                                750m
+                                            </mat-option>
+                                            <mat-option [value]="areaGap6">
+                                                1000m
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="{{ 'ADMIN DIALOGS.SETTINGS' | translate }}">
+                            <div class="site-param-box">
+                                <mat-form-field class="form-field">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.FACILITYMANAGER' | translate }}" appearance="legacy" [(ngModel)]="currentSite.facilityManagerId" [formControl]="facilityManagerFC" [matAutocomplete]="autoFacility">
+                                    
+                                    <mat-autocomplete #autoFacility="matAutocomplete" [displayWith]="displaySelectedFacilityManager">
+                                        <mat-option *ngFor="let user of facilityManagerUsers | async" [value]="user.id" >
+                                            <span>{{ user.name }} {{ user.surname }}</span>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+            
+                                <mat-form-field class="form-field">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.OFFICEMANAGER' | translate }}" appearance="legacy" [(ngModel)]="currentSite.officeManagerId" [formControl]="officeManagerFC" [matAutocomplete]="autoOffice">
+                                    
+                                    <mat-autocomplete #autoOffice="matAutocomplete" [displayWith]="displaySelectedOfficeManager">
+                                        <mat-option *ngFor="let user of officeManagerUsers | async" [value]="user.id">
+                                            <span>{{ user.name }} {{ user.surname }}</span>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+            
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="{{ 'ADMIN DIALOGS.STATUS' | translate }}" [(ngModel)]="currentSite.globalStatus">
+                                        <mat-option *ngFor="let siteState of availableSiteStatus" [value]="siteState">
+                                            {{ commonService.mapSiteStatusString(siteState) }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+            
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="{{ 'ADMIN DIALOGS.MAXCAPACITY' | translate }}" appearance="legacy"
+                                        [(ngModel)]="currentSite.maxCapacity">
+                                </mat-form-field>
+            
+                                <mat-checkbox [(ngModel)]="currentSite.meetingRoomAvalabilityFlag">
+                                    {{'ADMIN DIALOGS.MEETING ROOM AVAILABILITY'|translate}}
+                                </mat-checkbox>
+                                <mat-checkbox [(ngModel)]="currentSite.deskAvalabilityFlag">
+                                    {{'ADMIN DIALOGS.DESK AVAILABILITY'|translate}}
+                                </mat-checkbox>
+                                <mat-checkbox [(ngModel)]="currentSite.managerRestriction">
+                                    {{'ADMIN DIALOGS.APPLY MANAGER RESTRICTIONS'|translate}}
+                                </mat-checkbox>
+                                <mat-checkbox [(ngModel)]="currentSite.useAreaCapacities">
+                                    {{'ADMIN DIALOGS.APPLY DEPARTMENT RESTRICTIONS'|translate}}
+                                </mat-checkbox>
+                                <mat-checkbox [(ngModel)]="currentSite.enableWeekend">
+                                    {{'ADMIN DIALOGS.ENABLEWEEKEND'|translate}}
+                                </mat-checkbox>
+                            </div>            
+                        </mat-tab>
+                        <mat-tab *ngIf="ACSettingsFunctionAvailable()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLSETTINGS' | translate }}">
+                            <div class="site-param-box">                                
+                                <mat-checkbox style="padding-bottom:10px" [(ngModel)]="currentSite.accessControlEnable" (change)="readAccessControlPassages()">
+                                    {{'ADMIN DIALOGS.ACCESSCONTROLENABLE'|translate}}
+                                </mat-checkbox>                                
+                                <mat-form-field class="full-width">
+                                    <input [disabled]="!currentSite.accessControlEnable" matInput placeholder="URI es. https://www.okulokeyless.com" appearance="legacy"
+                                        [(ngModel)]="currentSite.accessControlUrl" (change)="readAccessControlPassages()">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input [disabled]="!currentSite.accessControlEnable" matInput placeholder="Token" appearance="legacy"
+                                        [(ngModel)]="currentSite.accessControlToken" (change)="readAccessControlPassages()">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input [disabled]="!currentSite.accessControlEnable" matInput placeholder="Group ID" appearance="legacy"
+                                        [(ngModel)]="currentSite.accessControlGroupId" (change)="readAccessControlPassages()">
+                                </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <input [disabled]="!currentSite.accessControlEnable" matInput placeholder="Group name" appearance="legacy"
+                                        [(ngModel)]="currentSite.accessControlGroupName" (change)="readAccessControlPassages()">
+                                </mat-form-field>
+                                <mat-checkbox [disabled]="!currentSite.accessControlEnable" style="padding-bottom:10px" [(ngModel)]="currentSite.useAccessControlQrCodeForCheckIn">
+                                    {{'ADMIN DIALOGS.ACCESS CONTROL QRCODE FOR CHECKIN'|translate}}
+                                </mat-checkbox>   
+                                <div class="test-connection">
+                                    <button [disabled]="!currentSite.accessControlEnable" mat-flat-button class="action-button width-200 button-txt" color="primary"
+                                        cdkFocusInitial (click)="onTryToConnectClick()"><!--i class="material-icons icon color-white button-icon">lan</i-->
+                                        {{'ADMIN DIALOGS.TRYCONNECTION'|translate}}</button>
+                                    <div *ngIf="viewConnection" class="view-connection-container">
+                                        <div *ngIf="!currentSite.accessControlConnected" class="circle-red"><i class="material-icons icon color-white">close</i></div>
+                                        <div *ngIf="currentSite.accessControlConnected" class="circle-green"><i class="material-icons icon color-white">done</i></div>
+                                        <!--button mat-flat-button color="primary" cdkFocusInitial (click)="onViewLastResponse()">{{'ACCESS_CONTROL.ViewLastResponse'|translate}}</button-->
+                                    </div>
+                                </div>
+                                
+                                <!--div class="test-connection">
+                                    <button [disabled]="disableCreateGroupButton()" mat-flat-button class="action-button width-200 button-txt" color="primary"
+                                        cdkFocusInitial (click)="onCreateGroup()">
+                                        {{'ACCESS_CONTROL.CreateGroup'|translate}}</button> 
+                                </div-->
+
+                                <div class="test-connection">
+                                    <button [disabled]="!currentSite.accessControlEnable" mat-flat-button class="action-button width-200 button-txt" color="primary"
+                                        cdkFocusInitial (click)="onSendCommand()">
+                                        <!--i class="material-icons icon color-white button-icon">qr_code</i-->{{'ACCESS_CONTROL.SendCommand'|translate}}</button>
+                                </div>
+
+                                <div class="test-connection">
+                                    <button [disabled]="disableAccessControl()" mat-flat-button class="action-button width-200 button-txt" color="primary"
+                                        cdkFocusInitial (click)="onGenerateQrCode()">
+                                        <!--i class="material-icons icon color-white button-icon">qr_code</i-->{{'ADMIN DIALOGS.GENERATEQRCODE'|translate}}</button>
+                                </div>
+                                
+                            </div> 
+                        </mat-tab>
+                        <!--mat-tab *ngIf="ACCentralUnitsFunctionAvailable()" [disabled]="disableAccessControl()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLCENTRALUNITS' | translate }}"-->
+                        <mat-tab *ngIf="ACCentralUnitsFunctionAvailable()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLCENTRALUNITS' | translate }}">
+                            <div class="site-param-box">
+                                <ng-container *ngFor="let centralUnit of currentSite.availableAccessControlCentralUnits">
+                                    <ng-container *ngFor="let genUnit of currentSite.generatedAccessControlCentralUnits">
+                                        <div *ngIf="centralUnit.centralUnitId == genUnit.centralUnitId && centralUnit.name == genUnit.name" class="passage-container">
+                                            <div class="flex-container">  
+                                                <div class="counter">{{centralUnit.centralUnitId}}</div>
+                                                <div class="field-centralunit-name">
+                                                    {{centralUnit.name}}
+                                                </div>
+                                                <button mat-icon-button class="centralunit-qrcode-button" (click)="onCentralUnitQrCodesClick(centralUnit)">
+                                                    <i class="material-icons icon">qr_code</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                                <div class="add-passage">
+                                    <button mat-icon-button class="add-passage-button" (click)="onAddCentralUnitClick()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <div class="add-passage-label">{{'ADMIN DIALOGS.ADDCENTRALUNIT' | translate}}</div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <!--mat-tab *ngIf="ACGatesFunctionAvailable()" [disabled]="disableAccessControl()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLPASSAGES' | translate }}"-->
+                        <mat-tab *ngIf="ACGatesFunctionAvailable()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLPASSAGES' | translate }}">
+                            <div class="site-param-box">
+                                <div *ngFor="let passage of currentSite.accessControlPassages; let i = index" [ngClass]="!checkValidPassage(passage)&&highlightInvalidPassages ? 'wrong-passage-container' : 'passage-container'">
+                                    <div class="flex-container">
+                                        <div class="counter">{{i+1}}</div>
+                                        <div class="field-container">
+                                            <mat-form-field class="width-200">
+                                                <input matInput placeholder="{{'ADMIN DIALOGS.PASSAGENAME'|translate}}" appearance="legacy" 
+                                                    [(ngModel)]="passage.name">
+                                            </mat-form-field>
+                                            <span class="span-20"></span>
+                                            <mat-form-field class="width-200">
+                                                <mat-select placeholder="{{'ADMIN DIALOGS.CONTROLUNIT' | translate}}" [(ngModel)]="passage.centralUnitId">
+                                                    <ng-container *ngFor="let unit of currentSite.availableAccessControlCentralUnits">
+                                                        <ng-container *ngFor="let genUnit of currentSite.generatedAccessControlCentralUnits">
+                                                            <mat-option *ngIf="unit.centralUnitId == genUnit.centralUnitId && unit.name == genUnit.name" [value]="unit.centralUnitId">
+                                                                {{unit.name}}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <span class="span-20"></span>
+                                            <mat-form-field class="width-120">
+                                                <mat-select placeholder="{{'ADMIN DIALOGS.RELENUMBER' | translate}}" [(ngModel)]="passage.releNumber">
+                                                    <mat-option [value]="1">Rele 1</mat-option>
+                                                    <mat-option [value]="2">Rele 2</mat-option>
+                                                    <mat-option [value]="3">Rele 3</mat-option>
+                                                    <mat-option [value]="4">Rele 4</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <span class="span-20"></span>
+                                            <mat-form-field class="width-200">
+                                                <mat-select placeholder="{{'ACCESS_CONTROL.DocumentNeeded' | translate}}" [(ngModel)]="passage.documentId">
+                                                    <mat-option [value]="null">{{'ACCESS_CONTROL.None' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let doc of companyDocuments" [value]="doc.id">{{doc.name}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <button mat-icon-button class="remove-passage-button" (click)="onRemovePassageClick(passage)">
+                                                <i class="material-icons icon">close</i>
+                                            </button>
+                                            <button mat-icon-button class="gates-unlock-button" (click)="onActivateRing(passage)">
+                                                <i class="material-icons icon">lock_open</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="add-passage">
+                                    <button mat-icon-button class="add-passage-button" (click)="onAddPassageClick()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <div class="add-passage-label">{{'ADMIN DIALOGS.ADDPASSAGE' | translate}}</div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                        <!--mat-tab *ngIf="ACGroupsFunctionAvailable()" [disabled]="disableAccessControl()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLPASSAGEGROUPS' | translate }}"-->
+                        <mat-tab *ngIf="ACGroupsFunctionAvailable()" label="{{ 'ADMIN DIALOGS.ACCESSCONTROLPASSAGEGROUPS' | translate }}">
+                            <div class="site-param-box">
+                                <div *ngFor="let group of currentSite.accessControlPassageGroups; let i = index" [ngClass]="!checkValidGroup(group)&&highlightInvalidPassages ? 'wrong-passage-container' : 'passage-container'">
+                                    <div class="flex-container">
+                                        <div class="counter">{{i+1}}</div>
+                                        <div class="field-container">
+                                            <mat-form-field>
+                                                <input matInput placeholder="{{'ADMIN DIALOGS.GROUPNAME'|translate}}" appearance="legacy" 
+                                                    [(ngModel)]="group.name">
+                                            </mat-form-field>
+                                            <span class="span-20"></span>
+                                            <button mat-icon-button class="modify-passage-button" (click)="onModifyGroupClick(group)">
+                                                <i class="material-icons icon">edit</i>
+                                            </button>
+                                            <button mat-icon-button class="remove-passage-button" (click)="onRemoveGroupClick(group)">
+                                                <i class="material-icons icon">close</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="add-passage">
+                                    <button mat-icon-button class="add-passage-button" (click)="onAddGroupClick()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <div class="add-passage-label">{{'ADMIN DIALOGS.ADDGROUP' | translate}}</div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

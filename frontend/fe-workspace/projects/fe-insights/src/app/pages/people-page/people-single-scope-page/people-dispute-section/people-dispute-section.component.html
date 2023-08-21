@@ -1,0 +1,72 @@
+<div class="user-param-box">
+    <div class="input-row">
+        <mat-form-field class="width-15">
+            <input matInput [matDatepicker]="pickerDate" placeholder="{{'INSIGHTS_PEOPLE_PAGE.DATE' | translate}}" [(ngModel)]="currentDispute.date">
+            <mat-datepicker-toggle matSuffix [for]="pickerDate">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="width-30">
+            <mat-select placeholder="{{'INSIGHTS_PEOPLE_PAGE.DISPUTE' | translate}}" [(ngModel)]="currentDispute.dispute">
+                <mat-option *ngFor="let dt of this.currentCompany.peopleDispute" value="{{ dt }}">
+                    {{ dt }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="width-30">
+            <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.NOTE' | translate}}" [(ngModel)]="currentDispute.note">
+        </mat-form-field>
+        <mat-form-field class="width-15">
+            <input matInput [matDatepicker]="pickerNotificationDate" placeholder="{{'INSIGHTS_PEOPLE_PAGE.NOTIFICATION DATE' | translate}}" [(ngModel)]="currentDispute.notificationDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerNotificationDate">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerNotificationDate></mat-datepicker>
+        </mat-form-field>
+        <button mat-icon-button [ngStyle]="{'visibility': isAddVisible() ? 'visible' : 'hidden' }"
+            (click)="onAddDispute()" matTooltip="Confirm">
+            <i class="material-icons">task_alt</i>
+        </button>
+    </div>
+    <div class="input-row">
+        <mat-table class="dispute-table" #table [dataSource]="currentEditPerson.disputes">
+            <ng-container matColumnDef="Date">
+                <mat-header-cell *matHeaderCellDef> {{'ADMIN DIALOGS.DATE'|translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.date | date: 'dd/mm/yyyy'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Dispute">
+                <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.Dispute' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.dispute }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Author">
+                <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.AUTHOR' | translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.author }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Note">
+                <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.Note' | translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.note }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="NotDate">
+                <mat-header-cell *matHeaderCellDef> {{'INSIGHTS_PEOPLE_PAGE.Notification Date' | translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.notificationDate ? (element.notificationDate | date: 'dd/mm/yyyy') : ''}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Action" stickyEnd>
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element; let id=index;">
+                    <button mat-icon-button (click)="onModifyDispute(element)"
+                        matTooltip="{{'GENERAL.DELETE'|translate}}">
+                        <i class="material-icons">{{'INSIGHTS_PEOPLE_PAGE.EDIT' | translate}}</i>
+                    </button>
+                    <button mat-icon-button (click)="onDeleteDispute(element)"
+                        matTooltip="{{'GENERAL.DELETE'|translate}}">
+                        <i class="material-icons" style="color: red">{{'INSIGHTS_PEOPLE_PAGE.DELETE' | translate}}</i>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['Date', 'Dispute', 'Author', 'Note', 'NotDate', 'Action']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['Date', 'Dispute', 'Author', 'Note', 'NotDate', 'Action'];"></mat-row>
+        </mat-table>
+    </div>
+</div>

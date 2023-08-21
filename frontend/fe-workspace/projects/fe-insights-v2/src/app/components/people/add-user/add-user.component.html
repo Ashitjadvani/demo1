@@ -1,0 +1,355 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                  <li routerLink="/people" class="breadcrumb-item">People</li>
+                  <li  class="breadcrumb-item active" aria-current="page">Add User</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title2]="'People'" [routePath2]="'/people'" [title3]="'Add User'">
+            </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper">
+                <mat-horizontal-stepper labelPosition="bottom" #stepper>
+                    <mat-step [stepControl]="generalInformationForm">
+                      <ng-template matStepLabel>
+                        <img src="assets/images/general-step.svg"/>
+                        <p>General</p>
+                      </ng-template>
+                      <div class="table-content box-style">
+                        <div class="table-heading m-30">
+                          <h3 style="font-weight: 600">General</h3>
+                          <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                        </div>
+                        <form class="form-wrapper" [formGroup]="generalInformationForm">
+                          <div class="row">
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Name<span class="red-label">*</span></mat-label>
+                                    <input formControlName="userName" matInput type="text" name="userName">
+                                    <mat-error *ngIf="generalInformationForm.controls.userName.errors?.required">Please enter your name.</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Surname<span class="red-label">*</span></mat-label>
+                                    <input formControlName="surname" matInput type="text" name="surname">
+                                    <mat-error *ngIf="generalInformationForm.controls.surname.errors?.required">Please enter your Surname</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Fiscal Code<span class="red-label">*</span></mat-label>
+                                    <input formControlName="fiscalCode" matInput type="text" name="fiscalCode">
+                                    <mat-error *ngIf="generalInformationForm.controls.fiscalCode.errors?.required">Please enter Fiscal Code</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Gender<span class="red-label">*</span></mat-label>
+                                    <mat-select formControlName="gender">
+                                        <mat-option>Select Gender</mat-option>
+                                        <mat-option value="Not Specified">Not Specified</mat-option>
+                                        <mat-option value="Male">Male</mat-option>
+                                        <mat-option value="Female">Female</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="generalInformationForm.controls.gender.errors?.required">Please select your gender.</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Birthday<span class="red-label">*</span></mat-label>
+                                    <input formControlName="birthday" matInput type="date" name="birthday">
+                                    <mat-error *ngIf="generalInformationForm.controls.birthday.errors?.required">Please enter your birthday</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width" *ngFor="let ctrl of ctrlColors">
+                                    <mat-label>Prov<span class="red-label">*</span></mat-label>
+                                    <mat-select formControlName="prov">
+                                        <mat-option>Select Prov</mat-option>
+                                        <mat-option value="AG">AG</mat-option>
+                                        <mat-option value="AL">AL</mat-option>
+                                        <mat-option value="AN">AN</mat-option>
+                                        <mat-option value="AO">AO</mat-option>
+                                        <mat-option value="AR">AR</mat-option>
+                                        <mat-option value="AP">AP</mat-option>
+                                        <mat-option value="BR">BR</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="generalInformationForm.controls.prov.errors?.required">Please select your Prov.</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Tags</mat-label>
+                                    <mat-chip-list #chipList aria-label="Tags selection" class="scroll-style">
+                                        <mat-chip *ngFor="let tag of Tags" [selectable]="selectable"
+                                                [removable]="removable" (removed)="remove(tag)">
+                                        {{tag.name}}
+                                        <mat-icon matChipRemove *ngIf="removable">clear</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="New Tags..."
+                                            [matChipInputFor]="chipList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            [matChipInputAddOnBlur]="addOnBlur"
+                                            (matChipInputTokenEnd)="add($event)">
+                                    </mat-chip-list>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+
+                          </div>
+                          <div class="step-form-bottom">
+                            <div>
+                              <button  routerLink="/client-management" class="btn-style red-line-btn" type="button">Cancel</button>
+                            </div>
+                            <div class="">
+                              <button matStepperNext class="btn-style theme-btn" type="button">Save & Next <span class="material-icons">arrow_forward</span></button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </mat-step>
+                    <mat-step [stepControl]="contactInformationForm">
+                      <ng-template matStepLabel>
+                        <img src="assets/images/stepper-2.svg"/>
+                        <p>Contact</p>
+                      </ng-template>
+                      <div class="table-content box-style">
+                        <div class="table-heading m-30">
+                          <h3 style="font-weight: 600">Contact</h3>
+                          <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                        </div>
+                        <form class="form-wrapper" [formGroup]="contactInformationForm">
+                          <div class="row-wrapper">
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Address<span class="red-label">*</span></mat-label>
+                                        <textarea formControlName="address" matInput type="text" name="address"></textarea>
+                                        <mat-error *ngIf="contactInformationForm.controls.address.errors?.required">Please enter your address.</mat-error>
+                                      </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4">
+                                  <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>City<span class="red-label">*</span></mat-label>
+                                        <input formControlName="city" matInput type="text" name="city">
+                                        <mat-error *ngIf="contactInformationForm.controls.city.errors?.required">Please enter your Surname</mat-error>
+                                      </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4">
+                                  <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>Prov<span class="red-label">*</span></mat-label>
+                                        <mat-select formControlName="prov">
+                                            <mat-option>Select Prov</mat-option>
+                                            <mat-option value="AG">AG</mat-option>
+                                            <mat-option value="AL">AL</mat-option>
+                                            <mat-option value="AN">AN</mat-option>
+                                            <mat-option value="AO">AO</mat-option>
+                                            <mat-option value="AR">AR</mat-option>
+                                            <mat-option value="AP">AP</mat-option>
+                                            <mat-option value="BR">BR</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="contactInformationForm.controls.prov.errors?.required">Please select your prov.</mat-error>
+                                      </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="form-field">
+                                      <mat-form-field appearance="outline" class="element-full-width">
+                                          <mat-label>Cap<span class="red-label">*</span></mat-label>
+                                          <input formControlName="cap" matInput type="text" name="cap">
+                                          <mat-error *ngIf="contactInformationForm.controls.cap.errors?.required">Please enter your cap.</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 col-xl-4">
+                                    <div class="form-field">
+                                      <mat-form-field appearance="outline" class="element-full-width">
+                                          <mat-label>Phone<span class="red-label">*</span></mat-label>
+                                          <input formControlName="phone" matInput type="text" name="phone">
+                                          <mat-error *ngIf="contactInformationForm.controls.phone.errors?.required">Please enter your phone.</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6 col-xl-4">
+                                    <div class="form-field">
+                                      <mat-form-field appearance="outline" class="element-full-width">
+                                          <mat-label>Email<span class="red-label">*</span></mat-label>
+                                          <input formControlName="email" matInput type="text" name="email">
+                                          <mat-error *ngIf="contactInformationForm.controls.email.errors?.required">Please enter your email.</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="step-form-bottom">
+                            <div>
+                              <button  routerLink="/client-management" class="btn-style red-line-btn"  type="button">Cancel</button>
+                            </div>
+                            <div class="btn-wrapper">
+                              <button  matStepperPrevious class="btn-style "  type="button"><span class="material-icons">arrow_backward</span> Previous</button>
+                              <button  matStepperNext class="btn-style theme-btn " >Save & Next <span class="material-icons">arrow_forward</span></button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </mat-step>
+                    <mat-step [stepControl]="domainConfigurationForm">
+                      <ng-template matStepLabel>
+                        <img src="assets/images/stepper-3.svg"/>
+                        <p>Settings</p>
+                      </ng-template>
+                      <div class="table-content box-style">
+                        <div class="table-heading m-30">
+                          <h3 style="font-weight: 600">Settings</h3>
+                          <!-- <p class="m-0"><span class="red-label">*</span> Indicates a required field</p> -->
+                        </div>
+                        <form class="form-wrapper" [formGroup]="domainConfigurationForm">
+                          <div class="row">
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>MCP</mat-label>
+                                    <input formControlName="mcp" matInput type="text" name="mcp">
+                                    <mat-error *ngIf="domainConfigurationForm.controls.mcp.errors?.required">Please enter MCP</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>User Landing Page</mat-label>
+                                    <input formControlName="userLandingPage" matInput type="text" name="userLandingPage">
+                                    <mat-error *ngIf="domainConfigurationForm.controls.userLandingPage.errors?.required">Please enter User Landing Page</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Touchpoints</mat-label>
+                                    <input formControlName="touchpoints" matInput type="text" name="touchpoints">
+                                    <mat-error *ngIf="domainConfigurationForm.controls.touchpoints.errors?.required">Please enter Touchpoints</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Companion App</mat-label>
+                                    <input formControlName="companionApp" matInput type="text" name="companionApp">
+                                    <mat-error *ngIf="domainConfigurationForm.controls.companionApp.errors?.required">Please enter Companion App</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Modulo Recruiting</mat-label>
+                                    <input formControlName="moduloRecruiting" matInput type="text" name="moduloRecruiting">
+                                    <mat-error *ngIf="domainConfigurationForm.controls.moduloRecruiting.errors?.required">Please enter Modulo Recruiting</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-md-6 col-xl-4">
+                              <button mat-button class="btn-style green-btn"  type="button" ><span class="material-icons">add</span>Add Field</button>
+                            </div>
+                          </div>
+                          <div class="step-form-bottom">
+                            <div>
+                              <button mat-button routerLink="/client-management" class="btn-style red-btn-light"  type="button">Cancel</button>
+                            </div>
+                            <div class="btn-wrapper">
+                              <button mat-button matStepperPrevious class="btn-style grey-btn"  type="button"><span class="material-icons">arrow_backward</span> Previous</button>
+                              <button mat-button matStepperNext class="btn-style" type="button">Save & Next <span class="material-icons">arrow_forward</span></button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </mat-step>
+                    <mat-step [stepControl]="adminLoginForm">
+                      <ng-template matStepLabel>
+                        <img src="assets/images/add-account-step.svg"/>
+                        <p>Add Account</p>
+                      </ng-template>
+                      <div class="table-content box-style">
+                        <div class="table-heading m-30">
+                          <h3 style="font-weight: 600">Add Account</h3>
+                           <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                        </div>
+                        <form class="form-wrapper" [formGroup]="adminLoginForm">
+                          <div class="row">
+                            <div class="col-lg-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Admin Name*</mat-label>
+                                    <input formControlName="adminName" matInput type="text" name="adminName">
+                                    <mat-error *ngIf="adminLoginForm.controls.adminName.errors?.required">Please enter admin name</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Username</mat-label>
+                                    <input formControlName="userName" matInput type="text" name="username">
+                                    <mat-error *ngIf="adminLoginForm.controls.userName.errors?.required">Please enter username</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                              <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>Password</mat-label>
+                                    <input formControlName="password" matInput type="password" name="password">
+                                    <mat-error *ngIf="adminLoginForm.controls.password.errors?.required">Please enter password</mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-lg-6 col-xl-4">
+                              <div class="form-field">
+                                <div class="remember-forgot border-box">
+                                  <mat-checkbox class="remember-check">Force user to reset password for the first time?</mat-checkbox>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="step-form-bottom">
+                            <div>
+                              <button mat-button routerLink="/client-management" class="btn-style red-btn-light"  type="button">Cancel</button>
+                            </div>
+                            <div class="btn-wrapper">
+                              <button mat-button matStepperPrevious class="btn-style grey-btn"  type="button"><span class="material-icons">arrow_backward</span> Previous</button>
+                              <button mat-button matStepperNext class="btn-style" type="button" routerLink="client-management">Save & Finish</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

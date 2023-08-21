@@ -1,0 +1,26 @@
+<div class="info-tile" [ngStyle]="{ 'backgroundColor': backgroundColor }" (click)="onClick()">
+    <div class="tile-top-line">
+        <div class="info-tile-icon">
+            <div class="theme-icon larger info-tile-image" [innerHTML]="safeIcon"></div>
+        </div>
+    </div>
+    <div class="info-tile-caption" [ngStyle]="{'color': textColor}">{{ descriptionLang }}</div>
+</div>
+
+<!--
+<div class="info-tile-container">
+    <div class="info-tile" [ngStyle]="{ 'backgroundColor': backgroundColor }" (click)="onClick()">
+        <div class="text-container">
+            <div class="info-tile-title" [ngStyle]="{'color': textColor}">{{ descriptionLang }}</div>
+        </div>
+        <div class="icon-container">
+            <div class="info-tile-icon">
+                <div class="theme-icon medium info-tile-image" [innerHTML]="safeIcon"></div>
+            </div>
+
+
+        </div>
+        <div class="action-tile-caption" [ngStyle]="{'color': textColor}">{{ descriptionLang }}</div>
+    </div>
+</div>
+-->

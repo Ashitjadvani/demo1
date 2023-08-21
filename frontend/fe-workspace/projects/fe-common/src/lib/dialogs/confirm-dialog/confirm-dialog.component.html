@@ -1,0 +1,12 @@
+<h2 mat-dialog-title><b>{{ title }}</b></h2>
+
+<div class="custom-dialog-container">
+    <div mat-dialog-content>
+        <!--p class="dialog-message">{{ message }}</p-->
+        <p class="dialog-message" [innerHTML]="message"></p>
+    </div>
+    <div mat-dialog-actions style="padding-top: 20px" align="end">
+        <button mat-raised-button *ngIf="cancelButtonText != null" (click)="onCancelClick()">{{ cancelButtonText }}</button>
+        <button mat-raised-button *ngIf="confirmButtonText != null" cdkFocusInitial (click)="onConfirmClick()">{{ confirmButtonText }}</button>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <div class="space-8"></div>
+        <mat-tab-group #tabgroup class="news-tab-group" animationDuration="500ms">
+            <mat-tab>
+                <div *ngIf="newsListEmpty" class="news-empty">{{'GENERAL.NO ALERTS'|translate}}</div>
+                <app-alert-tile *ngFor="let news of newsList" [newsDocument]="news" (click)="onNewsClick(news)">
+                </app-alert-tile>
+            </mat-tab>
+            <mat-tab class="news-tab">
+                <div class="news-content">
+                    <div class="news-header"  [ngStyle]="{ 'backgroundColor': backgroundColor }">
+                        <div class="news-date">
+                            {{ selectedNews.createdAt | date:'dd/MM/yyyy' }}
+                        </div>
+                        <div class="news-title">
+                            {{ selectedNews.title }}
+                        </div>
+                    </div>
+                    <div class="news-description">
+                        {{ selectedNews.description }}
+                    </div>
+                    <div *ngIf="selectedNews.file" class="news-attach" (click)="onDownloadFile()">
+                        <img class="download-icon" src="./assets/images/file-download.svg">
+                        <div class="download-text">{{'GENERAL.DOWNLOAD DOCUMENT'|translate}}</div>
+                    </div>
+                    <div class="news-commands">
+                        <mat-slide-toggle #confirmToggle>
+                            {{'NEWS PAGE.SELECT HERE TO CONFIRM'|translate}}
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+        <div class="space-8"></div>
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

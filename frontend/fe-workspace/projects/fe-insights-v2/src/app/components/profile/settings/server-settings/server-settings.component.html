@@ -1,0 +1,26 @@
+<form class="w-100" name="emailConfigForm" [formGroup]= "serverSetting"  novalidate (ngSubmit)="setServer()" #myform="ngForm">
+    <div class="form-main table-content box-heading">
+        <h3>{{'Server Settings' | translate}}</h3>
+        <div class="form-row-wrapper">
+            <div class="row">
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="fullSmartWorkingFlow" >{{'Smart Working full Workflow' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-xxl-4">
+                    <div class="form-field error-message-custom">
+                        <div class="custom-switch">
+                            <mat-checkbox formControlName="deskCheckOutMandatory">{{'Mandatory Desk Checkout' | translate}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-footer">
+            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+        </div>
+    </div>
+</form>

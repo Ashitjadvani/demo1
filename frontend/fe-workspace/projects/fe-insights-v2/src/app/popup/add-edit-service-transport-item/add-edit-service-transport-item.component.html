@@ -1,0 +1,347 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>Trasporto</h4>
+            <img (click)="onCancel()" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="popup-content m-auto text-center">
+            <div class="common-stepper clickableStepper">
+                <mat-horizontal-stepper linear labelPosition="bottom" #stepper>
+                    <mat-step [stepControl]="transportEntryFormS1">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/Contact.svg" />
+                            <p>Generalità Trasportato</p>
+                        </ng-template>
+                        <div class="table-content box-style company-info">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">{{'Contact' | translate}}</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' |
+                                    translate}}</p>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="onSubmit(false)" [formGroup]="transportEntryFormS1">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Condizione fisica<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="userPhysicStatus">
+                                                    <mat-option *ngFor="let ps of physicalStatus" value="{{ps}}">{{ ps }}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userPhysicStatus.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Nome<span class="red-label">*</span></mat-label>
+                                                <input formControlName="userName" matInput type="text" name="userName">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userName.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Cognome<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="userSurname" matInput type="text" name="userSurname">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userName.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Sesso<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="userGender">
+                                                    <mat-option>{{'Select Gender' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let genders of genderList" value="{{genders.value}}">
+                                                        {{genders.viewValue | translate}}
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userGender.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Indirizzo<span class="red-label">*</span></mat-label>
+                                                <input formControlName="userAddress" matInput type="text" name="userAddress">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userAddress.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Città<span class="red-label">*</span></mat-label>
+                                                <input formControlName="userCity" matInput type="text" name="userCity">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userCity.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Cap<span class="red-label">*</span></mat-label>
+                                                <input formControlName="userCap" matInput type="text" name="userCap">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userCap.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Provincia<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="userProv">
+                                                    <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs
+                                                        |
+                                                        translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userProv.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Recapito telefornico<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="userPhone" matInput type="text" name="userPhone">
+                                                <mat-error *ngIf="transportEntryFormS1?.controls.userPhone.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="onCancel()" class="btn-style red-line-btn" type="button">Cancel</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button matStepperPrevious class="btn-style privious-btn" type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button matStepperNext class="btn-style theme-btn" type="submit">{{'GENERAL.Save&Next' | translate}} <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+
+                    <mat-step [stepControl]="transportEntryFormS2">
+                        <ng-template matStepLabel>
+                            <img src="assets/images/Add Account.svg" />
+                            <p>Trasporto</p>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Trasporto</h3>
+                                <p class="m-0"><span class="red-label">*</span> {{'GENERAL.Indicates a required field' |
+                                    translate}}</p>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="onSubmit(true)" [formGroup]="transportEntryFormS2" novalidate>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Indirizzo di partenza<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="startAddress" matInput type="text" name="startAddress">
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.startAddress.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field error-message-custom">
+                                            <div class="custom-switch mt-0">
+                                                <mat-checkbox (change)="onCheckStartAddessUser($event)">Domicilio del
+                                                    trasportato
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Luogo di destinazione<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="arrivalPlace" matInput type="text" name="arrivalPlace">
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.arrivalPlace.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Indirizzo<span class="red-label">*</span></mat-label>
+                                                <input formControlName="arrivalAddress" matInput type="text" name="arrivalAddress">
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.arrivalAddress.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Città<span class="red-label">*</span></mat-label>
+                                                <input formControlName="arrivalCity" matInput type="text" name="arrivalCity">
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.arrivalCity.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-1">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Provincia<span class="red-label">*</span></mat-label>
+                                                <mat-select formControlName="arrivalProv">
+                                                    <mat-option>{{'Select Prov' | translate}}</mat-option>
+                                                    <mat-option *ngFor="let provs of provList" value="{{provs}}">{{provs | translate}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.arrivalProv.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-3">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>Data di arrivo a destinazione<span class="red-label">*</span>
+                                            </mat-label>
+                                            <input formControlName="arrivalDate" [matDatepicker]="pickerArrivalDate" matInput type="text" name="arrivalDate">
+                                            <mat-datepicker-toggle matSuffix [for]="pickerArrivalDate" class="full-date-select">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #pickerArrivalDate></mat-datepicker>
+                                            <mat-error *ngIf="transportEntryFormS2?.controls.arrivalDate.errors?.required">
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Orario di arrivo a destinazione<span class="red-label">*</span></mat-label>
+                                                <input formControlName="arrivalTime" [ngModel]="getTransportTime(true)" (change)="setTransportTime(true, $event.target.value)" readonly (click)="pickerArrival.open()" matInput name="arrivalTime">
+                                                <mat-icon matSuffix (click)="pickerArrival.open()">schedule</mat-icon>
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.arrivalTime.errors?.required">
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <ngx-material-timepicker #pickerArrival [format]="24" (timeSet)="setTransportTime(true, $event)">
+                                            </ngx-material-timepicker>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-3">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>Data di rientro<span class="red-label">*</span>
+                                            </mat-label>
+                                            <input formControlName="returnalDate" [matDatepicker]="pickerReturnalDate" matInput type="text" name="returnalDate">
+                                            <mat-datepicker-toggle matSuffix [for]="pickerReturnalDate" class="full-date-select">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #pickerReturnalDate></mat-datepicker>
+                                            <mat-error *ngIf="transportEntryFormS2?.controls.returnalDate.errors?.required">
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-3">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Orario di partenza<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="returnalTime" [ngModel]="getTransportTime(false)" (change)="setTransportTime(false, $event.target.value)" readonly (click)="pickerReturnal.open()" matInput name="returnalTime">
+                                                <mat-icon matSuffix (click)="pickerReturnal.open()">schedule</mat-icon>
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.returnalTime.errors?.required">
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <ngx-material-timepicker #pickerReturnal [format]="24" (timeSet)="setTransportTime(false, $event)">
+                                            </ngx-material-timepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Indirizzo di rientro<span class="red-label">*</span>
+                                                </mat-label>
+                                                <input formControlName="returnalAddress" matInput type="text" name="returnalAddress">
+                                                <mat-error *ngIf="transportEntryFormS2?.controls.returnalAddress.errors?.required">
+
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field error-message-custom">
+                                            <div class="custom-switch mt-0">
+                                                <mat-checkbox (change)="onCheckReturnalAddessUser($event)">Domicilio del
+                                                    trasportato
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="form-field error-message-custom date-picker-style">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Note</mat-label>
+                                                <input formControlName="note" matInput placeholder="{{'GENERAL.TypeHere' | translate}}" type="text" name="note">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button (click)="onCancel()" class="btn-style red-line-btn" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button matStepperPrevious class="btn-style privious-btn" type="button"><span class="material-icons">arrow_backward</span> {{'GENERAL.Previous' | translate}}</button>
+                                        <button class="btn-style green-btn" type="submit">{{'GENERAL.Save&Finish' | translate}} </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+        <!-- <div class="footer-content justify-content-end">
+            <button (click)="onClick(false, $event)" class="btn-style inactive">{{'GENERAL.Cancel' | translate}}</button>
+            <button (click)="onClick(true, '')" class="btn-style theme-btn">{{'GENERAL.Save' | translate}}</button>
+        </div> -->
+    </div>
+</section>

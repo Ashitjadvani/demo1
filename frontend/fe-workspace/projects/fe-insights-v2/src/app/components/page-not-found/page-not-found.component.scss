@@ -1,0 +1,26 @@
+
+.back-btn{
+    background-color: #000;
+}
+.page-not-found{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .wrap-content{
+        max-width: 500px;
+        text-align: center;
+        h1{
+            font-size: 160px;
+        }
+        h4{
+            font-size: 50px;
+        }
+        .back-btn{
+            margin-top: 50px;
+            &:hover{
+                background: #000;
+            }
+        }
+    }
+}

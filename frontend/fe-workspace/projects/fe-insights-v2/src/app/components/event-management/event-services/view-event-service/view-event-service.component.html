@@ -1,0 +1,76 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <app-breadcrumb [title]="'INSIGHTS_MENU.EVENT_MANAGEMENT'" [routePath2]="'/event-management/event-services'" [title2]="'INSIGHTS_MENU.Event_Services'" [title3]="'EVENT_MANAGEMENT.ViewEventService'" ></app-breadcrumb>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style company-info">
+        <div class="table-heading">
+          <h3 style="font-weight: 600"><span>{{'EVENT_MANAGEMENT.ViewEventService' | translate}}</span> </h3>
+          <div class="search-form-wrapper">
+            <div class="buttons-group">
+              <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="company-details odd-even-false">
+              <div class="detail-wrapper bg-grey row">
+                <div class="col-sm-3">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.EventServiceName' | translate}}</p>
+                    <b style="text-transform:capitalize;">{{servicedata.name ? servicedata.name : "-"}}</b>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.SupplierName' | translate}}</p>
+                    <b style="text-transform:capitalize;">{{servicedata.supplierName ? servicedata.supplierName : "-"}}</b>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.ReferenceEmailAddress' | translate}}</p>
+                    <b style="text-transform:lowercase;">{{servicedata.email ? servicedata.email : "-"}}</b>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.ReferencePhoneNumber' | translate}}</p>
+                    <b style="text-transform:capitalize;">{{servicedata.phone ? servicedata.phone : "-"}}</b>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-wrapper row">
+                <div class="col-sm-12">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.Description' | translate}}</p>
+                    <b style="text-transform:capitalize;">{{servicedata.description ? servicedata.description : "-"}}</b>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-wrapper bg-grey row">
+                <div class="col-sm-12">
+                  <div class="detail-box w-100">
+                    <p>{{'EVENT_MANAGEMENT.EmailSubject' | translate}}</p>
+                    <b style="text-transform:capitalize;">{{servicedata.subject ? servicedata.subject : "-"}}</b>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-wrapper row hide-editor">
+                <div class="col-sm-12">
+                  <p>{{'EVENT_MANAGEMENT.EmailTemplate' | translate}}</p>
+                  <div class="custom-editor form-field error-message-custom">
+                    <div class="email-template" [innerHTML]="emailTemplate"></div>
+<!--                    <angular-editor [ngModel]="emailTemplate" [config]="config" placeholder="{{'PEOPLE_MANAGEMENT.Enter text here' | translate}}" readonly=""></angular-editor>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

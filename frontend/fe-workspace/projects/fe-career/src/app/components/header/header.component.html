@@ -1,0 +1,39 @@
+<header>
+    <div class="container">
+        <div class="navbar">
+            <div class="nav-brand">
+                <a href="javascript:;" (click)="redirectPage()" ><img src="assets/image/logo-white.svg" class="legance-logo" alt=" lagacy Logo"></a>
+            </div>
+            <div class="nav-menu">
+              <div class="language-menu-new">
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="userLanguageSelect" name='language' (selectionChange)='onLanguageChange($event)'>
+                    <mat-select-trigger>
+                      <span >
+                        <img [src]="(userLanguageSelect === 'en') ? flagEng : italianFlag" alt=""> {{(userLanguageSelect === 'en') ? 'ENGLISH (EN)' : 'ITALIANO (ITA)' }}
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option value="it" (click)="itLocale()"><img [src]="italianFlag" alt="">{{ 'HEADER.ita' | translate}} </mat-option>
+                    <mat-option value="en" (click)="enLocale()"><img [src]="flagEng" alt="">{{ 'HEADER.en' | translate}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <button *ngIf="loginUser" mat-raised-button routerLink="/login" class="btn-submit">Login</button>
+              <!-- <button *ngIf="!loginUser" mat-raised-button routerLink="/my-application" class="btn-submit my-account-btn">
+                <span class="material-icons">person_outline</span>{{'GENERAL.MyAccount' | translate}}</button> -->
+
+                <button *ngIf="!loginUser" mat-raised-button  [matMenuTriggerFor]="menu" class="btn-submit my-account-btn">
+                 <span class="user-name"> {{userName.nome}} {{userName.cognome}} </span><span class="material-icons">keyboard_arrow_down</span></button>
+
+
+                <mat-menu #menu="matMenu" class="menu-list">
+                  <button mat-menu-item routerLink="/my-application"><span class="material-icons">person_outline</span>{{'GENERAL.MyAccount' | translate}}</button>
+                  <button mat-menu-item (click)="logout()"><span class="material-icons">logout</span>{{'GENERAL.Logout' | translate}}</button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+    <hr>
+</header>
+
+

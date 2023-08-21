@@ -1,0 +1,94 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                    <li class="breadcrumb-item">{{'INSIGHTS_MENU.RECRUITING' | translate}}</li>
+                    <li routerLink="/recruiting/candidates" class="breadcrumb-item">{{'RECRUITING.Candidates' | translate}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'RECRUITING.Candidate Details' | translate}}: <span>{{candidateDetails.cognome}} {{candidateDetails.nome}}</span></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'RECRUITING.EditRemainder' | translate}}</li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.RECRUITING'" [title2]="'Settings'">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{'Email Configuration' | translate}}</span><!-- <span>Edit Supplier</span> -->
+                    </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span>{{'EDIT COMPANY.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="w-100" name="emailConfigForm" [formGroup]="emailConfigForm" novalidate (ngSubmit)="changeEmailConfig()" #myform="ngForm">
+                    <div class="row">
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Host' | translate}}</mat-label>
+                                    <input type="text" name="host" formControlName="host" matInput>
+                                    <mat-error *ngIf="emailConfigForm.controls.host.errors?.required">
+                                        {{'Enter your host' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field error-message-custom">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Port' | translate}}</mat-label>
+                                    <input type="text" name="port" formControlName="port" matInput>
+                                    <mat-error *ngIf="emailConfigForm.controls.port.errors?.required">
+                                        {{'Enter your port' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Username' | translate}}</mat-label>
+                                    <input type="text" name="user" formControlName="user" matInput>
+                                    <mat-error *ngIf="emailConfigForm.controls.user.errors?.required">
+                                        {{'Enter your username' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'Password' | translate}}</mat-label>
+                                    <input type="password" name="password" formControlName="password" matInput onkeypress="return event.charCode != 32">
+                                    <mat-error *ngIf="emailConfigForm.controls.password.errors?.required">
+                                        {{'Enter your password' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-xxl-4">
+                            <div class="form-field">
+                                <mat-form-field appearance="outline" class="element-full-width">
+                                    <mat-label>{{'From Name' | translate}}</mat-label>
+                                    <input type="text" name="from" formControlName="from" matInput>
+                                    <mat-error *ngIf="emailConfigForm.controls.from.errors?.required">
+                                        {{'Enter your from name' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/recruiting/recruiting-dashboard" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,444 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li routerLink="/dashboard" class="breadcrumb-item">{{'RECRUITING.Dashboard' | translate}}</li>
+                  <li class="breadcrumb-item">{{'INSIGHTS_MENU.RECRUITING' | translate}}</li>
+                  <li routerLink="/recruiting/job-applications" class="breadcrumb-item">{{'RECRUITING.JobApplications' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"> {{'Job Application Details' | translate}}: {{opening.area}} | {{opening.description}}</li>
+                  <li class="breadcrumb-item active" aria-current="page" style="text-transform: capitalize;"> {{'Job Application Details' | translate}}: {{opening.area}} | {{opening.description}}</li>
+                 <li class="breadcrumb-item active" aria-current="page">View Job Applications for <span>Applications Name</span></li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.RECRUITING'" [title2]="'RECRUITING.JobApplications'" [routePath2]="'/recruiting/job-applications'"
+      [type]="opening.area + ' | ' +opening.description" [title3]="'Job Application Details'">
+      </app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="common-tabbing">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="{{'RECRUITING.Personal Details' | translate}}" class="mt-5">
+                      <div class="table-content edit-job-applications">
+                        <div class="box-style company-info ">
+                          <div class="edit-app-header">
+                            <div class="table-heading">
+                              <h3 style="text-transform: capitalize;">{{'RECRUITING.Detail' | translate}} : {{opening.area}} | {{opening.description}} | {{JobapplicationsDetails.jobOpeningType | translate}}</h3>
+                            </div>
+                            <div class="buttons-group">
+                                <button class="btn-style grey-btn" routerLink="edit-job-applications" (click)="editDetail($event)">{{'GENERAL.Edit'| translate}}</button>
+                                <button class="btn-style red-btn" (click)="openDialog($event)">{{'GENERAL.Delete'| translate}}</button>
+                            </div>
+                          </div>
+                            <div class="company-details">
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Name' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.nome ? userInfo.nome : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Surname' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.cognome ? userInfo.cognome : '-'}}</b>
+<!--                                        <p>{{'RECRUITING.JobOpening' | translate}}</p>-->
+<!--                                        <b>Spontaneous Application - Litigation</b>-->
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Email' | translate}}</p>
+                                      <b>{{userInfo.email ? userInfo.email : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.Birthdate' | translate}}</p>
+                                      <b>{{userInfo.data_nascita ? (userInfo.data_nascita | date:'dd/MM/yyyy') : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Age' | translate}}</p>
+                                      <b>{{JobapplicationsDetails.age ? (JobapplicationsDetails.age  | number: '2.0-0') : '-' }} <b *ngIf="JobapplicationsDetails.age > 0">{{'RECRUITING.years old' | translate}}</b></b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.Gender' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.sesso ? (userInfo.sesso | translate) : '-' }}</b>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.Nationality' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.nationality ? userInfo.nationality : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Phone No' | translate}}</p>
+                                      <b>{{userInfo.telefono ? userInfo.telefono : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.Address' | translate}}</p>
+                                      <b>{{userInfo.indirizzo ? userInfo.indirizzo : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.CityName' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.cityName ? userInfo.cityName : '-' }}</b>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.StateName' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.stateName ? userInfo.stateName : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.CountryName' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.countryName ? userInfo.countryName : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.Company' | translate}}</p>
+                                      <b>{{userInfo.azienda ? userInfo.azienda : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box">
+                                      <p>{{'TABLE.Title' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.titolo ? userInfo.titolo : '-'}}</b>
+                                    </div>
+
+                                </div>
+                                <div class="detail-wrapper bg-grey">
+                                    <div class="detail-box">
+                                      <p>{{'RECRUITING.LevelofEducation' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{userInfo.livello_studi ? ((userInfo.livello_studi ==='not-graduated' || userInfo.livello_studi === 'Not Graduated' ? 'Not Graduated': (userInfo.livello_studi | titlecase)) | translate ) : '-' }}</b>
+                                    </div>
+
+                                  <div class="detail-box" *ngIf="userInfo.livello_studi ==='not-graduated' || userInfo.livello_studi ==='Not Graduated' ">
+                                    <p>{{'RECRUITING.Degreemarkaverage' | translate}}</p>
+                                    <b>{{userInfo.scoreAverage ? userInfo.scoreAverage :'-'}}</b>
+                                  </div>
+
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                      <p>{{'RECRUITING.University' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{univ ? univ.description  : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                      <p>{{'RECRUITING.Degree' | translate}}</p>
+                                      <b style="text-transform: capitalize;">{{laurea ? laurea.description : '-'}}</b>
+                                    </div>
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                      <p>{{'RECRUITING.DegreeMark' | translate}}</p>
+                                      <b>{{userInfo.voto_laurea ? userInfo.voto_laurea : '-' }}</b>
+                                    </div>
+                                </div>
+                                <div class="detail-wrapper">
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                        <p>{{'RECRUITING.DegreeYear' | translate}}</p>
+                                        <b>{{userInfo.degreeYear ? userInfo.degreeYear : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                      <p>{{'RECRUITING.MasterDiscription' | translate}}</p>
+                                      <b>{{userInfo.materDescription ? userInfo.materDescription : '-' }}</b>
+                                    </div>
+                                    <div class="detail-box" *ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                        <p>{{'RECRUITING.DoctorateDescription' | translate}}</p>
+                                        <b>{{userInfo.doctorateDescription ? userInfo.doctorateDescription : '-' }}</b>
+                                    </div>
+                                  <div class="detail-box" **ngIf="userInfo.livello_studi ==='Graduated' || userInfo.livello_studi ==='graduated'">
+                                    <p>{{'RECRUITING.StateExamination' | translate}}</p>
+<!--                                    <b>{{userInfo.stateExamination ? userInfo.stateExamination : '-' }}</b>-->
+                                    <b>{{userInfo.stateExamination ? 'Yes' : 'No' }}</b>
+                                  </div>
+
+                                </div>
+                              <div class="detail-wrapper bg-grey">
+                                <div class="detail-box">
+                                  <p>{{'RECRUITING.Area' | translate}}</p>
+                                  <b style="text-transform: capitalize;">{{opening.area ? opening.area : '-'}}</b>
+                                </div>
+                                <div class="detail-box">
+                                  <p>{{'RECRUITING.CompletionDate' | translate}}</p>
+                                  <b>{{JobapplicationsDetails.data_completamento ? (JobapplicationsDetails.data_completamento | date:'dd/MM/yyyy') : '-'}}</b>
+                                </div>
+                                <div class="detail-box">
+                                  <p>{{'RECRUITING.FitIndex' | translate}}</p>
+                                  <b>{{JobapplicationsDetails.fitindex ? JobapplicationsDetails.fitindex  : '-'}}</b>
+                                </div>
+                              </div>
+                            </div>
+                          <div class="edit-application-history mt-30">
+                            <div class="row">
+                              <div class="col-xl-12">
+                                <div class="table-content" style="width: 100%; padding:  24px 0px;" *ngIf="applicationStatus.length > 0">
+                                  <h3>{{'RECRUITING.Jobapplicationstatushistory' | translate}}</h3>
+                                  <div class="table-wrapper resource-color-table p-0">
+                                    <table mat-table matSort [dataSource]="applicationStatus" >
+                                      <mat-tab-group>
+                                        <ng-container matColumnDef="DateTime">
+                                          <th mat-header-cell *matHeaderCellDef >{{'RECRUITING.DateandTime' | translate}}</th>
+                                          <td mat-cell *matCellDef="let element">
+                                            {{ element.createdAt ? (element.createdAt | date:'dd/MM/yyyy HH:mm') : '-' }}
+                                          </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="appStatus">
+                                          <th mat-header-cell *matHeaderCellDef>{{'TABLE.Status'| translate}}</th>
+                                          <td mat-cell *matCellDef="let element">
+                                            {{ element.from_state_name ? (element.from_state_name | translate) : '-'}}
+                                          </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="appNote">
+                                          <th mat-header-cell *matHeaderCellDef>{{'RECRUITING.Note' | translate}}</th>
+                                          <td mat-cell *matCellDef="let element" style="word-break: keep-all;">
+                                            {{ element.notes ? element.notes:'-' }}
+                                          </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="appBy">
+                                          <th mat-header-cell *matHeaderCellDef>{{'RECRUITING.By' | translate}}</th>
+                                          <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                            {{ element.change_by ? element.change_by:'-' }}
+                                          </td>
+                                        </ng-container>
+                                      </mat-tab-group>
+
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                      <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                                    </table>
+                                  </div>
+                                  <div *ngIf="!noRecordFound" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                                  <div  *ngIf="noRecordFound"class="paginate-footer"></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-xl-12 mt-30">
+                                <div class="table-content " >
+                                  <h3 *ngIf="currentElementMetric.length > 0">{{'RECRUITING.My_Fit_Indexes' | translate}}</h3>
+                                  <div class="hover-content-wrap" style="width: 100%; padding:  24px 0px;" *ngFor="let i=index;let elementMetric of currentElementMetric;">
+                                    <div class="table-wrapper resource-color-table">
+                                      <table mat-table matSort [dataSource]="elementMetric.metrcData" >
+                                        <mat-tab-group>
+                                          <ng-container matColumnDef="DateTime">
+                                            <th mat-header-cell *matHeaderCellDef style="width: 250px;max-width:250px">{{elementMetric.survey_name}}</th>
+                                            <td mat-cell *matCellDef="let element" style="width: 250px;max-width:250px">
+                                              {{element.metric_name ? element.metric_name : '-'}}
+                                            </td>
+                                          </ng-container>
+
+                                          <ng-container matColumnDef="appStatus" >
+                                            <th mat-header-cell *matHeaderCellDef style="width: 250px;max-width:250px">{{'EXTRA_WORD.Result' | translate}}</th>
+                                            <td mat-cell *matCellDef="let element" style="width: 250px;max-width:250px">
+                                              {{element.metric_value ? element.metric_value : '-'}}
+                                            </td>
+                                          </ng-container>
+                                          <ng-container matColumnDef="appNote">
+                                            <th mat-header-cell *matHeaderCellDef>{{'EXTRA_WORD.FIT_INDEX' | translate}}</th>
+                                            <td mat-cell *matCellDef="let element" style="word-break: keep-all;">
+                                              {{element.result ? element.result : '-'}}
+                                            </td>
+                                          </ng-container>
+                                          <ng-container matColumnDef="appBy" >
+                                            <th mat-header-cell *matHeaderCellDef >{{'RECRUITING.My_Fit_Indexes' | translate}}</th>
+                                            <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                                              <div class="hover-content">
+                                                <span style="display: flex;align-items: center">{{element.scalarResult ? element.scalarResult : '-'}} / {{elementMetric.maxscalarResult ? elementMetric.maxscalarResult : '-'}} <mat-icon *ngIf="element.scalarResult !== '-' || elementMetric.maxscalarResult !== null" style="color: #8E8E8E;font-size: 22px;margin-left: 7px">help</mat-icon></span>
+                                                <div class="hover-table" *ngIf="element.scalarResult !== '-' || elementMetric.maxscalarResult !== null" style="max-width: 270px;">
+                                                  <table mat-table [dataSource]="matricsDataSource[i]" class="mat-elevation-z8 " width="100%" style="min-width: 270px;max-width: 270px;">
+                                                    <ng-container matColumnDef="rules">
+                                                      <th mat-header-cell *matHeaderCellDef style="white-space: pre-line;">{{'EXTRA_WORD.Rules' | translate}} </th>
+                                                      <td mat-cell *matCellDef="let element"> {{element.operator ? element.operator : '-'}} {{element.value ? element.value : '-'}}</td>
+                                                    </ng-container>
+<!--                                                    <ng-container matColumnDef="value">-->
+<!--                                                      <th mat-header-cell *matHeaderCellDef>{{'Quiz/Survey.Value' | translate}} </th>-->
+<!--                                                      <td mat-cell *matCellDef="let element"> {{element.value ? element.value : '-'}} </td>-->
+<!--                                                    </ng-container>-->
+                                                    <ng-container matColumnDef="textresult">
+                                                      <th mat-header-cell *matHeaderCellDef style="white-space: pre-line;">{{'Quiz/Survey.TextResult' | translate}} </th>
+                                                      <td mat-cell *matCellDef="let element" style="white-space: pre-line;"> {{element.result ? element.result : '-'}} </td>
+                                                    </ng-container>
+                                                    <ng-container matColumnDef="scalarresult">
+                                                      <th mat-header-cell *matHeaderCellDef style="white-space: pre-line;">{{'Quiz/Survey.ScalarResult' | translate}} </th>
+                                                      <td mat-cell *matCellDef="let element" style="white-space: pre-line;"> {{element.scalarResult ? element.scalarResult : '-'}} </td>
+                                                    </ng-container>
+                                                    <tr mat-header-row *matHeaderRowDef="displayedMatricsColumns"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedMatricsColumns;"></tr>
+                                                  </table>
+                                                </div>
+                                              </div>
+                                            </td>
+                                          </ng-container>
+                                        </mat-tab-group>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  <!-- <div *ngIf="!noRecordFound" class="no-record-found"> {{'TABLE.No_record_found' | translate}}</div>
+                                  <div  *ngIf="noRecordFound"class="paginate-footer"></div> -->
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="popup-footer mt-30">
+                              <div class="footer-content">
+<!--                                <button class="btn-style theme-btn">{{'GENERAL.Save'| translate}}</button>-->
+                                <button class="btn-style red-line-btn" (click)="back()">{{'GENERAL.Back'| translate}}</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="{{'RECRUITING.Additional Details' | translate}}" *ngIf="additionalDetailsList.length > 0">
+                        <div class="box-style company-info">
+                             <!-- <div class="buttons-group">
+
+                                <button class="btn-style grey-btn" >{{'GENERAL.Edit'| translate}}</button>
+                                <button class="btn-style red-btn" (click)="openDialog()">{{'GENERAL.Delete'| translate}}</button>
+                            </div> -->
+
+                            <div class="details-listing">
+                                <div class="number-tag" *ngFor="let additionalDetails of additionalDetailsList; let i = index">
+                                    <div class="question">
+                                        <h4>{{i+1}}</h4>
+                                        <span>{{additionalDetails.question}}</span>
+                                    </div>
+                                    <div class="answer bg-grey">
+                                        <p>{{additionalDetails.answer}}</p>
+                                        <p *ngIf="!additionalDetails.answer"> - </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="CV" *ngIf="url">
+                      <div class="table-content edit-job-applications">
+                        <div class="box-style company-info ">
+                            <div class="edit-app-header">
+                                <div class="table-heading">
+                                    <h3>CV {{'RECRUITING.for' | translate}} <span>{{userInfo.nome}} {{userInfo.cognome}}</span></h3>
+                                </div>
+                                <div class="buttons-group">
+                                    <button class="btn-style yellow-btn" (click)="downloadCv()"><mat-icon>save_alt</mat-icon> {{'EXTRA_WORD.DownloadCV' | translate}}</button>
+                                    <!-- <button class="btn-style purpal-btn" ><mat-icon>save_alt</mat-icon> Download Video</button> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="company-brochure mb-30">
+                                    <!--<img src="assets/images/broucher.png" alt="">-->
+                                    <pdf-viewer [autoresize]="true" [original-size]="false" width="100%" [src]="url" *ngIf="url" class="pdf-viewer"></pdf-viewer>
+                                    <div *ngIf="!url" style="text-align: center;">{{'TABLE.No_record_found' | translate}}</div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </mat-tab>
+                    <mat-tab label="{{'COMPANYTXT.VideoQuestion' | translate}}" *ngIf="videoURL">
+                      <div class="table-content edit-job-applications">
+                        <div class="box-style">
+                            <div class="box-style company-info">
+                              <div class="edit-app-header">
+                                <div class="table-heading">
+                                    <h3>Video {{'RECRUITING.for' | translate}} <span>{{userInfo.nome}} {{userInfo.cognome}}</span></h3>
+                                </div>
+                                <div class="buttons-group">
+                                    <button class="btn-style purpal-btn" (click)="downloadVideo()"><mat-icon>save_alt</mat-icon> {{'EXTRA_WORD.DownloadVideo' | translate}}</button>
+                                </div>
+                            </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="details-listing" *ngFor="let item of videoAssessment; let i = index ">
+                                            <div class="number-tag" *ngIf="item.checked === true">
+                                                <div class="question">
+                                                    <h4>{{i+1}}</h4>
+                                                    <span>{{item.question}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="videoURL">
+                                        <div class="video-player" style="height: 100%;">
+                                            <video width="100%" controls height="500px">
+                                              <source src="{{videoURL}}" type="video/mp4">
+                                              <!-- <source src="movie.ogg" type="video/ogg"> -->
+                                          </video>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab label="{{'EXTRA_WORD.Quiz' | translate}}">
+                        <div class="box-style">
+                            <div class="box-style company-info simple-tabbing">
+                                <!-- <div class="total-score">
+                                    <h4>Total Score: 100</h4>
+                                    <div class="progress-score">
+                                        <mat-spinner class="background" mode="determinate" value="100" strokeWidth="7"></mat-spinner>
+                                        <mat-spinner mode="determinate" value="75" strokeWidth="7"></mat-spinner>
+                                        <span>75</span>
+                                    </div>
+                                </div> -->
+                                <div class="stepper-form-content">
+                                  <ng-template matTabContent>
+                                    <div class="box-style">
+                                      <div class="box-style company-info simple-tabbing">
+                                        <mat-tab-group #tabgroup2 class="group-tab">
+                                          <mat-tab *ngFor="let server of conditionQuestionList" label="{{server.surveyName}}">
+                                            <ng-template matStepLabel>{{server.surveyName}}</ng-template>
+                                            <div class="stepper-form-content details-listing">
+                                              <div *ngFor="let quiz of server.questionData;let i = index" class="number-tag mb-5">
+                                                <div class="question">
+                                                  <h4>{{i + 1}}</h4>
+                                                  <span>{{quiz.question}}</span>
+                                                  <p *ngIf="quiz.minutes !== null && quiz.seconds !== null"><mat-icon>query_builder</mat-icon>  {{quiz.minutes}}:{{quiz.seconds}} {{'RECRUITING.min' | translate}}</p>
+                                                </div>
+                                                <div class="answer">
+                                                  <p>{{quiz?.answer[0] ? quiz.answer[0] : '-'}}</p>
+                                                </div>
+
+                                                <!-- <h4>Q{{i + 1}}. {{quiz.question}}</h4>
+                                                <p>{{quiz?.answer[0] ? quiz.answer[0] : '-'}}</p> -->
+                                              </div>
+                                            </div>
+                                          </mat-tab>
+                                        </mat-tab-group>
+                                        <div *ngIf="!surveyQuestion?.length > 0" class="stepper-form-head" style="justify-content: center;">
+                                          <h2 style="font-weight: 400;font-size: 14px;padding: 0px 20px;text-align: center;">{{'GENERAL.NoDataAvailable' | translate}}</h2>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                  <div class="details-listing">
+                                    <div *ngFor="let quiz of surveyQuestion;let i = index" class="number-tag mb-5">
+                                      <ng-container *ngIf="quiz.type !== 'FreeText'">
+                                        <div class="question">
+                                          <h4>{{i + 1}}</h4>
+                                          <span>{{quiz.question_label}}</span>
+                                          <p><mat-icon>query_builder</mat-icon> {{quiz.minutes}}:{{quiz.seconds}} {{'RECRUITING.min' | translate}}</p>
+                                        </div>
+                                        <div class="answer">
+                                          <p>{{(quiz.answers?.value) ? quiz.answers.value : '-'}}</p>
+                                        </div>
+                                        <!-- <h4>Q{{i + 1}}. {{quiz.question_label}}</h4>
+                                        <p>{{(quiz.answers?.value) ? quiz.answers.value : '-'}}</p> -->
+                                      </ng-container>
+                                      <ng-container *ngIf="quiz.type === 'FreeText'">
+                                        <div class="question">
+                                          <h4>{{i + 1}}</h4>
+                                          <span>{{quiz.question_label}}</span>
+                                          <p><mat-icon>query_builder</mat-icon> {{quiz.minutes}}:{{quiz.seconds}} {{'RECRUITING.min' | translate}}</p>
+                                        </div>
+                                        <div class="answer">
+                                          <p>{{(quiz.givenAnswer) ? quiz.givenAnswer : '-'}}</p>
+                                        </div>
+                                        <!-- <h4>Q{{i + 1}}. {{quiz.question_label}}</h4>
+                                        <p>{{(quiz.givenAnswer) ? quiz.givenAnswer : '-'}}</p> -->
+                                      </ng-container>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</section>

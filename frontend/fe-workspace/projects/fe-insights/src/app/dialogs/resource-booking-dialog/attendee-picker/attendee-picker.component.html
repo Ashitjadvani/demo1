@@ -1,0 +1,24 @@
+<div class="people-picker">
+    <div class="people-search">
+        <mat-form-field class="width-100">
+            <!-- <input matInput placeholder="name or email" (keyup)="applyFilter($event.target.value)"> -->
+            <input matInput placeholder="name or email" [(ngModel)]="personOrEmail" (keyup)="applyFilter($event.target.value)">
+            <button mat-button matSuffix mat-icon-button (click)="applyFilter($event.target.value)">
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <div class="people-list">
+        <mat-list-item *ngFor="let p of filteredPeople">
+            <div class="search-item">
+                <mat-icon class="search-icon">person</mat-icon>
+                <div class="people-item" (click)="onSelectPerson(p)">
+                    {{ p.name }} {{ p.surname }}
+                </div>
+            </div>
+        </mat-list-item>
+    </div>
+    <button mat-flat-button class="action-button" color="primary" [disabled]="!isConfirmEnabled()" cdkFocusInitial
+        (click)="onConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+
+</div>

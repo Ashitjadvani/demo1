@@ -1,0 +1,27 @@
+<div class="table-content-box max-height-scroll">
+    <table class="table custom-table">
+        <tr class="header-row">
+            <th class="header table-head">Codice Articolo</th>
+            <th class="header table-head">Descrizione</th>
+            <th class="header table-head">Data Consegna</th>
+            <th class="header table-head">Quantità da evadere</th>
+            <th class="header table-head">Descrizione Cliente</th>
+            <th class="header table-head">Indirizzo</th>
+            <th class="header table-head">CAP</th>
+            <th class="header table-head">Città</th>
+            <th class="header table-head">Nazione</th>
+        </tr>
+        <tr class="table-row" *ngFor="let element of orderItems">
+            <td class="cell">{{ element.item_code ? element.item_code : '-' }}</td>
+            <td class="cell">{{ element.item_descr ? element.item_descr : '-' }}</td>
+            <td class="cell">{{ element.delivery_date ? commonService.formatDateTime(element.delivery_date, 'dd/MM/yyyy') : '-' }}</td>
+            <td class="cell">{{ element.qty_planned ? element.qty_planned : '-' }}</td>
+            <td class="cell">{{ element.customer_descr ? element.customer_descr : '-' }}</td>
+            <td class="cell">{{ element.customer_address ? element.customer_address : '-' }}</td>
+            <td class="cell">{{ element.customer_cap ? element.customer_cap : '-' }}</td>
+            <td class="cell">{{ element.customer_city ? element.customer_city : '-' }}</td>
+            <td class="cell">{{ element.customer_country ? element.customer_country : '-' }}</td>
+        </tr>
+    </table>
+    <div class="no-record-found mt-3 mb-2" *ngIf="orderItems?.length == 0"><strong>{{'TABLE.No_record_found' | translate}}</strong></div>
+</div>

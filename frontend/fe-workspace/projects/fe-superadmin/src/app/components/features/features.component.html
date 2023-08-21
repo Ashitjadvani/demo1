@@ -1,0 +1,129 @@
+<section class="client-management">
+  <div class="row">
+    <div class="col-md-12">
+      <nav>
+        <ol class="breadcrumb box-style">
+          <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+          <li routerLink="/features" class="breadcrumb-item active" aria-current="page">Features</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-md-12">
+      <div class="table-content box-style features-table">
+        <div class="table-heading">
+          <h3 style="font-weight: 600">Features</h3>
+          <div class="search-form-wrapper">
+            <div class="search-form">
+              <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+              <input mat-input (keyup)="onKeyUp($event)" #searchBox name="search" placeholder="Search Feature"/>
+              <mat-icon *ngIf="searchBox.value !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+            </div>
+            <button class="btn-style" routerLink="add-features/0">
+              <span class="material-icons">add</span>Add Feature
+            </button>
+            <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                <mat-icon >more_vert</mat-icon>
+              </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="deleteMultiAlert()">
+                  <span>Delete</span>
+                </button>
+            </mat-menu>
+          </div>
+        </div>
+        <div class="table-wrapper resource-color-table">
+          <table mat-table matSort (matSortChange)="sortData($event)"
+                 [dataSource]="featuresList | paginate: { itemsPerPage: this.itemsPerPage, currentPage: this.page,  totalItems: this.totalItems  } "
+                 style="width: 100%">
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="wheelAction">
+                    <th  mat-header-cell *matHeaderCellDef style="width: 100px;">
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 100px;">
+                        <app-wheel-action [icons]="'two'" [editOn]="true" [deleteOn]="true" [element]="element"
+                        (edit)="edit(element.id)" (delete)="openDialog(element.id, i, $event)"></app-wheel-action>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="featuresTitle">
+                    <th (click)="changeSorting('name', sortBy)" mat-header-cell class="short-arrow" *matHeaderCellDef >Title
+                    <span [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" >
+                        <img alt="" src="assets/images/up-arrow.svg">
+                    </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                    {{element.name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="mode">
+                    <th (click)="changeSorting('mode', sortBy)" mat-header-cell *matHeaderCellDef class="short-arrow">Mode
+                    <span [ngClass]="{'down': sortKey === 'mode' && sortBy === '-1' , 'up': sortKey === 'mode' && sortBy === '1'}" >
+                        <img alt="" src="assets/images/up-arrow.svg">
+                    </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap">
+                    {{ element.mode }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="featuresStatus">
+                    <th mat-header-cell *matHeaderCellDef style="width: 165px;" >Status </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap"  >
+                    <div class="switch">
+                        <mat-slide-toggle [checked]="element.statusId === '1' ? true : false" (change)="changeSlideToggle($event.checked, element.id)"></mat-slide-toggle>
+                    </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 120px;">
+                    Action
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 120px;">
+                    <div class="action-icons d-flex">
+                        <img [src]="editIcon" (click)="edit(element.id)" alt="">
+                        <img [src]="deleteIcon" (click)="openDialog(element.id, i, $event)" alt="">
+                    </div>
+                    </td>
+                </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+          </table>
+        </div>
+        <div *ngIf="featuresList.length == 0" class="no-record-found">No record found</div>
+        <div class="paginate-footer" *ngIf="featuresList.length != 0">
+          <div class="page-item">
+            <h3>Items per page:</h3>
+            <mat-form-field appearance="fill">
+              <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                <mat-option value='5'>5</mat-option>
+                <mat-option value='10'>10</mat-option>
+                <mat-option value='15'>15</mat-option>
+                <mat-option value='20'>20</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="table-paginator">
+            <pagination-controls responsive="true" (pageChange)="pageChanged($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

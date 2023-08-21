@@ -1,0 +1,96 @@
+<h2 mat-dialog-title><b>BOOKING</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-horizontal-stepper *ngIf="!loading" [linear]="true" #stepper class="stepper">
+            <mat-step [stepControl]="searchFormGroup">
+                <form [formGroup]="searchFormGroup">
+                    <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.SEARCH' | translate }}</ng-template>
+                    <div class="primary-filters">
+                        <mat-form-field>
+                            <mat-label>{{ 'BOOK DESK PARAMETERS.LOCATION' | translate }}</mat-label>
+                            <mat-select matNativeControl formControlName="location" [(ngModel)]="locationSelected">
+                                <mat-option *ngFor="let site of sites" value="{{ site.id }}">
+                                    {{ site.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>{{ 'BOOK DESK PARAMETERS.AREA' | translate }}</mat-label>
+                            <mat-select matNativeControl formControlName="area" [(ngModel)]="areaSelected">
+                                <mat-option value="all" >{{ 'BOOK DESK PARAMETERS.ALL' | translate }}</mat-option>
+                                <mat-option *ngFor="let area of roomResourceType.customData.areas" value="{{ area }}">{{
+                                    area }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>{{ 'BOOK DESK PARAMETERS.LAYOUT' | translate }}</mat-label>
+                            <mat-select matNativeControl formControlName="layout" [(ngModel)]="layoutSelected">
+                                <mat-option value="all">{{ 'BOOK DESK PARAMETERS.ALL' | translate }}</mat-option>
+                                <mat-option *ngFor="let layout of roomResourceType.customData.layouts"
+                                    value="{{ layout }}">{{ layout }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="details-filters">
+                        <div class="details-filters-row">
+                            <mat-form-field class="width-35">
+                                <input matInput readonly="true" [matDatepicker]="datepicker" placeholder="Date"
+                                    [(ngModel)]="selectedDate" formControlName="meetingDate" (focus)="datepicker.open()"
+                                    required>
+                                <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                                <mat-datepicker #datepicker></mat-datepicker>
+                            </mat-form-field>
+                            <span class="width-35"></span>
+                            <mat-form-field class="width-35">
+                                <input matInput placeholder="Capacity" formControlName="capacity" type="number"
+                                    [(ngModel)]="selectedCapacity">
+                            </mat-form-field>
+                        </div>
+                        <div class="details-filters-row">
+                            <mat-form-field class="width-35">
+                                <input matInput placeholder="Start Time" formControlName="meetingStartTime" [ngModel]="getEventTime(true)" (change)="onEventTimeChange(true, $event.target.value)">
+                                <button mat-button matSuffix mat-icon-button (click)="pickerStartTime.open()">
+                                    <mat-icon>schedule</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <ngx-material-timepicker #pickerStartTime [format]="24" (timeSet)="setEventTime(true, $event)">
+                            </ngx-material-timepicker>
+                            <span class="width-35"></span>
+                            <mat-form-field class="width-35">
+                                <input matInput placeholder="End Time" formControlName="meetingEndTime" [ngModel]="getEventTime(false)" (change)="onEventTimeChange(false, $event.target.value)">
+                                <button mat-button matSuffix mat-icon-button (click)="pickerEndTime.open()">
+                                    <mat-icon>schedule</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <ngx-material-timepicker #pickerEndTime [format]="24" (timeSet)="setEventTime(false, $event)">
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+
+                    <div class="filters-footer">
+                        <button mat-flat-button color="primary" class="no-round" (click)="onResourceSearch()"
+                            [disabled]="!searchFormGroup.valid">{{ 'BOOK DESK PARAMETERS.SEARCH ROOMS' | translate
+                            }}</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step [completed]="!!selectedResource" [editable]="!!selectedResource">
+                <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.SELECT' | translate }}</ng-template>
+                <app-book-search-results [searchResults]="searchResults" (selected)="onResourceSelected($event)"
+                    *ngIf="!!searchResults"></app-book-search-results>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>{{ 'BOOK DESK PARAMETERS.BOOK' | translate }}</ng-template>
+                <app-book-room-details-page [resourceItem]=selectedResource [meetingDate]="getSelectedMeetingDate()"
+                    [meetingStartTime]="getSelectedMeetingStartTime()" [meetingEndTime]="getSelectedMeetingEndTime()" (bookComplete)="onBookComplete()"
+                    *ngIf="!!selectedResource"></app-book-room-details-page>
+            </mat-step>
+
+        </mat-horizontal-stepper>
+
+    </div>
+</mat-dialog-content>

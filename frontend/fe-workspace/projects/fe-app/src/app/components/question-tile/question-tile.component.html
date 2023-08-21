@@ -1,0 +1,21 @@
+<div class="action-tile-container">
+    <div class="action-tile">
+        <div class="tile-top-line">
+            <div class="image-container">
+                <i class="image material-icons">
+                    help_outline
+                </i>
+            </div>
+            <div class="gauge-container">
+                <mat-label class="question-label">{{ questionMessage }}</mat-label>
+            </div>
+        </div>
+        <div class="tile-bottom-line">
+            <button mat-raised-button class="tile-button" (click)="onConfimAction(true)">{{ 'GENERAL.YES' | translate }}
+            </button>
+            <span class='button-spacer'></span>
+            <button mat-raised-button class="tile-button" (click)="onConfimAction(false)">{{ 'GENERAL.NO' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="list-container">
+    <div class="action-button-list">
+        <button mat-fab class="action-button" color="primary" matTooltip="{{'ADMIN COMPONENTS.ToolTipRefreshList'|translate}}" (click)="onRefreshLog()">
+            <img src="./assets/images/refresh-circle.svg">
+        </button>
+    </div>
+
+    <div class="table-container">
+        <div class='filter-container'>
+            <mat-form-field class="filter-field">
+                <input matInput type="text" placeholder="{{'INSIGHTS_PEOPLE_PAGE.Filter' | translate}}" [(ngModel)]="searchValue">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearch()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+
+        <div class="dialog-filelist">
+            <mat-table #table [dataSource]="dataSource">
+                <ng-container matColumnDef="Timestamp">
+                    <mat-header-cell *matHeaderCellDef> {{'ADMIN COMPONENTS.TIMESTAMP'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Level">
+                    <mat-header-cell *matHeaderCellDef> {{'GENERAL.LEVEL'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.level }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="User">
+                    <mat-header-cell *matHeaderCellDef> {{'GENERAL.USER'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.user }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Message">
+                    <mat-header-cell *matHeaderCellDef> {{'GENERAL.MESSAGE'|translate}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{ element.message }} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['Timestamp', 'Level', 'User', 'Message']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['Timestamp', 'Level', 'User', 'Message'];"></mat-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[10]" (page)='onPage($event)' showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

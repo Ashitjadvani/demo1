@@ -1,0 +1,72 @@
+
+:host ::ng-deep.mat-tab-header {
+    display: none;
+}
+
+
+.news-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 1px lightgrey;
+    border: 1px solid lightgray;
+
+    .news-header {
+        padding: 20px;
+        border-radius: 15px 15px 0px 0px;    
+    }
+
+    .news-date {
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .news-title {
+        margin-top: 20px;
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    .news-description {
+        padding: 20px;
+        // flex-grow: 1;
+    }
+
+    .news-attach {
+        display: flex;
+        flex-grow: 1;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 20px;
+    }
+
+    .news-commands {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .confirm-button {
+        margin-top: 20px;
+    }
+
+    .download-icon {
+
+    }
+
+    .download-text {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 10px;
+    }
+}
+
+.news-empty {
+    margin-top: 30px;
+    text-align: center;
+    font-size: x-large;
+}

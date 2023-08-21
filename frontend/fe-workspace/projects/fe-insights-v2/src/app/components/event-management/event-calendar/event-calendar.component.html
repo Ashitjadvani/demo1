@@ -1,0 +1,15 @@
+<div class="custom-calender">
+    <div class="calender-wrapper" [class.hide-datepicker]="!showDatePicker">
+        <div class="calender-picker" *ngIf="showDatePicker"  >
+            <div >
+                <ngb-datepicker  #dp [(ngModel)]="dateFilter"   (ngModelChange)="goToDay($event)" ></ngb-datepicker>
+            </div>
+        </div>
+        <div class="calender-main-body" >
+            <full-calendar #fullCalender *ngIf='calendarVisible' [options]='calendarOptions' ></full-calendar>
+        </div>
+        <div *ngIf="showYear">
+            <app-fullcalender-view></app-fullcalender-view>
+        </div>
+    </div>
+</div>

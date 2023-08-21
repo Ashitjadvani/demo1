@@ -1,0 +1,17 @@
+.company-info{
+  padding: 30px;
+}
+.service-agreement-single {
+  color: #262121;
+  margin-bottom: 50px;
+  h3 {color: #4B6BA2;font-size: 20px;font-weight: 500;margin-bottom: 15px;}
+}
+
+.view-details-box{
+  &.table-content {
+    .table-heading {
+      margin-bottom: 42px;
+    }
+  }
+  .btn-wrapper {margin-top: 25px;}
+}

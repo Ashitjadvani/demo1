@@ -1,0 +1,16 @@
+<div class="flex-container">
+    <qr-code #qrcode class="qr-code" [value]="userQrCode" [level]="qrLevel" [size]="200"></qr-code>
+    <div class="label">
+        Badge personale
+    </div>
+    <div class="label bold">
+        {{name}}
+    </div>
+    <div *ngIf="startDateDDMMYYYY!=''" class="label bold">
+        Generato il {{startDateDDMMYYYY}}
+    </div>
+    <div *ngIf="endDateDDMMYYYY!=''" class="label bold">
+        Valido fino al {{endDateDDMMYYYY}}
+    </div>
+    <div class="bottom-span"></div>
+</div>

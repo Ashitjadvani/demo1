@@ -1,0 +1,67 @@
+<div class="table-content-box" style="max-height: 450px;overflow: auto;">
+    <table [dataSource]="internalPeoplesList" mat-table style="width: 100%">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef class="remember-forgot table-head" style="width: 80px;">
+                <mat-checkbox (change)="toggleAllRows()"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row" class="remember-forgot" style="width: 80px;">
+<!--                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null; change($event, row);"-->
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="change($event, row);"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="firstName">
+            <th (click)="changeSorting('name',sortBy)" *matHeaderCellDef class="short-arrow table-head" mat-header-cell>
+                <app-sort-table-column [sortColumnName]="'name'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey"
+                    [eventManagementName]="('EVENT_MANAGEMENT.FirstName' | translate)"></app-sort-table-column>
+            </th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap">{{element.name ? element.name : '-'}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="surname">
+            <th (click)="changeSorting('surname',sortBy)" *matHeaderCellDef class="short-arrow table-head"
+                mat-header-cell>
+                <app-sort-table-column [sortColumnName]="'surname'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey"
+                    [eventManagementName]="('EVENT_MANAGEMENT.Surname' | translate)"></app-sort-table-column>
+            </th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap">{{element.surname ? element.surname :
+                '-'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+            <th (click)="changeSorting('email',sortBy)" *matHeaderCellDef class="short-arrow table-head"
+                mat-header-cell>
+                <app-sort-table-column [sortColumnName]="'email'" [sortColumnBy]="sortBy" [sortColumnKey]="sortKey"
+                    [eventManagementName]="('EVENT_MANAGEMENT.Email Address' | translate)"></app-sort-table-column>
+            </th>
+            <td mat-cell *matCellDef="let element" style="white-space: nowrap">{{element.email ? element.email : '-'}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="interPeopleDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: interPeopleDisplayedColumns"></tr>
+    </table>
+    <div class="text-center p-3" *ngIf="internalPeoplesList.length === 0"><strong>{{'TABLE.No_record_found' |
+            translate}}</strong></div>
+</div>
+
+<div class="table-heading mt-30 mb-0">
+    <h3 style="font-weight: 600"><span>{{'EVENT_MANAGEMENT.ExternalPeoples' | translate}}</span></h3>
+    <div class="search-form-wrapper">
+        <div class="search-form">
+            <mat-icon matPrefix class="material-icons search">search</mat-icon>
+            <input (keyup)="applyFilter($event)" [(ngModel)]="searchExternal" mat-input
+                placeholder="{{'EVENT_MANAGEMENT.SearchExternalPeople'| translate }}" />
+            <mat-icon *ngIf="searchExternal" class="material-icons clear"
+                (click)="resetExternalSearch()">clear</mat-icon>
+        </div>
+        <button class="btn-style green-btn" (click)="addDataEvent()"><span class="material-icons">add</span>
+            {{addButtonText}}
+        </button>
+    </div>
+</div>
+<div class="table-heading-info">
+    <p><span>{{ selectedExternalPeopleCount }}</span> total external people</p>
+</div>

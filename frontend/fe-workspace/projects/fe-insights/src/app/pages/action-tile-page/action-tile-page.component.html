@@ -1,0 +1,30 @@
+<div class="list-container">
+    <div class="table-container">
+        <mat-table #table [dataSource]="tileSourceItems">
+            <ng-container matColumnDef="Title">
+                <mat-header-cell *matHeaderCellDef> {{'ADMIN COMPONENTS.TILE'|translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{ element.Caption }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Enabled">
+                <mat-header-cell *matHeaderCellDef> {{'ADMIN COMPONENTS.STATUS'|translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div class="status-cell">
+                        <mat-chip-list>
+                            <ng-container *ngIf="element.available">
+                                <mat-chip class="enabled-chip" (click)="onEnableClick(element)" selected>{{'ADMIN COMPONENTS.ENABLED'|translate}}
+                                </mat-chip>
+                            </ng-container>
+                            <ng-container *ngIf="!element.available">
+                                <mat-chip class="disabled-chip" (click)="onEnableClick(element)" selected>{{'ADMIN COMPONENTS.DISABLED'|translate}}
+                                </mat-chip>
+                            </ng-container>
+                        </mat-chip-list>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="['Title', 'Enabled']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['Title', 'Enabled'];"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

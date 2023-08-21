@@ -1,0 +1,170 @@
+<mat-nav-list class="tracking-action-sheet">
+
+    <div class="product-info-container">
+        <div class="product-info-title">{{ currentProduct.code }}</div>
+        <div class="product-info-descr">Stabilimento: <strong>{{ currentOrder.orderData.plant }}</strong></div>
+        <div class="product-info-descr">Ciclo Produzione: <strong>{{ currentOrder.orderData.cycle }}</strong></div>
+        <div class="product-info-descr">Turno: <strong>{{ currentOrder.orderData.turn }}</strong></div>
+        <div class="product-info-descr">Macchina: <strong>{{ currentOrder.orderData.machine }}</strong></div>
+        <div class="product-info-descr">Linea: <strong>{{ currentOrder.orderData.line }}</strong></div>
+        <div class="product-info-descr">Stato: <strong>{{ currentProduct.status }}</strong></div>
+    </div>
+
+    <ng-container *ngIf="currentMode == UIMode.Tracking">
+        <ng-container *ngIf="currentProduct.status == ProductStatus.SCRAP">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()" (click)="onScrapProduct()">
+                <mat-label class="item-text white-text" mat-line>Scartato</mat-label>
+                <i class="material-icons white-text">delete</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.DRAFT">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.ACTIVE)">
+                <mat-label class="item-text white-text" mat-line>Activate</mat-label>
+                <i class="material-icons white-text">play_arrow</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.ACTIVE">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.ELIGIBLE)">
+                <mat-label class="item-text white-text" mat-line>Valido</mat-label>
+                <i class="material-icons white-text">check_circle</i>
+            </a>
+
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.SCRAP)">
+                <mat-label class="item-text white-text" mat-line>Scrap</mat-label>
+                <i class="material-icons white-text">delete</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.ELIGIBLE">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.START_MOVE_WORKING)">
+                <mat-label class="item-text white-text" mat-line>Sposta in Lavorazione</mat-label>
+                <i class="material-icons white-text">fast_forward</i>
+            </a>
+        </ng-container>
+
+        <!-- WORKING PHASE -->
+        <ng-container *ngIf="currentProduct.status == ProductStatus.START_MOVE_WORKING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.END_MOVE_WORKING)">
+                <mat-label class="item-text white-text" mat-line>Arrivato in Lavorazione</mat-label>
+                <i class="material-icons white-text">location_on</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.END_MOVE_WORKING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.WORKING)">
+                <mat-label class="item-text white-text" mat-line>Inizio Lavorazione</mat-label>
+                <i class="material-icons white-text">engineering</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.WORKING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.DONE_WORKING)">
+                <mat-label class="item-text white-text" mat-line>Fine Lavorazione</mat-label>
+                <i class="material-icons white-text">recommend</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.DONE_WORKING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.START_MOVE_PACKAGING)">
+                <mat-label class="item-text white-text" mat-line>Sposta in packaging</mat-label>
+                <i class="material-icons white-text">fast_forward</i>
+            </a>
+        </ng-container>
+
+        <!-- PACKAGING PHASE -->
+        <ng-container *ngIf="currentProduct.status == ProductStatus.START_MOVE_PACKAGING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.END_MOVE_PACKAGING)">
+                <mat-label class="item-text white-text" mat-line>Arrivato in packaging</mat-label>
+                <i class="material-icons white-text">location_on</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.END_MOVE_PACKAGING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.PACKAGING)">
+                <mat-label class="item-text white-text" mat-line>Inizio packaging</mat-label>
+                <i class="material-icons white-text">inventory_2</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.PACKAGING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.DONE_PACKAGING)">
+                <mat-label class="item-text white-text" mat-line>Fine packaging</mat-label>
+                <i class="material-icons white-text">recommend</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.DONE_PACKAGING">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.LOGISTIC)">
+                <mat-label class="item-text white-text" mat-line>Logistica</mat-label>
+                <i class="material-icons white-text">shopping_cart_checkout</i>
+            </a>
+        </ng-container>
+
+        <!------------------------------------->
+        <ng-container *ngIf="currentProduct.status == ProductStatus.LOGISTIC">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.SHIP)">
+                <mat-label class="item-text white-text" mat-line>Distribuzione</mat-label>
+                <i class="material-icons white-text">send</i>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="currentProduct.status == ProductStatus.SHIP">
+            <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+                (click)="onProductChangeStatus(ProductStatus.SHIPPED)">
+                <mat-label class="item-text white-text" mat-line>Spedito</mat-label>
+                <i class="material-icons white-text">local_shipping</i>
+            </a>
+        </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="currentMode == UIMode.QA">
+        <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+            (click)="onProductChangeStatus(ProductStatus.QUALITY_CHECK_OK)">
+            <mat-label class="item-text white-text" mat-line>Controllo qualità OK</mat-label>
+            <i class="material-icons white-text">check_circle</i>
+        </a>
+
+        <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+            (click)="onProductChangeStatus(ProductStatus.SCRAP)">
+            <mat-label class="item-text white-text" mat-line>Scrap</mat-label>
+            <i class="material-icons white-text">delete</i>
+        </a>
+    </ng-container>
+
+    <ng-container *ngIf="currentMode == UIMode.Returned">
+
+        <div *ngFor="let ol of currentProduct.operationLog" class="product-log-item">
+            <div class="timestamp">{{ ol.timestamp | date: 'dd/MM/yyyy HH:mm:ss' }}</div>
+            <div class="activity-text">{{ ol.user }} - {{ ol.status }}</div>
+        </div>
+
+        <a mat-list-item class="action-item" [ngStyle]="getActionStyle()"
+            (click)="onProductChangeStatus(ProductStatus.RETURNED)">
+            <mat-label class="item-text white-text" mat-line>Prodotto reso</mat-label>
+            <i class="material-icons white-text">check_circle</i>
+        </a>
+
+    </ng-container>
+
+    <div class="spacer"></div>
+
+    <a mat-list-item class="action-item" [ngStyle]="getActionStyle(true)" (click)="onCloseDrawer()">
+        <mat-label class="item-text white-text" mat-line>Annulla</mat-label>
+        <i class="material-icons white-text">directions_run</i>
+    </a>
+</mat-nav-list>

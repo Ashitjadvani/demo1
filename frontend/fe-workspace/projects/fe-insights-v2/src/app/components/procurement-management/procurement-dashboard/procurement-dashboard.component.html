@@ -1,0 +1,266 @@
+
+<div class="recruiting-dashboard">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="client-chart recruit-alert">
+                <h3 class="mb-30 mt-0">{{'INSIGHTS_MENU.PROCUREMENT' | translate}}</h3>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="statistics-vertical">
+                         <div class="chart-group-wrapper procurement">
+                             <div class="chart-box box-style ">
+                                 <div class="chart-header">
+                                     <h4>{{'Procurement_Management.Statistics' | translate}}</h4>
+                                 </div>
+                                 <div class="statistics-box">
+                                     <!--<div class="statistic-content">
+                                         <img src="assets/images/vartical-static-1.svg" alt="">
+                                         <div class="statistic-info">
+                                             <h5 *ngIf="this.statisticsData">{{statisticsData.rfqCreatedCount}}</h5>
+                                             <p> {{'Procurement_Management.RFQCreated' | translate}}</p>
+                                         </div>
+                                     </div>
+                                     <div class="statistic-content">
+                                         <img src="assets/images/vertical-static-2.svg" alt="">
+                                         <div class="statistic-info">
+                                             <h5 *ngIf="this.statisticsData">{{statisticsData.rfqReceivedCount}}</h5>
+                                             <p> {{'Procurement_Management.RFQReceived' | translate}}</p>
+                                         </div>
+                                     </div>-->
+                                     <div class="statistic-content row">
+                                         <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '5'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/invited-suppliers.svg" alt="">
+                                          </div>  
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalInvitedSupplier ? statisticsData.totalInvitedSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.InvitedSupplier' | translate}} </p>
+                                            </div>
+                                         </div>
+                                         <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '4'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/supplier-applications.svg" alt="">
+                                          </div>
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalPendingSupplier ? statisticsData.totalPendingSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.SupplierApplications' | translate}}</p>
+                                            </div>
+                                         </div>
+                                     </div>
+                                     <div class="statistic-content row">
+                                        <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '11'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/suppliers-progress.svg" alt="">
+                                          </div>  
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalInProgressSupplier ? statisticsData.totalInProgressSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.SuppliersInProgress' | translate}}</p>
+                                            </div>
+                                        </div>
+                                         <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '12'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/suppliers-validate.svg" alt="">
+                                          </div>  
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalToValidateSupplier ? statisticsData.totalToValidateSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.SuppliersToValidate' | translate}}</p>
+                                            </div>
+                                         </div>
+                                     </div>
+                                     <div class="statistic-content row">
+                                        <!-- <div class="manage-content col-xl-6">
+                                            <img src="assets/images/supplier-under-creation.svg" alt="">
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">{{statisticsData.totalUnderCreationSupplier}}</h5>
+                                                <p>{{'Procurement_Management.SupplierUnderCreation' | translate}}</p>
+                                            </div>
+                                        </div> -->
+                                         <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '1'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/active-suppliers.svg" alt="">
+                                          </div>  
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalActiveSupplier ? statisticsData.totalActiveSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.ActiveSupplier' | translate}}</p>
+                                            </div>
+                                         </div>
+                                         <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '2'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/suppliers-declined.svg" alt="">
+                                          </div> 
+                                           <div class="statistic-info">
+                                             <h5 *ngIf="this.statisticsData">
+                                               {{statisticsData.totalDeactiveCount ? statisticsData.totalDeactiveCount : '0'}}
+                                             </h5>
+                                             <p>{{'Procurement_Management.Deactivate' | translate}}</p>
+                                           </div>
+                                         </div>
+                                     </div>
+                                     <div class="statistic-content row">
+                                       <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '6'}">
+                                        <div class="navigate-img">
+                                          <img src="assets/images/refused-suppliers.svg" alt="">
+                                        </div>
+                                         <div class="statistic-info">
+                                           <h5 *ngIf="this.statisticsData">
+                                             {{statisticsData.totalRejectSupplier ? statisticsData.totalRejectSupplier : '0'}}
+                                           </h5>
+                                           <p>{{'Procurement_Management.RefusedSupplier' | translate}}</p>
+                                         </div>
+                                       </div>
+                                        <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '3'}">
+                                          <div class="navigate-img">
+                                            <img src="assets/images/suppliers-declined.svg" alt="">
+                                          </div>  
+                                            <div class="statistic-info">
+                                                <h5 *ngIf="this.statisticsData">
+                                                  {{statisticsData.totalDeclineSupplier ? statisticsData.totalDeclineSupplier : '0'}}
+                                                </h5>
+                                                <p>{{'Procurement_Management.SupplierDeclined' | translate}}</p>
+                                            </div>
+                                        </div>
+                                     </div>
+                                     <!-- <div class="statistic-content">
+                                        <div class="manage-content">
+                                            <img src="assets/images/doc-expired.svg" alt="">
+                                            <div class="statistic-info red-text">
+                                                <h5 *ngIf="this.statisticsData">{{statisticsData.currentMonthDocExpired}}</h5>
+                                                <p>{{'Procurement_Management.DocumentExpiredthisMonth' | translate}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="manage-content">
+                                            <img src="assets/images/total-dec-expired.svg" alt="">
+                                            <div class="statistic-info red-text">
+                                                <h5 *ngIf="this.statisticsData">{{statisticsData.allDocExpiredCount}}</h5>
+                                                <p>{{'Procurement_Management.TotalDocumentExpired' | translate}}</p>
+                                            </div>
+                                        </div>
+                                     </div> -->
+                                 </div>
+                             </div>
+                         </div>
+                        </div>
+                     </div>
+                  <div class="col-xl-6">
+                    <div class="statistics-vertical">
+                      <div class="chart-group-wrapper procurement">
+                        <div class="chart-box box-style ">
+                          <div class="chart-header">
+                            <h4> {{'Procurement_Management.DocumentExpiration' | translate}}</h4>
+                          </div>
+                          <div class="statistics-box">
+                            <div class="statistic-content row">
+                              <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '1', expire : 'Expired'}">
+                                <img src="assets/images/doc-red.svg" class="doc-img mr-15" alt="">
+                                <div class="statistic-info red-text">
+                                  <h5 *ngIf="this.statisticsData">
+                                    {{statisticsData.allDocExpiredCount ? statisticsData.allDocExpiredCount : '0'}}
+                                  </h5>
+                                  <p>{{'Procurement_Management.TotalDocumentExpired' | translate}}</p>
+                                </div>
+                              </div>
+                              <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '1', expire : 'thisMonthExpired'}">
+                                <img src="assets/images/doc-red.svg" class="doc-img mr-15" alt="">
+                                <div class="statistic-info red-text">
+                                  <h5 *ngIf="this.statisticsData">
+                                    {{statisticsData.currentMonthDocExpired ? statisticsData.currentMonthDocExpired : '0'}}
+                                  </h5>
+                                  <p>{{'Procurement_Management.DocumentExpiredthisMonth' | translate}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="statistic-content row">
+                              <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '1', expire : 'nextWeekExpire'}">
+                                <img src="assets/images/doc-orange.svg" class="doc-img mr-15" alt="">
+                                <div class="statistic-info orange-text">
+                                  <h5 *ngIf="this.statisticsData">
+                                    {{statisticsData.nextWeekDocumentExpireCount ? statisticsData.nextWeekDocumentExpireCount : '0'}}
+                                  </h5>
+                                  <p>{{'Procurement_Management.Total_Document_will_Expired_Next_Week' | translate}}</p>
+                                </div>
+                              </div>
+                              <div class="manage-content col-xl-6" routerLink="/manage-supplier" [queryParams]="{ tab: '1', expire : 'nextMonthExpire'}">
+                                <img src="assets/images/doc-orange.svg" class="doc-img mr-15" alt="">
+                                <div class="statistic-info orange-text">
+                                  <h5 *ngIf="this.statisticsData">
+                                    {{statisticsData.nextMonthDocumentExpireCount ? statisticsData.nextMonthDocumentExpireCount : '0'}}
+                                  </h5>
+                                  <p>{{'Procurement_Management.Total_Document_will_Expired_Next_Month' | translate}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+<!--                    <div class="col-xl-7">-->
+<!--                        <div class="chart-group-wrapper">-->
+<!--                            <div class="client-chart recruit-alert">-->
+<!--                                <div class="chart-box box-style">-->
+<!--                                    <div class="chart-header">-->
+<!--                                        <h4>{{'Procurement_Management.SupplierByStatus' | translate}}</h4>-->
+<!--                                        &lt;!&ndash; <div class="col-md-12">-->
+<!--                                            <ul class="chart-details">-->
+<!--                                                <li>{{'Procurement_Management.Active' | translate}}</li>-->
+<!--                                                <li>{{'Procurement_Management.Pending' | translate}}</li>-->
+<!--                                                <li>{{'Procurement_Management.Invited' | translate}}</li>-->
+<!--                                            </ul>-->
+<!--                                        </div> &ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                    <div class="chart-body">-->
+<!--                                        <canvas baseChart height="200px"-->
+<!--                                            [datasets]="barChartData4"-->
+<!--                                            [labels]="barChartLabels4"-->
+<!--                                            [options]="barChartOptions4"-->
+<!--                                            [legend]="barChartLegend4"-->
+<!--                                            [colors]="barChartColors4"-->
+<!--                                            [chartType]="barChartType4">-->
+<!--                                        </canvas>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-xl-6 mt-30">
+            <div class="client-chart recruit-alert">
+                <div class="chart-box box-style">
+                    <div class="chart-header">
+                        <h4>Job Opening By Scope</h4>
+                        <div class="col-md-12">
+                            <ul class="chart-details">
+                                <li>RFQ Created</li>
+                                <li>RFQ Received</li>
+                                <li>Suppliers</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-body mt-30">
+                        <div class="client-type">
+                            <canvas baseChart height="200px"
+                                    [data]="pieChartData"
+                                    [labels]="pieChartLabels"
+                                    [chartType]="pieChartType"
+                                    [colors]="pieChartColors"
+                            ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>

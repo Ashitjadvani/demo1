@@ -1,0 +1,214 @@
+@import "../../../../styles.scss";
+
+
+.group-tab {
+    margin-top:-50px;
+    height: calc(100% + 50px);
+    overflow-y:hidden;
+}
+
+.general-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 40px;
+}
+
+.user-param-box {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+
+    .input-row {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.change-log-popup {
+    width: 900px;
+    height: 400px;
+
+    overflow-y: auto;
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+    background: white;
+}
+
+.people-card {
+    width: 90%;
+    height: 640px
+}
+
+.dashboard-card {
+    width: 100%;
+    height: calc(100vh - 80px - 64px);
+}
+
+
+.user-editor {
+    width: 60%;
+    height: 520px;
+    margin-top: 60px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+    background-color: white;
+
+    .user-editor-head {
+        font-size: x-large;
+        font-weight: bold;
+        padding: 20px;
+    }
+
+    .user-editor-tab {
+        flex-grow: 1;
+        padding: 20px;
+
+        .user-param-box {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+
+            .input-row {
+                width: 100%;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .data-area {
+            height: 100%;
+            flex-grow: 1;
+        }
+    }
+
+    .user-editor-action-area {
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        .action-button {
+            width: 100px;
+            margin-left: 10px;
+        }
+    }
+}
+
+// table styles
+//
+:host ::ng-deep .mat-column-ID {
+    flex: 1 1 100px;
+    font-size: 0.9em;
+}
+
+:host ::ng-deep .mat-column-Name {
+    flex: 1 1 80px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Surname {
+    flex: 1 1 80px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Profile {
+    max-width: 100px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Area {
+    flex: 1 1 110px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Role {
+    flex: 1 1 110px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Direction {
+    flex: 1 1 110px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-JobTitle {
+    flex: 1 1 110px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Role {
+    flex: 1 1 110px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Safety {
+    flex: 1 1 80px;
+    font-size: 0.9em;
+}
+:host ::ng-deep .mat-column-Action {
+    flex: 1 1 80px;
+    font-size: 0.9em;
+}
+
+/*
+:host ::ng-deep .mat-tab-header {
+    height: 0px !important;
+}
+*/
+:host ::ng-deep .mat-tab-body {
+    height: 100% !important;
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+    height: 100% !important;
+}
+
+:host ::ng-deep .mat-tab-body-content {
+    height: 100% !important;
+}
+
+:host ::ng-deep .timepicker .timepicker__header {
+    background: #4b6ba2;
+}
+
+::ng-deep .timepicker {
+    .timepicker__header {
+        background-color: #4b6ba2 !important;
+    }
+
+    .clock-face__clock-hand {
+        background-color: #4b6ba2 !important;
+
+        &::after {
+            background-color: #4b6ba2 !important;
+        }
+
+        &::before {
+            border-color: #4b6ba2 !important;
+        }
+    }
+
+    .clock-face__number {
+        > span.active {
+            background-color: #4b6ba2 !important;
+        }
+    }
+
+    button:not(.timepicker-dial__item) {
+        color: #4b6ba2 !important;
+    }
+}
+
+.height-635 {
+    height: 635px;
+}
+
+::ng-deep .mat-tab-body-content 
+{ 
+    overflow-y: hidden !important;
+}

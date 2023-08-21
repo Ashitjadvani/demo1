@@ -1,0 +1,10 @@
+<div class="popup-header">
+  <mat-icon class="close-popup"  (click)="onNoClick()">close</mat-icon>
+</div>
+<div style="text-align: left;margin-bottom: 40px;">
+  <button mat-flat-button class="action-button" color="primary" (click)="downloadCv()">
+    <mat-icon>download</mat-icon>
+    {{'EXTRA_WORD.DownloadCV' | translate}}
+  </button>
+</div>
+<pdf-viewer [autoresize]="true" [original-size]="false" [src]="urlPDF" class="pdf-viewer"></pdf-viewer>

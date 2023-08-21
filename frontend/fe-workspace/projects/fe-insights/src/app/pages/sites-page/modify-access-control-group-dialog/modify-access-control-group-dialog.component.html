@@ -1,0 +1,24 @@
+<h2 *ngIf="!isNew" mat-dialog-title><b>{{'ADMIN DIALOGS.MODIFYGROUP'|translate}}</b></h2>
+<h2 *ngIf="isNew" mat-dialog-title><b>{{'ADMIN DIALOGS.NEWGROUP'|translate}}</b></h2>
+
+<mat-dialog-content>
+    <div class="dialog-container">
+        <mat-form-field>
+            <input matInput placeholder="{{'ADMIN DIALOGS.GROUPNAME'|translate}}" appearance="legacy" 
+                [(ngModel)]="group.name">
+        </mat-form-field>
+        <div class="label">{{'ADMIN DIALOGS.PASSAGES'|translate}}:</div>
+        <mat-checkbox *ngFor="let passage of site.accessControlPassages" [checked]="checkPassage(passage)" (change)="checkChanged($event, passage)" [ngModelOptions]="{standalone: true}">
+            <div class="checkbox">{{passage.name}}</div>
+        </mat-checkbox>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <ng-container>
+        <button mat-flat-button class="action-button" color="primary"
+            (click)="onCancel()">{{'GENERAL.CANCEL'|translate}}</button>
+        <button mat-flat-button class="action-button" color="primary" cdkFocusInitial [disabled]="group.name==''"
+            (click)="onSave()">{{'GENERAL.SAVE'|translate}}</button>
+    </ng-container>
+</mat-dialog-actions>

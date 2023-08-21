@@ -1,0 +1,72 @@
+<div class="main-side-nav">
+    <mat-toolbar class="dashboard-logo">
+      <div class="legance-logo">
+        <img src="assets/images/legance-white.svg"  alt="">
+      </div>
+    </mat-toolbar>
+    <ul class="side-nav" (mouseenter)="mouseHover()" (mouseleave)="mouseOut()">
+      <ng-container *ngFor="let nav of navigationItems" >
+        <li *ngIf="nav.subMenu.length === 0" (click)="sideMenuName(nav.caption)" >
+          <div mat-list-item>
+            <a class="link-menu" routerLink="{{nav.navigation}}" routerLinkActive="active-link">
+              <!--<img alt="" class="list-icon" src="{{nav.icon}}">
+              <img alt="" class="list-icon-hover" src="{{nav.iconHover}}">-->
+              <span [innerHTML]="nav.svgIcon" class="svg-icon"></span>
+              <span class="nav-caption">{{nav.caption | translate}}</span>
+            </a>
+          </div>
+        </li>
+        <li class="has-submenu" *ngIf="nav.subMenu.length > 0" >
+          <div class="menu-wrapper" mat-list-item>
+            <mat-accordion [multi]="false">
+              <mat-expansion-panel hideToggle routerLinkActive="active-link" [expanded]="nav.expanded">
+                <mat-expansion-panel-header routerLink="{{nav.navigation}}" >
+                  <mat-panel-title>
+                    <a class="link-menu" routerLinkActive="active-link">
+                      <!--<img alt="" class="list-icon" src="{{nav.icon}}">
+                      <img alt="" class="list-icon-hover" src="{{nav.iconHover}}">-->
+                      <span [innerHTML]="nav.svgIcon" class="svg-icon"></span>
+                      <span class="nav-caption">{{nav.caption | translate}}</span>
+                      <!--<span *ngIf="nav.count && (applicationBudgeCount > 0)" class="sidenav-notify" >{{applicationBudgeCount}}</span>-->
+                      <span *ngIf="nav.count && sumNumber > 0" class="sidenav-notify">
+                          {{sumNumber}}
+                      </span>
+                      <div class="upDown-arrow">
+                        <mat-icon>expand_more</mat-icon>
+                      </div>
+                    </a>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul class="inner-list">
+                  <li *ngFor="let subMenu of nav.subMenu" [class]="(subMenu?.subMenu?.length > 0) ? 'has-submenu-inner' : ''" style="position: relative;" routerLinkActive="active-link" >
+                      <mat-accordion [multi]="false">
+                          <mat-expansion-panel hideToggle routerLinkActive="active-link" [expanded]="subMenu.expanded">
+                              <mat-expansion-panel-header routerLink="{{subMenu.navigation}}" >
+                                  <mat-panel-title>
+                                      <a class="link-menu" routerLink="{{subMenu.navigation}}" routerLinkActive="active-link" (click)="onSideBarAction(subMenu)" (click)="sideMenuName(subMenu.caption)">
+                                          <span [innerHTML]="subMenu.svgIcon" class="svg-icon"></span>
+                                          <span class="nav-caption">{{subMenu.caption | translate}}</span>
+                                          <span *ngIf="subMenu.count && (subMenu.countNumber > 0)" class="sidenav-notify">{{subMenu.countNumber}}</span>
+                                          <div class="upDown-arrow" *ngIf="subMenu?.subMenu?.length > 0"><mat-icon>expand_more</mat-icon></div>
+                                      </a>
+                                  </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              <ul class="inner-list" *ngIf="subMenu?.subMenu?.length > 0">
+                                  <li class="link-menu" *ngFor="let subMenuInner of subMenu.subMenu;" routerLink="{{subMenuInner.navigation}}" #child1RLA="routerLinkActive" (click)="onSideBarAction(subMenuInner)" (click)="sideMenuName(subMenuInner.caption)"
+                                       style="position: relative;" routerLinkActive="active-link" >
+                                      {{subMenuInner.caption | translate}}
+                                  </li>
+                              </ul>
+                          </mat-expansion-panel>
+                      </mat-accordion>
+                  </li>
+
+                </ul>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+</div>
+

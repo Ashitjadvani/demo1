@@ -1,0 +1,52 @@
+.overview-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    width: 300px;
+    margin: auto;
+    overflow: hidden;
+    font-family: 'Work Sans';
+
+    .main-container {
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        
+        .image {
+
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            text-align: end;
+            width: 100%;
+
+            .title {
+                font-size: large;
+
+            }
+
+            .data {
+                font-size: xx-large;
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .footer-container {
+        padding: 5px;
+        font-size: large;
+        text-align: center;
+
+        .footer-button {
+            width: 100%;
+            background: #FFFFFF00;
+        }
+    }
+}
+
+.filter-black {
+    filter: invert(100%) sepia(98%) saturate(9%) hue-rotate(157deg) brightness(93%) contrast(102%);
+}

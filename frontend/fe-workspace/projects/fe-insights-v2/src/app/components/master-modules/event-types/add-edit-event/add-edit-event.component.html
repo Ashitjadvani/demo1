@@ -1,0 +1,249 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <nav>
+                <ol class="breadcrumb box-style">
+                  <li class="breadcrumb-item">{{'INSIGHTS_MENU.MASTER_MODULES'| translate}}</li>
+                  <li routerLink="/master-modules/event-types" class="breadcrumb-item">{{'INSIGHTS_MENU.EVENT_TYPE' | translate}}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><span>{{title | translate}} {{'Event' | translate}}</span> </li>
+                </ol>
+            </nav> -->
+            <app-breadcrumb [title]="'INSIGHTS_MENU.MASTER_MODULES'" [routePath2]="'/master-modules/event-types'" [title2]="'INSIGHTS_MENU.EVENT_TYPE'" [title3]="title" [type]="'Event'"></app-breadcrumb>
+        </div>
+        <div class="col-md-12">
+            <div class="table-content box-style">
+                <div class="table-heading">
+                    <h3 style="font-weight: 600"><span>{{title | translate}} {{'Event' | translate}}</span> </h3>
+                    <div class="search-form-wrapper">
+                        <div class="buttons-group">
+                            <p><span style="color:#EA5455">*</span> {{'GENERAL.Indicates a required field' | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content-box">
+                    <form class="w-100" name="addEventForm"   novalidate *ngIf="currentJustification"
+
+                    #myform="ngForm">
+                        <div class="row">
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline" class="element-full-width">
+                                        <mat-label>{{'MASTER_MODULE.Event Name' | translate}}</mat-label>
+                                        <input  type="text" [(ngModel)]="currentJustification.name"  matInput  name="name" required #checkReqValue (keydown)="space($event)" style="text-transform:capitalize;">
+                                        <mat-error *ngIf="!checkReqValue.valid || checkReqValue.value == '' " >
+                                            {{'Enter your event name' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                                <div class="form-field error-message-custom">
+                                    <div class="custom-switch">
+                                        <mat-checkbox [(ngModel)]="this.currentJustification.enable"  #enable [ngModelOptions]="{standalone: true}">{{'INSIGHTS_PEOPLE_PAGE.Enable' | translate}}</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" >
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.enable">
+                                        <div class="form-field">
+                                          <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.Event Type' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                            <mat-select [(ngModel)]="this.currentJustification.eventType" >
+                                              <!-- <mat-option>Select Scope</mat-option> -->
+                                              <mat-option value="NoWorking"> {{'INSIGHTS_PEOPLE_PAGE.No Working' | translate}}</mat-option>
+                                              <mat-option value="ExtraWorking"> {{'INSIGHTS_PEOPLE_PAGE.Extra Working' |translate}}</mat-option>
+                                            </mat-select>
+                                            <!-- <mat-error *ngIf="addEventForm.controls.eventType.errors?.required">
+                                              {{'Select your event type' | translate}}
+                                            </mat-error> -->
+                                          </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-4"></div>
+                                    <div class="col-xxl-4"></div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.enable">
+                                        <div class="form-field error-message-custom">
+                                            <div class="custom-switch">
+                                                <mat-checkbox [(ngModel)]="this.currentJustification.scheduleAbilitation" [ngModelOptions]="{standalone: true}">{{'Can be requested for passed date' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.enable">
+                                        <div class="form-field error-message-custom">
+                                            <div class="custom-switch">
+                                                <mat-checkbox [(ngModel)]="this.currentJustification.sendEmail" [ngModelOptions]="{standalone: true}">{{'Send alert mail' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.enable">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Notice advance needed (Days)' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input  type="number" min="0" max="60" [(ngModel)]="this.currentJustification.daysToRequest"  matInput  name="noticeDays" >
+                                                <!-- <mat-error *ngIf="addEventForm.controls.noticeDays.errors?.required" >
+                                                    {{'Enter your notice advance needed (Days)' | translate}}
+                                                </mat-error> -->
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.enable">
+                                        <div class="form-field error-message-custom">
+                                            <div class="custom-switch">
+                                                <mat-checkbox  [(ngModel)]="this.currentJustification.approvationAbilitation" #approval [ngModelOptions]="{standalone: true}">{{'Requires approval' | translate}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-xxl-4">
+                                                <div class="form-field error-message-custom">
+                                                    <div class="custom-switch">
+                                                        <mat-checkbox [(ngModel)]="this.currentJustification.silenceAssentAbilitation" [ngModelOptions]="{standalone: true}">{{'Silence assent' | translate}}</mat-checkbox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xxl-4"></div>
+                                            <div class="col-xxl-4"></div>
+
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Responsable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <mat-select  [(ngModel)]="selectedRespFigure" name="selectedRespFigure" (selectionChange)="onFigureChange($event, appRes)">
+                                                      <mat-option *ngFor="let option of allFigures" value="{{option}}"> {{option |  translate}}</mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedRespFigure=='User'">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Responsable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <mat-select [(ngModel)]="currResponsable" name="currResponsable.id" (selectionChange)="onPersonSelected($event, appRes)">
+                                                      <mat-option *ngFor="let option of allPeople" value="{{option.id}}"> {{option.name + " "+ option.surname}}</mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedRespFigure=='Email'">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Responsable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <input matInput type="email" name="raspEmail" [(ngModel)]="currentJustification.approvalResponsable.email">
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12"></div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Accountable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <mat-select  [(ngModel)]="selectedAccFigure" name="selectedAccFigure" (selectionChange)="onFigureChange($event, appAcc)">
+                                                      <mat-option *ngFor="let option of allFigures" value="{{option}}"> {{option | translate}}</mat-option>
+                                                    </mat-select>
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedAccFigure=='User'">
+                                              <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Accountable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                  <mat-select [(ngModel)]="currAccountable" name="currAccountable.id" (selectionChange)="onPersonSelected($event, appAcc)">
+                                                    <mat-option *ngFor="let option of allPeople" value="{{option.id}}"> {{option.name + " "+ option.surname}}</mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                                              </div>
+                                          </div>
+                                          <div class="col-xl-6 col-xxl-4" *ngIf="selectedAccFigure=='Email'">
+                                            <div class="form-field">
+                                              <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{'Accountable' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                <input matInput type="email" name="accEmail" [(ngModel)]="currentJustification.approvalAccountable.email">
+                                              </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"></div>
+                                            <!-- <div class="col-xxl-4"></div> -->
+
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Consulted' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <mat-select  [(ngModel)]="selectedConsFigure" name="selectedConsFigure" (selectionChange)="onFigureChange($event, appCon)">
+                                                      <!-- <mat-option>Select Scope</mat-option> -->
+                                                      <mat-option *ngFor="let option of allFigures" value="{{option}}"> {{option}}</mat-option>
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="addEventForm.controls.consulted.errors?.required">
+                                                      {{'Select your consulted' | translate}}
+                                                    </mat-error> -->
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedConsFigure=='User'">
+                                              <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Consulted' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                  <mat-select [(ngModel)]="currConsulted" name="currConsulted.id" (selectionChange)="onPersonSelected($event, appCon)">
+                                                    <mat-option *ngFor="let option of allPeople" value="{{option.id}}"> {{option.name + " "+ option.surname}}</mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                                              </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedConsFigure=='Email'">
+                                              <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Consulted' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                  <input matInput type="email" name="consEmail" [(ngModel)]="currentJustification.approvalConsulted.email">
+                                                </mat-form-field>
+                                              </div>
+                                            </div>
+
+                                            <div class="col-md-12"></div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="this.currentJustification.approvationAbilitation && this.currentJustification.enable">
+                                                <div class="form-field">
+                                                  <mat-form-field appearance="outline" class="element-full-width">
+                                                    <mat-label>{{'Informed' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                    <mat-select  [(ngModel)]="selectedInfoFigure" name="selectedInfoFigure" (selectionChange)="onFigureChange($event, appInf)">
+                                                      <!-- <mat-option>Select Scope</mat-option> -->
+                                                      <mat-option *ngFor="let option of allFigures" value="{{option}}"> {{option}}</mat-option>
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="addEventForm.controls.informed.errors?.required">
+                                                      {{'Select your informed' | translate}}
+                                                    </mat-error> -->
+                                                  </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedInfoFigure=='User'">
+                                              <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Informed' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                  <mat-select [(ngModel)]="currInformed" name="currInformed.id" (selectionChange)="onPersonSelected($event, appInf)">
+                                                    <mat-option *ngFor="let option of allPeople" value="{{option.id}}"> {{option.name + " "+ option.surname}}</mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                                              </div>
+                                            </div>
+                                            <div class="col-xl-6 col-xxl-4" *ngIf="selectedInfoFigure=='Email'">
+                                              <div class="form-field">
+                                                <mat-form-field appearance="outline" class="element-full-width">
+                                                  <mat-label>{{'Informed' | translate}}<span style="color:#EA5455">*</span></mat-label>
+                                                  <input matInput type="email" name="infoEmail" [(ngModel)]="currentJustification.approvalInformed.email">
+                                                </mat-form-field>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button class="btn-style theme-btn" type="submit" (click)="onEditConfirmClick()">{{'GENERAL.Save' | translate}}</button>
+                            <button class="btn-style red-line-btn" routerLink="/master-modules/event-types" type="button">{{'GENERAL.Cancel' | translate}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

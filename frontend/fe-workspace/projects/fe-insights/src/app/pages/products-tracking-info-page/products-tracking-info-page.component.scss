@@ -1,0 +1,98 @@
+.main-header-bar {
+    width: 100%;
+}
+
+.page-content {
+    max-width: 800px;
+    height: calc(100vh - 64px);
+    margin: auto;
+    overflow-y: auto;
+
+    .page-grid {
+        width: 100%;
+        padding: 20px;
+
+        .product-image {
+            height: 100%;
+
+            .image {
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    .main-container {
+        max-width: 400px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: flex;
+        flex-direction: column;
+
+        text-align: center;
+
+        .product-image {
+            height: 100%;
+
+            .image {
+                width: 250px;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+
+            width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+
+            .product-info-title {
+                font-family: "Open Sans", Arial, sans-serif;
+                font-size: 36px;
+                color: #333333;
+            }
+
+            .product-info-descr {
+                font-family: "Open Sans", Arial, sans-serif;
+                font-size: 14px;
+                color: #666666;
+                margin-top: 10px;
+            }
+        }
+
+        .product-download-tech {
+            width: 100%;
+
+            text-align: center;
+
+            .action-button {
+                width: 250px;
+                margin: 10px;
+            }
+
+            .action-text {
+                margin: auto;
+                margin-left: 10px;
+            }
+        }
+
+        .product-assistance {
+
+        }
+    }
+}
+
+::ng-deep .mat-bottom-sheet-container {
+    min-width: 250px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}

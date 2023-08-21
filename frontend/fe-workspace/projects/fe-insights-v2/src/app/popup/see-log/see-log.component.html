@@ -1,0 +1,46 @@
+<section class="popups">
+    <div class="popup-header">
+        <div class="header-content">
+            <h4>{{'RECRUITING.viewLog' | translate}}</h4>
+            <img (click)="onNoClick(false)" alt="" src="assets/images/cross-icon.svg">
+        </div>
+    </div>
+    <div class="popup-body seelog-table">
+        <mat-table class="change-log-table activity-log-popup" #table [dataSource]="seeLogTableData">
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef  style="width: 150px;background-color: #f1f1f1;">{{'RECRUITING.TIMESTAMP' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element" style="width: 150px;padding-left: 10px;"> {{element.createdAt | date: 'dd/MM/yyyy HH:mm'}}  </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="author">
+                <mat-header-cell *matHeaderCellDef style="width: 150px;background-color: #f1f1f1;"> {{'RECRUITING.AUTHOR' | translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element" style="width: 150px;"> {{element.author}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef style="background-color: #f1f1f1;"> {{'RECRUITING.CHANGES' | translate}} </mat-header-cell>
+                <mat-cell *matCellDef="let element" style="text-transform: capitalize"> {{element.description | translate }}
+                </mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="action" stickyEnd>
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element; let id=index;">
+                    <button mat-icon-button (click)="onModifyHistory(element)"
+                        matTooltip="{{'GENERAL.DELETE'|translate}}">
+                        <i class="material-icons">edit</i>
+                    </button>
+                </mat-cell>
+            </ng-container> -->
+
+            <mat-header-row *matHeaderRowDef="seeLogDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: seeLogDisplayedColumns;"></mat-row>
+        </mat-table>
+        <div *ngIf="seeLogTableData.length == 0" class="no-record">{{'TABLE.No_record_found' | translate}}</div>
+
+    </div>
+    <div class="popup-footer">
+        <!-- <div class="footer-content">
+            <button (click)="onNoClick(true)" class="btn-style theme-btn">{{'GENERAL.Yes' | translate}}</button>
+            <button (click)="onNoClick(false)"  class="btn-style inactive">{{'GENERAL.No' | translate}}</button>
+        </div> -->
+    </div>
+</section>

@@ -1,0 +1,89 @@
+<div class="page-container">
+  <div class="login-container">
+    <span class="spacer-fill"></span>
+
+    <img class="main-logo" src="./assets/images/logo-nunow.svg">
+    <div class="main-label">Irina NuNow</div>
+
+    <span class="height-5"></span>
+    <ng-template [ngIf]="resetPasswordScreen" >
+      <mat-form-field class="form-field width-70">
+        <input matInput placeholder="{{'APP_PEOPLE_PAGE.USERNAME' | translate}}" color="primary" name="username"
+               [(ngModel)]="username">
+      </mat-form-field>
+
+      <mat-form-field class="form-field width-70">
+        <input matInput [type]="!showPassword ? 'password' : ''"
+               placeholder="{{'INSIGHTS_PEOPLE_PAGE.PASSWORD' | translate}}" [(ngModel)]="password">
+        <button mat-button matSuffix mat-icon-button (click)="onToggleShowPassword()">
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+
+      </mat-form-field>
+      <p class="forgot-password-link" routerLink="/forgot-password">Forgot Password?</p>
+      <div class="button-container">
+        <button *ngIf="!showLoader" mat-flat-button class="login-button round" color="primary"
+                (click)="onLogin(true)">{{'LOGIN PAGE.LOGIN'|translate}}</button>
+        <mat-spinner *ngIf="showLoader" class="loader" [diameter]="36"></mat-spinner>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="!resetPasswordScreen">
+      <mat-form-field class="form-field width-70">
+        <input matInput [type]="!showPassword ? 'password' : ''" placeholder="{{'APP_PEOPLE_PAGE.NEW_PASSWORD' | translate}}" name="password"
+               [(ngModel)]="username" >
+        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="onToggleShowPassword()">
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="form-field width-70">
+        <input matInput [type]="!showPassword ? 'password' : ''" placeholder="{{'APP_PEOPLE_PAGE.CONF_PASSWORD' | translate}}" name="confPassword"
+               [(ngModel)]="password" >
+        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="onToggleShowPassword()">
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+
+      </mat-form-field>
+
+      <div class="button-container">
+        <button (click)="onLogin(false)" *ngIf="!showLoader" mat-flat-button class="login-button round" color="primary">{{'FORGOT_PASSWORD PAGE.RESET_PASSWORD'|translate}}</button>
+        <mat-spinner *ngIf="showLoader" class="loader" [diameter]="36"></mat-spinner>
+      </div>
+    </ng-template>
+    <span class="spacer-fill"></span>
+
+    <img class="customer-logo" src="./assets/images/logo.svg">
+
+    <span class="spacer-fill"></span>
+
+    <div class="label-version">Ver: {{ version }} (App)</div>
+    <span class="height-5"></span>
+
+  </div>
+</div>
+
+<!--
+<div class="page-container">
+    <img src="./assets/images/logo.svg" class="logo">
+    <div>{{'INSIGHTS_PEOPLE_PAGE.IRINA INSIGHTS' | translate}}</div>
+    <div class="login-container">
+        <ng-container *ngIf="!registerAdmin">
+            <mat-form-field class="form-field">
+                <input matInput placeholder="{{'INSIGHTS_PEOPLE_PAGE.USER ID' | translate}}" name="email" [(ngModel)]="email" (keydown.enter)="onLogin()">
+            </mat-form-field>
+            <mat-form-field class="form-field">
+                <input matInput type="password" placeholder="{{'INSIGHTS_PEOPLE_PAGE.PASSWORD' | translate}}" name="password" [(ngModel)]="password"
+                    (keydown.enter)="onLogin()">
+            </mat-form-field>
+            <button *ngIf="!showLoader" mat-flat-button class="login-button no-round" color="primary"
+                (click)="onLogin()">{{'ADMIN LOGIN PAGE.LOGIN'|translate}}</button>
+            <mat-spinner *ngIf="showLoader" class="loader"></mat-spinner>
+        </ng-container>
+        <ng-container *ngIf="registerAdmin">
+            <mat-label>{{'INSIGHTS_PEOPLE_PAGE.CONFIGURE BACKEND' | translate}}</mat-label>
+        </ng-container>
+    </div>
+</div>
+-->

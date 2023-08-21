@@ -1,0 +1,45 @@
+<div class="page-container">
+    <app-main-toolbar class="main-toolbar"></app-main-toolbar>
+    <div class="page-content-container">
+        <mat-tab-group #tabgroup class="info-tab-group" animationDuration="500ms">
+            <mat-tab>
+                <div class="flex-container">
+                    <div *ngIf="infoListEmpty" class="info-empty">{{'GENERAL.NO INFOS'|translate}}</div>
+                    <div class="info-tile-container" *ngFor="let cat of usedCategoriesList">
+                        <app-information-tile [categoryDoc]="cat" (click)="onCategoryClick(cat)"></app-information-tile>
+                    </div>
+                    <div class="info-tile-container" *ngFor="let info of usedInfoList">
+                        <app-information-tile [infoDoc]="info" (click)="onInfoClick(info)"></app-information-tile>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <div class="categoryname">{{currentCategoryTitle}}</div>
+                <div class="flex-container">
+                    <div class="info-tile-container" *ngFor="let info of infoInCategoryList">
+                        <app-information-tile [infoDoc]="info" (click)="onInfoClick(info)"></app-information-tile>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <div *ngIf="docIsPdf" class="pdf-viewer-container">
+                    <pdf-viewer class="pdf-viewer" [src]="url" [original-size]="false" [autoresize]="true"></pdf-viewer>
+                </div>
+                <div *ngIf="docIsImage" class="pdf-viewer-container">
+                    <div class="filename">{{currentTitle}}</div>
+                    <img [src]='trustedUrl'>
+                </div>
+                <div *ngIf="docIsAudio" class="pdf-viewer-container">
+                    <div class="filename">{{currentTitle}}</div>
+                    <audio class="audio-player" [src]='trustedUrl' controls autoplay></audio>
+                </div>
+                <div *ngIf="docIsVideo" class="pdf-viewer-container">
+                    <div class="filename">{{currentTitle}}</div>
+                    <video class="video-player" [src]='trustedUrl' type='video/mp4' controls autoplay></video>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+    <app-main-tab-bar class="main-tab-bar" [ShowBack]="true" (BackEvent)="onBack()"></app-main-tab-bar>
+</div>

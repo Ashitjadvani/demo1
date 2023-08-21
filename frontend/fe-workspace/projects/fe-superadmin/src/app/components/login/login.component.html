@@ -1,0 +1,60 @@
+<section class="login">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-lg-7 d-flex align-item-center">
+                    <div class="banner-img">
+                        <img src="./assets/images/login-img.svg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-content">
+                        <div class="logo">
+                            <img src="./assets/images/logo-login.svg" routerLink="" alt="">
+                            <h4>Irina NuNow</h4>
+                        </div>
+                      <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+                            <div class="form-wrapper">
+                                <div class="input-wrapper">
+                                    <div class="form-title">
+                                        <h3>Login</h3>
+                                        <p>Access to your Account</p>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>Username</mat-label>
+                                            <input matInput formControlName="email"  type="email" id="email" name="email" maxlength="50">
+                                            <mat-error *ngIf="loginForm.controls.email.errors?.required">Please enter your Username</mat-error>
+                                            <mat-error *ngIf="loginForm.controls.email.errors?.email">Please enter a valid Username Name.</mat-error>
+                                         </mat-form-field>
+                                    </div>
+                                    <div class="form-field m-0">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>Password</mat-label>
+                                            <input matInput formControlName="password"  name="password"  [type]="hide ? 'password' : 'text'"  minlength="6" onkeypress="return event.charCode != 32">
+                                          <mat-error *ngIf="loginForm.controls.password.errors?.required" >Please enter your Password</mat-error>
+                                          <mat-error *ngIf="loginForm.controls.password.errors?.minlength" >
+                                            Password must be at least 6 characters long.
+                                         </mat-error>
+                                          <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                          </button>
+                                          <mat-error *ngIf="loginForm.controls.password.errors?.email">Password must be greater than 6 characters</mat-error>
+                                         </mat-form-field>
+                                    </div>
+                                    <div class="remember-forgot">
+                                        <mat-checkbox class="remember-check">Remember Password </mat-checkbox>
+                                        <a routerLink="/forgot-password" class="forgot-link">Forgot your Password?</a>
+                                    </div>
+                                </div>
+                                <div class="form-btn">
+                                    <button mat-button  type="submit"  class="full-btn">Login</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+@import "../people-group-page.component.scss";
+
+.people-list {
+    width: 100%;
+    height: 520px;
+
+    overflow-y: auto;
+}
+
+.filter-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .filter-field {
+        width: 100%;
+    }
+
+    .check-field {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 10px;
+    }
+}

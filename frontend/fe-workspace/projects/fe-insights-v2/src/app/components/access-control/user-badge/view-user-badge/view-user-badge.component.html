@@ -1,0 +1,288 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li>
+                    <li routerLink="/access-control/badges/user" class="breadcrumb-item">{{'ACCESS_CONTROL.UserBadge'| translate}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Badge
+                        {{badge.codeData ? badge.codeData.name : '-'}}
+                        {{badge.codeData ? badge.codeData.surname :'-'}}
+                        {{badge.codeData ? (badge.codeData.startDate | date:'dd/MM/yyyy') :'-'}} - 
+                        {{badge.codeData ? (badge.codeData.endDate | date:'dd/MM/yyyy') :'-'}}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <mat-vertical-stepper #stepper [linear]="false" class="vertical-stepper-style" labelPosition="bottom" *ngIf="badge.codeData">
+                <mat-step [completed]="false"> 
+                    <ng-template matStepLabel>
+                        {{'ACCESS_CONTROL.AccessLevel'| translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600;">
+                                <span>
+                                    {{'ACCESS_CONTROL.AccessLevel'| translate}}
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="form-content-box">
+                            <div class="row">
+                                <div class="col-xl-3 col-xxl-3">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'ACCESS_CONTROL.AccessLevel' | translate}}</mat-label>
+                                            <mat-select disabled [(ngModel)]="badge.codeData.type">
+                                                <mat-option value="PASSEPARTOUT">
+                                                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSEPARTOUT' | translate}}
+                                                </mat-option>
+                                                <mat-option value="GROUP">
+                                                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS GROUP' | translate}}
+                                                </mat-option>
+                                                <mat-option value="SINGLE_PASSAGES">
+                                                    {{'INSIGHTS_PEOPLE_PAGE.ACCESS PASSAGES' | translate}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="badge.codeData.type=='SINGLE_PASSAGES'">
+                                <div class="table-heading m-30" style="margin-bottom: 10px !important; padding-top: 20px">
+                                    <p class="m-0" style="color: black; font-size: 20px; font-weight: bold;">{{'ACCESS_CONTROL.SelectedGates' | translate}}:</p>
+                                </div>
+                                <div class="row" *ngFor="let site of gates">
+                                    <div class="table-heading m-30" style="margin-bottom:10px !important;">
+                                        <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                    </div>
+                                    <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                        <div class="form-field">
+                                            <div class="custom-switch mt-0">
+                                                <mat-checkbox disabled [checked]="gateIsChecked(gate.id)">{{gate.name}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-heading m-30" style="margin-bottom: 10px !important; padding-top: 30px">
+                                      <p class="m-0" style="color: black; font-size: 20px; font-weight: bold;">{{'ACCESS_CONTROL.EffectiveGates' | translate}}:</p>
+                                    </div>
+                                  </div>
+                                  <div class="row" *ngFor="let site of gates">
+                                    <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                        <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                    </div>
+                                    <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                      <div class="form-field">
+                                        <div class="custom-switch mt-0">
+                                          <mat-checkbox disabled [checked]="effectiveGateIsChecked(gate.id)">{{gate.name}}</mat-checkbox>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </ng-container>
+                            <ng-container *ngIf="badge.codeData.type=='GROUP'">
+                                <div class="table-heading m-30" style="margin-bottom: 10px !important; padding-top: 20px">
+                                    <p class="m-0" style="color: black; font-size: 20px; font-weight: bold;">{{'ACCESS_CONTROL.SelectedGroups' | translate}}:</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-3 col-xxl-3" *ngFor="let group of groups">
+                                        <div class="form-field">
+                                            <div class="custom-switch mt-0">
+                                                <mat-checkbox disabled [checked]="groupIsChecked(group.id)">{{group.name}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="table-heading m-30" style="margin-bottom: 10px !important; padding-top: 30px">
+                                        <p class="m-0" style="color: black; font-size: 20px; font-weight: bold;">{{'ACCESS_CONTROL.EffectiveGates' | translate}}:</p>
+                                    </div>
+                                </div>
+                                <div class="row" *ngFor="let site of gates">
+                                    <div class="table-heading m-30" style="margin-bottom:10px !important">
+                                        <p class="m-0" style="font-size:18px !important">{{site.siteName}}</p>
+                                    </div>
+                                    <div class="col-xl-3 col-xxl-3" *ngFor="let gate of site.siteGates">
+                                        <div class="form-field">
+                                            <div class="custom-switch mt-0">
+                                                <mat-checkbox disabled [checked]="effectiveGateIsChecked(gate.id)">{{gate.name}}</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="badge.codeData.type=='PASSEPARTOUT'">
+                                <div class="row">
+                                  <div class="table-heading m-30" style="margin-bottom: 10px !important">
+                                    <p class="m-0" style="color: black; font-size: 20px">{{'ACCESS_CONTROL.PassepartoutDescription' | translate}}</p>
+                                  </div>
+                                </div>
+                              </ng-container>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [completed]="false">
+                    <ng-template matStepLabel>
+                        {{'ACCESS_CONTROL.Limits'| translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600;">
+                                <span>
+                                    {{'ACCESS_CONTROL.Limits'| translate}}
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="form-content-box">
+                            <div class="row">
+                                <div class="col-xl-3 col-xxl-3">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'ACCESS_CONTROL.Uses Number' | translate}}</mat-label>
+                                            <mat-select disabled [(ngModel)]="badge.codeData.limitType">
+                                                <mat-option value="Infinite">
+                                                    {{'ACCESS_CONTROL.Infinite' | translate}}
+                                                </mat-option>
+                                                <mat-option value="Once">
+                                                    {{'ACCESS_CONTROL.Once' | translate}}
+                                                </mat-option>
+                                                <mat-option value="Number">
+                                                    {{'ACCESS_CONTROL.Specify Number' | translate}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div *ngIf="badge.codeData.limitType == 'Number'" class="col-xl-3 col-xxl-3">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width">
+                                            <mat-label>{{'ACCESS_CONTROL.Specify Number' | translate}}</mat-label>
+                                            <input disabled matInput [(ngModel)]="badge.codeData.limitNumber" type="number" name="numberOfUses">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-3 col-xxl-3">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.Start Date'| translate}}</mat-label>
+                                            <input disabled [ngModel]="getStartDate()" matInput type="text" name="date1">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-xxl-3">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.End Date'| translate}}</mat-label>
+                                            <input disabled [ngModel]="getEndDate()" matInput type="text" name="date2">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [completed]="false">
+                    <ng-template matStepLabel>
+                        {{'ACCESS_CONTROL.Informations'| translate}}
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600;">
+                                <span>
+                                    {{'ACCESS_CONTROL.Informations'| translate}}
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="form-content-box">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.Name'| translate}}</mat-label>
+                                            <input disabled [(ngModel)]="badge.codeData.name" matInput type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.Surname'| translate}}</mat-label>
+                                            <input disabled [(ngModel)]="badge.codeData.surname" matInput type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>Email</mat-label>
+                                            <input disabled [(ngModel)]="badge.codeData.email" matInput type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.Number'| translate}}</mat-label>
+                                            <input disabled [(ngModel)]="badge.codeData.number" matInput type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-field">
+                                        <mat-form-field appearance="outline" class="element-full-width date-select">
+                                            <mat-label>{{'ACCESS_CONTROL.Notes'| translate}}</mat-label>
+                                            <input disabled [(ngModel)]="badge.codeData.notes" matInput type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-step>
+                <mat-step [completed]="false">
+                    <ng-template matStepLabel>
+                        Badge
+                    </ng-template>
+                    <div class="table-content box-style">
+                        <div class="table-heading">
+                            <h3 style="font-weight: 600;">
+                                <span>
+                                    Badge
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="form-content-box">
+                            <div class="row" id="badge" style="width:400px; padding-left:25px; padding-top:20px">
+                                <div class="col table-heading" style="font-size: 10px; width:350px; max-width:350px; border-style:solid; border-color: rgb(220, 220, 220); border-width:1px; border-radius:20px;">
+                                    <div style="display:flex;flex-direction:column;width:350px;">
+                                        <img style="width:72px; height: 72px" src="assets/icons/icon-72x72.png">
+                                        <p style="text-align: right;font-size: 18px; ">{{scope}}</p>
+                                        <p style="text-align: right;font-size: 18px; ">{{getStartDate()}}</p>
+                                        <p style="text-align: right;font-size: 18px; ">{{getEndDate()}}</p>
+                                        <p style="font-size: 18px; "><b>{{badge.codeData.surname}} {{badge.codeData.name}}</b></p>
+                                        <div style="min-width:200px; min-height:200px; padding-left:62px; padding-bottom:40px; padding-top:10px;" *ngIf="badge.qrcode && badge.qrcode!=''"><qr-code *ngIf="badge.qrcode && badge.qrcode!=''" [value]="badge.qrcode" level="Q" [size]="200"></qr-code></div>
+                                        <span *ngIf="badge.qrcode==''" class="material-icons" style="color: lightgrey; min-width:200px; min-height:200px; padding-left:62px; padding-bottom:40px; padding-top:10px; font-size:200px">qr_code_2</span>
+                                    </div>        
+                                </div>
+                            </div>
+                            <div class="row" style="width:400px; padding-left:25px; padding-top:10px">
+                                <button style="width:350px;" class="btn-style theme-btn" (click)="downloadBadge()">
+                                    <span class="material-icons">file_download</span>Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+        </div>
+    </div>
+</section>

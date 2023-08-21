@@ -1,0 +1,73 @@
+<div class="main-container" [ngStyle]="{ 'background-color': backgroundColor }">
+    <mat-toolbar color="primary" (click)="onCameraClick()">
+        <app-header-bar class="main-header-bar"></app-header-bar>
+    </mat-toolbar>
+    <div class="page-container">
+        <div *ngIf="showStatusBar" class="site-status">{{ statusBarMessage }}</div>
+
+        <div *ngIf="firstBoot" class="page-container">
+
+            <h1 class="splash-info-text">Welcome in NuNow Irina Touchpoint Configuration</h1>
+            <h2 class="splash-info-text">please scan Touchpoint QR code to complete registration</h2>
+            <span class="vspacer-25"></span>
+            <div class="scanner-container shadow-box">
+                <mat-form-field *ngIf="showCameraSelection" class="camera-selection">
+                    <mat-select placeholder="Camera Device" [(ngModel)]="currentCamera"
+                        (selectionChange)="onDeviceSelectChange($event)">
+                        <mat-option *ngFor="let device of availableDevices" [value]="device.type">
+                            {{ device.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <fco-qr-scanner class="qr-scanner" #scanner (scanSuccess)="onCodeResult($event)"
+                    [removeComponentAfterScan]="false" [camera]="currentCamera"></fco-qr-scanner>
+            </div>
+        </div>
+
+        <div *ngIf="!firstBoot" class="page-container">
+            <div *ngIf="showSplash" class="splash-info">
+                <h1 class="splash-info-text">NuNow Irina</h1>
+                <h1 class="splash-info-text">{{ welcomeMessage }}</h1>
+                <h1 class="splash-info-text">{{ actionMessage }}</h1>
+                <h1 class="splash-info-text">{{ dateTimeMessage }}</h1>
+                <h1 class="splash-info-text">{{ finalMessage }}</h1>
+            </div>
+
+            <div *ngIf="!showStatusBar" class="content-container">
+                <div class="gray-box">
+                    <div class="main-row">
+                        <div class="qr-container shadow-box">
+                            <qr-code [value]="siteQR" [level]="qrLevel" [size]="300"></qr-code>
+                        </div>
+
+                        <div class="scanner-container shadow-box">
+                            <mat-form-field *ngIf="showCameraSelection" class="camera-selection">
+                                <mat-select placeholder="Camera Device" [(ngModel)]="currentCamera"
+                                    (selectionChange)="onDeviceSelectChange($event)">
+                                    <mat-option *ngFor="let device of availableDevices" [value]="device.type">
+                                        {{ device.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <fco-qr-scanner class="qr-scanner" #scanner (scanSuccess)="onCodeResult($event)"
+                                [removeComponentAfterScan]="false" [camera]="currentCamera"></fco-qr-scanner>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-row">
+                    <div class="site-header">
+                        <img class="site-image" src="../../../../assets/images/domain.svg">
+                        <div class="site-text">{{ siteText }}</div>
+                    </div>
+                    <span class="spacer-25"></span>
+                    <div class="date-time">
+                        <div class="site-date">{{ siteDate }}</div>
+                        <div class="site-clock">{{ siteClock }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

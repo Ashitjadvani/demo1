@@ -1,0 +1,265 @@
+@import "../../../../theme/theme.scss";
+
+.main-panel-container {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    height: 100%;
+
+    .blur-panel {
+        position: absolute;
+        height: 220px;
+    }
+
+    .span {
+        flex-grow: 1;
+    }
+
+    .panel-head {
+        background-color: #dddddd;
+
+        display: flex;
+        flex-direction: column;
+
+        width: 45%;
+        height: 100%;
+        overflow: hidden;
+
+        .head-logo-container {
+            display: flex;
+            flex-direction: row;
+
+            height: 100px;
+
+            .header-logo {
+                width: auto;
+                height: 40px;
+                margin-top: 30px;
+                cursor: pointer;
+            }
+        }
+
+        .head-title {
+            margin-top: 10px;
+            margin-left: 10px;
+
+            font-size: xx-large;
+            font-weight: bolder;
+
+            color: mat-color($mat-primary, main);
+
+            text-align: center;
+        }
+
+        .head-subtitle {
+            margin-top: 10px;
+            margin-left: 10px;
+
+            font-size: x-large;
+            font-weight: bolder;
+
+            color: mat-color($mat-primary, main);
+
+            text-align: center;
+        }
+
+        .panel-resource-qr {
+            display: flex;
+            flex-direction: row;
+
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 20px;
+            background-color: #00000011;
+
+            .qr-spacer {
+                height: 10px;
+            }
+
+            .qr-code {
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+        }
+
+        .status-text {
+            margin: auto;
+            text-align: center;
+
+            font-size: large;
+            font-weight: bolder;
+        }
+
+
+        .panel-resource-status {
+            width: 80%;
+            height: 60px;
+            background: rgba(255, 0, 0, 0.667);
+
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+
+            border-radius: 10px;
+
+            color: white;
+
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .panel-resource-services {
+            width: 80%;
+            height: 60px;
+            background: rgba(255, 128, 0, 0.667);
+
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+
+            border-radius: 10px;
+
+            color: white;
+
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+
+            cursor: pointer;
+        }
+    }
+
+    .panel-scheduler {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        background-color: #dddddd;
+
+        .panel-scheduler-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            height: 80px;
+            color: mat-color($mat-primary, main);
+            background-color: #dddddd;
+
+            text-align: center;
+            font-size: xx-large;
+            font-weight: bold;
+        }
+
+        .panel-scheduler-container {
+            display: flex;
+            flex-direction: column;
+
+            flex-grow: 1;
+
+            background-color: white;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+
+            .panel-scheduler-timeframes {
+                display: flex;
+                flex-direction: column;
+
+                padding: 30px;
+
+                .schedule-title {
+                    color: mat-color($mat-primary, main);
+        
+                    text-align: center;
+                    font-size: xx-large;
+                    font-weight: bold;
+                    
+                    margin-bottom: 20px;
+                }
+
+                .in-progess {
+                    background-color: #00ff0022;
+                }
+            
+                .timeframe-card {
+                    display: flex;
+                    flex-direction: row;
+                    background: #eeeeee;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px rgb(75 107 162 / 40%);
+            
+                    height: 40px;
+
+                    .timeframe-content {
+                        flex-grow: 1;
+                        
+                        margin-top: auto;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        margin-bottom: auto;
+
+                        display: flex;
+                        flex-direction: column;
+
+                        font-size: larger;
+                        color: mat-color($mat-primary, main);
+
+                        .timeframe-content-title {
+                            font-size: large;
+                            font-weight: bold;
+                        }
+            
+                        .timeframe-content-time {
+                            display: flex;
+                            flex-direction: row;
+                            margin-top: 5px;
+
+                            .clock-icon {
+                                font-size: large;
+                                margin-right: 10px;
+                            }
+            
+                            .time-text {
+                                margin-top: auto;
+                                margin-bottom: auto;
+                            }
+            
+                            .title-text {
+                                flex-grow: 1;
+                                text-align: end;
+                                font-weight: bold;
+                            }
+                        }
+
+                        .timeframe-no-event {
+                            width: 100%;
+                            text-align: center;
+
+                            font-size: large;
+                            font-weight: bold;
+                            
+                        }    
+                    }
+            
+                    .timeframe-action {
+                        align-self: flex-end;
+                    }
+                }            
+            }
+        }
+
+        .panel-scheduler-footer {
+            height: 80px;
+            background-color: #dddddd;
+        }
+    }
+}

@@ -1,0 +1,604 @@
+<section class="client-management">
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ol class="breadcrumb box-style">
+                    <li routerLink="/dashboard" class="breadcrumb-item">Dashboard</li>
+                    <li routerLink="/client-management" class="breadcrumb-item">Client Management</li>
+                    <li routerLink="/view-client-details" class="breadcrumb-item active"
+                        aria-current="page">{{editMode}} Client
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-12">
+            <div class="common-stepper">
+
+                <mat-horizontal-stepper [linear]="false" #stepper labelPosition="bottom">
+                    <mat-step [stepControl]="companyInformationForm">
+                        <ng-template matStepLabel>
+                <span>
+                    <img src="assets/images/stepper-1.png"/>
+                    <p>Company Information</p>
+                </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Company Information</h3>
+                                <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="saveCompanyInformation()"
+                                  [formGroup]="companyInformationForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Name*</mat-label>
+                                                <input formControlName="company_name" matInput type="text"
+                                                       name="company_name">
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.company_name.errors?.required">
+                                                    Please enter your name.
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Address*</mat-label>
+                                                <input formControlName="company_address" matInput type="text"
+                                                       name="company_address">
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.company_address.errors?.required">
+                                                    Please enter your address
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>City*</mat-label>
+                                                <input formControlName="city" matInput type="text" name="city">
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.city.errors?.required">Please
+                                                    enter your city
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Cap</mat-label>
+                                                <input formControlName="cap" matInput type="text" name="cap">
+                                                <mat-error *ngIf="companyInformationForm.controls.cap.errors?.required">
+                                                    Please enter your cap
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Vat</mat-label>
+                                                <input formControlName="vat" matInput type="text" name="vat">
+                                                <mat-error *ngIf="companyInformationForm.controls.vat.errors?.required">
+                                                    Please enter your vat
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-xxl-2">
+                                        <div class="form-field color-picker">
+                                            <mat-form-field appearance="outline" class="element-full-width"
+                                                            *ngFor="let ctrl of ctrlColors">
+                                                <mat-label>Brand Color</mat-label>
+                                                <input formControlName="brand_color" matInput type="color"
+                                                       name="brand_color" [(ngModel)]="ctrl.color">
+                                                Hex: {{ctrl.color}}
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-3 col-xxl-2">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>App Theme</mat-label>
+                                                <mat-select formControlName="applicationDesign" name="tenant_type">
+                                                    <mat-option value="theme1">Theme 1</mat-option>
+                                                    <mat-option value="theme2">Theme 2</mat-option>
+                                                </mat-select>
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.applicationDesign.errors?.required">
+                                                    Please select app theme
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Tenant Type</mat-label>
+                                                <mat-select formControlName="tenant_type" name="tenant_type">
+                                                    <mat-option value="Tenant">Tenant</mat-option>
+                                                    <mat-option value="Multi Tenant">Multi Tenant</mat-option>
+                                                </mat-select>
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.tenant_type.errors?.required">
+                                                    Please select Tenant Type
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>TVA</mat-label>
+                                                <input formControlName="tva" matInput type="text" name="tva">
+                                                <mat-error *ngIf="companyInformationForm.controls.tva.errors?.required">
+                                                    Please enter your tva
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Company Website</mat-label>
+                                                <input formControlName="company_website" matInput type="text"
+                                                       name="company_website">
+                                                <mat-error
+                                                    *ngIf="companyInformationForm.controls.company_website.errors?.required">
+                                                    Please enter your company website
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="generate-button">
+                                            <label>Upload Black Logo</label>
+                                            <button class="btn-style red-btn file-upload-button" type="button">
+                                                <span class="material-icons">upload</span>
+                                                Drag and Drop here <br> Or <br>
+                                                <span class="blue-label">Browse File</span>
+                                                <input type="file" accept="image/png , image/jpg ,image/jpeg" id="file"
+                                                       #documentInput (change)="onFileChanged(documentInput)"
+                                                       id="emp-input-profile"/>
+                                            </button>
+
+                                            <span class="file-info">{{ this.documentName }}
+                                                <span class="material-icons close-icon"
+                                                      (click)="resetCoverValue()">{{ this.documentName ? "close" : null }}
+                        </span>
+                      </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="generate-button">
+                                            <label>Upload White Logo</label>
+                                            <button class="btn-style red-btn file-upload-button" type="button">
+                                                <span class="material-icons">upload</span>
+                                                Drag and Drop here <br> Or <br>
+                                                <span class="blue-label">Browse File</span>
+                                                <input type="file" accept="image/png ,image/jpg ,image/jpeg"
+                                                       id="whiteFile" name="whiteFile" #documentInputWhite
+                                                       (change)="onFileChangedWhite(documentInputWhite)"/>
+                                            </button>
+
+                                            <span class="file-info">{{ this.documentNameWhite }}
+                                                <span class="material-icons close-icon"
+                                                      (click)="resetCoverValueWhite()">{{ this.documentNameWhite ? "close" : null }}
+                        </span>
+                      </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button mat-button routerLink="/client-management"
+                                                class="custom-btn red-btn-light" type="button">Cancel
+                                        </button>
+                                    </div>
+                                    <div class="">
+                                        <button mat-button matStepperNext class="custom-btn" type="submit">Save & Next
+                                            <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="contactInformationForm">
+                        <ng-template matStepLabel>
+                <span>
+                    <img src="assets/images/stepper-2.svg"/>
+                    <p>Contact Information</p>
+                </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Contact Information</h3>
+                                <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                            </div>
+                            <form class="form-wrapper" [formGroup]="contactInformationForm"
+                                  (ngSubmit)="saveContactInformation()">
+                                <div class="row-wrapper" formArrayName="contact_info">
+                                    <div
+                                        *ngFor="let itemrow of formContactInformationArr.controls; let i=index; last as isLast; first as isFirst"
+                                        [formGroupName]="i" class="row row-list">
+                                        <div class="col-sm-12">
+                                            <h3 class="h3">Contact {{i + 1}}</h3>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>Contact Type*</mat-label>
+                                                            <mat-select formControlName="contact_type"
+                                                                        name="contact_type">
+                                                                <mat-option *ngFor="let contact of contactTypes"
+                                                                            [value]="contact.id">
+                                                                    {{ contact.name }}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                *ngIf="contactInformationForm.controls.contact_type.errors?.required">
+                                                                Please select contact type
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>Name*</mat-label>
+                                                            <input formControlName="contact_name" matInput type="text"
+                                                                   name="contact_name">
+                                                            <mat-error
+                                                                *ngIf="contactInformationForm.controls.contact_name.errors?.required">
+                                                                Please enter name
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>Phone No.*</mat-label>
+                                                            <input formControlName="phone_no" matInput type="number"
+                                                                   name="phone_no">
+                                                            <mat-error
+                                                                *ngIf="contactInformationForm.controls.phone_no.errors?.required">
+                                                                Please enter Phone No
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6">
+                                                    <div class="form-field">
+                                                        <mat-form-field appearance="outline" class="element-full-width">
+                                                            <mat-label>Email*</mat-label>
+                                                            <input formControlName="email" matInput type="email"
+                                                                   name="email">
+
+                                                            <mat-error
+                                                                *ngIf="contactInformationForm.controls.email.errors?.required">
+                                                                Please enter email address
+                                                            </mat-error>
+                                                            <mat-error
+                                                                *ngIf="contactInformationForm.controls.email.errors?.email">
+                                                                Please enter a valid email address
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div *ngIf="!isFirst" class="col-sm-12 btn-margin">
+                                                    <button (click)="deleteContactInformationRow(i)" mat-button
+                                                            class="custom-btn red-btn" type="button">Delete Contact
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="isLast" class="col-sm-12">
+                                                    <button (click)="addContactInformationRow()" mat-button
+                                                            class="custom-btn green-btn" type="button"><span
+                                                        class="material-icons">add</span>Add More Contact
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button mat-button routerLink="/client-management"
+                                                class="custom-btn red-btn-light">Cancel
+                                        </button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button mat-button matStepperPrevious class="custom-btn grey-btn"><span
+                                            class="material-icons">arrow_backward</span> Previous
+                                        </button>
+                                        <button mat-button matStepperNext class="custom-btn" type="submit">Save & Next
+                                            <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="domainConfigurationForm">
+                        <ng-template matStepLabel>
+                <span>
+                    <img src="assets/images/stepper-3.svg"/>
+                    <p>Domain Configuration</p>
+                </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Domain Configuration</h3>
+                            </div>
+                            <form class="form-wrapper" (ngSubmit)="submitDomainConfigurationForm()"
+                                  [formGroup]="domainConfigurationForm">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>MCP</mat-label>
+                                                <input formControlName="mcp" matInput type="text" name="mcp">
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>User Landing Page</mat-label>
+                                                <input formControlName="landing_page" matInput type="text"
+                                                       name="landing_page">
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Touchpoints</mat-label>
+                                                <input formControlName="touchpoint" matInput type="text"
+                                                       name="touchpoint">
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Companion App</mat-label>
+                                                <input formControlName="companion_app" matInput type="text"
+                                                       name="companion_app">
+
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Modulo Recruiting</mat-label>
+                                                <input formControlName="moduloRecruiting" matInput type="text"
+                                                       name="moduloRecruiting">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Modulo Procurement</mat-label>
+                                                <input formControlName="moduloProcurement" matInput type="text"
+                                                       name="moduloProcurement">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Base API URL</mat-label>
+                                                <input formControlName="baseApiUrl" matInput type="text"
+                                                       name="baseApiUrl">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row" formArrayName="coustom_field">
+                                        <div class="col-xl-6 col-xxl-4 custom-field-set"
+                                             *ngFor="let item of coustom_field.controls; let i = index;"
+                                             [formGroupName]="i" style="padding-right: 35px;position: relative;">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>{{domainConfigurationForm.value.coustom_field[i].title}}</mat-label>
+                                                <input matInput formControlName="titlevalue" name="titlevalue"
+                                                       required/>
+                                            </mat-form-field>
+                                            <span (click)="removeFields(i)" class="close-btn"><span
+                                                class="material-icons">close</span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-12 col-xxl-12">
+                                        <button mat-button class="custom-btn green-btn" type="button"
+                                                (click)="openAddFieldPopup()"><span class="material-icons">add</span>Add
+                                            Field
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button mat-button routerLink="/client-management"
+                                                class="custom-btn red-btn-light" type="button">Cancel
+                                        </button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button mat-button matStepperPrevious class="custom-btn grey-btn" type="button">
+                                            <span class="material-icons">arrow_backward</span> Previous
+                                        </button>
+                                        <button mat-button matStepperNext class="custom-btn" type="submit">Save & Next
+                                            <span class="material-icons">arrow_forward</span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="featuresForm">
+                        <ng-template matStepLabel>
+                <span>
+                    <img src="assets/images/stepper-4.svg"/>
+                    <p>Features</p>
+                </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Features</h3>
+                                <div class="search-form-wrapper">
+                                    <div class="search-form">
+                                        <input mat-input #filter (keyup)="applyFilter($event.target.value)"
+                                               placeholder="Search Feature"/>
+                                        <mat-icon matSuffix class="material-icons search">search</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-wrapper">
+                                <table mat-table matSort [dataSource]="dataSource">
+                                    <ng-container matColumnDef="title">
+                                        <th mat-sort-header="title" mat-header-cell *matHeaderCellDef> Title</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="status">
+                                        <th mat-header-cell *matHeaderCellDef> Status</th>
+                                        <td mat-cell *matCellDef="let element" style="width: 90px;">
+                                            <div class="switch">
+                                                <mat-slide-toggle [(ngModel)]="element.status"></mat-slide-toggle>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+                            </div>
+
+                            <div class="step-form-bottom">
+                                <div>
+                                    <button mat-button routerLink="/client-management" class="custom-btn red-btn-light"
+                                            type="button">Cancel
+                                    </button>
+                                </div>
+                                <div class="btn-wrapper">
+                                    <button mat-button matStepperPrevious class="custom-btn grey-btn" type="button">
+                                        <span class="material-icons">arrow_backward</span> Previous
+                                    </button>
+                                    <button mat-button matStepperNext class="custom-btn" type="button"
+                                            (click)="featuresFormSubmit()">Save & Next <span class="material-icons">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-step>
+                    <mat-step [stepControl]="adminLoginForm">
+                        <ng-template matStepLabel>
+                <span>
+                    <img src="assets/images/stepper-5.svg"/>
+                    <p>Admin Login</p>
+                </span>
+                        </ng-template>
+                        <div class="table-content box-style">
+                            <div class="table-heading m-30">
+                                <h3 style="font-weight: 600">Admin Login</h3>
+                                <p class="m-0"><span class="red-label">*</span> Indicates a required field</p>
+                            </div>
+                            <form class="form-wrapper" [formGroup]="adminLoginForm" (ngSubmit)="submitAdminLoginForm()">
+                                <div class="row">
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Admin First Name*</mat-label>
+                                                <input formControlName="name" matInput type="text" name="name">
+                                                <mat-error *ngIf="adminLoginForm.controls.name.errors?.required">Please
+                                                    enter admin name
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Admin Last Name*</mat-label>
+                                                <input formControlName="lastName" matInput type="text" name="lastName">
+                                                <mat-error *ngIf="adminLoginForm.controls.lastName.errors?.required">
+                                                    Please enter admin last name
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Username</mat-label>
+                                                <input formControlName="username" matInput type="text"
+                                                       name="usernamenew">
+                                                <mat-error *ngIf="adminLoginForm.controls.username.errors?.required">
+                                                    Please enter username
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <mat-form-field appearance="outline" class="element-full-width">
+                                                <mat-label>Password</mat-label>
+                                                <input formControlName="password" matInput type="password"
+                                                       name="passwordnew">
+                                                <mat-error *ngIf="adminLoginForm.controls.password.errors?.required">
+                                                    Please enter password
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-xxl-4">
+                                        <div class="form-field">
+                                            <div class="remember-forgot border-box">
+                                                <mat-checkbox formControlName="force_to_reset_password"
+                                                              class="remember-check">Force user to reset password for
+                                                    the first time?
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-form-bottom">
+                                    <div>
+                                        <button mat-button routerLink="/client-management"
+                                                class="custom-btn red-btn-light" type="button">Cancel
+                                        </button>
+                                    </div>
+                                    <div class="btn-wrapper">
+                                        <button mat-button matStepperPrevious class="custom-btn grey-btn" type="button">
+                                            <span class="material-icons">arrow_backward</span> Previous
+                                        </button>
+                                        <button mat-button matStepperNext class="custom-btn" type="submit"
+                                                routerLink="client-management">Save & Finish
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,210 @@
+<mat-tab-group #tabgroup class="group-tab">
+    <input type="file" #file style="display: none" (change)="onUploadFile()" />
+
+    <mat-tab>
+        <app-table-data-view [title]="tableTitle" [tableDataSet]="resources" [columnTemplates]="tableColumnTemplates"
+            [(page)]="showPageIndex" [rowActions]="tableRowActions" [mainActions]="tableMainActions"
+            [filterFunction]="filterCallback">
+        </app-table-data-view>
+    </mat-tab>
+    <mat-tab>
+        <div *ngIf="detailMode == DETAIL_MODE.dmEdit" class="general-container">
+            <div class="card width-80">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <mat-tab-group class="card-group-tab" #tabgroupeditor>
+                        <mat-tab label="{{ 'ADMIN DIALOGS.GENERAL' | translate }}">
+                            <div class="card-body">
+                                <div class="input-row">
+                                    <mat-form-field class="width-20">
+                                        <input matInput placeholder="Codice" [(ngModel)]="currentResource.code"
+                                            [disabled]="isModify">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-20">
+                                        <input matInput placeholder="Desciption"
+                                            [(ngModel)]="currentResource.description">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-20">
+                                        <input matInput placeholder="Site" [(ngModel)]="currentResource.site"
+                                            [formControl]="siteFC" [matAutocomplete]="autoSite">
+
+                                        <mat-autocomplete #autoSite="matAutocomplete"
+                                            [displayWith]="displaySiteCallback">
+                                            <mat-option *ngFor="let site of sites | async" [value]="site.key">
+                                                <span>{{ site.name }}</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <mat-form-field class="width-20">
+                                        <input matInput type="number" placeholder="Capacity"
+                                            [(ngModel)]="currentResource.custom.capacity">
+                                    </mat-form-field>
+                                    <div class="check-box width-10">
+                                        <mat-checkbox [(ngModel)]="currentResource.enabled">
+                                            {{'ADMIN COMPONENTS.ENABLED'|translate}}
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div class="input-row">
+                                    <mat-form-field class="width-30">
+                                        <mat-select placeholder="Area" [(ngModel)]="this.currentResource.custom.area">
+                                            <mat-option *ngFor="let area of currentResourceType.customData.areas"
+                                                value="{{ area }}">
+                                                {{ area }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="width-30">
+                                        <mat-select multiple placeholder="Facility"
+                                            [(ngModel)]="this.currentResource.custom.facilityList"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option
+                                                *ngFor="let facility of currentResourceType.customData.facilities"
+                                                value="{{ facility }}">
+                                                {{ facility }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="width-30">
+                                        <mat-select placeholder="Layout"
+                                            [(ngModel)]="this.currentResource.custom.layout">
+                                            <mat-option *ngFor="let layout of currentResourceType.customData.layouts"
+                                                value="{{ layout }}">
+                                                {{ layout }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="input-row">
+                                    <mat-form-field class="width-30">
+                                        <input matInput type="number" placeholder="Grace Period (minutes)"
+                                            [(ngModel)]="currentResource.custom.gracePeriod">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-30">
+                                        <input matInput type="number" placeholder="Instant book (minutes)"
+                                            [(ngModel)]="currentResource.custom.minutesInstantBook">
+                                    </mat-form-field>
+                                    <mat-form-field class="width-30">
+                                        <input matInput type="number" placeholder="Extend book (minutes)"
+                                            [(ngModel)]="currentResource.custom.minutesExtendedBook">
+                                    </mat-form-field>
+                                </div>
+                                <div class="input-row">
+                                    <mat-form-field class="width-30">
+                                        <input matInput type="number" placeholder="Panel refresh rate (seconds)"
+                                            [(ngModel)]="currentResource.custom.panelRefreshRate">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Immagine">
+                            <div class="map-container">
+                                <div class="control-container">
+                                    <button mat-icon-button matTooltip="Aggiungi Immagine"
+                                        (click)="onImportResourceImage(UploadType.Image)">
+                                        <i class="material-icons">cloud_upload</i>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Cancella"
+                                        (click)="onRemoveResourceImage(UploadType.Image)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div class="image-container">
+                                    <img *ngIf="imageURL" class="map-image" [src]="imageURL">
+                                    <div *ngIf="!imageURL" class="no-image-text">
+                                        Nessuna immagine caricata
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Mappa">
+                            <div class="map-container">
+                                <div class="control-container">
+                                    <button mat-icon-button matTooltip="Aggiungi Immagine Piantina"
+                                        (click)="onImportResourceImage(UploadType.Map)">
+                                        <i class="material-icons">cloud_upload</i>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Cancella"
+                                        (click)="onRemoveResourceImage(UploadType.Map)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                                <div class="image-container">
+                                    <img *ngIf="mapImageURL" class="map-image" [src]="mapImageURL">
+                                    <div *ngIf="!mapImageURL" class="no-image-text">
+                                        Nessuna immagine caricata
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CANCEL'|translate}}</button>
+                    <span class="width-5"></span>
+                    <button mat-flat-button class="action-button" color="primary" [disabled]="!isEditConfirmEnabled()"
+                        cdkFocusInitial (click)="onEditConfirmClick()">{{'GENERAL.CONFIRM'|translate}}</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="detailMode == DETAIL_MODE.dmReservation" class="general-container">
+            <div class="card width-80">
+                <div class="card-header">
+                    <div class="card-title">{{ titleCard }}</div>
+                </div>
+                <div class="card-body">
+                    <div class="input-row center-justify">
+                        <mat-form-field class="width-30">
+                            <input matInput placeholder="Data Prenotazione" [matDatepicker]="pickerFrom"
+                                [(ngModel)]="currentReservationDate" (dateChange)="onReservationDateChange($event)">
+                            <button matSuffix mat-icon-button>
+                                <mat-icon>calendar</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFrom></mat-datepicker>
+                    </div>
+                    <div class="panel-scheduler-container">
+                        <div class="panel-scheduler-timeframes">
+                            <ng-container *ngIf="this.resourceReservation.timeframeReservations.length > 0">
+                                <div *ngFor="let tf of getMyTimeframes()" class="timeframe-card"
+                                    [ngStyle]="{ 'background-color': isInProgress(tf) ? '#00ff0022' : '#eeeeee' }">
+                                    <div class="timeframe-content">
+                                        <div class="timeframe-content-time">
+                                            <i class="material-icons clock-icon">schedule</i>
+                                            <div class="time-text">{{ formatTimeframeTime(tf.startTime) }} - {{
+                                                formatTimeframeTime(tf.endTime) }}
+                                            </div>
+                                            <div class="title-container">
+                                                <div class="title-text">{{ getTimeframeCaption(tf) }}</div>
+                                                <div class="title-notes">{{ getTimeframeNotes(tf) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="this.resourceReservation.timeframeReservations.length == 0">
+                                <div class="timeframe-card">
+                                    <div class="timeframe-content">
+                                        <div class="timeframe-no-event">No events</div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button mat-flat-button class="action-button" color="primary"
+                        (click)="onEditCancelClick()">{{'GENERAL.CLOSE'|translate}}</button>
+                    <span class="width-5"></span>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

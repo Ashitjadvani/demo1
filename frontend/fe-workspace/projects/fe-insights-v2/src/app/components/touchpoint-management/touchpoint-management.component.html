@@ -1,0 +1,216 @@
+<section class="client-management">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <nav>
+          <ol class="breadcrumb box-style">
+            <li routerLink="/dashboard" class="breadcrumb-item">{{'INSIGHTS_MENU.DASHBOARD'| translate}}</li> 
+            <li  class="breadcrumb-item active" aria-current="page">{{'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'| translate}}</li>
+          </ol>
+        </nav> -->
+        <app-breadcrumb [title]="'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'">
+        </app-breadcrumb>
+      </div>
+      <div class="col-md-12">
+        <div class="common-tabbing">
+          <div class="table-content box-style company-info">
+            <div class="table-heading">
+              <h3 style="font-weight: 600">{{'INSIGHTS_MENU.TOUCH_POINT_MANAGEMENT'| translate}}</h3>
+              <div class="search-form-wrapper">
+                <div class="search-form">
+                  <mat-icon  matPrefix class="material-icons search">search</mat-icon>
+                  <input (keyup)="onKeyUp($event)" #searchBox [(ngModel)]="search" mat-input placeholder="{{'TOUCH_POINTS.SearchTouchPoints'|translate}}" />
+                  <mat-icon *ngIf="this.search !== '' "  class="material-icons clear" (click) ="resetSearch()">clear</mat-icon>
+                </div>
+                <button  class="btn-style btn-grey" routerLink="touchpoint-configuration">
+                  <span class="material-icons">{{'TOUCH_POINTS.brightness_high'|translate}}</span>{{'TOUCH_POINTS.Configuration'|translate}}
+                </button>
+                <button  class="btn-style" routerLink="add-touchpoint-site">
+                  <span class="material-icons">add</span>{{'TOUCH_POINTS.AddTouchpointSite'|translate}}
+                </button>
+                <button  [matMenuTriggerFor]="menu" class="btn-style menu-btn">
+                  <mat-icon >more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="deleteMultiTouchPoint()">
+                    <span>{{'GENERAL.Delete' | translate}}</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="table-wrapper resource-color-table">
+              <table #table [dataSource]="touchPointList | paginate: {itemsPerPage: this.itemsPerPage, currentPage: this.page, totalItems: this.totalItems }" mat-table style="width: 100%" >
+                <mat-tab-group>
+                  <!-- <ng-container matColumnDef="select">
+                    <th *matHeaderCellDef class="remember-forgot" mat-header-cell  style="width: 80px;">
+                      <mat-checkbox (change)="toggleAllSelection($event)" [checked]="this.checkboxvalue"></mat-checkbox>
+                    </th>
+                    <td *matCellDef="let element;let i = index" class="remember-forgot" mat-cell style="width: 80px;">
+                      <mat-checkbox (change)="checkbox(i,$event)" [checked]= "element.checked"></mat-checkbox>
+                    </td>
+                  </ng-container> -->
+
+                  <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="remember-forgot"  style="width: 80px;">
+                      <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    [aria-label]="checkboxLabel()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="remember-forgot"  style="width: 80px;">
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [aria-label]="checkboxLabel(row)">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="wheelAction">
+                    <th  *matHeaderCellDef class="short-arrow"  mat-header-cell style="min-width: 80px;">
+                      {{'TABLE.Action' | translate}}
+                    </th>
+                    <td class="p-0" mat-cell *matCellDef="let element; let i = index" style="white-space: nowrap;min-width: 80px;">
+                      <span [style.borderLeftColor]="element.statusText == 'Inactive' ? '#ff0000' : 'transparent'" class="border-types" style="white-space: nowrap;">
+                        <!-- Hover effect -->
+                        <!-- <div class="hover-effect-menu three-icons">
+                          <div class="short-arrow">
+                            <span class="material-icons" >more_horiz</span>
+                            <span *ngIf="element.isReadCandidate || element.isReadJob" class="red-dot"></span>
+                          </div>
+                          <div class="hover-round-effect">
+                            <button mat-menu-item (click)="openUnlockDialog(element.id)" matTooltip="{{'Unlock Pairing' | translate}}">
+                              <span class="material-icons">lock</span>
+                            </button>
+                            <button mat-menu-item (click)="openQRDialog(element.id)" matTooltip="{{'INSIGHTS_PEOPLE_PAGE.TOUCHPOINT QR' | translate}}">
+                              <span class="material-icons">qr_code_2</span>
+                            </button>
+                            <button mat-menu-item (click)="openAccountDeleteDialog(element.id, i, $event)" matTooltip="{{'Delete' | translate}}">
+                              <span class="material-icons">delete</span>
+                            </button>
+                          </div>
+                        </div> -->
+                        <app-wheel-action [icons]="'three'" [lockOn]="true" [qrOn]="true" [deleteOn]="true" [element]="element"
+                        (qr)="openQRDialog($event)" (delete)="openAccountDeleteDialog($event)" (lock)="openUnlockDialog($event)"></app-wheel-action>
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="touchpointID">
+                    <th (click)="changeSorting('id',sortBy)"  *matHeaderCellDef class="short-arrow" style="white-space: break-spaces;width: 200px;min-width: 200px;" mat-header-cell>
+                        {{'INSIGHTS_PEOPLE_PAGE.ID' | translate}} <span
+                      [ngClass]="{'down': sortKey === 'id' && sortBy === '-1' , 'up': sortKey === 'id' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element"  style="white-space: break-spaces;width: 200px;min-width: 200px;">{{element.id ? element.id : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="deviceID">
+                    <th (click)="changeSorting('deviceId',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 200px;min-width: 200px;">
+                      {{'TOUCH_POINTS.DeviceID'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'deviceId' && sortBy === '-1' , 'up': sortKey === 'deviceId' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 200px;min-width: 200px;">{{element.deviceId ? element.deviceId : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="site">
+                    <th (click)="changeSorting('name',sortBy)"  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 160px;min-width: 160px;">
+                      {{'TOUCH_POINTS.Site'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'name' && sortBy === '-1' , 'up': sortKey === 'name' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: nowrap;width: 160px;min-width: 160px;">
+                      <span *ngIf="!showAlerts(element)" class="green-round"></span><span *ngIf="showAlerts(element)" class="red-round"></span>{{element.name ? element.name : '-'}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="description">
+                    <th (click)="changeSorting('description',sortBy)"  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;width: 200px;min-width: 200px;">
+                      {{'TOUCH_POINTS.Description'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'description' && sortBy === '-1' , 'up': sortKey === 'description' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;width: 200px;min-width: 200px;">{{element.description ? element.description : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="startedAt">
+                    <th (click)="changeSorting('startedAt',sortBy)"  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;min-width: 200px;width:200px;">
+                      {{'TOUCH_POINTS.StartedAt'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'startedAt' && sortBy === '-1' , 'up': sortKey === 'startedAt' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 200px;width:200px;">{{element.startedAt ? (element.startedAt |  date: 'dd/MM/yyyy HH:mm:ss') : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="lastkeepAlive">
+                    <th (click)="changeSorting('lastKeepAlive',sortBy)"  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;min-width: 200px;width:200px;">
+                      {{'TOUCH_POINTS.LastKeepAlive'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'lastKeepAlive' && sortBy === '-1' , 'up': sortKey === 'lastKeepAlive' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 200px;width:200px;">{{element.lastKeepAlive ? (element.lastKeepAlive |  date: 'dd/MM/yyyy HH:mm:ss') : '-'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="officeIn">
+                    <th (click)="changeSorting('scope',sortBy)" *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;min-width: 160px;">
+                      {{'TOUCH_POINTS.OfficeIn'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'scope' && sortBy === '-1' , 'up': sortKey === 'scope' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 160px;">{{element.officeInCount ? element.officeInCount : '0'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="officeOut">
+                    <th (click)="changeSorting('scope',sortBy)"  *matHeaderCellDef class="short-arrow"  mat-header-cell style="white-space: break-spaces;min-width: 160px;">
+                      {{'TOUCH_POINTS.OfficeOut'|translate}} <span
+                      [ngClass]="{'down': sortKey === 'scope' && sortBy === '-1' , 'up': sortKey === 'scope' && sortBy === '1'}" >
+                      <img alt="" src="assets/images/up-arrow.svg"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="white-space: break-spaces;min-width: 160px;">{{element.officeOutCount ? element.officeOutCount : '0'}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef style="width: 150px;min-width: 150;">
+                      {{'TABLE.Action'|translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index" style="width: 150px;min-width: 150px;">
+                      <div class="action-icons d-flex switch">
+                        <img src="assets/images/lock-icon.svg" (click)="openUnlockDialog(element.id)" alt="">
+                        <img src="assets/images/qr-icon.svg"  (click)="openQRDialog(element.id)"  alt="">
+                        <img src="assets/images/delete-action.svg" (click)="openAccountDeleteDialog(element.id, i, $event)" alt="">
+                      </div>
+                    </td>
+                  </ng-container>
+                </mat-tab-group>
+
+                <tr mat-header-row *matHeaderRowDef="touchpointDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let element; columns: touchpointDisplayedColumns"></tr>
+              </table>
+            </div>
+            <!-- <div *ngIf="!noRecordFound" class="no-record-found">{{'TABLE.No_record_found' | translate}}</div>
+            <div  *ngIf="noRecordFound"class="paginate-footer">
+              <div class="page-item">
+                <h3>{{'TABLE.Items_per_page' | translate}}</h3>
+                <mat-form-field appearance="fill">
+                  <mat-select [(ngModel)]="itemsPerPage" (selectionChange)="changeItemsPerPage()">
+                    <mat-option value='5'>5</mat-option>
+                    <mat-option value='10'>10</mat-option>
+                    <mat-option value='15'>15</mat-option>
+                    <mat-option value='20'>20</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="total-record-info">{{(((page - 1) * itemsPerPage) + 1)}} - {{((itemsPerPage * page) < totalItems) ? (itemsPerPage * page) : totalItems}} of {{totalItems}}</span>
+              </div>
+              <div class="table-paginator">
+                <pagination-controls  (pageChange)="pageChanged($event)" responsive="true"></pagination-controls>
+              </div>
+            </div> -->
+            <app-pagination [noRecordFound]="noRecordFound"
+                [itemsPerPage]="itemsPerPage" [page]="page" (pageChange)="pageChanged($event)" (changeItem)="changeItemsPerPage($event)"
+              [totalItems]="totalItems"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

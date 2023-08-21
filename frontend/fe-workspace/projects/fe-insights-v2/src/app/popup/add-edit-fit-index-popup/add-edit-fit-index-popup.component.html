@@ -1,0 +1,75 @@
+<section class="popups">
+  <form [formGroup]="fitIndexForm" id="frmSurveyQuestion" (ngSubmit)="submitFitIndex()" class="formHeight">
+    <div class="popup-header">
+      <div class="header-content">
+        <h4>{{config.heading | translate}}</h4>
+        <img (click)="onClick(false)" alt="" src="assets/images/cross-icon.svg">
+      </div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-content m-auto text-center">
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'EXTRA_WORD.Matrics' | translate}}</mat-label>
+            <mat-select formControlName="metric_id">
+              <mat-option value="{{matric.metricId}}" *ngFor="let matric of matricData">{{matric.metricName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fitIndexForm.controls.metric_id.errors?.required">
+              {{ 'Quiz/Survey.RequiredMatrics' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>  {{'EXTRA_WORD.Operator' | translate}}</mat-label>
+            <mat-select  formControlName="operator">
+              <mat-option value="==">{{'EXTRA_WORD.Equal' | translate}}</mat-option>
+              <mat-option value="!=">{{'EXTRA_WORD.NotEqual' | translate}}</mat-option>
+              <mat-option value=">">{{'EXTRA_WORD.GreaterThan' | translate}}</mat-option>
+              <mat-option value=">=">{{'EXTRA_WORD.GreaterThanEqual' | translate}}</mat-option>
+              <mat-option value="<">{{'EXTRA_WORD.LessThan' | translate}}</mat-option>
+              <mat-option value="<=">{{'EXTRA_WORD.LessThanEqual' | translate}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fitIndexForm.controls.operator.errors?.required">
+              {{ 'Quiz/Survey.Pleaseselectoperatior' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'EXTRA_WORD.Value' | translate}}</mat-label>
+            <input matInput formControlName="value" type="number" name="value" maxlength="50">
+            <mat-error *ngIf="fitIndexForm.controls.value.errors?.required">
+              {{ 'Quiz/Survey.Pleaseenteryourvalue' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'EXTRA_WORD.TextResult' | translate}}</mat-label>
+            <input matInput formControlName="result" type="text" name="result" maxlength="50" (keydown)="space($event)">
+            <mat-error *ngIf="fitIndexForm.controls.result.errors?.required">
+              {{ 'Quiz/Survey.Pleaseenteryourtextresult' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="element-full-width">
+            <mat-label>{{'EXTRA_WORD.ScalarResult'| translate}}</mat-label>
+            <input matInput formControlName="scalarResult" type="number" name="scalarResult" maxlength="50">
+            <mat-error *ngIf="fitIndexForm.controls.scalarResult.errors?.required">
+              {{ 'Quiz/Survey.Pleaseenteryourscalarresult' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="popup-footer">
+      <div class="footer-content justify-content-end">
+        <button (click)="onClick(false)" class="btn-style inactive" type="button">{{'GENERAL.Cancel' | translate}}</button>
+        <button class="btn-style theme-btn" type="submit">{{'GENERAL.Save' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</section>
